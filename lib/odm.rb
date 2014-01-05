@@ -1,5 +1,9 @@
 
 class Odm
+  # Parses io (via each_line) into ODM objects and adds them to db
+  # (via add).  The stanza type determines the type of object.  For
+  # example, a stanza starting with CuAt will do CuAt.new(hash) where
+  # hash is the attributes found in the ODM stanza.
   def self.parse(io, db)
     name = nil                  # name of the object class
     hash = nil                  # attributes of the new object
@@ -11,7 +15,7 @@ class Odm
       end
 
       # replace string literals e.g. "\n" with a newline
-      this_line.gsub(/\\./) { |match|
+      this_line.gsub!(/\\./) { |match|
         case match
         when '\n'; "\n"
         when '\\'; "\\"
@@ -43,8 +47,8 @@ class Odm
         hash = Hash.new
 
         # looks like an attribute
-      elsif (md = full_line.match(/^\s+(\w+)\s*=\s*(.*)$/))
-        hash[md[1]] = md[2]
+      elsif (md = full_line.match(/^\s+(\w+)\s*=\s*((.|\n)*)$/))
+        hash[md[1]] = convert(md[2])
       else                      # format seems broken
         raise "Bad format"
       end
@@ -59,6 +63,21 @@ class Odm
 
   private
 
+  # Converts a value (right of the equals sign) read from the odm
+  # files what it means.  In particular, a string is quoted with an
+  # extra set of double quotes and an integer comes in as a string and
+  # is converted to an integer.
+  def self.convert(a)
+    if md = a.match(/"((.|\n)*)"/)
+      return md[1]
+    end
+    if a.match(/^[0-9]+$/)
+      return a.to_i
+    end
+    raise "Can not convert #{a}"
+  end
+
+  # Creates an object of type name passing its new method hash.
   def self.create_object(name, hash)
     o = Class.const_get(name).new(hash)
   end
