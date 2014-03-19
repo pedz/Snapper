@@ -1,5 +1,28 @@
 
+Top = self.class
+
 class Odm
+  # Base from which ODM types start from
+  class Base
+    def initialize(arg)
+      @arg = arg
+    end
+
+    def each_pair(&block)
+      @arg.each_pair(&block)
+    end
+
+    def keys
+      @arg.keys
+    end
+
+    def method_missing(name, *args, &block)
+      n = name.to_s
+      return @arg[n] if @arg.has_key?(n)
+      super
+    end
+  end
+  
   # Parses io (via each_line) into ODM objects and adds them to db
   # (via add).  The stanza type determines the type of object.  For
   # example, a stanza starting with CuAt will do CuAt.new(hash) where
@@ -79,6 +102,12 @@ class Odm
 
   # Creates an object of type name passing its new method hash.
   def self.create_object(name, hash)
-    o = Class.const_get(name).new(hash)
+    unless Top.const_defined?(name)
+      Top.const_set(name, Class.new(Odm::Base))
+    end
+    o = Top.const_get(name).new(hash)
   end
 end
+
+require_relative 'odm/cuat'
+require_relative 'odm/cudv'

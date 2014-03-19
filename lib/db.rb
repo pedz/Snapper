@@ -15,6 +15,10 @@ class Db
   # Returns a container called a table that will have only elements
   # of the class as item
   def table(klass)
-    @db[klass] ||= []
+    @db[klass.to_s] ||= []
+  end
+
+  def keys
+    @db.keys
   end
 end

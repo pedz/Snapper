@@ -1,3 +1,5 @@
+require 'pathname'
+
 #
 # The main driving routine for snaps.  I assume a similar class will
 # be done for perf pmr data.
@@ -13,8 +15,8 @@ class SnapParser
   # reading).
   #
   # patterns.each should result in elements that respond to first and
-  # last.  If first.match(path) returns true, then last.parse(path,
-  # db) will be called.
+  # last.  If first.match(path) returns true, then last.parse(io, db)
+  # will be called where io is the open file for path.
   def self.parse(dir, prune, db, patterns)
     Pathname.new(File.expand_path(dir)).find do |path|
       if prune && prune.match(path.to_s)
@@ -23,7 +25,7 @@ class SnapParser
       if path.file?
         patterns.each do |ele|
           if ele.first.match(path.to_s)
-            path.open do |io|
+            path.open("r:ISO-8859-1") do |io|
               ele.last.parse(io, db)
             end
           end
