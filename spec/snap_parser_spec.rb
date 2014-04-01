@@ -11,7 +11,7 @@ describe SnapParser do
   end
 
   it "should call parse on the matches" do
-    mock = double("db")
+    mock = double("Klass")
     expect(mock).to receive(:parse).exactly(17).times
     # This matches the Foo.add in general but not the Foo.vc.add files
     # It is mostly practicing with negative look ahead.
@@ -19,7 +19,7 @@ describe SnapParser do
   end
 
   it "should call parse on the matches with the proper arguments" do
-    mock = double("db")
+    mock = double("Klass")
     expect(mock).to receive(:parse) do |p, x|
       expect(p).to be_an(IO)
       expect(x).to be(true)
@@ -30,7 +30,7 @@ describe SnapParser do
 
   it "should respect the prune argument" do
     # should match .desc, .files, .level, and XS25/XS25.snap
-    mock = double("db")
+    mock = double("Klass")
     expect(mock).to receive(:parse).exactly(4).times
     SnapParser.parse(TEST_SNAP, %r{#{Regexp.quote(TEST_SNAP.to_s)}/[a-z]}, true, { /./ => mock })
   end
