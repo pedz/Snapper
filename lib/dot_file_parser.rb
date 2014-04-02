@@ -5,6 +5,15 @@
 # An example of one of these is the tcpip.snap file.
 class DotFileParser
 
+  # Base from which "dot file" types start from
+  class Base
+    attr_reader :text
+
+    def initialize(text)
+      @text = text
+    end
+  end
+
   # Pattern that matches the separations between the commands
   DotSeparator = Regexp.new("\n\\.+\n\\.+ +(.+)\n\\.+\n")
   
@@ -16,21 +25,19 @@ class DotFileParser
     while true
       name, text = pieces.shift(2)
       break if name.nil?
-      db.add(CommandOutput.new(name, text))
+      db.add(create_object(name, text))
     end
   end
-end
 
-# A simple class that has two attributes: a name and the text.  The
-# name is usually the command the snap command used to create the
-# output but not always.  It is whatever the snap command puts into
-# the dot separation.  The text is the text that follows (the output
-# of the command)
-class CommandOutput
-  attr_reader :name, :text
-
-  def initialize(name, text)
-    @name = name
-    @text = text
+  # Creates an object of type name passing its new method text.
+  def self.create_object(name, text)
+    klass_name = name.gsub(/ /, '').gsub(%r{[^a-zA-Z0-9]},'_').capitalize
+    return if klass_name == ''
+    unless ::Object.const_defined?(klass_name)
+      ::Object.const_set(klass_name, Class.new(DotFileParser::Base))
+    end
+    o = ::Object.const_get(klass_name).new(text)
   end
 end
+
+require_relative 'dot_file/netstat_v'

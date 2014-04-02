@@ -1,6 +1,4 @@
 
-Top = self.class
-
 class Odm
   # Base from which ODM types start from
   class Base
@@ -102,10 +100,10 @@ class Odm
 
   # Creates an object of type name passing its new method hash.
   def self.create_object(name, hash)
-    unless Top.const_defined?(name)
-      Top.const_set(name, Class.new(Odm::Base))
+    unless ::Object.const_defined?(name)
+      ::Object.const_set(name, Class.new(Odm::Base))
     end
-    o = Top.const_get(name).new(hash)
+    o = ::Object.const_get(name).new(hash)
   end
 end
 

@@ -41,13 +41,11 @@ db = Db.new
 
 SnapParser.parse(ARGV[0], nil, db, Patterns)
 
-# l = db.table('CuDv').find_all { |cudv|
-#   cudv.PdDvLn == SeaPdDvLn
-# }.each { |sea|
-#   puts "Name: #{sea.name}"
-#   sea.attributes(db).each_pair { |k, v| puts "    #{k}: #{v}"}
-# }
-
-db.table('CommandOutput').each { |cmd|
-  puts cmd.text if cmd.name == 'netstat -v'
+l = db.table('CuDv').find_all { |cudv|
+  cudv.PdDvLn == SeaPdDvLn
+}.each { |sea|
+  puts "Name: #{sea.name}"
+  sea.attributes(db).each_pair { |k, v| puts "    #{k}: #{v}"}
 }
+
+# puts db.table('Netstat_v')[0].text
