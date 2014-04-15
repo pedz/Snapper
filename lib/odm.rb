@@ -14,6 +14,10 @@ class Odm
       @arg.keys
     end
 
+    def to_json(options = {})
+      @arg.to_json(options)
+    end
+
     def method_missing(name, *args, &block)
       n = name.to_s
       return @arg[n] if @arg.has_key?(n)

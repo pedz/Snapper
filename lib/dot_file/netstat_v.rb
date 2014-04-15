@@ -10,8 +10,8 @@ class Netstat_v < DotFileParser::Base
     while true
       whole_line, device_name, rest = parts.shift(3)
       break if whole_line.nil?
-      puts device_name
-      puts rest.match('.*')
+      # puts device_name
+      # puts rest.match('.*')
     end
   end
 end

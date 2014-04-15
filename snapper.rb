@@ -41,11 +41,58 @@ db = Db.new
 
 SnapParser.parse(ARGV[0], nil, db, Patterns)
 
-l = db.table('CuDv').find_all { |cudv|
-  cudv.PdDvLn == SeaPdDvLn
-}.each { |sea|
-  puts "Name: #{sea.name}"
-  sea.attributes(db).each_pair { |k, v| puts "    #{k}: #{v}"}
-}
+# l = db.table('CuDv').find_all { |cudv|
+#   cudv.PdDvLn == SeaPdDvLn
+# }.each { |sea|
+#   puts "Name: #{sea.name}"
+#   sea.attributes(db).each_pair { |k, v| puts "    #{k}: #{v}"}
+# }
 
 # puts db.table('Netstat_v')[0].text
+
+puts <<'EOF'
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fun Fun Fun</title>
+    <meta charset="utf-8">
+    <style>
+      .chart rect {
+        fill: steelblue;
+      }
+      .chart text {
+        fill: white;
+        font: 10px sans-serif;
+        text-anchor: middle;
+      }
+      .chart line {
+        stroke: black;
+        stroke-width: 2;
+      }
+      .chart polyline {
+        stroke: black;
+        stroke-width: 2;
+        fill: none;
+      }
+      .chart line {
+        stroke: black;
+        stroke-width: 2;
+        fill: none;
+      }
+    </style>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>
+        fun =
+EOF
+puts JSON.pretty_generate(db)
+puts <<'EOF'
+    ;
+    </script>
+  </head>
+  <body>
+    <svg class="chart" width="500" height="500">
+    </svg>
+  </body>
+</html>
+EOF

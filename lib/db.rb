@@ -1,4 +1,6 @@
 
+require 'json'
+
 # A generic container with an add method to add elements into the
 # container.  The container will actually proxy to methods within the
 # items.
@@ -20,5 +22,9 @@ class Db
 
   def keys
     @db.keys
+  end
+
+  def to_json(options = {})
+    @db.to_json(options)
   end
 end
