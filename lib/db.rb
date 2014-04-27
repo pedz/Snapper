@@ -9,6 +9,10 @@ class Db
     @db = Hash.new
   end
 
+  def [](key)
+    @db[key]
+  end
+
   # Adds item into the container
   def add(item)
     table(item.class).push(item)

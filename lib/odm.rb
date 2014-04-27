@@ -6,6 +6,10 @@ class Odm
       @arg = arg
     end
 
+    def [](key)
+      @arg[key]
+    end
+
     def each_pair(&block)
       @arg.each_pair(&block)
     end

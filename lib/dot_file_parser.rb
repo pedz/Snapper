@@ -19,7 +19,7 @@ class DotFileParser
   end
 
   # Pattern that matches the separations between the commands
-  DotSeparator = Regexp.new("\n\\.+\n\\.+ +(.+)\n\\.+\n")
+  DotSeparator = Regexp.new("\n\\.+\n\\.+ +(.+)\n\\.+\n\n")
   
   # Parse a "dot file".  io is the file to parse while db is the
   # "database" to add the entries to.
