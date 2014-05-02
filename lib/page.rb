@@ -21,7 +21,7 @@ EOF
     puts <<'EOF'
   </head>
   <body>
-    <svg class="chart" width="500" height="500">
+    <svg class="chart">
     </svg>
   </body>
 </html>
@@ -38,9 +38,11 @@ EOF
   end
 
   def include_javascript
+    # <script src="http://d3js.org/d3.v3.min.js"></script>
+    # <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     puts <<'EOF'
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://d3js.org/d3.v3.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
     <script>
       if (typeof window.snapper === "undefined") window.snapper = {};
     </script>
