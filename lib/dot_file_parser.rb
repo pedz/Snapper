@@ -41,7 +41,9 @@ class DotFileParser
       ::Object.const_set(klass_name, Class.new(DotFileParser::Base))
     end
     o = ::Object.const_get(klass_name).new(text)
+    return o
   end
 end
 
+require_relative 'match_proc'
 require_relative 'dot_file/netstat_v'

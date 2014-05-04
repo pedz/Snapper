@@ -57,6 +57,8 @@ EOF
   end
 
   def add_data(db)
+    $stderr.puts "db KEYS"
+    $stderr.puts db.keys.join("\n")
     puts "    <script>"
     puts "        window.snapper.world.addSnap(";
     puts JSON.pretty_generate(db)
