@@ -37,18 +37,17 @@ Patterns = {
   %r{/XS25/XS25.snap} => DotFileParser,
 }
 
-SeaPdDvLn = "adapter/pseudo/sea"
 db = Db.new
 
 SnapParser.parse(ARGV[0], nil, db, Patterns)
 
+# SeaPdDvLn = "adapter/pseudo/sea"
 # l = db.table('CuDv').find_all { |cudv|
 #   cudv.PdDvLn == SeaPdDvLn
 # }.each { |sea|
 #   puts "Name: #{sea.name}"
 #   sea.attributes(db).each_pair { |k, v| puts "    #{k}: #{v}"}
 # }
-
 # puts db.table('Netstat_v')[0].text
 
 include Page
