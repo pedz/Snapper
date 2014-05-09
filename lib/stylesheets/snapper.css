@@ -30,3 +30,21 @@
     stroke-width: 1;
     fill: transparent;
 }
+
+.chart rect.seaRect {
+    stroke: grey;
+    stroke-width: 1;
+    fill: transparent;
+}
+
+.chart rect.lparRect {
+    stroke: grey;
+    stroke-width: 1;
+    fill: transparent;
+}
+
+.chart rect.cecRect {
+    stroke: grey;
+    stroke-width: 1;
+    fill: transparent;
+}
