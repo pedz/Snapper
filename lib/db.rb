@@ -5,6 +5,8 @@ require 'json'
 # container.  The container will actually proxy to methods within the
 # items.
 class Db
+  include Logging
+
   def initialize
     @db = Hash.new
   end

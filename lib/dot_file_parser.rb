@@ -4,9 +4,12 @@
 # like ...\n ... command\n  ...\n.  This file "parses" those files.
 # An example of one of these is the tcpip.snap file.
 class DotFileParser
+  include Logging
 
   # Base from which "dot file" types start from
   class Base
+    include Logging
+
     attr_reader :text
 
     def initialize(text)
@@ -45,5 +48,5 @@ class DotFileParser
   end
 end
 
-require_relative 'match_proc'
+require_relative 'pda'
 require_relative 'dot_file/netstat_v'

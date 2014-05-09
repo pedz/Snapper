@@ -2,6 +2,8 @@ require "stringio"
 
 # Class for the netstat -v output
 class Netstat_v < DotFileParser::Base
+  include Logging
+
   T = Regexp.new("(FIBRE CHANNEL STATISTICS REPORT: (.*)|ETHERNET STATISTICS \\((.*)\\) :|VASI STATISTICS \\((.*)\\) :)\n")
 
   def initialize(text)
@@ -12,7 +14,7 @@ class Netstat_v < DotFileParser::Base
     while true
       whole_line, device_name, rest = parts.shift(3)
       break if whole_line.nil?
-      $stderr.puts "DEVICE NAME: #{device_name}"
+      logger.debug "DEVICE NAME: #{device_name}"
       @devices[device_name] = parse_lines(StringIO.new(rest))
     end
   end
@@ -26,7 +28,7 @@ class Netstat_v < DotFileParser::Base
   Patterns =
     [
      ########
-     # FCS specific rules
+     # FCS specific productions
 
      # Sample Match:   |FC-4 TYPES
      # States Matched: :normal
@@ -34,17 +36,15 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   yes
      # States Popped:  0
      # Moves to a state of picking up the FC-4 TYPE values
-     MatchProc.new("^(?<field>FC-4 TYPES):\\s*$", [:normal], :fc4types) do |md, env|
+     PDA::Production.new("^(?<field>FC-4 TYPES):\\s*$", [:normal], :fc4types) do |md, pda|
        field = md[:field]
        value = {}
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
-       $stderr.puts "#{__LINE__} Pushing state: fc4types"
-       stack.push({state: :foo, target: value })
-       env[:empty_line_pop_states] = 1
+       pda.push(value)
+       pda.empty_line_pop_states = 1
      end,
 
      # Sample Match:   |FC-4 TYPES (ULP mappings):
@@ -59,18 +59,16 @@ class Netstat_v < DotFileParser::Base
      # and a new state pushed for the "Active ULPs" values.  The first
      # normal single field line (which is usually "Class of Service"
      # ends up popping two states.
-     MatchProc.new("^(?<field>FC-4 TYPES \\(ULP mappings\\)):\\s*$", [:normal], :fc4typesULP) do |md, env|
+     PDA::Production.new("^(?<field>FC-4 TYPES \\(ULP mappings\\)):\\s*$", [:normal], :fc4typesULP) do |md, pda|
        field = md[:field]
        value = {}
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
-       $stderr.puts "#{__LINE__} Pushing state: fc4typesULP"
-       stack.push({state: :foo, target: value })
+       pda.push(value)
        # should never hit but just in case
-       env[:single_field_pop_states] = 1
+       pda.single_field_pop_states = 1
      end,
 
      # Sample Match:   |  Supported ULPs:   
@@ -80,17 +78,15 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      # Set up so subsequent values are pushed onto the "Supported
      # ULPs" array.
-     MatchProc.new("^\\s*(?<field>Supported ULPs):\\s*$", [:fc4typesULP], :pushingULPs) do |md, env|
+     PDA::Production.new("^\\s*(?<field>Supported ULPs):\\s*$", [:fc4typesULP], :pushingULPs) do |md, pda|
        field = md[:field]
        value = []
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
-       $stderr.puts "#{__LINE__} Pushing state: pushingULPs"
-       stack.push({state: :foo, target: value })
-       env[:single_field_pop_states] = 2
+       pda.push(value)
+       pda.single_field_pop_states = 2
      end,
 
      # Sample Match:   |  Active ULPs:   
@@ -99,20 +95,18 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   yes
      # States Popped:  1
      # Currently pushing values onto the "Supported ULPs" array.  This
-     # rule pops that state and adds a new state so subsequent values
-     # are added to the "Active ULPs" array.
-     MatchProc.new("^\\s*(?<field>Active ULPs):\\s*$", [:pushingULPs], :pushingULPs) do |md, env|
+     # production pops that state and adds a new state so subsequent
+     # values are added to the "Active ULPs" array.
+     PDA::Production.new("^\\s*(?<field>Active ULPs):\\s*$", [:pushingULPs], :pushingULPs) do |md, pda|
        field = md[:field]
        value = []
-       stack = env.fetch(:stack)
-       $stderr.puts "#{__LINE__} ULP Popping stack"
-       stack.pop(1)
-       ret = stack.last.fetch(:target)
+       logger.debug "#{__LINE__} ULP Popping pda.stack)"
+       pda.pop(1)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
-       $stderr.puts "#{__LINE__} Pushing state: pushingULPs"
-       stack.push({state: :foo, target: value })
+       pda.push(value)
      end,
 
      # Sample Match:   |    	Internet Protocol (IP) over Fibre Channel (IETF RFC2625) 
@@ -124,10 +118,9 @@ class Netstat_v < DotFileParser::Base
      # "Supported ULPs" and "Active ULPs".  In this state we are
      # pushing the values into an array for the particular field
      # within the "FC-4 TYPES (ULP mappings)" field.
-     MatchProc.new("^\\s+(?<value>\\S[^:]+\\S)\\s*$", [:pushingULPs]) do |md, env|
+     PDA::Production.new("^\\s+(?<value>\\S[^:]+\\S)\\s*$", [:pushingULPs]) do |md, pda|
        value = md[:value].strip # delete trailing white space from value
-       ret = env.fetch(:stack).last.fetch(:target)
-       $stderr.puts "#{__LINE__} Pushing #{value}"
+       ret = pda.target
        ret.push(value)
      end,
 
@@ -138,20 +131,19 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      # Start the two column FC otuput.  State ends on first empty line
      # after a field has been found.
-     MatchProc.new("^\\s+(?<left>\\S+ Statistics):?\\s+(?<right>\\S+ Statistics):?\\s*$", :all, :fcTwoColumn) do |md, env|
+     PDA::Production.new("^\\s+(?<left>\\S+ Statistics):?\\s+(?<right>\\S+ Statistics):?\\s*$", :all, :fcTwoColumn) do |md, pda|
        left = md[:left]
        right = md[:right]
        lval = {}
        rval = {}
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{left}" if ret.key?(left)
        fail "Overwriting value #{right}" if ret.key?(right)
-       $stderr.puts "#{__LINE__} Adding #{left} = #{lval} and #{right} = #{rval}"
+       logger.debug "#{__LINE__} Adding #{left} = #{lval} and #{right} = #{rval}"
        ret[left] = lval
        ret[right] = rval
-       $stderr.puts "#{__LINE__} Pushing state :fcTwoColumn"
-       stack.push({state: :foo, left: lval, right: rval })
+       value = { left: lval, right: rval }
+       pda.push(value)
      end,
 
      # Sample Match:   |Frames: 180323917       	358920289       
@@ -161,19 +153,18 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      # Pick up the two column FC output.  This moves us to a state
      # where an empty line will pop the stack
-     MatchProc.new("^\\s*(?<field>\\S[^:]*):\\s*(?<lval>\\d+)\\s+(?<rval>\\d+)\\s*$", [:fcTwoColumn]) do |md, env|
+     PDA::Production.new("^\\s*(?<field>\\S[^:]*):\\s*(?<lval>\\d+)\\s+(?<rval>\\d+)\\s*$", [:fcTwoColumn]) do |md, pda|
        field = md[:field]
        lval = md[:lval].to_i
        rval = md[:rval].to_i
-       stack = env.fetch(:stack)
-       left = stack.last.fetch(:left)
+       left = pda.target.fetch(:left)
        fail "Overwriting value #{field}" if left.key?(field)
-       right = stack.last.fetch(:right)
+       right = pda.target.fetch(:right)
        fail "Overwriting value #{field}" if right.key?(field)
-       $stderr.puts "#{__LINE__} Adding left #{field} = #{lval} and right #{field} = #{rval}"
+       logger.debug "#{__LINE__} Adding left #{field} = #{lval} and right #{field} = #{rval}"
        left[field] = lval
        right[field] = rval
-       env[:empty_line_pop_states] = 1
+       pda.empty_line_pop_states = 1
      end,
      
      # Sample Match:   |IP over FC Adapter Driver Information
@@ -183,21 +174,19 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      # Adds subsequent fields to a common hash.  First empty line ends
      # the grouping.
-     MatchProc.new("^(?<field>IP over FC Adapter Driver Information|IP over FC Traffic Statistics)\\s*$", [:normal], :FC_subparagraph) do |md, env|
+     PDA::Production.new("^(?<field>IP over FC Adapter Driver Information|IP over FC Traffic Statistics)\\s*$", [:normal], :FC_subparagraph) do |md, pda|
        field = md[:field]
        value = {}
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
-       $stderr.puts "#{__LINE__} Pushing state: FC_subparagraph"
-       stack.push({state: :foo, target: value })
-       env[:empty_line_pop_states] = 1
+       pda.push(value)
+       pda.empty_line_pop_states = 1
      end,
 
      ########
-     # ENT specific rules
+     # ENT specific productions
 
      # Sample Match:   |Transmit Statistics:                          Receive Statistics:
      # States Matched: :all
@@ -205,20 +194,19 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   yes
      # States Popped:  0
      # start two column stats for ENT.  The FC two column has leading white space while the ENT does not.
-     MatchProc.new("^(?<left>\\S+ Statistics):?\\s+(?<right>\\S+ Statistics):?\\s*$", :all, :entTwoColumn) do |md, env|
+     PDA::Production.new("^(?<left>\\S+ Statistics):?\\s+(?<right>\\S+ Statistics):?\\s*$", :all, :entTwoColumn) do |md, pda|
        left = md[:left]
        right = md[:right]
        lval = {}
        rval = {}
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{left}" if ret.key?(left)
        fail "Overwriting value #{right}" if ret.key?(right)
-       $stderr.puts "#{__LINE__} Adding #{left} = #{lval} and #{right} = #{rval}"
+       logger.debug "#{__LINE__} Adding #{left} = #{lval} and #{right} = #{rval}"
        ret[left] = lval
        ret[right] = rval
-       $stderr.puts "#{__LINE__} Pushing state :entTwoColumn"
-       stack.push({state: :foo, left: lval, right: rval, target: ret })
+       value = { left: lval, right: rval }
+       pda.push(value)
      end,
 
      # Sample Match:   |Packets: 359754                               Packets: 272450
@@ -227,17 +215,16 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   none
      # States Popped:  0
      # Pick up the two column ENT output where both columns are present
-     MatchProc.new("^\\s*(?<lfield>\\S[^:]*):\\s*(?<lval>\\d+)\\s+(?<rfield>\\S[^:]*):\\s+(?<rval>\\d+)\\s*$", [:entTwoColumn]) do |md, env|
+     PDA::Production.new("^\\s*(?<lfield>\\S[^:]*):\\s*(?<lval>\\d+)\\s+(?<rfield>\\S[^:]*):\\s+(?<rval>\\d+)\\s*$", [:entTwoColumn]) do |md, pda|
        lfield = md[:lfield]
        lval = md[:lval].to_i
        rfield = md[:rfield]
        rval = md[:rval].to_i
-       stack = env.fetch(:stack)
-       left = stack.last.fetch(:left)
+       left = pda.target.fetch(:left)
        fail "Overwriting value #{lfield}" if left.key?(lfield)
-       right = stack.last.fetch(:right)
+       right = pda.target.fetch(:right)
        fail "Overwriting value #{rfield}" if right.key?(rfield)
-       $stderr.puts "#{__LINE__} Adding left #{lfield} = #{lval} and right #{rfield} = #{rval}"
+       logger.debug "#{__LINE__} Adding left #{lfield} = #{lval} and right #{rfield} = #{rval}"
        left[lfield] = lval
        right[rfield] = rval
      end,
@@ -248,13 +235,12 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   none
      # States Popped:  0
      # Two column ENT output has one line with only the Receive state.
-     MatchProc.new("^\\s+(?<rfield>Bad Packets):\\s*(?<rval>\\d+)$", [:entTwoColumn]) do |md, env|
+     PDA::Production.new("^\\s+(?<rfield>Bad Packets):\\s*(?<rval>\\d+)$", [:entTwoColumn]) do |md, pda|
        rfield = md[:rfield]
        rval = md[:rval].to_i
-       stack = env.fetch(:stack)
-       right = stack.last.fetch(:right)
+       right = pda.target.fetch(:right)
        fail "Overwriting value #{rfield}" if right.key?(rfield)
-       $stderr.puts "#{__LINE__} Adding right #{rfield} = #{rval}"
+       logger.debug "#{__LINE__} Adding right #{rfield} = #{rval}"
        right[rfield] = rval
      end,
 
@@ -266,17 +252,25 @@ class Netstat_v < DotFileParser::Base
      # Two column ENT output has a few trailing fields for Transmit
      # only.  This also indicates we are nearing the end of the two
      # column output so :empty_line_pop_states is set to 1.
-     MatchProc.new("^(?<lfield>Multiple Collision Count|Current HW Transmit Queue Length):\\s+(?<lval>\\d+)\\s*$", [:entTwoColumn]) do |md, env|
+     PDA::Production.new("^(?<lfield>\\S[^:]+):\\s+(?<lval>\\d+)\\s*$", [:entTwoColumn]) do |md, pda|
        lfield = md[:lfield]
        lval = md[:lval].to_i
-       stack = env.fetch(:stack)
-       left = stack.last.fetch(:left)
+       left = pda.target.fetch(:left)
        fail "Overwriting value #{lfield}" if left.key?(lfield)
-       $stderr.puts "#{__LINE__} Adding left #{lfield} = #{lval}"
+       logger.debug "#{__LINE__} Adding left #{lfield} = #{lval}"
        left[lfield] = lval
-       env[:empty_line_pop_states] = 1
      end,
      
+     # Sample Match:   |General Statistics:
+     # States Matched: :entTwoColumn
+     # New State:      :no_change
+     # State Pushed:   none
+     # States Popped:  1
+     # Definite end of two column ENT mode
+     PDA::Production.new("^\\s*(?<field>General Statistics:)\\s*$", [:entTwoColumn]) do |md, pda|
+       pda.pop(1)
+     end,
+
      # Sample Match:   |Driver Flags: Up Broadcast Simplex 
      # States Matched: :normal
      # New State:      :driverFlags
@@ -284,17 +278,15 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      # Driver Flags is followed by a sequence of flag names which are
      # put into an array.
-     MatchProc.new("^(?<field>Driver Flags):\\s+(?<flags>\\S.*)$", [:normal], :driverFlags) do |md, env|
+     PDA::Production.new("^(?<field>Driver Flags):\\s+(?<flags>\\S.*)$", [:normal], :driverFlags) do |md, pda|
        field = md[:field]
        value = md[:flags].split
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
-       $stderr.puts "#{__LINE__} Pushing state: driverFlags"
-       stack.push({state: :foo, target: value })
-       env[:empty_line_pop_states] = 1
+       pda.push(value)
+       pda.empty_line_pop_states = 1
      end,
      
      # Sample Match:   |  	Limbo 64BitSupport ChecksumOffload 
@@ -302,12 +294,13 @@ class Netstat_v < DotFileParser::Base
      # New State:      :no_change
      # State Pushed:   none
      # States Popped:  0
-     # Driver Flags has flags split across multiple lines.  This rule
-     # adds the flags found in the second and subsequent lines.
-     MatchProc.new("^\\s*(?<flags>\\S.*)$", [:driverFlags]) do |md, env|
+     # Driver Flags has flags split across multiple lines.  This
+     # production adds the flags found in the second and subsequent
+     # lines.
+     PDA::Production.new("^\\s*(?<flags>\\S.*)$", [:driverFlags]) do |md, pda|
        flags = md[:flags].split
-       env.fetch(:stack).last[:target] += flags
-       $stderr.puts "#{__LINE__} Driver flags now #{env.fetch(:stack).last[:target]}"
+       pda.target += flags
+       logger.debug "#{__LINE__} Driver flags now #{pda.target}"
      end,
 
      # Sample Match:   |Receive statistics for RXQ number: 2
@@ -317,19 +310,18 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  1 if already in :elxentQStats state
      # This starts a new group so subsequent fields are added into
      # (for example) "Receive statistics for RXQ number"[2]
-     MatchProc.new("^(?<field>Receive statistics for RXQ number|Transmit statistics for TXQ number):\\s+(?<index>\\d+)\\s*$", [:normal, :elxentQStats], :elxentQStats) do |md, env|
+     PDA::Production.new("^(?<field>Receive statistics for RXQ number|Transmit statistics for TXQ number):\\s+(?<index>\\d+)\\s*$", [:normal, :elxentQStats], :elxentQStats) do |md, pda|
        field = md[:field]
        index = md[:index].to_i
-       stack = env.fetch(:stack)
-       stack.pop(1) unless stack.last.fetch(:state) == :normal
-       ret = stack.last.fetch(:target)
+       pda.pop(1) unless pda.state == :normal
+       ret = pda.target
        ret[field] ||= []
        fail "Overwriting value #{field}[#{index}]" if ret[field][index]
        value = {}
        ret[field][index] = value
-       $stderr.puts "#{__LINE__} Starting #{field}[#{index}]"
-       stack.push({state: :foo, target: value })
-       env[:empty_line_pop_states] = 1
+       logger.debug "#{__LINE__} Starting #{field}[#{index}]"
+       pda.push(value)
+       pda.empty_line_pop_states = 1
      end,
 
      # Sample Match:   |  Elapsed Time: 0 days 0 hours 0 minutes 0 seconds
@@ -339,30 +331,30 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      # The SEA has an extra timestamp which is always zero.  This
      # Ignores it if Elapsed Time is already set
-     MatchProc.new("^\\s*(?<field>Elapsed Time):\\s+(?<value>0 days 0 hours 0 minutes 0 seconds)\\s*$") do |md, env|
+     PDA::Production.new("^\\s*(?<field>Elapsed Time):\\s+(?<value>0 days 0 hours 0 minutes 0 seconds)\\s*$") do |md, pda|
        field = md[:field]
        value = md[:value].strip # delete trailing white space from value
-       ret = env.fetch(:stack).last.fetch(:target)
+       ret = pda.target
        if ret.key?(field)
-         $stderr.puts "#{__LINE__} Skipping #{md[0]}"
+         logger.debug "#{__LINE__} Skipping #{md[0]}"
        else
-         $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+         logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
          ret[field] = value
        end
      end,
      
-     # Sample Match:   |General Statistics:
+     # Sample Match:   |PCIe2 2-port 10GbE SR Adapter (a21910071410d003) Specific Statistics:
      # States Matched: :all
      # New State:      :no_change
      # State Pushed:   none
      # States Popped:  0
      # Ignored lines for ENT
-     MatchProc.new("^\\s*(?<field>General Statistics:|.*Specific Statistics:|Statistics for every adapter in the EtherChannel:)\\s*$") do |md, env|
-       $stderr.puts "#{__LINE__} Ignored #{md[:field]}"
+     PDA::Production.new("^\\s*(?<field>.*Specific Statistics:|Statistics for every adapter in the EtherChannel:)\\s*$") do |md, pda|
+       logger.debug "#{__LINE__} Ignored #{md[:field]}"
      end,
 
      ########
-     # SEA specific rules
+     # SEA specific productions
 
      # Sample Match:   |SEA Flags: 00000013
      # States Matched: :all
@@ -370,23 +362,22 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   yes
      # States Popped:  0
      # 
-     MatchProc.new("^(?<field>SEA Flags):\\s*(?<value>\\h+)\\s*$", :all, :SEA_flags) do |md, env|
+     PDA::Production.new("^(?<field>SEA Flags):\\s*(?<value>\\h+)\\s*$", :all, :SEA_flags) do |md, pda|
        # Save SEA Flags field as a hex value
        field = md[:field] + " (hex)"
        value = md[:value].hex
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding field: #{field} = #{value}"
        ret[field] = value
 
        # We also create a new field and push a state
        field = md[:field] + " (names)"
        value = []
        fail "overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding field: #{field} = #{value}"
        ret[field] = value
-       stack.push({ state: :foo, target: value })
+       pda.push(value)
      end,
      
      # Sample Match:   |    < THREAD >
@@ -395,8 +386,8 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   none
      # States Popped:  0
      # Pick up and push flag names
-     MatchProc.new("^\\s*< (?<flag>.*) >\\s*$", [:SEA_flags]) do |md, env|
-       env.fetch(:stack).last.fetch(:target).push(md[:flag])
+     PDA::Production.new("^\\s*< (?<flag>.*) >\\s*$", [:SEA_flags]) do |md, pda|
+       pda.target.push(md[:flag])
      end,
      
      # Sample Match:   |VLAN Ids :
@@ -405,17 +396,15 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   yes
      # States Popped:  1
      # Start looking for VLAN id lines
-     MatchProc.new("^\\s*(?<field>VLAN Ids)\\s*:\\s*$", [:SEA_flags], :SEA_VLAN) do |md, env|
+     PDA::Production.new("^\\s*(?<field>VLAN Ids)\\s*:\\s*$", [:SEA_flags], :SEA_VLAN) do |md, pda|
        field = md[:field]
        value = {}
-       stack = env.fetch(:stack)
-       stack.pop(1)             # Pop off SEA_flags state
-       ret = stack.last.fetch(:target)
+       pda.pop(1)             # Pop off SEA_flags state
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
-       $stderr.puts "#{__LINE__} Pushing state: SEA_VLAN"
-       stack.push({state: :foo, target: value })
+       pda.push(value)
      end,
 
      # Sample Match:   |    ent19: 271 272 1288 4092
@@ -423,15 +412,15 @@ class Netstat_v < DotFileParser::Base
      # New State:      :no_change
      # State Pushed:   none
      # States Popped:  0
-     # This rule is very similar to the VEA_VLAN_IDs rule.  This rule
-     # forces a space at the front so it does not match the VLAN Tag
-     # line.
-     MatchProc.new("^\\s+(?<field>\\S[^:]+):\\s*(?<value>\\S.+)$") do |md, env|
+     # This production is very similar to the VEA_VLAN_IDs production.
+     # This production forces a space at the front so it does not
+     # match the VLAN Tag line.
+     PDA::Production.new("^\\s+(?<field>\\S[^:]+):\\s*(?<value>\\S.+)$") do |md, pda|
        field = md[:field]
        value = md[:value].strip.split
-       ret = env.fetch(:stack).last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
      end,
      
@@ -440,16 +429,14 @@ class Netstat_v < DotFileParser::Base
      # New State:      :SEA_threads
      # State Pushed:   yes
      # States Popped:  0
-     MatchProc.new("^\\s*(?<field>SEA THREADS INFORMATION)\\s*$", :all, :SEA_threads) do |md, env|
+     PDA::Production.new("^\\s*(?<field>SEA THREADS INFORMATION)\\s*$", :all, :SEA_threads) do |md, pda|
        field = md[:field]
        value = []
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding field: #{field} = #{value}"
        ret[field] = value
-       $stderr.puts "#{__LINE__} Pushing :SEA_threads"
-       stack.push({ state: :foo, target: value })
+       pda.push(value)
      end,
      
      # Sample Match:   |	Thread .............. #0
@@ -457,17 +444,15 @@ class Netstat_v < DotFileParser::Base
      # New State:      :SEA_thread_gather
      # State Pushed:   yes
      # States Popped:  1 if in :SEA_thread_gather
-     MatchProc.new("^\\s*Thread[ .]*#(?<index>\\d+)\\s*$", [:SEA_threads, :SEA_thread_gather], :SEA_thread_gather) do |md, env|
+     PDA::Production.new("^\\s*Thread[ .]*#(?<index>\\d+)\\s*$", [:SEA_threads, :SEA_thread_gather], :SEA_thread_gather) do |md, pda|
        index = md[:index].to_i
        value = {}
-       stack = env.fetch(:stack)
-       stack.pop(1) if stack.last.fetch(:state) == :SEA_thread_gather
-       ret = stack.last.fetch(:target) # should be array of threads
+       pda.pop(1) if pda.state == :SEA_thread_gather
+       ret = pda.target # should be array of threads
        fail "Overwriting value at index #{index}" if ret[index]
-       $stderr.puts "#{__LINE__} Adding thread index #{index}"
+       logger.debug "#{__LINE__} Adding thread index #{index}"
        ret[index] = value
-       $stderr.puts "#{__LINE__} Pushing :SEA_thread_gather"
-       stack.push({ state: :foo, target: value })
+       pda.push(value)
      end,
      
      # Sample Match:   |    SEA Default Queue #8 
@@ -476,12 +461,12 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   none
      # States Popped:  0
      # Special case pattern but really just another field value pair
-     MatchProc.new("^\\s*(?<field>SEA Default Queue)\\s*#(?<value>\\d+)\\s*$", [:SEA_thread_gather]) do |md, env|
+     PDA::Production.new("^\\s*(?<field>SEA Default Queue)\\s*#(?<value>\\d+)\\s*$", [:SEA_thread_gather]) do |md, pda|
        field = md[:field]
        value = md[:value].to_i
-       ret = env.fetch(:stack).last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding integer field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding integer field: #{field} = #{value}"
        ret[field] = value
      end,
 
@@ -491,8 +476,8 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   none
      # States Popped:  2
      # end of thread specific statistics.
-     MatchProc.new("High Availability Statistics", [:SEA_thread_gather]) do |md, env|
-       env.fetch(:stack).pop(2)
+     PDA::Production.new("High Availability Statistics", [:SEA_thread_gather]) do |md, pda|
+       pda.pop(2)
      end,
 
      # Sample Match:   |Statistics for adapters in the Shared Ethernet Adapter ent22
@@ -501,8 +486,8 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   none
      # States Popped:  0
      # Ignore for now.
-     MatchProc.new("^Statistics for adapters in the Shared Ethernet Adapter ent\\d+$") do |md, env|
-       $stderr.puts "#{__LINE__} Ignored #{md[0]}"
+     PDA::Production.new("^Statistics for adapters in the Shared Ethernet Adapter ent\\d+$") do |md, pda|
+       logger.debug "#{__LINE__} Ignored #{md[0]}"
      end,
      
      # Sample Match:   |Real Side Statistics
@@ -510,18 +495,16 @@ class Netstat_v < DotFileParser::Base
      # New State:      :SEA_subparagraphs
      # State Pushed:   none
      # States Popped:  1 if not in :normal
-     MatchProc.new("^\\s*(?<field>Real Side Statistics|Virtual Side Statistics|Other Statistics):\\s*$", [:normal, :SEA_subparagraphs, :SEA_VLAN], :SEA_subparagraphs) do |md, env|
+     PDA::Production.new("^\\s*(?<field>Real Side Statistics|Virtual Side Statistics|Other Statistics):\\s*$", [:normal, :SEA_subparagraphs, :SEA_VLAN], :SEA_subparagraphs) do |md, pda|
        field = md[:field]
        value = {}
-       stack = env.fetch(:stack)
-       stack.pop(1) unless stack.last.fetch(:state) == :normal
-       ret = stack.last.fetch(:target)
+       pda.pop(1) unless pda.state == :normal
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
-       $stderr.puts "#{__LINE__} Pushing state: SEA_subparagraph"
-       stack.push({state: :foo, target: value })
-       env[:empty_line_pop_states] = 1
+       pda.push(value)
+       pda.empty_line_pop_states = 1
      end,
      
      # Sample Match:   |Type of Packets Received:
@@ -530,12 +513,12 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   none
      # States Popped:  0
      # Ignored lines for SEA
-     MatchProc.new("^\\s*(?<field>Type of Packets Received):\\s*$") do |md, env|
-       $stderr.puts "#{__LINE__} Ignored #{md[:field]}"
+     PDA::Production.new("^\\s*(?<field>Type of Packets Received):\\s*$") do |md, pda|
+       logger.debug "#{__LINE__} Ignored #{md[:field]}"
      end,
 
      ########
-     # VEA specific rules
+     # VEA specific productions
 
      # Sample Match:   |Hypervisor Information  
      # States Matched: :normal
@@ -544,17 +527,15 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      # There are sub stanzas like "Transmit Buffers" that I'm going to
      # ignore for now.  Pop the stack at first blank line
-     MatchProc.new("^\\s*(?<field>Hypervisor|Transmit) Information\\s*$", [:normal], :VEA_informatin) do |md, env|
+     PDA::Production.new("^\\s*(?<field>Hypervisor|Transmit) Information\\s*$", [:normal], :VEA_informatin) do |md, pda|
        field = md[:field]
        value = {}
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
-       $stderr.puts "#{__LINE__} Pushing state: VEA_information"
-       stack.push({state: :foo, target: value })
-       env[:empty_line_pop_states] = 1
+       pda.push(value)
+       pda.empty_line_pop_states = 1
      end,
 
      # Sample Match:   |VLAN Tag IDs:   104   105   106   201   202   203   205   209   210
@@ -564,17 +545,15 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      # Note that the "VLAN Tag IDs:  None" lines are matched as a
      # general text field.
-     MatchProc.new("^\\s*(?<field>VLAN Tag IDs):\\s+(?<tags>\\d+(?:\\s+\\d+)*)\\s*$", :all, :VEA_VLAN_IDs) do |md, env|
+     PDA::Production.new("^\\s*(?<field>VLAN Tag IDs):\\s+(?<tags>\\d+(?:\\s+\\d+)*)\\s*$", :all, :VEA_VLAN_IDs) do |md, pda|
        field = md[:field]
        tags = md[:tags].split
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding field: #{field} = #{tags}"
+       logger.debug "#{__LINE__} Adding field: #{field} = #{tags}"
        ret[field] = tags
-       $stderr.puts "#{__LINE__} Pushing state: VEA_VLAN_IDs"
-       stack.push({state: :foo, target: tags })
-       env[:empty_line_pop_states] = 1
+       pda.push(tags)
+       pda.empty_line_pop_states = 1
      end,
 
      # Sample Match:   |                248   250   267   288   801   802     
@@ -582,10 +561,10 @@ class Netstat_v < DotFileParser::Base
      # New State:      :no_change
      # State Pushed:   no
      # States Popped:  0
-     MatchProc.new("^\\s+(?<tags>\\d+(?:\\s+\\d+)*)\\s*$", [:VEA_VLAN_IDs]) do |md, env|
+     PDA::Production.new("^\\s+(?<tags>\\d+(?:\\s+\\d+)*)\\s*$", [:VEA_VLAN_IDs]) do |md, pda|
        tags = md[:tags].split
-       env.fetch(:stack).last[:target] += tags
-       $stderr.puts "#{__LINE__} VLAN Tag IDs now #{env.fetch(:stack).last.fetch(:target)}"
+       pda.target += tags
+       logger.debug "#{__LINE__} VLAN Tag IDs now #{pda.target}"
      end,
 
      # Sample Match:   |General Statistics:
@@ -594,8 +573,8 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   none
      # States Popped:  0
      # Ignored lines for VEA
-     MatchProc.new("^\\s*(?<field>Virtual Memory|I/O Memory|Transmit Buffers|History|Receive Information|Receive Buffers|I/O Memory Information)\\s*$") do |md, env|
-       $stderr.puts "#{__LINE__} Ignored #{md[:field]}"
+     PDA::Production.new("^\\s*(?<field>Virtual Memory|I/O Memory|Transmit Buffers|History|Receive Information|Receive Buffers|I/O Memory Information)\\s*$") do |md, pda|
+       logger.debug "#{__LINE__} Ignored #{md[:field]}"
      end,
 
      # Sample Match:   |    Buffer Type              Tiny    Small   Medium    Large     Huge
@@ -603,7 +582,7 @@ class Netstat_v < DotFileParser::Base
      # New State:      :VEA_buffers
      # State Pushed:   yes
      # States Popped:  0
-     MatchProc.new("^\\s+(?<field>Buffer Type)\\s+(?<tiny>\\S+)\\s+(?<small>\\S+)\\s+(?<medium>\\S+)\\s+(?<large>\\S+)\\s+(?<huge>\\S+)\\s*$", :all, :VEA_buffers) do |md, env|
+     PDA::Production.new("^\\s+(?<field>Buffer Type)\\s+(?<tiny>\\S+)\\s+(?<small>\\S+)\\s+(?<medium>\\S+)\\s+(?<large>\\S+)\\s+(?<huge>\\S+)\\s*$", :all, :VEA_buffers) do |md, pda|
        field = md[:field]
        # value is an array of hashes -- one for each of the five
        # sizes.  We put the name of the size as the :name property in
@@ -615,14 +594,12 @@ class Netstat_v < DotFileParser::Base
        value.push({ name: md[:medium] })
        value.push({ name: md[:large] })
        value.push({ name: md[:huge] })
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
-       $stderr.puts "#{__LINE__} Pushing state: VASI_subparagraph"
-       stack.push({state: :foo, target: value })
-       env[:empty_line_pop_states] = 1
+       pda.push(value)
+       pda.empty_line_pop_states = 1
      end,
 
      # Sample Match:   |    Min Buffers              2047     4095      511       63      127
@@ -630,7 +607,7 @@ class Netstat_v < DotFileParser::Base
      # New State:      :no_change
      # State Pushed:   no
      # States Popped:  0
-     MatchProc.new("^\\s+(?<field>\\S+(?:\\s\\S+)*)\\s+(?<tiny>\\d+)\\s+(?<small>\\d+)\\s+(?<medium>\\d+)\\s+(?<large>\\d+)\\s+(?<huge>\\d+)\\s*$", [:VEA_buffers]) do |md, env|
+     PDA::Production.new("^\\s+(?<field>\\S+(?:\\s\\S+)*)\\s+(?<tiny>\\d+)\\s+(?<small>\\d+)\\s+(?<medium>\\d+)\\s+(?<large>\\d+)\\s+(?<huge>\\d+)\\s*$", [:VEA_buffers]) do |md, pda|
        field = md[:field]
        temp = []
        temp.push(md[:tiny].to_i)
@@ -638,58 +615,52 @@ class Netstat_v < DotFileParser::Base
        temp.push(md[:medium].to_i)
        temp.push(md[:large].to_i)
        temp.push(md[:huge].to_i)
-       ret = env.fetch(:stack).last.fetch(:target)
+       ret = pda.target
        ret.each do |h|
          value = temp.shift
          fail "Overwriting value #{field}" if h.key?(field)
-         $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+         logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
          h[field] = value
        end
      end,
 
      ########
-     # VASI specific rules
+     # VASI specific productions
 
      # Sample Match:   |Local DMA Window:
      # States Matched: :normal
      # New State:      :VSAI_subparagraph
      # Push State?:    yes
      # States Popped:  0
-     MatchProc.new("^(?<field>Local DMA Window|Remote DMA Window):\\s*$", [:normal], :VASI_subparagraph) do |md, env|
+     PDA::Production.new("^(?<field>Local DMA Window|Remote DMA Window):\\s*$", [:normal], :VASI_subparagraph) do |md, pda|
        field = md[:field]
        value = {}
-       stack = env.fetch(:stack)
-       ret = stack.last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
-       $stderr.puts "#{__LINE__} Pushing state: VASI_subparagraph"
-       stack.push({state: :foo, target: value })
-       env[:empty_line_pop_states] = 1
+       pda.push(value)
+       pda.empty_line_pop_states = 1
      end,
 
      # Sample Match:   |  Class of Service: 3
      # States Matched: :all
      # New State:      :no_change
      # State Pushed:   none
-     # States Popped:  env[:single_field_pop_states] if non-zero
+     # States Popped:  pda.single_field_pop_states if non-zero
      # Note that white space may be before field.  Probably the most
      # common line of a field: value where value is an integer.
-     MatchProc.new("^\\s*(?<field>\\S[^:]+):\\s*(?<value>\\d+)\\s*$") do |md, env|
+     PDA::Production.new("^\\s*(?<field>\\S[^:]+):\\s*(?<value>\\d+)\\s*$") do |md, pda|
        field = md[:field]
        value = md[:value].to_i
 
        # pop stack if needed
-       single_field_pop_states = env.fetch(:single_field_pop_states)
-       if single_field_pop_states > 0
-         $stderr.puts "#{__LINE__} Int Field Popping #{single_field_pop_states}"
-         env.fetch(:stack).pop(single_field_pop_states)
-         env[:single_field_pop_states] = 0
-       end
+       pda.pop(pda.single_field_pop_states)
+       pda.single_field_pop_states = 0
 
-       ret = env.fetch(:stack).last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding integer field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding integer field: #{field} = #{value}"
        ret[field] = value
      end,
 
@@ -697,25 +668,21 @@ class Netstat_v < DotFileParser::Base
      # States Matched: :all
      # New State:      :no_change
      # State Pushed:   none
-     # States Popped:  env[:single_field_pop_states] if non-zero
+     # States Popped:  pda.single_field_pop_states if non-zero
      # Note that white space may be before field.  Also, the above
      # pattern will match if value is a number which is by far the
      # most commong
-     MatchProc.new("^\\s*(?<field>\\S[^:]+):\\s*(?<value>\\S.+)$") do |md, env|
+     PDA::Production.new("^\\s*(?<field>\\S[^:]+):\\s*(?<value>\\S.+)$") do |md, pda|
        field = md[:field]
        value = md[:value].strip # delete trailing white space from value
 
        # pop stack if needed
-       single_field_pop_states = env.fetch(:single_field_pop_states)
-       if single_field_pop_states > 0
-         $stderr.puts "#{__LINE__} Text Field Popping #{single_field_pop_states}"
-         env.fetch(:stack).pop(single_field_pop_states)
-         env[:single_field_pop_states] = 0
-       end
+       pda.pop(pda.single_field_pop_states)
+       pda.single_field_pop_states = 0
 
-       ret = env.fetch(:stack).last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding text field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
        ret[field] = value
      end,
 
@@ -723,23 +690,19 @@ class Netstat_v < DotFileParser::Base
      # States Matched: :all
      # New State:      :no_change
      # State Pushed:   none
-     # States Popped:  env[:single_field_pop_states] if non-zero
+     # States Popped:  pda.single_field_pop_states if non-zero
      # A field with no colon.  Patter is made to be very strict
-     MatchProc.new("^\\s*(?<field>\\S\\D+\\S)\\s+(?<value>\\d+)\\s*$") do |md, env|
+     PDA::Production.new("^\\s*(?<field>\\S\\D+\\S)\\s+(?<value>\\d+)\\s*$") do |md, pda|
        field = md[:field]
        value = md[:value].to_i
 
        # pop stack if needed
-       single_field_pop_states = env.fetch(:single_field_pop_states)
-       if single_field_pop_states > 0
-         $stderr.puts "#{__LINE__} Text Field Popping #{single_field_pop_states}"
-         env.fetch(:stack).pop(single_field_pop_states)
-         env[:single_field_pop_states] = 0
-       end
+       pda.pop(pda.single_field_pop_states)
+       pda.single_field_pop_states = 0
 
-       ret = env.fetch(:stack).last.fetch(:target)
+       ret = pda.target
        fail "Overwriting value #{field}" if ret.key?(field)
-       $stderr.puts "#{__LINE__} Adding integer non-colon field: #{field} = #{value}"
+       logger.debug "#{__LINE__} Adding integer non-colon field: #{field} = #{value}"
        ret[field] = value
      end,
 
@@ -748,32 +711,23 @@ class Netstat_v < DotFileParser::Base
      # States Matched: :all
      # New State:      :no_change
      # State Pushed:   none
-     # States Popped:  env[:empty_line_pop_states] if non-zero
-     MatchProc.new("^[-=\t ]*$") do |md, env|
-       empty_line_pop_states = env.fetch(:empty_line_pop_states)
-       if empty_line_pop_states > 0
-         $stderr.puts "#{__LINE__} Empty Line Popping #{empty_line_pop_states}"
-         env.fetch(:stack).pop(empty_line_pop_states)
-         env[:empty_line_pop_states] = 0
-       end
+     # States Popped:  pda.empty_line_pop_states if non-zero
+     PDA::Production.new("^[-=\t ]*$") do |md, pda|
+       pda.pop(pda.empty_line_pop_states)
+       pda.empty_line_pop_states = 0
      end,
     ]
   
   def parse_lines(io)
     ret = {}                    # what we finally return
-    env = {
-      single_field_pop_states: 0,
-      empty_line_pop_states: 0,
-      stack: [ { state: :normal, target: ret } ]
-    }
+    pda = PDA.new(ret)
     io.each do |line|
-      stack = env.fetch(:stack)
-      $stderr.puts "#{__LINE__} state[#{stack.size}] is #{stack.last.fetch(:state)}"
+      logger.debug "#{__LINE__} state: #{pda.state}; size: #{pda.stack.size}"
       line.chomp!
       hit = Patterns.any? do |pat|
-        pat.match(line, env)
+        pat.match(line, pda)
       end
-      $stderr.puts "#{__LINE__} Miss: '#{line}'" unless hit
+      logger.warn "#{__LINE__} Miss: '#{line}'" unless hit
     end
     return ret
   end

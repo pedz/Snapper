@@ -1,7 +1,11 @@
 
 class Odm
+  include Logging
+
   # Base from which ODM types start from
   class Base
+    include Logging
+
     def initialize(arg)
       @arg = arg
     end

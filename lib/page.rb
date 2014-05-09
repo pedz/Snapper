@@ -5,8 +5,9 @@ module Page
   StylesheetDir = File.expand_path("../stylesheets", __FILE__)
   JavascriptDir = File.expand_path("../javascript", __FILE__)
 
-  def create(db)
-    puts <<'EOF'
+  def create_page(db, outfile = $stdout)
+    @outfile = outfile
+    @outfile.puts <<'EOF'
 <!DOCTYPE html>
 <html>
   <head>
@@ -18,7 +19,7 @@ EOF
     include_javascript
     add_data(db)
 
-    puts <<'EOF'
+    @outfile.puts <<'EOF'
   </head>
   <body>
     <svg class="chart">
@@ -31,16 +32,16 @@ EOF
   def include_stylesheets
     Pathname.new(StylesheetDir).find do |path|
       next unless path.file?
-      puts "    <style>"
-      puts path.read
-      puts "    </style>"
+      @outfile.puts "    <style>"
+      @outfile.puts path.read
+      @outfile.puts "    </style>"
     end
   end
 
   def include_javascript
     # <script src="http://d3js.org/d3.v3.min.js"></script>
     # <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    puts <<'EOF'
+    @outfile.puts <<'EOF'
     <script src="http://d3js.org/d3.v3.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
     <script>
@@ -49,20 +50,20 @@ EOF
 EOF
     Pathname.new(JavascriptDir).find do |path|
       next unless path.file?
-      puts "<script src=\"lib/javascript/#{path.basename}\"></script>"
-      # puts "    <script>"
-      # puts path.read
-      # puts "    </script>"
+      @outfile.puts "<script src=\"lib/javascript/#{path.basename}\"></script>"
+      # @outfile.puts "    <script>"
+      # @outfile.puts path.read
+      # @outfile.puts "    </script>"
     end
   end
 
   def add_data(db)
-    $stderr.puts "db KEYS"
-    $stderr.puts db.keys.join("\n")
-    puts "    <script>"
-    puts "        window.snapper.world.addSnap(";
-    puts JSON.pretty_generate(db)
-    puts "        );"
-    puts "    </script>"
+    logger.debug "db KEYS"
+    logger.debug db.keys.join("\n")
+    @outfile.puts "    <script>"
+    @outfile.puts "        window.snapper.world.addSnap(";
+    @outfile.puts JSON.pretty_generate(db)
+    @outfile.puts "        );"
+    @outfile.puts "    </script>"
   end
 end
