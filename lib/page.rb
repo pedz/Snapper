@@ -58,8 +58,8 @@ EOF
   end
 
   def add_data(db)
-    logger.debug "db KEYS"
-    logger.debug db.keys.join("\n")
+    logger.debug { "db KEYS" }
+    logger.debug { db.keys.join("\n") }
     @outfile.puts "    <script>"
     @outfile.puts "        window.snapper.world.addSnap(";
     @outfile.puts JSON.pretty_generate(db)

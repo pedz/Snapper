@@ -6,6 +6,7 @@ require 'pathname'
 #
 class SnapParser
   include Logging
+  LOG_LEVEL = Logger::INFO
 
   # dir is a string or a Pathname of the starting directory to walk
   # down.  Pathname.find |path| is then called.

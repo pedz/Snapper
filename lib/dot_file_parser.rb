@@ -5,10 +5,12 @@
 # An example of one of these is the tcpip.snap file.
 class DotFileParser
   include Logging
+  LOG_LEVEL = Logger::INFO
 
   # Base from which "dot file" types start from
   class Base
     include Logging
+    LOG_LEVEL = Logger::INFO
 
     attr_reader :text
 

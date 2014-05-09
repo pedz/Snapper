@@ -7,7 +7,16 @@ module Logging
   def self.included(base)
     class << base
       def logger
-        @logger ||= Logger.new($stderr)
+        unless @logger
+          @logger = Logger.new($stderr)
+          @logger.formatter = proc { |sev, datetime, progname, msg|
+            "#{msg}\n"
+          }
+          if self.const_defined?(:LOG_LEVEL)
+            @logger.level = self.const_get(:LOG_LEVEL)
+          end
+        end
+        @logger
       end
       
       def logger=(logger)

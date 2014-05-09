@@ -1,10 +1,12 @@
 
 class Odm
   include Logging
+  LOG_LEVEL = Logger::INFO
 
   # Base from which ODM types start from
   class Base
     include Logging
+    LOG_LEVEL = Logger::INFO
 
     def initialize(arg)
       @arg = arg

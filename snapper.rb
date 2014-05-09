@@ -10,6 +10,7 @@ require_relative 'lib/snap_parser'
 class Snapper
   extend Page
   include Logging
+  LOG_LEVEL = Logger::INFO
   
   Patterns = {
     %r{/general/([^.]*\.)(?!vc\.)add\z} => Odm, # ODM files in general but not the vc files
@@ -38,7 +39,6 @@ class Snapper
   }
   
   def self.run(directory)
-    logger.sev_threshold = Logger::WARN
     db = Db.new
   
     SnapParser.parse(directory, nil, db, Patterns)

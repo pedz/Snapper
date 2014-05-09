@@ -6,6 +6,7 @@ require 'json'
 # items.
 class Db
   include Logging
+  LOG_LEVEL = Logger::INFO
 
   def initialize
     @db = Hash.new
