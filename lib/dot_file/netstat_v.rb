@@ -265,7 +265,7 @@ class Netstat_v < DotFileParser::Base
      PDA::Production.new("^\\s*(?<flags>\\S.*)$", [:driverFlags]) do |md, pda|
        flags = md[:flags].split
        pda.target += flags
-       logger.debug { "#{__LINE__} Driver flags now #{pda.target}" }
+       logger.debug { "Driver flags now #{pda.target}" }
      end,
 
      # Sample Match:   |Receive statistics for RXQ number: 2
@@ -284,7 +284,7 @@ class Netstat_v < DotFileParser::Base
        fail "Overwriting value #{field}[#{index}]" if ret[field][index]
        value = WriteOnceHash.new
        ret[field][index] = value
-       logger.debug { "#{__LINE__} Starting #{field}[#{index}]" }
+       logger.debug { "Starting #{field}[#{index}]" }
        pda.push(value)
        pda.empty_line_pop_states = 1
      end,
@@ -301,9 +301,8 @@ class Netstat_v < DotFileParser::Base
        value = md[:value].strip # delete trailing white space from value
        ret = pda.target
        if ret.key?(field)
-         logger.debug { "#{__LINE__} Skipping #{md[0]}" }
+         logger.debug { "Skipping #{md[0]}" }
        else
-         logger.debug { "#{__LINE__} Adding text field: #{field} = #{value}" }
          ret[field] = value
        end
      end,
@@ -315,7 +314,7 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      # Ignored lines for ENT
      PDA::Production.new("^\\s*(?<field>.*Specific Statistics:|Statistics for every adapter in the EtherChannel:)\\s*$") do |md, pda|
-       logger.debug { "#{__LINE__} Ignored #{md[:field]}" }
+       logger.debug { "Ignored #{md[:field]}" }
      end,
 
      ########
@@ -433,7 +432,7 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      # Ignore for now.
      PDA::Production.new("^Statistics for adapters in the Shared Ethernet Adapter ent\\d+$") do |md, pda|
-       logger.debug { "#{__LINE__} Ignored #{md[0]}" }
+       logger.debug { "Ignored #{md[0]}" }
      end,
      
      # Sample Match:   |Real Side Statistics
@@ -457,7 +456,7 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      # Ignored lines for SEA
      PDA::Production.new("^\\s*(?<field>Type of Packets Received):\\s*$") do |md, pda|
-       logger.debug { "#{__LINE__} Ignored #{md[:field]}" }
+       logger.debug { "Ignored #{md[:field]}" }
      end,
 
      ########
@@ -501,7 +500,7 @@ class Netstat_v < DotFileParser::Base
      PDA::Production.new("^\\s+(?<tags>\\d+(?:\\s+\\d+)*)\\s*$", [:VEA_VLAN_IDs]) do |md, pda|
        tags = md[:tags].split
        pda.target += tags
-       logger.debug { "#{__LINE__} VLAN Tag IDs now #{pda.target}" }
+       logger.debug { "VLAN Tag IDs now #{pda.target}" }
      end,
 
      # Sample Match:   |General Statistics:
@@ -511,7 +510,7 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      # Ignored lines for VEA
      PDA::Production.new("^\\s*(?<field>Virtual Memory|I/O Memory|Transmit Buffers|History|Receive Information|Receive Buffers|I/O Memory Information)\\s*$") do |md, pda|
-       logger.debug { "#{__LINE__} Ignored #{md[:field]}" }
+       logger.debug { "Ignored #{md[:field]}" }
      end,
 
      # Sample Match:   |    Buffer Type              Tiny    Small   Medium    Large     Huge
@@ -642,7 +641,7 @@ class Netstat_v < DotFileParser::Base
     pda = PDA.new(ret, Productions)
     io.each do |line|
       line.chomp!
-      logger.warn { "#{__LINE__} Miss: '#{line}'" } unless pda.match_productions(line)
+      logger.warn { "Miss: '#{line}'" } unless pda.match_productions(line)
     end
     return ret
   end
