@@ -49,4 +49,5 @@ class DotFileParser
 end
 
 require_relative 'pda'
+require_relative 'write_once_hash'
 require_relative 'dot_file/netstat_v'

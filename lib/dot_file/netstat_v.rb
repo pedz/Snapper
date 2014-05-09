@@ -38,12 +38,9 @@ class Netstat_v < DotFileParser::Base
      # Moves to a state of picking up the FC-4 TYPE values
      PDA::Production.new("^(?<field>FC-4 TYPES):\\s*$", [:normal], :fc4types) do |md, pda|
        field = md[:field]
-       value = {}
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
-       pda.push(value)
+       value = WriteOnceHash.new
+       pda.target[field] = value # add new hash to existing target
+       pda.push(value)           # push new state with value as target
        pda.empty_line_pop_states = 1
      end,
 
@@ -61,11 +58,8 @@ class Netstat_v < DotFileParser::Base
      # ends up popping two states.
      PDA::Production.new("^(?<field>FC-4 TYPES \\(ULP mappings\\)):\\s*$", [:normal], :fc4typesULP) do |md, pda|
        field = md[:field]
-       value = {}
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
+       value = WriteOnceHash.new
+       pda.target[field] = value
        pda.push(value)
        # should never hit but just in case
        pda.single_field_pop_states = 1
@@ -81,10 +75,7 @@ class Netstat_v < DotFileParser::Base
      PDA::Production.new("^\\s*(?<field>Supported ULPs):\\s*$", [:fc4typesULP], :pushingULPs) do |md, pda|
        field = md[:field]
        value = []
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
+       pda.target[field] = value
        pda.push(value)
        pda.single_field_pop_states = 2
      end,
@@ -102,10 +93,7 @@ class Netstat_v < DotFileParser::Base
        value = []
        logger.debug "#{__LINE__} ULP Popping pda.stack)"
        pda.pop(1)
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
+       pda.target[field] = value
        pda.push(value)
      end,
 
@@ -120,8 +108,7 @@ class Netstat_v < DotFileParser::Base
      # within the "FC-4 TYPES (ULP mappings)" field.
      PDA::Production.new("^\\s+(?<value>\\S[^:]+\\S)\\s*$", [:pushingULPs]) do |md, pda|
        value = md[:value].strip # delete trailing white space from value
-       ret = pda.target
-       ret.push(value)
+       pda.target.push(value)
      end,
 
      # Sample Match:   |	Transmit Statistics	Receive Statistics
@@ -134,12 +121,9 @@ class Netstat_v < DotFileParser::Base
      PDA::Production.new("^\\s+(?<left>\\S+ Statistics):?\\s+(?<right>\\S+ Statistics):?\\s*$", :all, :fcTwoColumn) do |md, pda|
        left = md[:left]
        right = md[:right]
-       lval = {}
-       rval = {}
+       lval = WriteOnceHash.new
+       rval = WriteOnceHash.new
        ret = pda.target
-       fail "Overwriting value #{left}" if ret.key?(left)
-       fail "Overwriting value #{right}" if ret.key?(right)
-       logger.debug "#{__LINE__} Adding #{left} = #{lval} and #{right} = #{rval}"
        ret[left] = lval
        ret[right] = rval
        value = { left: lval, right: rval }
@@ -158,10 +142,7 @@ class Netstat_v < DotFileParser::Base
        lval = md[:lval].to_i
        rval = md[:rval].to_i
        left = pda.target.fetch(:left)
-       fail "Overwriting value #{field}" if left.key?(field)
        right = pda.target.fetch(:right)
-       fail "Overwriting value #{field}" if right.key?(field)
-       logger.debug "#{__LINE__} Adding left #{field} = #{lval} and right #{field} = #{rval}"
        left[field] = lval
        right[field] = rval
        pda.empty_line_pop_states = 1
@@ -176,11 +157,8 @@ class Netstat_v < DotFileParser::Base
      # the grouping.
      PDA::Production.new("^(?<field>IP over FC Adapter Driver Information|IP over FC Traffic Statistics)\\s*$", [:normal], :FC_subparagraph) do |md, pda|
        field = md[:field]
-       value = {}
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
+       value = WriteOnceHash.new
+       pda.target[field] = value
        pda.push(value)
        pda.empty_line_pop_states = 1
      end,
@@ -197,12 +175,9 @@ class Netstat_v < DotFileParser::Base
      PDA::Production.new("^(?<left>\\S+ Statistics):?\\s+(?<right>\\S+ Statistics):?\\s*$", :all, :entTwoColumn) do |md, pda|
        left = md[:left]
        right = md[:right]
-       lval = {}
-       rval = {}
+       lval = WriteOnceHash.new
+       rval = WriteOnceHash.new
        ret = pda.target
-       fail "Overwriting value #{left}" if ret.key?(left)
-       fail "Overwriting value #{right}" if ret.key?(right)
-       logger.debug "#{__LINE__} Adding #{left} = #{lval} and #{right} = #{rval}"
        ret[left] = lval
        ret[right] = rval
        value = { left: lval, right: rval }
@@ -221,10 +196,7 @@ class Netstat_v < DotFileParser::Base
        rfield = md[:rfield]
        rval = md[:rval].to_i
        left = pda.target.fetch(:left)
-       fail "Overwriting value #{lfield}" if left.key?(lfield)
        right = pda.target.fetch(:right)
-       fail "Overwriting value #{rfield}" if right.key?(rfield)
-       logger.debug "#{__LINE__} Adding left #{lfield} = #{lval} and right #{rfield} = #{rval}"
        left[lfield] = lval
        right[rfield] = rval
      end,
@@ -239,8 +211,6 @@ class Netstat_v < DotFileParser::Base
        rfield = md[:rfield]
        rval = md[:rval].to_i
        right = pda.target.fetch(:right)
-       fail "Overwriting value #{rfield}" if right.key?(rfield)
-       logger.debug "#{__LINE__} Adding right #{rfield} = #{rval}"
        right[rfield] = rval
      end,
 
@@ -256,8 +226,6 @@ class Netstat_v < DotFileParser::Base
        lfield = md[:lfield]
        lval = md[:lval].to_i
        left = pda.target.fetch(:left)
-       fail "Overwriting value #{lfield}" if left.key?(lfield)
-       logger.debug "#{__LINE__} Adding left #{lfield} = #{lval}"
        left[lfield] = lval
      end,
      
@@ -281,10 +249,7 @@ class Netstat_v < DotFileParser::Base
      PDA::Production.new("^(?<field>Driver Flags):\\s+(?<flags>\\S.*)$", [:normal], :driverFlags) do |md, pda|
        field = md[:field]
        value = md[:flags].split
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
+       pda.target[field] = value
        pda.push(value)
        pda.empty_line_pop_states = 1
      end,
@@ -317,7 +282,7 @@ class Netstat_v < DotFileParser::Base
        ret = pda.target
        ret[field] ||= []
        fail "Overwriting value #{field}[#{index}]" if ret[field][index]
-       value = {}
+       value = WriteOnceHash.new
        ret[field][index] = value
        logger.debug "#{__LINE__} Starting #{field}[#{index}]"
        pda.push(value)
@@ -367,15 +332,11 @@ class Netstat_v < DotFileParser::Base
        field = md[:field] + " (hex)"
        value = md[:value].hex
        ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding field: #{field} = #{value}"
        ret[field] = value
 
        # We also create a new field and push a state
        field = md[:field] + " (names)"
        value = []
-       fail "overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding field: #{field} = #{value}"
        ret[field] = value
        pda.push(value)
      end,
@@ -398,12 +359,9 @@ class Netstat_v < DotFileParser::Base
      # Start looking for VLAN id lines
      PDA::Production.new("^\\s*(?<field>VLAN Ids)\\s*:\\s*$", [:SEA_flags], :SEA_VLAN) do |md, pda|
        field = md[:field]
-       value = {}
+       value = WriteOnceHash.new
        pda.pop(1)             # Pop off SEA_flags state
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
+       pda.target[field] = value
        pda.push(value)
      end,
 
@@ -418,10 +376,7 @@ class Netstat_v < DotFileParser::Base
      PDA::Production.new("^\\s+(?<field>\\S[^:]+):\\s*(?<value>\\S.+)$") do |md, pda|
        field = md[:field]
        value = md[:value].strip.split
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
+       pda.target[field] = value
      end,
      
      # Sample Match:   |	SEA THREADS INFORMATION
@@ -432,10 +387,7 @@ class Netstat_v < DotFileParser::Base
      PDA::Production.new("^\\s*(?<field>SEA THREADS INFORMATION)\\s*$", :all, :SEA_threads) do |md, pda|
        field = md[:field]
        value = []
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding field: #{field} = #{value}"
-       ret[field] = value
+       pda.target[field] = value
        pda.push(value)
      end,
      
@@ -446,12 +398,9 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  1 if in :SEA_thread_gather
      PDA::Production.new("^\\s*Thread[ .]*#(?<index>\\d+)\\s*$", [:SEA_threads, :SEA_thread_gather], :SEA_thread_gather) do |md, pda|
        index = md[:index].to_i
-       value = {}
+       value = WriteOnceHash.new
        pda.pop(1) if pda.state == :SEA_thread_gather
-       ret = pda.target # should be array of threads
-       fail "Overwriting value at index #{index}" if ret[index]
-       logger.debug "#{__LINE__} Adding thread index #{index}"
-       ret[index] = value
+       pda.target[index] = value
        pda.push(value)
      end,
      
@@ -464,10 +413,7 @@ class Netstat_v < DotFileParser::Base
      PDA::Production.new("^\\s*(?<field>SEA Default Queue)\\s*#(?<value>\\d+)\\s*$", [:SEA_thread_gather]) do |md, pda|
        field = md[:field]
        value = md[:value].to_i
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding integer field: #{field} = #{value}"
-       ret[field] = value
+       pda.target[field] = value
      end,
 
      # Sample Match:   |High Availability Statistics:
@@ -497,12 +443,9 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  1 if not in :normal
      PDA::Production.new("^\\s*(?<field>Real Side Statistics|Virtual Side Statistics|Other Statistics):\\s*$", [:normal, :SEA_subparagraphs, :SEA_VLAN], :SEA_subparagraphs) do |md, pda|
        field = md[:field]
-       value = {}
+       value = WriteOnceHash.new
        pda.pop(1) unless pda.state == :normal
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
+       pda.target[field] = value
        pda.push(value)
        pda.empty_line_pop_states = 1
      end,
@@ -529,11 +472,8 @@ class Netstat_v < DotFileParser::Base
      # ignore for now.  Pop the stack at first blank line
      PDA::Production.new("^\\s*(?<field>Hypervisor|Transmit) Information\\s*$", [:normal], :VEA_informatin) do |md, pda|
        field = md[:field]
-       value = {}
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
+       value = WriteOnceHash.new
+       pda.target[field] = value
        pda.push(value)
        pda.empty_line_pop_states = 1
      end,
@@ -548,10 +488,7 @@ class Netstat_v < DotFileParser::Base
      PDA::Production.new("^\\s*(?<field>VLAN Tag IDs):\\s+(?<tags>\\d+(?:\\s+\\d+)*)\\s*$", :all, :VEA_VLAN_IDs) do |md, pda|
        field = md[:field]
        tags = md[:tags].split
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding field: #{field} = #{tags}"
-       ret[field] = tags
+       pda.target[field] = tags
        pda.push(tags)
        pda.empty_line_pop_states = 1
      end,
@@ -594,10 +531,7 @@ class Netstat_v < DotFileParser::Base
        value.push({ name: md[:medium] })
        value.push({ name: md[:large] })
        value.push({ name: md[:huge] })
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
+       pda.target[field] = value
        pda.push(value)
        pda.empty_line_pop_states = 1
      end,
@@ -615,11 +549,8 @@ class Netstat_v < DotFileParser::Base
        temp.push(md[:medium].to_i)
        temp.push(md[:large].to_i)
        temp.push(md[:huge].to_i)
-       ret = pda.target
-       ret.each do |h|
+       pda.target.each do |h|
          value = temp.shift
-         fail "Overwriting value #{field}" if h.key?(field)
-         logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
          h[field] = value
        end
      end,
@@ -634,11 +565,8 @@ class Netstat_v < DotFileParser::Base
      # States Popped:  0
      PDA::Production.new("^(?<field>Local DMA Window|Remote DMA Window):\\s*$", [:normal], :VASI_subparagraph) do |md, pda|
        field = md[:field]
-       value = {}
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
+       value = WriteOnceHash.new
+       pda.target[field] = value
        pda.push(value)
        pda.empty_line_pop_states = 1
      end,
@@ -658,10 +586,7 @@ class Netstat_v < DotFileParser::Base
        pda.pop(pda.single_field_pop_states)
        pda.single_field_pop_states = 0
 
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding integer field: #{field} = #{value}"
-       ret[field] = value
+       pda.target[field] = value
      end,
 
      # Sample Match:   |  Device Type: FC Adapter (adapter/pciex/df1000f114108a0)
@@ -680,10 +605,7 @@ class Netstat_v < DotFileParser::Base
        pda.pop(pda.single_field_pop_states)
        pda.single_field_pop_states = 0
 
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding text field: #{field} = #{value}"
-       ret[field] = value
+       pda.target[field] = value
      end,
 
      # Sample Match:   |    VRM Desired (KB)          100
@@ -700,10 +622,7 @@ class Netstat_v < DotFileParser::Base
        pda.pop(pda.single_field_pop_states)
        pda.single_field_pop_states = 0
 
-       ret = pda.target
-       fail "Overwriting value #{field}" if ret.key?(field)
-       logger.debug "#{__LINE__} Adding integer non-colon field: #{field} = #{value}"
-       ret[field] = value
+       pda.target[field] = value
      end,
 
      # Sample Match:   empty lines or lines with only white space and
@@ -719,7 +638,7 @@ class Netstat_v < DotFileParser::Base
     ]
   
   def parse_lines(io)
-    ret = {}                    # what we finally return
+    ret = WriteOnceHash.new
     pda = PDA.new(ret)
     io.each do |line|
       logger.debug "#{__LINE__} state: #{pda.state}; size: #{pda.stack.size}"
