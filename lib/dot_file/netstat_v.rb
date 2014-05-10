@@ -116,9 +116,8 @@ class Netstat_v < DotFileParser::Base
      # New State:      :fcTwoColumn
      # State Pushed:   yes
      # States Popped:  0
-     # Start the two column FC otuput.  State ends on first empty line
-     # after a field has been found.
-     PDA::Production.new("^\\s+(?<left>\\S+ Statistics):?\\s+(?<right>\\S+ Statistics):?\\s*$", :all, :fcTwoColumn) do |md, pda|
+     # Start the two column FC otuput.
+     PDA::Production.new("^\\s+(?<left>\\S+ Statistics)\\s+(?<right>\\S+ Statistics)\\s*$", :all, :fcTwoColumn) do |md, pda|
        left = md[:left]
        right = md[:right]
        lval = WriteOnceHash.new
@@ -171,8 +170,12 @@ class Netstat_v < DotFileParser::Base
      # New State:      :entTwoColumn
      # State Pushed:   yes
      # States Popped:  0
-     # start two column stats for ENT.  The FC two column has leading white space while the ENT does not.
-     PDA::Production.new("^(?<left>\\S+ Statistics):?\\s+(?<right>\\S+ Statistics):?\\s*$", :all, :entTwoColumn) do |md, pda|
+     # start two column stats for ENT.  The FC two column has leading
+     # white space while the ENT does not.  This also matches the two
+     # column output for VASI.  Because of this, we pop the state due
+     # to seeing System Buffers.  We also add in some Receive only
+     # stats that are only in the VASI output.
+     PDA::Production.new("^\\s*(?<left>\\S+(?: to PHYP)? Statistics):?\\s+(?<right>\\S+(?: from PHYP)? Statistics):?\\s*$", :all, :entTwoColumn) do |md, pda|
        left = md[:left]
        right = md[:right]
        lval = WriteOnceHash.new
@@ -207,11 +210,12 @@ class Netstat_v < DotFileParser::Base
      # State Pushed:   none
      # States Popped:  0
      # Two column ENT output has one line with only the Receive state.
-     PDA::Production.new("^\\s+(?<rfield>Bad Packets):\\s*(?<rval>\\d+)$", [:entTwoColumn]) do |md, pda|
+     PDA::Production.new("^\\s+(?<rfield>Bad Packets|Maximum Buffers Per Interrupt|Average Buffers Per Interrupt|System Buffers):\\s*(?<rval>\\d+)$", [:entTwoColumn]) do |md, pda|
        rfield = md[:rfield]
        rval = md[:rval].to_i
        right = pda.target.fetch(:right)
        right[rfield] = rval
+       pda.pop(1) if rfield == "System Buffers"
      end,
 
      # Sample Match:   |Multiple Collision Count: 0
@@ -315,6 +319,20 @@ class Netstat_v < DotFileParser::Base
      # Ignored lines for ENT
      PDA::Production.new("^\\s*(?<field>.*Specific Statistics:|Statistics for every adapter in the EtherChannel:)\\s*$") do |md, pda|
        logger.debug { "Ignored #{md[:field]}" }
+     end,
+
+     # Sample Match:   |	Actor State:
+     # States Matched: :all
+     # New State:      :LACP_state
+     # State Pushed:   yes
+     # States Popped:  0
+     # Gather flags for LACP state
+     PDA::Production.new("^\\s*(?<field>Actor State|Partner State):\\s*$", :all, :LACP_state) do |md, pda|
+       field = md[:field]
+       value = WriteOnceHash.new
+       pda.target[field] = value # add new hash to existing target
+       pda.push(value)           # push new state with value as target
+       pda.empty_line_pop_states = 1
      end,
 
      ########
@@ -559,7 +577,7 @@ class Netstat_v < DotFileParser::Base
 
      # Sample Match:   |Local DMA Window:
      # States Matched: :normal
-     # New State:      :VSAI_subparagraph
+     # New State:      :VASI_subparagraph
      # Push State?:    yes
      # States Popped:  0
      PDA::Production.new("^(?<field>Local DMA Window|Remote DMA Window):\\s*$", [:normal], :VASI_subparagraph) do |md, pda|
@@ -569,6 +587,41 @@ class Netstat_v < DotFileParser::Base
        pda.push(value)
        pda.empty_line_pop_states = 1
      end,
+
+     # Sample Match:   |Operation #0 (INACTIVE):
+     # States Matched: :normal, :VASI_operations
+     # New State:      :VASI_operations
+     # Push State?:    yes
+     # States Popped:  0
+     # This state goes until the end of the input
+     PDA::Production.new("^Operation #(?<index>\\d+) \\(.*\\):\\s*$", [:normal, :VASI_operations], :VASI_operations) do |md, pda|
+       index = md[:index].to_i
+       field = 'Operations'
+       if pda.state == :normal
+         operations = []
+         pda.target[field] = operations
+       else
+         pda.pop(1)
+         operations = pda.target[field]
+       end
+       fail "Overwriting value operations[#{index}]" if operations[index]
+       value = WriteOnceHash.new
+       operations[index] = value
+       pda.push(value)
+     end,
+
+     # Sample Match:   |Statistics for each operation:
+     # States Matched: :all
+     # New State:      :no_change
+     # State Pushed:   none
+     # States Popped:  0
+     # Ignored lines for VASI
+     PDA::Production.new("^\\s*(?<field>Statistics for each operation):\\s*$") do |md, pda|
+       logger.debug { "Ignored #{md[:field]}" }
+     end,
+
+     ########
+     # General Productions
 
      # Sample Match:   |  Class of Service: 3
      # States Matched: :all
@@ -596,7 +649,7 @@ class Netstat_v < DotFileParser::Base
      # Note that white space may be before field.  Also, the above
      # pattern will match if value is a number which is by far the
      # most commong
-     PDA::Production.new("^\\s*(?<field>\\S[^:]+):\\s*(?<value>\\S.+)$") do |md, pda|
+     PDA::Production.new("^\\s*(?<field>\\S[^:]+):\\s*(?<value>\\S*.*)$") do |md, pda|
        field = md[:field]
        value = md[:value].strip # delete trailing white space from value
 
@@ -641,7 +694,7 @@ class Netstat_v < DotFileParser::Base
     pda = PDA.new(ret, Productions)
     io.each do |line|
       line.chomp!
-      logger.warn { "Miss: '#{line}'" } unless pda.match_productions(line)
+      logger.warn { "Miss: '#{line}'; state #{pda.state}" } unless pda.match_productions(line)
     end
     return ret
   end

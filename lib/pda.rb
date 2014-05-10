@@ -1,11 +1,11 @@
 
 class PDA
   include Logging
-  LOG_LEVEL = Logger::INFO
+  LOG_LEVEL = Logger::DEBUG
 
   class Production
     include Logging
-    LOG_LEVEL = Logger::INFO
+    LOG_LEVEL = Logger::DEBUG
     
     def initialize(regexp, states = :all, new_state = :no_change, &block)
       raise "Bad Block" unless block.arity == 2

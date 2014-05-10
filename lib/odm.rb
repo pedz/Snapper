@@ -106,7 +106,7 @@ class Odm
     if md = a.match(/"((.|\n)*)"/)
       return md[1]
     end
-    if a.match(/^[0-9]+$/)
+    if a.match(/^-?[0-9]+$/)
       return a.to_i
     end
     raise "Can not convert #{a}"
