@@ -48,3 +48,7 @@
     stroke-width: 1;
     fill: transparent;
 }
+
+.chart polyline.ifnet {
+    fill: black;
+}
