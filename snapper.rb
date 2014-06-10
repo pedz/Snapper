@@ -38,18 +38,20 @@ class Snapper
     %r{/XS25/XS25.snap} => DotFileParser,
   }
   
-  def self.run(directory)
-    db = Db.new
-  
-    SnapParser.parse(directory, nil, db, Patterns)
-    create_page(db)
+  def self.run(dir_list)
+    db_list = dir_list.map do |directory|
+      db = Db.new
+      SnapParser.parse(directory, nil, db, Patterns)
+      db
+    end
+    create_page(db_list)
   end
 end
 
 if __FILE__ == $0
-  unless ARGV.length == 1
-    $stderr.puts "Usage: snapper <dir>"
+  if ARGV.length == 0
+    $stderr.puts "Usage: snapper <dir> ..."
     exit 1
   end
-  Snapper.run(ARGV[0])
+  Snapper.run(ARGV)
 end

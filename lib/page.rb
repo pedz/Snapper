@@ -5,7 +5,7 @@ module Page
   StylesheetDir = File.expand_path("../stylesheets", __FILE__)
   JavascriptDir = File.expand_path("../javascript", __FILE__)
 
-  def create_page(db, outfile = $stdout)
+  def create_page(db_list, outfile = $stdout)
     @outfile = outfile
     @outfile.puts <<'EOF'
 <!DOCTYPE html>
@@ -17,8 +17,9 @@ EOF
 
     include_stylesheets
     include_javascript
-    add_data(db)
-
+    db_list.each do |db|
+      add_data(db)
+    end
     @outfile.puts <<'EOF'
   </head>
   <body>
