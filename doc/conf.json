@@ -1,0 +1,11 @@
+{
+    "source": {
+	"include": [ "lib/javascript/snapper.js" ]
+    },
+
+    "plugins": [ "plugins/markdown" ],
+
+    "opts": {
+	"destination": "./doc/javascript"
+    }
+}
