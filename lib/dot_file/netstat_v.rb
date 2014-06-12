@@ -1,16 +1,23 @@
+# Loaded by dot_file_parser so we know that logging is already
+# loaded.
 require "stringio"
 
-# Class for the netstat -v output
+# Parses the output from netstat -v that is found within a snap.
+# netstat -v is essentially a sequence of calling entstat -d <device>
+# for all of the ethernet devices, all the fiber channel devices, and
+# the VASI devices (whatever the hell those are).
 class Netstat_v < DotFileParser::Base
   include Logging
+  # The log level the Netstat_v uses.
   LOG_LEVEL = Logger::INFO
 
-  T = Regexp.new("(FIBRE CHANNEL STATISTICS REPORT: (.*)|ETHERNET STATISTICS \\((.*)\\) :|VASI STATISTICS \\((.*)\\) :)\n")
-
+  # text is the full output of netstat -v.  The text is parsed
+  # breaking it first into the chunks for each device.  Then the chunk
+  # for each device is parsed into attributes and values for that device.
   def initialize(text)
     @text = text
     @devices = {}
-    parts = text.split(T)
+    parts = text.split(DEVICE_BOUNDARY)
     unused_empty = parts.shift  # stuff before match
     while true
       whole_line, device_name, rest = parts.shift(3)
@@ -20,12 +27,18 @@ class Netstat_v < DotFileParser::Base
     end
   end
 
+  # converts the devices found and their attributes into json.
   def to_json(options = {})
     @devices.to_json(options)
   end
 
   private
 
+  # A regular expression that matches the first line of each device
+  DEVICE_BOUNDARY = Regexp.new("(FIBRE CHANNEL STATISTICS REPORT: (.*)|ETHERNET STATISTICS \\((.*)\\) :|VASI STATISTICS \\((.*)\\) :)\n")
+
+  # An array of PDA::Production that is used to parse each device
+  # section of the netstat -v output.
   Productions =
     [
      ########
@@ -689,6 +702,8 @@ class Netstat_v < DotFileParser::Base
      end,
     ]
   
+  # The parse routine that takes the text in the form of an StringIO
+  # parses it using Productions.
   def parse_lines(io)
     ret = WriteOnceHash.new
     pda = PDA.new(ret, Productions)

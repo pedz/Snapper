@@ -1,3 +1,4 @@
+require_relative 'logging'
 require 'pathname'
 
 #

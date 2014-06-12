@@ -7,11 +7,14 @@ require_relative 'lib/odm'
 require_relative 'lib/page'
 require_relative 'lib/snap_parser'
 
+# A class that represents the snapper program
 class Snapper
   extend Page
   include Logging
+  # The log level for the Snapper class
   LOG_LEVEL = Logger::INFO
   
+  # A hash of file patterns and the parser to use for that file.
   Patterns = {
     %r{/general/([^.]*\.)(?!vc\.)add\z} => Odm, # ODM files in general but not the vc files
     %r{/async/async.snap} => DotFileParser,
@@ -38,6 +41,8 @@ class Snapper
     %r{/XS25/XS25.snap} => DotFileParser,
   }
   
+  # Called with dir_list set to an array of directories.  Each
+  # directory should point to the top of a snap.
   def self.run(dir_list)
     db_list = dir_list.map do |directory|
       db = Db.new

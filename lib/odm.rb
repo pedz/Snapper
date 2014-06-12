@@ -1,37 +1,29 @@
+require_relative 'logging'
 
+# A class that parses the ODM files found in a snap such as CuAt.add,
+# etc.  The class might should have been called OdmParser or some
+# such.
 class Odm
   include Logging
+  # The log level used by the Odm class
   LOG_LEVEL = Logger::INFO
 
-  # Base from which ODM types start from
+  # Base from which ODM types start from.  For example, if a PdDv
+  # stanza is found, a class called PdDv is created using Odm::Base as
+  # the base class.  Each stanza because an instance of this class.
   class Base
     include Logging
+    # The log level used by the Odm::Base class
     LOG_LEVEL = Logger::INFO
 
+    # arg is a hash like object
     def initialize(arg)
       @arg = arg
     end
 
-    def [](key)
-      @arg[key]
-    end
-
-    def each_pair(&block)
-      @arg.each_pair(&block)
-    end
-
-    def keys
-      @arg.keys
-    end
-
+    # converts the object into json
     def to_json(options = {})
       @arg.to_json(options)
-    end
-
-    def method_missing(name, *args, &block)
-      n = name.to_s
-      return @arg[n] if @arg.has_key?(n)
-      super
     end
   end
   

@@ -1,10 +1,14 @@
+require_relative 'logging'
 require 'pathname'
 
-# Routines that produce the html page.
+# Module that produces the html page.  This is currently loaded into
+# Snapper.
 module Page
   StylesheetDir = File.expand_path("../stylesheets", __FILE__)
   JavascriptDir = File.expand_path("../javascript", __FILE__)
 
+  # Creates the HTML page sending it to outfile.  db_list is a list of
+  # Db type items that have a to_json method.
   def create_page(db_list, outfile = $stdout)
     @outfile = outfile
     @outfile.puts <<'EOF'
@@ -30,6 +34,10 @@ EOF
 EOF
   end
 
+  private
+
+  # method to add the stylesheets found in lib/stylesheets into the
+  # HTML page.  These are currently copied into the output file.
   def include_stylesheets
     Pathname.new(StylesheetDir).find do |path|
       next unless path.file?
@@ -39,11 +47,15 @@ EOF
     end
   end
 
+  # Adds what is necessary to load in all of the javascript
+  # libraries which include jQuery plus those found in
+  # lib/javascript.  Currently all javascript files are referenced and
+  # not copied into the HTML file.  I plan to have an option to go
+  # either way.
   def include_javascript
     # <script src="http://d3js.org/d3.v3.min.js"></script>
     # <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     @outfile.puts <<'EOF'
-    <script src="http://d3js.org/d3.v3.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
     <script>
       if (typeof window.snapper === "undefined") window.snapper = {};
@@ -58,9 +70,9 @@ EOF
     end
   end
 
+  # Adds in the call to addSnap and the json representation of db into
+  # the html page.
   def add_data(db)
-    logger.debug { "db KEYS" }
-    logger.debug { db.keys.join("\n") }
     @outfile.puts "    <script>"
     @outfile.puts "        window.snapper.world.addSnap(";
     @outfile.puts JSON.pretty_generate(db)
