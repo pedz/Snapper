@@ -112,6 +112,3 @@ class Odm
     o = ::Object.const_get(name).new(hash)
   end
 end
-
-require_relative 'odm/cuat'
-require_relative 'odm/cudv'
