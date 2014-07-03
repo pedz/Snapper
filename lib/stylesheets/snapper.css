@@ -1,4 +1,24 @@
 .chart rect {
+    fill: transparent;
+}
+
+.chart line {
+  stroke: black;
+  stroke-width: 2;
+  fill: none;
+}
+
+.chart polyline {
+  stroke: black;
+  stroke-width: 2;
+  fill: none;
+}
+
+.chart rect.ent {
+  fill: steelblue;
+}
+
+.chart rect.virtual-switch {
   fill: steelblue;
 }
 
@@ -8,21 +28,10 @@
   text-anchor: middle;
 }
 
-.chart line {
-  stroke: black;
-  stroke-width: 2;
-}
-
-.chart polyline {
-  stroke: black;
-  stroke-width: 2;
-  fill: none;
-}
-
-.chart line {
-  stroke: black;
-  stroke-width: 2;
-  fill: none;
+.chart rect.cec {
+    stroke: grey;
+    stroke-width: 1;
+    fill: transparent;
 }
 
 .chart rect.ethchan {
@@ -31,19 +40,13 @@
     fill: transparent;
 }
 
-.chart rect.seaRect {
+.chart rect.sea {
     stroke: grey;
     stroke-width: 1;
     fill: transparent;
 }
 
-.chart rect.lparRect {
-    stroke: grey;
-    stroke-width: 1;
-    fill: transparent;
-}
-
-.chart rect.cecRect {
+.chart rect.lpar {
     stroke: grey;
     stroke-width: 1;
     fill: transparent;

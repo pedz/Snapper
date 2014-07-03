@@ -41,9 +41,10 @@ EOF
   def include_stylesheets
     Pathname.new(StylesheetDir).find do |path|
       next unless path.file?
-      @outfile.puts "    <style>"
-      @outfile.puts path.read
-      @outfile.puts "    </style>"
+      @outfile.puts "<link href=\"lib/stylesheets/#{path.basename}\" media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />"
+      # @outfile.puts "    <style>"
+      # @outfile.puts path.read
+      # @outfile.puts "    </style>"
     end
   end
 
