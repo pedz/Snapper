@@ -3,29 +3,35 @@
 }
 
 .chart line {
-  stroke: black;
-  stroke-width: 2;
-  fill: none;
+    stroke: black;
+    stroke-width: 2;
+    fill: none;
 }
 
 .chart polyline {
-  stroke: black;
-  stroke-width: 2;
-  fill: none;
+    stroke: black;
+    stroke-width: 2;
+    fill: none;
 }
 
 .chart rect.ent {
-  fill: steelblue;
+    fill: steelblue;
 }
 
 .chart rect.virtual-switch {
-  fill: steelblue;
+    fill: steelblue;
 }
 
 .chart text {
-  fill: white;
-  font: 10px sans-serif;
-  text-anchor: middle;
+    fill: white;
+    font: 10px sans-serif;
+    text-anchor: middle;
+}
+
+.chart text.name-plate {
+    fill: black;
+    font: 14px sans-serif;
+    text-anchor: middle;
 }
 
 .chart rect.cec {
@@ -54,4 +60,9 @@
 
 .chart polyline.ifnet {
     fill: black;
+}
+
+.chart .list {
+    background-color: grey;
+    position: absolute;
 }
