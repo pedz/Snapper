@@ -3,6 +3,7 @@
 require_relative 'lib/logging'
 require_relative 'lib/db'
 require_relative 'lib/dot_file_parser'
+require_relative 'lib/netstat_v'
 require_relative 'lib/odm'
 require_relative 'lib/page'
 require_relative 'lib/snap_parser'

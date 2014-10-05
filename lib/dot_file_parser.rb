@@ -28,6 +28,8 @@ class DotFileParser
     # Passed in the text as a string from DotFileParser::parse
     # method.  In real classes, this would parse the text in the
     # specific way that is needed for that section of the file.
+    # Note that this is a string.  An IO object is passed in to
+    # DotFileParser.parse.
     def initialize(text)
       @text = text
     end
@@ -78,7 +80,3 @@ class DotFileParser
     return o
   end
 end
-
-require_relative 'pda'
-require_relative 'write_once_hash'
-require_relative 'dot_file/netstat_v'
