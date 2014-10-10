@@ -49,7 +49,7 @@ class Netstat_v < DotFileParser::Base
   # adapter specific parser.
   def initialize(text)
     @text = text
-    @devices = {}
+    @result = {}
     parts = text.split(DEVICE_BOUNDARY)
     fail "No device boundaries found" if parts.length < 3
     unused_empty = parts.shift  # stuff before match
@@ -57,13 +57,8 @@ class Netstat_v < DotFileParser::Base
       whole_line, device_name, rest = parts.shift(3)
       break if whole_line.nil?
       logger.debug { "DEVICE NAME: #{device_name}" }
-      @devices[device_name] = parse_lines(rest)
+      @result[device_name] = parse_lines(rest)
     end
-  end
-
-  # converts the devices found and their attributes into json.
-  def to_json(options = {})
-    @devices.to_json(options)
   end
 
   # Regexp that matches the Device Type: ... line
@@ -79,7 +74,7 @@ class Netstat_v < DotFileParser::Base
     fail "'Device Type:' string not found" unless md
     puts "parser name is '#{md[1]}'"
     parser = Netstat_v::Parsers.instance.find(md[1])
-    fail "No device specific parser for #{md[1]}" unless parser
-    return parser.new(text)
+    fail "No device specific parser for '#{md[1]}'" unless parser
+    return parser.new(text).result
   end
 end

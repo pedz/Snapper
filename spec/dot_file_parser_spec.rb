@@ -7,7 +7,7 @@ describe DotFileParser do
     expect(DotFileParser).to respond_to(:parse)
   end
 
-  xit "should read in TEST_TCPIP_SNAP" do
+  it "should read in TEST_TCPIP_SNAP" do
     db = double("db")
     expect(db).to receive(:add).exactly(15).times
     io = File.open(TEST_TCPIP_SNAP, mode: "r", encoding: "ISO-8859-1")

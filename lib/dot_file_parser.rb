@@ -22,8 +22,13 @@ class DotFileParser
     # The log level that DotFileParser::Base will use.
     LOG_LEVEL = Logger::INFO
 
-    # Do we need to make this public?
+    # text is generally not used but is set to the original text
+    # passed to the parser.
     attr_reader :text
+
+    # result is whatever the result of the parse produces.  This is
+    # passed to_json in the Base class.
+    attr_reader :result
 
     # Passed in the text as a string from DotFileParser::parse
     # method.  In real classes, this would parse the text in the
@@ -32,13 +37,14 @@ class DotFileParser
     # DotFileParser.parse.
     def initialize(text)
       @text = text
+      @result = text
     end
 
     # Returns the resulting parsed text as a json object.  In the
     # default case, the text is simply stored and this routine returns
     # the text as a json object.
     def to_json(options = {})
-      @text.to_json(options)
+      @result.to_json(options)
     end
   end
 

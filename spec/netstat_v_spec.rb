@@ -21,7 +21,7 @@ ETHERNET STATISTICS (ent1) :
 Device Type: blah blah blah
 random text
 EOF
-    expect{ Netstat_v.new(text) }.to raise_error(RuntimeError, "No device specific parser for blah blah blah")
+    expect{ Netstat_v.new(text) }.to raise_error(RuntimeError, "No device specific parser for 'blah blah blah'")
   end
 
   it "should have a Parsers nested class" do
@@ -76,10 +76,7 @@ EOF
 ETHERNET STATISTICS (#{ent_name}) :
 #{adapter_specific_text.chomp}
 EOF
-    parser_result = { foo1: 15, foo2: 48 }
-    adapter_parser = double("Adapter Parser")
-    expect(adapter_parser).to receive(:new).with(adapter_specific_text).and_return(parser_result)
-    Netstat_v::Parsers.instance.add(adapter_parser, adapter_type)
-    expect(Netstat_v.new(text).to_json).to eq({ ent_name => parser_result }.to_json)
+    Netstat_v::Parsers.instance.add(DotFileParser::Base, adapter_type)
+    expect(Netstat_v.new(text).to_json).to eq({ ent_name => adapter_specific_text }.to_json)
   end
 end

@@ -57,8 +57,6 @@ class PDA
   # variables and other things.  This is passed in to the
   # initialize method.
   attr_accessor :target
-  # TODO: These are too specific and need to be generalized
-  attr_accessor :single_field_pop_states, :empty_line_pop_states
 
   # Initializes the PDA with the initial value of the "target" and the
   # list of productions.
@@ -66,8 +64,6 @@ class PDA
     @state = :normal
     @stack = []
     @target = first_target
-    @single_field_pop_states = 0
-    @empty_line_pop_states = 0
     @productions = productions
   end
 
