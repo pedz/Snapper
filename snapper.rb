@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
-# Dir.glob('lib/**/*.rb') { |f| require_relative f }
-Dir.glob('lib/**/*.rb', &method(:require_relative))
+Dir.glob('lib/**/*.rb') { |f| require_relative f }
 
 # A class that represents the snapper program
 class Snapper
