@@ -3,9 +3,9 @@ require "write_once_hash"
 require "stringio"
 require "pda"
 
-# Parsers the output from netstat -d entN where entN is a vlan
+# Parsers the output from netstat -d entN where entN is a goent
 # adapter.
-class Netstat_v_vlan < DotFileParser::Base
+class Netstat_v_goent < DotFileParser::Base
   include Logging
   # The log level the Netstat_v uses.
   LOG_LEVEL = Logger::INFO
@@ -220,4 +220,4 @@ class Netstat_v_vlan < DotFileParser::Base
   end
 end
 
-Netstat_v::Parsers.instance.add(Netstat_v_vlan, "")
+Netstat_v::Parsers.instance.add(Netstat_v_goent, "4-Port 10/100/1000 Base-TX PCI-Express Adapter (14106803)")

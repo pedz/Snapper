@@ -40,7 +40,8 @@ class Netstat_v < DotFileParser::Base
 
   # A regular expression that matches the first line of each device
   DEVICE_BOUNDARY = Regexp.new("(FIBRE CHANNEL STATISTICS REPORT: (.*)|ETHERNET STATISTICS \\((.*)\\) :|VASI STATISTICS \\((.*)\\) :)\n")
-  
+  VASI = Regexp.new("VASI STATISTICS.*")
+
   private_constant :DEVICE_BOUNDARY
 
   # text is the full output of netstat -v.  The text is parsed
@@ -56,8 +57,15 @@ class Netstat_v < DotFileParser::Base
     while true
       whole_line, device_name, rest = parts.shift(3)
       break if whole_line.nil?
+      next if VASI.match(whole_line)
       logger.debug { "DEVICE NAME: #{device_name}" }
-      @result[device_name] = parse_lines(rest)
+      begin
+        @result[device_name] = parse_lines(rest)
+      rescue => e
+        new_e = e.exception("Device name: #{device_name}\n#{e.message}")
+        new_e.set_backtrace(e.backtrace)
+        raise new_e
+      end
     end
   end
 
@@ -72,7 +80,6 @@ class Netstat_v < DotFileParser::Base
   def parse_lines(text)
     md = DEVICE_TYPE_REGEXP.match(text)
     fail "'Device Type:' string not found" unless md
-    puts "parser name is '#{md[1]}'"
     parser = Netstat_v::Parsers.instance.find(md[1])
     fail "No device specific parser for '#{md[1]}'" unless parser
     return parser.new(text).result

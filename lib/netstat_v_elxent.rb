@@ -3,16 +3,51 @@ require "write_once_hash"
 require "stringio"
 require "pda"
 
-# Parsers the output from netstat -d entN where entN is a vlan
+# Parsers the output from netstat -d entN where entN is a elxent
 # adapter.
-class Netstat_v_vlan < DotFileParser::Base
+class Netstat_v_elxent < DotFileParser::Base
   include Logging
-  # The log level the Netstat_v uses.
+  # The log level that Netstat_v_elxent uses:
   LOG_LEVEL = Logger::INFO
 
   def initialize(text)
     productions =
       [
+       # Sample Match:   |Receive statistics for RXQ number: 2
+       # States Matched: :normal and :elxentQStats
+       # New State:      :elxentQStats
+       # State Pushed:   yes
+       # States Popped:  1 if already in :elxentQStats state
+       # This starts a new group so subsequent fields are added into
+       # (for example) "Receive statistics for RXQ number"[2]
+       PDA::Production.new("^(?<field>Receive statistics for RXQ number|Transmit statistics for TXQ number):\\s+(?<index>\\d+)\\s*$", [:normal, :elxentQStats], :elxentQStats) do |md, pda|
+         field = md[:field]
+         index = md[:index].to_i
+         pda.pop(1) unless pda.state == :normal
+         ret = pda.target
+         ret[field] ||= []
+         fail "Overwriting value #{field}[#{index}]" if ret[field][index]
+         value = WriteOnceHash.new
+         ret[field][index] = value
+         logger.debug { "Starting #{field}[#{index}]" }
+         pda.push(value)
+       end,
+
+       # Sample Match:   |Adapter Reset Count: 0
+       # States Matched: :normal
+       # New State:      :no_change
+       # State Pushed:   none
+       # For lines with exactly one colon and the value is an integer.
+       # Leading white space is allowed.  Text before colon is
+       # md[:field].  Text after colon is md[:value].  Leading and
+       # trailing white space from both are stripped.  Value can not
+       # be empty and is converted to an integer.
+       PDA::Production.new("^\\s*(?<field>[^: ][^:]+):\\s*(?<value>\\d+)\\s*$", [:elxentQStats]) do |md, pda|
+         field = md[:field].strip
+         value = md[:value].to_i
+         pda.target[field] = value
+       end,
+
        # Sample Match:   |Hardware Address: e4:1f:13:d8:28:c4
        # States Matched: :normal
        # New State:      :no_change
@@ -137,24 +172,6 @@ class Netstat_v_vlan < DotFileParser::Base
          pda.pop(1)
        end,
        
-       # Sample Match:   |  Elapsed Time: 0 days 0 hours 0 minutes 0 seconds
-       # States Matched: :all
-       # New State:      :no_change
-       # State Pushed:   none
-       # States Popped:  0
-       # The SEA and vlan has an extra timestamp which is always
-       # zero.  This Ignores it if Elapsed Time is already set
-       PDA::Production.new("^\\s*(?<field>Elapsed Time):\\s+(?<value>0 days 0 hours 0 minutes 0 seconds)\\s*$") do |md, pda|
-         field = md[:field]
-         value = md[:value].strip # delete trailing white space from value
-         ret = pda.target
-         if ret.key?(field) || pda.state == :entTwoColumn
-           logger.debug { "Skipping #{md[0]}" }
-         else
-           ret[field] = value
-         end
-       end,
-
        # Sample Match:   |Adapter Reset Count: 0
        # States Matched: :normal
        # New State:      :no_change
@@ -220,4 +237,4 @@ class Netstat_v_vlan < DotFileParser::Base
   end
 end
 
-Netstat_v::Parsers.instance.add(Netstat_v_vlan, "")
+Netstat_v::Parsers.instance.add(Netstat_v_elxent, "PCIe2 2-port 10GbE SR Adapter")

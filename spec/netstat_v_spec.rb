@@ -12,7 +12,7 @@ describe Netstat_v do
 ETHERNET STATISTICS (ent1) :
 blah blah blah
 EOF
-    expect{ Netstat_v.new(text) }.to raise_error(RuntimeError, "'Device Type:' string not found")
+    expect{ Netstat_v.new(text) }.to raise_error(RuntimeError, "Device name: ent1\n'Device Type:' string not found")
   end
 
   it "rejects text with unknown Device type:" do 
@@ -21,7 +21,7 @@ ETHERNET STATISTICS (ent1) :
 Device Type: blah blah blah
 random text
 EOF
-    expect{ Netstat_v.new(text) }.to raise_error(RuntimeError, "No device specific parser for 'blah blah blah'")
+    expect{ Netstat_v.new(text) }.to raise_error(RuntimeError, "Device name: ent1\nNo device specific parser for 'blah blah blah'")
   end
 
   it "should have a Parsers nested class" do

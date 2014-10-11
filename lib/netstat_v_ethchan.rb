@@ -3,9 +3,9 @@ require "write_once_hash"
 require "stringio"
 require "pda"
 
-# Parsers the output from netstat -d entN where entN is a vlan
+# Parsers the output from netstat -d entN where entN is a ethchan
 # adapter.
-class Netstat_v_vlan < DotFileParser::Base
+class Netstat_v_ethchan < DotFileParser::Base
   include Logging
   # The log level the Netstat_v uses.
   LOG_LEVEL = Logger::INFO
@@ -196,7 +196,7 @@ class Netstat_v_vlan < DotFileParser::Base
        # States Matched: :all
        # New State:      :no_change
        # State Pushed:   none
-       PDA::Production.new("^(\\s|-)*$") do |md, pda|
+       PDA::Production.new("^(\\s|-|=)*$") do |md, pda|
        end       
       ]
 
@@ -220,4 +220,4 @@ class Netstat_v_vlan < DotFileParser::Base
   end
 end
 
-Netstat_v::Parsers.instance.add(Netstat_v_vlan, "")
+Netstat_v::Parsers.instance.add(Netstat_v_ethchan, "EtherChannel")

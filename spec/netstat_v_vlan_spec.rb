@@ -4,6 +4,7 @@ require "netstat_v_vlan"
 describe Netstat_v_vlan do 
   before(:all) {
     text = <<EOF
+ETHERNET STATISTICS (ent13) :
 Device Type: 
 Hardware Address: e4:1f:13:d8:28:c4
 Elapsed Time: 0 days 19 hours 55 minutes 41 seconds
@@ -45,7 +46,7 @@ Driver Flags: Up Broadcast Running
 	DataRateSet 
 
 EOF
-    @result = Netstat_v_vlan.new(text).result
+    @result = Netstat_v.new(text).result["ent13"]
   }
   it "parses the hardware MAC address" do
     expect(@result["Hardware Address"]).to eq("e4:1f:13:d8:28:c4")
