@@ -1,7 +1,7 @@
-require "netstat_v"
-require "write_once_hash"
+require_relative "netstat_v"
+require_relative "pda"
+require_relative "write_once_hash"
 require "stringio"
-require "pda"
 
 # Parses the entstat output from the fibre channel adapters.  This is
 # for the "fcsdd" driver.

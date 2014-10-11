@@ -1,6 +1,6 @@
 # Loaded by dot_file_parser so we know that logging is already
 # loaded.
-require "dot_file_parser"
+require_relative "dot_file_parser"
 require "singleton"
 require "json"
 
@@ -40,9 +40,11 @@ class Netstat_v < DotFileParser::Base
 
   # A regular expression that matches the first line of each device
   DEVICE_BOUNDARY = Regexp.new("(FIBRE CHANNEL STATISTICS REPORT: (.*)|ETHERNET STATISTICS \\((.*)\\) :|VASI STATISTICS \\((.*)\\) :)\n")
-  VASI = Regexp.new("VASI STATISTICS.*")
-
   private_constant :DEVICE_BOUNDARY
+
+  # For now, we just blow off the VASI gunk.
+  VASI = Regexp.new("VASI STATISTICS.*")
+  private_constant :VASI
 
   # text is the full output of netstat -v.  The text is parsed
   # breaking it first into the pieces for each device.  Each device is

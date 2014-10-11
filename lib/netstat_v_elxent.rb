@@ -1,7 +1,7 @@
-require "netstat_v"
-require "write_once_hash"
+require_relative "netstat_v"
+require_relative "pda"
+require_relative "write_once_hash"
 require "stringio"
-require "pda"
 
 # Parsers the output from netstat -d entN where entN is a elxent
 # adapter.
