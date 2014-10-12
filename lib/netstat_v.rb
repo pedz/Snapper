@@ -3,8 +3,9 @@
 require_relative "dot_file_parser"
 require_relative "write_once_hash"
 require_relative "pda"
-require "singleton"
 require "json"
+require "singleton"
+require "stringio"
 
 # Parses the output from netstat -v that is found within a snap.
 # netstat -v is essentially a sequence of calling entstat -d <device>

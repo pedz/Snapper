@@ -1,5 +1,4 @@
 require_relative "netstat_v"
-require "stringio"
 
 # Parses the entstat output from the fibre channel adapters.  This is
 # for the "fcsdd" driver.

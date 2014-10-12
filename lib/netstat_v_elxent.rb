@@ -1,5 +1,4 @@
 require_relative "netstat_v"
-require "stringio"
 
 # Parsers the output from netstat -d entN where entN is a elxent
 # adapter.
