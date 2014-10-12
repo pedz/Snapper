@@ -13,5 +13,5 @@ When(/^tested$/) do
 end
 
 Then(/^it should (.*)$/) do |mess|
-  @message.should == mess
+  expect(@message).to eq(mess)
 end
