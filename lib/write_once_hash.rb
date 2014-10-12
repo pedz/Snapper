@@ -1,6 +1,7 @@
 require_relative 'logging'
 
-# A hash but a value can only be written once.
+# A hash but a value can only be written once.  This is done to make
+# sure the various parsers are correctly pasing their input.
 class WriteOnceHash < Hash
   include Logging
   # The log level that WriteOnceHash will use
