@@ -59,15 +59,19 @@ Hash mode: Destination IP address
 EOF
     @result = Netstat_v.new(text).result["ent20"]
   }
+
   it "parses the hardware MAC address" do
     expect(@result["Hardware Address"]).to eq("00:00:c9:d9:d8:96")
   end
-  it "parsers the transmit packets as an integer" do
+
+  it "parses the transmit packets as an integer" do
     expect(@result["Transmit Statistics"]["Packets"]).to eq(615469971)
   end
-  it "parsers the receive bytes as an integer" do
+
+  it "parses the receive bytes as an integer" do
     expect(@result["Receive Statistics"]["Bytes"]).to eq(751885396976)
   end
+
   it "parses the Driver Flags as an array of strings" do
     expect(@result["Driver Flags"]).to eq(["Up",
                                            "Broadcast",
@@ -79,6 +83,7 @@ EOF
                                            "LargeSend",
                                            "DataRateSet"])
   end
+
   it "parses Operating mode" do
     expect(@result["Operating mode"]).to eq("Standard mode")
   end

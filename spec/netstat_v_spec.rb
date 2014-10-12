@@ -24,37 +24,29 @@ EOF
     expect{ Netstat_v.new(text) }.to raise_error(RuntimeError, "Device name: ent1\nNo device specific parser for 'blah blah blah'")
   end
 
-  it "should have a Parsers nested class" do
+  it "has a Parsers nested class" do
     expect { Netstat_v::Parsers }.not_to raise_error
   end
   
   describe Netstat_v::Parsers do
-    it "should be a singleton" do
+    it "is a singleton" do
       expect { Netstat_v::Parsers.instance }.not_to raise_error
     end
 
-    describe "Netstat_v::Parsers.instance" do 
-      it "should have an add method" do
-        expect(Netstat_v::Parsers.instance).to respond_to(:add)
-      end
-    
-      describe "Netstat_v::Pasers.instance.add" do
-        it "should have an arity of 2" do
+    describe 'Netstat_v::Parsers.instance' do
+      describe "#add" do
+        it "has an arity of 2" do
           expect(Netstat_v::Parsers.instance.method(:add).arity).to eq(2)
         end
       end
 
-      it "should have an find method" do
-        expect(Netstat_v::Parsers.instance).to respond_to(:find)
-      end
-    
-      describe "Netstat_v::Pasers.instance.find" do
-        it "should have an arity of 1" do
+      describe "#find" do
+        it "has an arity of 1" do
           expect(Netstat_v::Parsers.instance.method(:find).arity).to eq(1)
         end
       end
 
-      it "the add method should add an object that the find method finds" do
+      it "the add method adds an object that the find method finds" do
         s = "specific string"
         Netstat_v::Parsers.instance.add(42, s)
         klass = Netstat_v::Parsers.instance.find(s)
@@ -63,7 +55,7 @@ EOF
     end
   end
 
-  it "should call the adapter specific parser and return its result" do
+  it "calls the adapter specific parser and return its result" do
     ent_name = "ent1"
     adapter_type = "Happy Adapter"
     adapter_specific_text = <<EOF

@@ -164,12 +164,15 @@ EOF
   it "parses the hardware MAC address" do
     expect(@result["Hardware Address"]).to eq("e4:1f:13:fd:29:75")
   end
-  it "parsers the transmit packets as an integer" do
+
+  it "parses the transmit packets as an integer" do
     expect(@result["Transmit Statistics"]["Packets"]).to eq(359754)
   end
-  it "parsers the receive bytes as an integer" do
+
+  it "parses the receive bytes as an integer" do
     expect(@result["Receive Statistics"]["Bytes"]).to eq(22016683)
   end
+
   it "parses the Driver Flags as an array of strings" do
     expect(@result["Driver Flags"]).to eq(["Up",
                                            "Broadcast",
@@ -180,17 +183,21 @@ EOF
                                            "LargeSend",
                                            "DataRateSet"])
   end
+
   it "parses SEA Flags (hex)" do
     expect(@result["SEA Flags (hex)"]).to eq(19)
   end
+
   it "parses SEA Flags" do
     expect(@result["SEA Flags"]).to eq(["THREAD",
                                         "LARGESEND",
                                         "LARGE_RECEIVE"])
   end
+
   it "parses VLAN Ids" do
     expect(@result["VLAN Ids"]["ent15"]).to eq([ 300 ])
   end
+
   it "parses Real Side Statistics" do
     expect(@result["Real Side Statistics"]["Packets transmitted"]).to eq(241274)
   end
