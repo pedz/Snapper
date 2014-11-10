@@ -118,7 +118,7 @@ Transmit statistics for TXQ number: 1
 	TCP segmentation offload maximum packet size: 0
 	Maximum entries used on this transmit queue: 180
 EOF
-        @result = Netstat_v.new(text).result["ent0"]
+    @result = Netstat_v.new(text).result["ent0"]
   }
   it "parses the hardware MAC address" do
     expect(@result["Hardware Address"]).to eq("00:00:c9:d9:d8:96")

@@ -184,7 +184,7 @@ class Netstat_v < DotFileParser::Base
          ret = pda.target
          ret[left] = lval
          ret[right] = rval
-         value = { left: lval, right: rval }
+         value = { left: lval, right: rval, parent: ret }
          pda.push(value)
        end,
        
@@ -225,7 +225,6 @@ class Netstat_v < DotFileParser::Base
        # New State:      :no_change
        # State Pushed:   none
        # States Popped:  0
-       
        # Two column ENT output has fields for Transmit only.  These
        # lines do not have any leading white space.
        PDA::Production.new("^(?<lfield>\\S[^:]+):\\s+(?<lval>\\d+)\\s*$", [:entTwoColumn]) do |md, pda|
@@ -233,6 +232,22 @@ class Netstat_v < DotFileParser::Base
          lval = md[:lval].to_i
          left = pda.target.fetch(:left)
          left[lfield] = lval
+       end,
+       
+       # Sample Match:   |Elapsed Time: 0 days 0 hours 38 minutes 35 seconds
+       # States Matched: :entTwoColumn
+       # New State:      :no_change
+       # State Pushed:   none
+       # States Popped:  0
+       # The mustang entstat output blurts out a timestamp here
+       # instead of where it should be (and its not full of zeros so
+       # its a valid time stamp)... Sigh.
+       PDA::Production.new("^(?<lfield>\\S[^:]+):\\s+(?<lval>[^: ]*[^:]*)\\s*$", [:entTwoColumn]) do |md, pda|
+         lfield = md[:lfield].strip
+         lval = md[:lval].strip
+         parent = pda.target.fetch(:parent)
+         parent.delete(lfield)
+         parent[lfield] = lval
        end,
        
        # Sample Match:   |General Statistics:

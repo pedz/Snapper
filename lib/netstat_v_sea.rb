@@ -62,7 +62,7 @@ class Netstat_v_sea < Netstat_v::Base
      # This production is very similar to the VEA_VLAN_IDs production.
      # This production forces a space at the front so it does not
      # match the VLAN Tag line.
-     PDA::Production.new("^\\s+(?<field>\\S[^:]+):\\s*(?<value>\\S.+)$", [:SEA_VLAN]) do |md, pda|
+     PDA::Production.new("^\\s+(?<field>\\S[^:]+):\\s*(?<value>\\S.*)$", [:SEA_VLAN]) do |md, pda|
        field = md[:field]
        value = md[:value].strip.split.map(&:to_i)
        pda.target[field] = value

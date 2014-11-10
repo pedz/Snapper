@@ -56,6 +56,7 @@ SEA Flags: 00000013
     < LARGE_RECEIVE >
 VLAN Ids :
     ent15: 300
+    ent16: 3
 Real Side Statistics:
     Packets received: 238619
     Packets bridged: 42757
