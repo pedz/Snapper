@@ -258,6 +258,47 @@ class Netstat_v < DotFileParser::Base
        # End of two column ent mode
        PDA::Production.new("^\\s*(?<field>General Statistics:)\\s*$", [:entTwoColumn]) do |md, pda|
          pda.pop(1)
+       end,
+
+       # The LACP stanzas that 802.3ad aggregation adds to each
+       # entstat is parsed here.  For the most part, everything works
+       # except for the Actor State and Partner State.  Those need to
+       # be nested down a level.  They end with the first blank line.
+
+       # Sample Match:   |	Actor State: 
+       # States Matched: :normal
+       # New State:      :LACP_State
+       # State Pushed:   yes
+       # States Popped:  0
+       # Matched the Actor State: and Partner State: lines
+       PDA::Production.new("^\\s*(?<field>(Actor|Partner) State):\\s*$", [:normal], :LACP_State) do |md, pda|
+         field = md[:field]
+         value = WriteOnceHash.new
+         pda.target[field] = value
+         pda.push(value)
+       end,
+       
+       # Sample Match:   |		LACP activity: Active
+       # States Matched: :LACP_State
+       # New State:      :no_change
+       # State Pushed:   none
+       # States Popped:  0
+       # All the entries during LACP_State is field: value where value
+       # is not an integer
+       PDA::Production.new("^\\s*(?<field>[^: ][^:]+):\\s*(?<value>[^: ]*[^:]*)$", [:LACP_State]) do |md, pda|
+         field = md[:field].strip
+         value = md[:value].strip
+         pda.target[field] = value
+       end,
+       
+       # Sample Match:   |  <empty line>
+       # States Matched: :LACP_State
+       # New State:      :no_change
+       # State Pushed:   none
+       # States Popped:  1
+       # empty line is the end of LACP_State
+       PDA::Production.new("^\\s*$", [:LACP_State]) do |md, pda|
+         pda.pop(1)
        end
       ] + BASE_PRODUCTIONS
 

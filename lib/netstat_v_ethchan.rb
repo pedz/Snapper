@@ -14,3 +14,4 @@ class Netstat_v_ethchan < Netstat_v::Base
 end
 
 Netstat_v::Parsers.instance.add(Netstat_v_ethchan, "EtherChannel")
+Netstat_v::Parsers.instance.add(Netstat_v_ethchan, "IEEE 802.3ad Link Aggregation")
