@@ -264,6 +264,7 @@ class Netstat_v < DotFileParser::Base
     def initialize(text)
       @text = text
       @result = WriteOnceHash.new
+      @result['text'] = text;
       pda = PDA.new(@result, productions)
       io = StringIO.new(text)
       lineno = 0

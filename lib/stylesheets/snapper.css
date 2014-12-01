@@ -115,13 +115,12 @@ table {
 .chart foreignObject {
 }
 
-.chart div.name-me1 {
+.chart div.neat-box-outer-div {
+    border-radius: 10px;
     background-color: White;
-    height: 240px;
-    width: 240px;
 }
 
-.chart div.name-me2 {
+.chart div.neat-box-inner-div {
     border-radius: 10px;
     border: 1px solid Black;
     box-shadow: 10px 10px 10px rgba(50,50,50,0.32);
@@ -129,7 +128,7 @@ table {
     height: 100%;
 }
 
-.chart div.close {
+.chart div.neat-box-close-button {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAA80lEQVQ4jbXSQUrDYBAF4E/xAiqCqBcSBZeiXkEXXQgKbUEQ3Ok53NZdj1BBwW1PIIhSrBspiZsJjiGxuPDBgz9v5r1/Mgn/gBX0McJzcIQelueZd/CKsoUv2G4z72H2i7niDLt18xom0VBg2GAcRq3EG1ZzwEVqvAutm7RuaIOk9XPAQyoUOAn9DOdxPk4TlLjPAe8NI+cbeg31CSzWl5Gw1HKusJAfnlpuPw0KLfc85oCrVBiE1klaJ7S8xMscsIEP39/51s+FFaFV/8kU6/V3OqqZ2ljgoGEn4DBN0sQp9tvMFbZwgzE+g2NcY3Oe+c/4Ahp7duByKVzVAAAAAElFTkSuQmCC);
     background-repeat: no-repeat;
     float: right;
@@ -162,4 +161,7 @@ table {
 
 .chart li:last-child {
     margin-bottom: 8px;
+}
+
+.chart .golf {
 }
