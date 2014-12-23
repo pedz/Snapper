@@ -265,6 +265,20 @@ class Netstat_v < DotFileParser::Base
        # except for the Actor State and Partner State.  Those need to
        # be nested down a level.  They end with the first blank line.
 
+       # Sample Match:   |IEEE 802.3ad Port Statistics:
+       # States Matched: :all
+       # New State:      :normal
+       # State Pushed:   none
+       # States Popped:  Variable
+       # The 'IEEE 802.3ad Port Statistics:' line tells us we are
+       # about to start the LACP statistics for this adapter.  No
+       # matter what state we are in, we need to pop the states until
+       # we get to the :normal (top level) state.  The match is very
+       # strict but might need to be loosened up a bit.
+       PDA::Production.new("^IEEE 802.3ad Port Statistics:$") do |md, pda|
+         pda.pop(1) while pda.state != :normal
+       end,
+       
        # Sample Match:   |	Actor State: 
        # States Matched: :normal
        # New State:      :LACP_State

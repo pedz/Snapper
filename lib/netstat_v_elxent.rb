@@ -50,3 +50,5 @@ class Netstat_v_elxent < Netstat_v::Base
 end
 
 Netstat_v::Parsers.instance.add(Netstat_v_elxent, "PCIe2 2-port 10GbE SR Adapter")
+Netstat_v::Parsers.instance.add(Netstat_v_elxent, "Int Multifunction Card w/ Copper SFP+ 10GbE Adapter")
+Netstat_v::Parsers.instance.add(Netstat_v_elxent, "Int Multifunction Card w/ Base-TX 10/100/1000 1GbE Adapter")

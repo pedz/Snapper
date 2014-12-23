@@ -2,6 +2,8 @@ require_relative "netstat_v"
 
 # Parsers the output from netstat -d entN where entN is a musent
 # adapter.
+# If / when we get a snap where musent is using multiple queues, this
+# will need to be modified much like elxent is.
 class Netstat_v_musent < Netstat_v::Base
   include Logging
   # The log level that Netstat_v_musent uses:
