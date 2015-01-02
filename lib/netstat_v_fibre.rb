@@ -195,4 +195,6 @@ class Netstat_v_fibre < Netstat_v::Base
 end
 
 Netstat_v::Parsers.instance.add(Netstat_v_fibre, "FC Adapter (adapter/pciex/df1000f114108a0)")
+Netstat_v::Parsers.instance.add(Netstat_v_fibre, "FC Adapter (adapter/pciex/df1000e21410f10)")
+Netstat_v::Parsers.instance.add(Netstat_v_fibre, "FC Adapter (adapter/pciex/7710018077107f0)")
 Netstat_v::Parsers.instance.add(Netstat_v_fibre, "FC Adapter (adapter/vdevice/IBM,vfc-client)")

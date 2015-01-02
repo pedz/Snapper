@@ -88,7 +88,7 @@ class Netstat_v < DotFileParser::Base
        # New State:      :no_change
        # State Pushed:   none
        # Lines which are always ignored.
-       PDA::Production.new("^(Control|Real|Virtual) Adapter: ent\\d+\\s*$") do |md, pda|
+       PDA::Production.new("^(Control|Backup|Real|Virtual) Adapter: ent\\d+\\s*$") do |md, pda|
        end,
        
        # Sample Match:   |empty lines and lines with only -'s and ='s
@@ -328,9 +328,21 @@ class Netstat_v < DotFileParser::Base
         line.chomp!
         begin
           matched = pda.match_productions(line)
-          fail "Miss: '#{line}'; state #{pda.state}" unless matched == true
+          unless matched == true
+            original_state = pda.state
+            until (matched == true) || pda.stack.size == 0
+              from = pda.state
+              pda.pop(1)
+              logger.debug {  "popping due to unmatched from #{from} to #{pda.state}" }
+              matched = pda.match_productions(line)
+            end
+            unless matched == true
+              pda.state = original_state
+              fail "Miss: '#{line}'"
+            end
+          end
         rescue => e
-          new_e = e.exception("line: #{lineno}\n#{line}\n#{e.message}")
+          new_e = e.exception("line: #{lineno}\nstate: #{pda.state}\n#{line}\n#{e.message}")
           new_e.set_backtrace(e.backtrace)
           raise new_e
         end

@@ -156,4 +156,82 @@ EOF
       expect(@result["IP over FC Adapter Driver Information"]["No DMA Resource Count"]).to eq(0)
     end
   end
+
+  context "7710018077107f0" do
+    before(:all) {
+      text = <<EOF
+FIBRE CHANNEL STATISTICS REPORT: fcs0
+
+Device Type: FC Adapter (adapter/pciex/7710018077107f0)
+Serial Number: 11S42C1831YK5122217GYP
+Option ROM Version: 0313050700
+
+World Wide Node Name: 0x200000C0DD1E0C01
+World Wide Port Name: 0x210000C0DD1E0C01
+
+FC-4 TYPES:
+  Supported: 0x0000010000000000000000000000000000000000000000000000000000000000
+  Active:    0x0000010000000000000000000000000000000000000000000000000000000000
+
+FC-4 TYPES (ULP mappings):
+  Supported ULPs:   
+    	Small Computer System Interface (SCSI) Fibre Channel Protocol (FCP)
+  Active ULPs:   
+    	Small Computer System Interface (SCSI) Fibre Channel Protocol (FCP)
+Class of Service: 3
+Port Speed (supported): 10 GBIT
+Port Speed (running):   10 GBIT
+Port FC ID: 0x380476
+Port Type: Fabric
+Attention Type:   Link Up
+Topology:  Point to Point or Fabric
+
+Seconds Since Last Reset: 5327            
+
+	Transmit Statistics	Receive Statistics
+	-------------------	------------------
+Frames: 1440907         	1639466         
+Words:  0               	0               
+
+LIP Count: 0               
+NOS Count: 0               
+Error Frames:  0               
+Dumped Frames: 0               
+Link Failure Count: 0               
+Loss of Sync Count: 0               
+Loss of Signal: 0               
+Primitive Seq Protocol Error Count: 0               
+Invalid Tx Word Count: 0               
+Invalid CRC Count: 0               
+
+IP over FC Adapter Driver Information
+  No DMA Resource Count: 0               
+  No Adapter Elements Count: 0               
+
+IP over FC Traffic Statistics
+  Input Requests:   0               
+  Output Requests:  0               
+  Control Requests: 0               
+  Input Bytes:  0               
+  Output Bytes: 0               
+
+Adapter Effective max transfer value:   0x100000
+
+EOF
+      @result = Netstat_v.new(text).result["fcs0"]
+    }
+    
+    it "parses the serial number" do
+      expect(@result["Serial Number"]).to eq("11S42C1831YK5122217GYP")
+    end
+    it "parses World Wide Node Name" do
+      expect(@result["World Wide Node Name"]).to eq("0x200000C0DD1E0C01")
+    end
+    it "parses the transmit statistics" do
+      expect(@result["Transmit Statistics"]["Frames"]).to eq(1440907)
+    end
+    it "parses the IP over FC Adapter Driver Information" do
+      expect(@result["IP over FC Adapter Driver Information"]["No DMA Resource Count"]).to eq(0)
+    end
+  end
 end

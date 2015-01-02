@@ -158,6 +158,17 @@ class Netstat_v_vioent < Netstat_v::Base
        end
      end,
      
+     # Sample Match:   |--------------------
+     # States Matched: :hyperInfo
+     # New State:      :normal
+     # State Pushed:   no
+     # States Popped:  0
+     # The Hyper Info ends with a line of dashes if the VEA is part of
+     # an EthChan
+     PDA::Production.new("^-+$", [:hyperInfo]) do |md, pda|
+       pda.pop(1)
+     end,
+
      # Sample Match:   |VLAN Tag IDs:   205   298   299  1510  1600  1601  3520  3521  3551
      # States Matched: :normal
      # New State:      :vlanTags
