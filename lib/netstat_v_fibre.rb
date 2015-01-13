@@ -82,7 +82,7 @@ class Netstat_v_fibre < Netstat_v::Base
      # The FC-4 TYPES (ULP mappings): section ends with the first
      # non-indented line.  This pops the pushingULPs state and the
      # fc4typesULP state and then adds the new value.
-     PDA::Production.new("^(?<field>[^: ][^:]+):\\s*(?<value>\\d+)\\s*$", [:pushingULPs]) do |md, pda|
+     PDA::Production.new("^(?<field>[^: ][^:]+):\\s*(?<value>-?\\d+)\\s*$", [:pushingULPs]) do |md, pda|
        pda.pop(2)
        field = md[:field].strip
        value = md[:value].to_i
@@ -114,7 +114,7 @@ class Netstat_v_fibre < Netstat_v::Base
      # States Popped:  0
      # Pick up the two column FC output.  This moves us to a state
      # where an empty line will pop the stack
-     PDA::Production.new("^\\s*(?<field>\\S[^:]*):\\s*(?<lval>\\d+)\\s+(?<rval>\\d+)\\s*$", [:fcTwoColumn]) do |md, pda|
+     PDA::Production.new("^\\s*(?<field>\\S[^:]*):\\s*(?<lval>-?\\d+)\\s+(?<rval>-?\\d+)\\s*$", [:fcTwoColumn]) do |md, pda|
        field = md[:field]
        lval = md[:lval].to_i
        rval = md[:rval].to_i
@@ -156,7 +156,7 @@ class Netstat_v_fibre < Netstat_v::Base
      # forced.  Text before colon is md[:field].  Text after colon
      # is md[:value].  Leading and trailing white space from both
      # are stripped.  value in this case must be an integer
-     PDA::Production.new("^\\s+(?<field>[^: ][^:]+):\\s*(?<value>\\d+)\\s*$", [:indent1]) do |md, pda|
+     PDA::Production.new("^\\s+(?<field>[^: ][^:]+):\\s*(?<value>-?\\d+)\\s*$", [:indent1]) do |md, pda|
        field = md[:field].strip
        value = md[:value].to_i
        pda.target[field] = value
@@ -184,7 +184,7 @@ class Netstat_v_fibre < Netstat_v::Base
      # If we are in the indent1 state, all lines should be indented.
      # If / when we hit a line that is not, that means that we pop
      # the stack and then process it like a normal line.
-     PDA::Production.new("^(?<field>[^: ][^:]+):\\s*(?<value>\\d+)\\s*$", [:indent1]) do |md, pda|
+     PDA::Production.new("^(?<field>[^: ][^:]+):\\s*(?<value>-?\\d+)\\s*$", [:indent1]) do |md, pda|
        pda.pop(1)
        field = md[:field].strip
        value = md[:value].to_i

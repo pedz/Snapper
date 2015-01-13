@@ -40,7 +40,7 @@ class Netstat_v_elxent < Netstat_v::Base
      # md[:field].  Text after colon is md[:value].  Leading and
      # trailing white space from both are stripped.  Value can not
      # be empty and is converted to an integer.
-     PDA::Production.new("^\\s*(?<field>[^: ][^:]+):\\s*(?<value>\\d+)\\s*$", [:elxentQStats]) do |md, pda|
+     PDA::Production.new("^\\s*(?<field>[^: ][^:]+):\\s*(?<value>-?\\d+)\\s*$", [:elxentQStats]) do |md, pda|
        field = md[:field].strip
        value = md[:value].to_i
        pda.target[field] = value

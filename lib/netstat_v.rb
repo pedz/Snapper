@@ -63,7 +63,7 @@ class Netstat_v < DotFileParser::Base
        # md[:field].  Text after colon is md[:value].  Leading and
        # trailing white space from both are stripped.  Value can not
        # be empty and is converted to an integer.
-       PDA::Production.new("^\\s*(?<field>[^: ][^:]+):\\s*(?<value>\\d+)\\s*$", [:normal]) do |md, pda|
+       PDA::Production.new("^\\s*(?<field>[^: ][^:]+):\\s*(?<value>-?\\d+)\\s*$", [:normal]) do |md, pda|
          field = md[:field].strip
          value = md[:value].to_i
          pda.target[field] = value
@@ -195,7 +195,7 @@ class Netstat_v < DotFileParser::Base
        # States Popped:  0
        # Pick up the two column ENT output where both columns are
        # present.  The two values are assumed to be integers.
-       PDA::Production.new("^\\s*(?<lfield>\\S[^:]*):\\s*(?<lval>\\d+)\\s+(?<rfield>\\S[^:]*):\\s+(?<rval>\\d+)\\s*$", [:entTwoColumn]) do |md, pda|
+       PDA::Production.new("^\\s*(?<lfield>\\S[^:]*):\\s*(?<lval>-?\\d+)\\s+(?<rfield>\\S[^:]*):\\s+(?<rval>-?\\d+)\\s*$", [:entTwoColumn]) do |md, pda|
          lfield = md[:lfield].strip
          lval = md[:lval].to_i
          rfield = md[:rfield].strip
@@ -213,7 +213,7 @@ class Netstat_v < DotFileParser::Base
        # States Popped:  0
        # Two column ENT output has lines with only the Receive state.
        # These start with white space.
-       PDA::Production.new("^\\s+(?<rfield>Bad Packets|Maximum Buffers Per Interrupt|Average Buffers Per Interrupt|System Buffers):\\s*(?<rval>\\d+)$", [:entTwoColumn]) do |md, pda|
+       PDA::Production.new("^\\s+(?<rfield>Bad Packets|Maximum Buffers Per Interrupt|Average Buffers Per Interrupt|System Buffers):\\s*(?<rval>-?\\d+)$", [:entTwoColumn]) do |md, pda|
          rfield = md[:rfield]
          rval = md[:rval].to_i
          right = pda.target.fetch(:right)
@@ -227,7 +227,7 @@ class Netstat_v < DotFileParser::Base
        # States Popped:  0
        # Two column ENT output has fields for Transmit only.  These
        # lines do not have any leading white space.
-       PDA::Production.new("^(?<lfield>\\S[^:]+):\\s+(?<lval>\\d+)\\s*$", [:entTwoColumn]) do |md, pda|
+       PDA::Production.new("^(?<lfield>\\S[^:]+):\\s+(?<lval>-?\\d+)\\s*$", [:entTwoColumn]) do |md, pda|
          lfield = md[:lfield]
          lval = md[:lval].to_i
          left = pda.target.fetch(:left)

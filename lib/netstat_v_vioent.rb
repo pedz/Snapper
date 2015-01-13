@@ -210,7 +210,7 @@ class Netstat_v_vioent < Netstat_v::Base
      # New State:      :no_change
      # State Pushed:   none
      # Special case for three values on the same line.
-     PDA::Production.new("^\\s*(?<f1>[^: ][^:]+):\\s*(?<v1>\\d+)\\s*(?<f2>[^: ][^:]+):\\s*(?<v2>\\d+)\\s*(?<f3>[^: ][^:]+):\\s*(?<v3>\\d+)\\s*$", [:normal]) do |md, pda|
+     PDA::Production.new("^\\s*(?<f1>[^: ][^:]+):\\s*(?<v1>-?\\d+)\\s*(?<f2>[^: ][^:]+):\\s*(?<v2>-?\\d+)\\s*(?<f3>[^: ][^:]+):\\s*(?<v3>-?\\d+)\\s*$", [:normal]) do |md, pda|
        f1 = md[:f1].strip
        v1 = md[:v1].to_i
        pda.target[f1] = v1
@@ -228,7 +228,7 @@ class Netstat_v_vioent < Netstat_v::Base
      # State Pushed:   none
      # Special case for two values with the second being True or
      # False
-     PDA::Production.new("^\\s*(?<f1>[^: ][^:]+):\\s*(?<v1>\\d+)\\s*(?<f2>[^: ][^:]+):\\s*(?<v2>True|False)\\s*$", [:normal]) do |md, pda|
+     PDA::Production.new("^\\s*(?<f1>[^: ][^:]+):\\s*(?<v1>-?\\d+)\\s*(?<f2>[^: ][^:]+):\\s*(?<v2>True|False)\\s*$", [:normal]) do |md, pda|
        f1 = md[:f1].strip
        v1 = md[:v1].strip
        pda.target[f1] = v1
