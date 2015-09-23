@@ -1,5 +1,6 @@
 require "spec_helper"
 require "netstat_v"
+require "netstat_v_generic"
 
 describe Netstat_v do
   it "rejects random text" do 
@@ -15,13 +16,13 @@ EOF
     expect{ Netstat_v.new(text) }.to raise_error(RuntimeError, "Device name: ent1\n'Device Type:' string not found")
   end
 
-  it "rejects text with unknown Device type:" do 
+  it "uses the generic netstat -v parser for an unknown device" do 
     text = <<EOF
 ETHERNET STATISTICS (ent1) :
 Device Type: blah blah blah
-random text
+Hardware Address: e4:1f:13:fd:29:75
 EOF
-    expect{ Netstat_v.new(text) }.to raise_error(RuntimeError, "Device name: ent1\nNo device specific parser for 'blah blah blah'")
+    expect(Netstat_v.new(text).class).to eq(Netstat_v)
   end
 
   it "has a Parsers nested class" do

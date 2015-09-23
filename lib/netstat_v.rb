@@ -399,8 +399,7 @@ class Netstat_v < DotFileParser::Base
   def parse_lines(text)
     md = DEVICE_TYPE_REGEXP.match(text)
     fail "'Device Type:' string not found" unless md
-    parser = Netstat_v::Parsers.instance.find(md[1])
-    fail "No device specific parser for '#{md[1]}'" unless parser
+    parser = Netstat_v::Parsers.instance.find(md[1]) || Netstat_v_generic
     return parser.new(text).result
   end
 end
