@@ -46,7 +46,7 @@ Driver Flags: Up Broadcast Running
 	DataRateSet 
 
 EOF
-    @result = Netstat_v.new(text).result["ent13"]
+    @result = Netstat_v.new(text).result["ent13"].to_hash
   }
 
   it "parses the hardware MAC address" do

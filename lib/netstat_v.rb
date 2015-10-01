@@ -13,8 +13,7 @@ require "stringio"
 # the VASI devices (whatever the hell those are).
 class Netstat_v < DotFileParser::Base
   include Logging
-  # The log level the Netstat_v uses.
-  LOG_LEVEL = Logger::INFO
+  LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 
   # Each type of adapter has its own parser for the output the its
   # entstat.foo produces.  These parsers declare their existance by
@@ -400,6 +399,6 @@ class Netstat_v < DotFileParser::Base
     md = DEVICE_TYPE_REGEXP.match(text)
     fail "'Device Type:' string not found" unless md
     parser = Netstat_v::Parsers.instance.find(md[1]) || Netstat_v_generic
-    return parser.new(text).result
+    return parser.new(text)
   end
 end

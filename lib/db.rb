@@ -13,6 +13,10 @@ class Db
     @db = Hash.new
   end
 
+  def keys
+    @db.keys
+  end
+
   # Returns the element in the database matching key
   def [](key)
     @db[key]

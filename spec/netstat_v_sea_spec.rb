@@ -160,7 +160,7 @@ Type of Packets Received:
 Real Adapter: ent2
 
 EOF
-    @result = Netstat_v.new(text).result["ent22"]
+    @result = Netstat_v.new(text).result["ent22"].to_hash
   }
   it "parses the hardware MAC address" do
     expect(@result["Hardware Address"]).to eq("e4:1f:13:fd:29:75")

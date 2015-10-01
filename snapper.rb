@@ -4,10 +4,11 @@ Dir.glob('lib/**/*.rb') { |f| require_relative f }
 
 # A class that represents the snapper program
 class Snapper
-  extend Page
+  # Add this back in when create_page is being used again
+  # extend Page
+
   include Logging
-  # The log level for the Snapper class
-  LOG_LEVEL = Logger::INFO
+  LOG_LEVEL = Logger::INFO      # The log level for the Snapper class
   
   # A hash of file patterns and the parser to use for that file.
   Patterns = {
@@ -44,7 +45,13 @@ class Snapper
       SnapParser.parse(directory, nil, db, Patterns)
       db
     end
-    create_page(db_list)
+    # We use to call create_page here to create an HTML page with
+    # pretty pictures.  I'm going to leave that call here commented
+    # out for now.
+    # create_page(db_list)
+
+    Devices.create(db_list)
+    Print.out(db_list)
   end
 end
 

@@ -21,6 +21,10 @@ class Odm
       @arg = arg
     end
 
+    def to_hash
+      @arg.to_hash
+    end
+
     # converts the object into json
     def to_json(options = {})
       @arg.to_json(options)

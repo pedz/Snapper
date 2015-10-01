@@ -66,7 +66,7 @@ Receive TCP Segment Aggregation: Disabled
 Virtual Adapter: ent0
 
 EOF
-      @result = Netstat_v.new(text).result["ent6"]
+      @result = Netstat_v.new(text).result["ent6"].to_hash
     }
     it "parses the hardware MAC address" do
       expect(@result["Hardware Address"]).to eq("6c:ae:8b:02:d7:68")
@@ -205,7 +205,7 @@ Backup adapter - ent5:
 ======================
 
 EOF
-      @result = Netstat_v.new(text).result["ent4"]
+      @result = Netstat_v.new(text).result["ent4"].to_hash
     }
     it "parses the hardware MAC address" do
       expect(@result["Hardware Address"]).to eq("40:f2:e9:5a:21:68")

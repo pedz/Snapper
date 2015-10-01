@@ -61,7 +61,7 @@ IP over FC Traffic Statistics
 
 Adapter Effective max transfer value:   0x100000
 EOF
-      @result = Netstat_v.new(text).result["fcs3"]
+      @result = Netstat_v.new(text).result["fcs3"].to_hash
     }
 
     # Note, the sample used above is incorrect.  The 2nd section with
@@ -140,7 +140,7 @@ IP over FC Traffic Statistics
 
 Adapter Effective max transfer value:   0x100000
 EOF
-      @result = Netstat_v.new(text).result["fcs0"]
+      @result = Netstat_v.new(text).result["fcs0"].to_hash
     }
     
     it "parses the serial number" do
@@ -218,7 +218,7 @@ IP over FC Traffic Statistics
 Adapter Effective max transfer value:   0x100000
 
 EOF
-      @result = Netstat_v.new(text).result["fcs0"]
+      @result = Netstat_v.new(text).result["fcs0"].to_hash
     }
     
     it "parses the serial number" do

@@ -40,6 +40,14 @@ class DotFileParser
       @result = text
     end
 
+    def to_text
+      @text
+    end
+
+    def to_hash
+      @result.to_hash
+    end
+
     # Returns the resulting parsed text as a json object.  In the
     # default case, the text is simply stored and this routine returns
     # the text as a json object.
