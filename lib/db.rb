@@ -9,13 +9,14 @@ class Db < Hash
   # Adds item into the database by pushing item onto the table from
   # the database who name matches the class of the item.
   def add(item)
-    table(item.class).push(item)
-  end
-
-  # Returns a container called a table that will have only elements
-  # of the class as item
-  def table(klass)
-    self[klass.to_s] ||= []
+    klass = item.class.to_s
+    if self[klass].nil?
+      self[klass] = item
+    elsif self[klass].respond_to?(:push)
+      self[klass].push(item)
+    else
+      self[klass] = [ self[klass], item ]
+    end
   end
 
   # Converts the database into json
