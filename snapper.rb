@@ -13,6 +13,7 @@ class Snapper
   # A hash of file patterns and the parser to use for that file.
   Patterns = {
     %r{/general/([^.]*\.)(?!vc\.)add\z} => Odm, # ODM files in general but not the vc files
+    %r{/general/errpt.out} => ErrptOutParser,
     %r{/async/async.snap} => DotFileParser,
     %r{/dump/dump.snap} => DotFileParser,
     %r{/filesys/filesys.snap} => DotFileParser,
@@ -49,7 +50,7 @@ class Snapper
     # pretty pictures.  I'm going to leave that call here commented
     # out for now.
     # create_page(db_list)
-
+    # puts db_list[0].keys
     Devices.create(db_list)
     Print.out(db_list)
   end

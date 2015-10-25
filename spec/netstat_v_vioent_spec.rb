@@ -114,7 +114,7 @@ I/O Memory Information
   Total DMA Max Min (KB)    69760
 
 EOF
-    @result = Netstat_v.new(text).result["ent4"].to_hash
+    @result = Netstat_v.new(text, Hash.new).parse["ent4"]
   }
 
   it "parses the hardware MAC address" do

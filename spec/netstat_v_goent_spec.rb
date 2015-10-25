@@ -62,7 +62,7 @@ Transmit and Receive Flow Control Threshold (High): 40960
 Transmit and Receive Flow Control Threshold (Low): 20480
 Transmit and Receive Storage Allocation (TX/RX): 4/44
 EOF
-        @result = Netstat_v.new(text).result["ent2"].to_hash
+        @result = Netstat_v.new(text, Hash.new).parse["ent2"]
   }
   it "parses the hardware MAC address" do
     expect(@result["Hardware Address"]).to eq("e4:1f:13:fd:29:75")

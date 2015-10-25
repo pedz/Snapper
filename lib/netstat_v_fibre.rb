@@ -4,8 +4,7 @@ require_relative "netstat_v"
 # for the "fcsdd" driver.
 class Netstat_v_fibre < Netstat_v::Base
   include Logging
-  # The log level that Netstat_v_fibre uses
-  LOG_LEVEL = Logger::INFO
+  LOG_LEVEL = Logger::INFO   # The log level that Netstat_v_fibre uses
 
   # Includes BASE_PRODUCTIONS and several other productions for fibre
   # channel stuff.

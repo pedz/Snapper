@@ -3,9 +3,13 @@ require "netstat_v"
 require "netstat_v_generic"
 
 describe Netstat_v do
+  before(:each) do
+    @db = double("db")
+  end
+  
   it "rejects random text" do 
     text = "Some text"
-    expect{ Netstat_v.new(text) }.to raise_error(RuntimeError, "No device boundaries found")
+    expect{ Netstat_v.new(text, @db).parse }.to raise_error(RuntimeError, "No device boundaries found")
   end
 
   it "rejects text without Device type:" do 
@@ -13,7 +17,7 @@ describe Netstat_v do
 ETHERNET STATISTICS (ent1) :
 blah blah blah
 EOF
-    expect{ Netstat_v.new(text) }.to raise_error(RuntimeError, "Device name: ent1\n'Device Type:' string not found")
+    expect{ Netstat_v.new(text, @db).parse }.to raise_error(RuntimeError, "Device name: ent1\n'Device Type:' string not found")
   end
 
   it "uses the generic netstat -v parser for an unknown device" do 
@@ -22,7 +26,7 @@ ETHERNET STATISTICS (ent1) :
 Device Type: blah blah blah
 Hardware Address: e4:1f:13:fd:29:75
 EOF
-    expect(Netstat_v.new(text).class).to eq(Netstat_v)
+    expect(Netstat_v.new(text, @db).parse["ent1"].class).to eq(Netstat_v_generic)
   end
 
   it "has a Parsers nested class" do
@@ -56,7 +60,7 @@ EOF
     end
   end
 
-  it "calls the adapter specific parser and return its result" do
+  it "calls the adapter specific parser and returns its result" do
     ent_name = "ent1"
     adapter_type = "Happy Adapter"
     adapter_specific_text = <<EOF
@@ -69,7 +73,7 @@ EOF
 ETHERNET STATISTICS (#{ent_name}) :
 #{adapter_specific_text.chomp}
 EOF
-    Netstat_v::Parsers.instance.add(DotFileParser::Base, adapter_type)
-    expect(Netstat_v.new(text).to_json).to eq({ ent_name => adapter_specific_text }.to_json)
+    Netstat_v::Parsers.instance.add(Item, adapter_type)
+    expect(Netstat_v.new(text, @db).parse.to_text).to eq(text)
   end
 end

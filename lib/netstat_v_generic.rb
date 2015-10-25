@@ -4,20 +4,21 @@ require_relative "netstat_v"
 # type that is not currently known.
 class Netstat_v_generic < Netstat_v::Base
   include Logging
-  # The log level the Netstat_v uses.
-  LOG_LEVEL = Logger::INFO
+  LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 
   # Includes ENT_PRODUCTIONS
   def productions
     [
-     # Sample Match:   |Adapter Specific Statistics: Unknown Device Type
-     # States Matched: :all
+     # Sample Match:   |empty line
+     # States Matched: :driverFlags
      # New State:      :consumeAll
      # State Pushed:   yes
-     # States Popped:  none
-     # When we reach the adapter specific section, we change states to
-     # one that just pushes all of the lines into an array called 'unmatched'
-     PDA::Production.new("Adapter Specific Statistics:.*", :all, :consumeAll) do |md, pda|
+     # States Popped:  1
+     # Driver Flags end with a blank line and then puts us into a
+     # comsume all state.
+     PDA::Production.new("^\\s*$", [:driverFlags], :consumeAll) do |md, pda|
+       logger.debug("Popping #{pda.state} state")
+       pda.pop(1)
        field = 'unmatched'
        ret = pda.target
        ret[field] = []

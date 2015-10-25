@@ -4,8 +4,7 @@ require_relative "netstat_v"
 # adapter.
 class Netstat_v_vioent < Netstat_v::Base
   include Logging
-  # The log level that Netstat_v_vioent uses:
-  LOG_LEVEL = Logger::INFO
+  LOG_LEVEL = Logger::INFO # The log level that Netstat_v_vioent uses:
 
   # Includes ENT_PRODUCTIONS as well as productions for the trailing
   # part which I call "Hyper Info".

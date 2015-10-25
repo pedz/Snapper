@@ -58,7 +58,7 @@ Hash mode: Destination IP address
 -------------------------------------------------------------
 
 EOF
-      @result = Netstat_v.new(text).result["ent20"].to_hash
+      @result = Netstat_v.new(text, Hash.new).parse["ent20"]
     }
 
     it "parses the hardware MAC address" do
@@ -157,7 +157,7 @@ Hash mode: Destination IP address
 -------------------------------------------------------------
 
 EOF
-      @result = Netstat_v.new(text).result["ent10"].to_hash
+      @result = Netstat_v.new(text, Hash.new).parse["ent10"]
     }
 
     it "parses the hardware MAC address" do

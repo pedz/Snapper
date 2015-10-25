@@ -4,8 +4,7 @@ require_relative "netstat_v"
 # adapter.
 class Netstat_v_rrent < Netstat_v::Base
   include Logging
-  # The log level the Netstat_v uses.
-  LOG_LEVEL = Logger::INFO
+  LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 
   # Includes ENT_PRODUCTIONS as well as SEA specific productions.
   def productions

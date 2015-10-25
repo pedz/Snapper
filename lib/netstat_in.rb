@@ -1,15 +1,14 @@
 require_relative "dot_file_parser"
+require_relative "interface"
 
 # Parses the output of netstat -in
-class Netstat_in < DotFileParser::Base
+class Netstat_in < Item
   include Logging
   LOG_LEVEL = Logger::INFO
 
   LINK_REGEXP = Regexp.new("link#[0-9]+")
   INET_REGEXP = Regexp.new("([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)")
-  def initialize(text)
-    @text = text
-    @result = {}
+  def parse
     headings = nil
     @text.each_line do |line|
       line.chomp!
@@ -20,7 +19,7 @@ class Netstat_in < DotFileParser::Base
       else
         fields = line.split
         name = fields.shift
-        record = (@result[name] ||= {})
+        record = (self[name] ||= Interface.new(name, @db))
         if fields.length == 8
           mtu, network, address, ipkts, ierrs, opkts, oerrs, coll = fields
         else
@@ -42,5 +41,6 @@ class Netstat_in < DotFileParser::Base
         end
       end
     end
+    self
   end
 end

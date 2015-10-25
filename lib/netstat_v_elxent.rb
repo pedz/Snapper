@@ -4,8 +4,7 @@ require_relative "netstat_v"
 # adapter.
 class Netstat_v_elxent < Netstat_v::Base
   include Logging
-  # The log level that Netstat_v_elxent uses:
-  LOG_LEVEL = Logger::INFO
+  LOG_LEVEL = Logger::INFO # The log level that Netstat_v_elxent uses:
 
   # Includes ENT_PRODUCTIONS and productions to put the RXQ and TXQ
   # statistics into their own hashes index by the queue number.

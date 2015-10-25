@@ -35,6 +35,13 @@ class Devices < Hash
         cuats[name][attribute] = cuat
       end
 
+      errs = {}
+      db['Errpt'].each do |err|
+        err = err.to_hash
+        name = err['Resource Name']
+        (errs[name] ||= []).push(err)
+      end
+
       netstat_v = db['Netstat_v'][0].to_hash
 
       devices = Devices.new
@@ -68,6 +75,7 @@ class Devices < Hash
           attributes[key] = hash
         end
         device['attributes'] = attributes
+        device['errpt'] = errs[name]
 
         if temp = db["Lsattr_el#{name}"]
           device['Lsattr_el'] = temp[0].to_text

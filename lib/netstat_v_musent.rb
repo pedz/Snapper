@@ -6,8 +6,7 @@ require_relative "netstat_v"
 # will need to be modified much like elxent is.
 class Netstat_v_musent < Netstat_v::Base
   include Logging
-  # The log level that Netstat_v_musent uses:
-  LOG_LEVEL = Logger::INFO
+  LOG_LEVEL = Logger::INFO # The log level that Netstat_v_musent uses:
 
   # Includes ENT_PRODUCTIONS and productions to put the RXQ and TXQ
   # statistics into their own hashes index by the queue number.

@@ -11,7 +11,7 @@ require "stringio"
 # netstat -v is essentially a sequence of calling entstat -d <device>
 # for all of the ethernet devices, all the fiber channel devices, and
 # the VASI devices (whatever the hell those are).
-class Netstat_v < DotFileParser::Base
+class Netstat_v < Item
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 
@@ -30,7 +30,7 @@ class Netstat_v < DotFileParser::Base
     # The netstat_v front end finds the adapter specific parser by
     # passing the string after "Device type:" to this routine
     def find(string)
-      table[string]
+      table[string] || Netstat_v_generic
     end
 
     private
@@ -40,10 +40,9 @@ class Netstat_v < DotFileParser::Base
     end
   end
 
-  class Base < DotFileParser::Base
+  class Base < Item
     include Logging
-    # The log level that Netstat_v_elxent uses:
-    LOG_LEVEL = Logger::INFO
+    LOG_LEVEL = Logger::INFO    # The log level that Netstat_v_elxent uses:
 
     # These productions should be in every netstat_v_* parser.  There
     # are four productions:
@@ -315,14 +314,19 @@ class Netstat_v < DotFileParser::Base
        end
       ] + BASE_PRODUCTIONS
 
-    def initialize(text)
-      @text = text
-      @result = WriteOnceHash.new
-      @result['text'] = text;
-      pda = PDA.new(@result, productions)
-      io = StringIO.new(text)
+    # same as []= for hash except it will fail if the field already
+    # exists in the hash.  All of this is to just make sure that the
+    # parsers are actually correctly parsing.
+    def []=(field, value)
+      fail "Overwriting value #{field}" if key?(field)
+      logger.debug { "Adding field: '#{field}' = '#{value}'" }
+      super
+    end
+
+    def parse
+      pda = PDA.new(self, productions)
       lineno = 0
-      io.each do |line|
+      @text.each_line do |line|
         lineno += 1
         line.chomp!
         begin
@@ -346,6 +350,7 @@ class Netstat_v < DotFileParser::Base
           raise new_e
         end
       end
+      self
     end
 
     # A "virtual" function in the Ruby sense.
@@ -362,43 +367,62 @@ class Netstat_v < DotFileParser::Base
   VASI = Regexp.new("VASI STATISTICS.*")
   private_constant :VASI
 
-  # text is the full output of netstat -v.  The text is parsed
-  # breaking it first into the pieces for each device.  Each device is
-  # a specific type of adapter.  The pieces are thus passed to the
-  # adapter specific parser.
-  def initialize(text)
-    @text = text
-    @result = {}
-    parts = text.split(DEVICE_BOUNDARY)
+  # Regexp that matches the Device Type: ... line
+  DEVICE_TYPE_REGEXP = Regexp.new("^\n?Device Type: +(.*)")
+  private_constant :DEVICE_TYPE_REGEXP
+  
+  def parse
+    parts = @text.split(DEVICE_BOUNDARY)
     fail "No device boundaries found" if parts.length < 3
-    unused_empty = parts.shift  # stuff before match
-    while true
+    unused_empty = parts.shift  # stuff before first match
+    while parts.length > 2
       whole_line, device_name, rest = parts.shift(3)
-      break if whole_line.nil?
       next if VASI.match(whole_line)
       logger.debug { "DEVICE NAME: #{device_name}" }
+
       begin
-        @result[device_name] = parse_lines(rest)
+        self[device_name] = find_parser(rest).new(rest, @db).parse
       rescue => e
         new_e = e.exception("Device name: #{device_name}\n#{e.message}")
         new_e.set_backtrace(e.backtrace)
         raise new_e
       end
     end
+    self
   end
 
-  # Regexp that matches the Device Type: ... line
-  DEVICE_TYPE_REGEXP = Regexp.new("^\n?Device Type: +(.*)")
-  private_constant :DEVICE_TYPE_REGEXP
-  
+  # text is the full output of netstat -v.  The text is parsed
+  # breaking it first into the pieces for each device.  Each device is
+  # a specific type of adapter.  The pieces are thus passed to the
+  # adapter specific parser.
+  # def initialize(text)
+  #   @text = text
+  #   @result = {}
+  #   parts = text.split(DEVICE_BOUNDARY)
+  #   fail "No device boundaries found" if parts.length < 3
+  #   unused_empty = parts.shift  # stuff before match
+  #   while true
+  #     whole_line, device_name, rest = parts.shift(3)
+  #     break if whole_line.nil?
+  #     next if VASI.match(whole_line)
+  #     logger.debug { "DEVICE NAME: #{device_name}" }
+  #     begin
+  #       @result[device_name] = parse_lines(rest)
+  #     rescue => e
+  #       new_e = e.exception("Device name: #{device_name}\n#{e.message}")
+  #       new_e.set_backtrace(e.backtrace)
+  #       raise new_e
+  #     end
+  #   end
+  # end
+
   private
 
   # The parse routine that takes the text in the form of an StringIO
   # parses it using Productions.
-  def parse_lines(text)
+  def find_parser(text)
     md = DEVICE_TYPE_REGEXP.match(text)
     fail "'Device Type:' string not found" unless md
-    parser = Netstat_v::Parsers.instance.find(md[1]) || Netstat_v_generic
-    return parser.new(text)
+    Netstat_v::Parsers.instance.find(md[1])
   end
 end

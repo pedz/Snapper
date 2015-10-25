@@ -4,8 +4,7 @@ require_relative 'logging'
 # sure the various parsers are correctly pasing their input.
 class WriteOnceHash < Hash
   include Logging
-  # The log level that WriteOnceHash will use
-  LOG_LEVEL = Logger::INFO
+  LOG_LEVEL = Logger::INFO # The log level that WriteOnceHash will use
 
   # same as []= for hash except it will fail if the field already
   # exists in the hash.  All of this is to just make sure that the

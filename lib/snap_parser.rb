@@ -21,20 +21,27 @@ class SnapParser
   # patterns.each should result in elements that respond to first and
   # last.  If first.match(path) returns true, then last.parse(io, db)
   # will be called where io is the open file for path.
-  def self.parse(dir, prune, db, patterns)
-    Pathname.new(File.expand_path(dir)).find do |path|
-      if prune && prune.match(path.to_s)
+  def initialize(dir, prune, db, patterns)
+    @dir, @prune, @db, @patterns = dir, prune, db, patterns
+  end
+
+  # parse the files within the directory (@dir) using the patterns and
+  # adding the items to the database
+  def parse
+    Pathname.new(File.expand_path(@dir)).find do |path|
+      if @prune && @prune.match(path.to_s)
         Find.prune
       end
       if path.file?
-        patterns.each do |ele|
+        @patterns.each do |ele|
           if ele.first.match(path.to_s)
             path.open("r:ISO-8859-1") do |io|
-              ele.last.parse(io, db)
+              ele.last.new(io, @db).parse
             end
           end
         end
       end
     end
+    self
   end
 end

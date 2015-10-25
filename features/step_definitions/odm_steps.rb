@@ -40,7 +40,7 @@ Given(/^a db instance$/) do
 end
 
 When(/^fed to the parser$/) do
-  Odm.parse(@file, @db)
+  Odm.new(@file, @db).parse
 end
 
 Then(/^its entries will be available\.$/) do
