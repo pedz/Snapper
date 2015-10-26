@@ -36,7 +36,14 @@ class SnapParser
         @patterns.each do |ele|
           if ele.first.match(path.to_s)
             path.open("r:ISO-8859-1") do |io|
-              ele.last.new(io, @db).parse
+              begin
+                ele.last.new(io, @db).parse
+              rescue => e
+                new_message = e.message.split("\n").insert(1, "snap parser: path:#{path}").join("\n")
+                new_e = e.exception(new_message)
+                new_e.set_backtrace(e.backtrace)
+                raise new_e
+              end
             end
           end
         end

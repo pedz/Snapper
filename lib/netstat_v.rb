@@ -345,7 +345,8 @@ class Netstat_v < Item
             end
           end
         rescue => e
-          new_e = e.exception("line: #{lineno}\nstate: #{pda.state}\n#{line}\n#{e.message}")
+          new_message = e.message.split("\n").insert(1, "line: #{lineno}\nstate: #{pda.state}\n#{line}\n#{e.message}").join("\n")
+          new_e = e.exception(new_message)
           new_e.set_backtrace(e.backtrace)
           raise new_e
         end
@@ -383,38 +384,14 @@ class Netstat_v < Item
       begin
         self[device_name] = find_parser(rest).new(rest, @db).parse
       rescue => e
-        new_e = e.exception("Device name: #{device_name}\n#{e.message}")
+        new_message = e.message.split("\n").insert(1, "Device name: #{device_name}").join("\n")
+        new_e = e.exception(new_message)
         new_e.set_backtrace(e.backtrace)
         raise new_e
       end
     end
     self
   end
-
-  # text is the full output of netstat -v.  The text is parsed
-  # breaking it first into the pieces for each device.  Each device is
-  # a specific type of adapter.  The pieces are thus passed to the
-  # adapter specific parser.
-  # def initialize(text)
-  #   @text = text
-  #   @result = {}
-  #   parts = text.split(DEVICE_BOUNDARY)
-  #   fail "No device boundaries found" if parts.length < 3
-  #   unused_empty = parts.shift  # stuff before match
-  #   while true
-  #     whole_line, device_name, rest = parts.shift(3)
-  #     break if whole_line.nil?
-  #     next if VASI.match(whole_line)
-  #     logger.debug { "DEVICE NAME: #{device_name}" }
-  #     begin
-  #       @result[device_name] = parse_lines(rest)
-  #     rescue => e
-  #       new_e = e.exception("Device name: #{device_name}\n#{e.message}")
-  #       new_e.set_backtrace(e.backtrace)
-  #       raise new_e
-  #     end
-  #   end
-  # end
 
   private
 

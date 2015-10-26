@@ -30,9 +30,19 @@ class DotFileParser < FileParser
     # The lines0 piece is thrown away.
     pieces = @io.read.split(DotSeparator)
     not_used = pieces.shift     # date or blanks before 1st command
+    lines = 5
     while pieces.length > 1
       name, text = pieces.shift(2)
-      create_item(name, @db, text).parse
+      next if name.match(/\A *\z/) # yes... it happens :-(
+      begin
+        create_item(name, @db, text).parse
+      rescue => e
+        new_message = e.message.split("\n").insert(1, "dot file parser: lineno:#{lines}").join("\n")
+        new_e = e.exception(new_message)
+        new_e.set_backtrace(e.backtrace)
+        raise new_e
+      end
+      lines += (text.lines.count + 5)
     end
     self
   end

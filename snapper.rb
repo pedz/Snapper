@@ -43,7 +43,7 @@ class Snapper
   def self.run(dir_list)
     db_list = dir_list.map do |directory|
       db = Db.new
-      SnapParser.parse(directory, nil, db, Patterns)
+      SnapParser.new(directory, nil, db, Patterns).parse
       db
     end
     # We use to call create_page here to create an HTML page with
@@ -51,8 +51,9 @@ class Snapper
     # out for now.
     # create_page(db_list)
     # puts db_list[0].keys
-    Devices.create(db_list)
-    Print.out(db_list)
+
+    # Devices.create(db_list)
+    # Print.out(db_list)
   end
 end
 
