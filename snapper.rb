@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+require 'optparse'
+require 'ostruct'
+
 Dir.glob('lib/**/*.rb') { |f| require_relative f }
 
 # A class that represents the snapper program
@@ -40,27 +43,67 @@ class Snapper
   
   # Called with dir_list set to an array of directories.  Each
   # directory should point to the top of a snap.
-  def self.run(dir_list)
-    db_list = dir_list.map do |directory|
+  def self.run(options)
+    db_list = options.dir_list.map do |directory|
       db = Db.new
       SnapParser.new(directory, nil, db, Patterns).parse
       db
     end
+
+    if options.print_keys
+      puts db_list[0].keys.sort
+      return
+    end
+
     # We use to call create_page here to create an HTML page with
     # pretty pictures.  I'm going to leave that call here commented
     # out for now.
     # create_page(db_list)
-    # puts db_list[0].keys
-
     # Devices.create(db_list)
     # Print.out(db_list)
   end
 end
 
 if __FILE__ == $0
-  if ARGV.length == 0
-    $stderr.puts "Usage: snapper <dir> ..."
+  options = OpenStruct.new
+  options.print_keys = false
+  options.level = 1
+
+  opt_parser = OptionParser.new do |opts|
+    opts.banner = "Usage: #{__FILE__.sub(/.*\//, "")} [options] <path to snap1> [ <path to snap2> ... ]"
+
+    opts.on("-k", "--print_keys", "Print the top level keys") do |k|
+      options.print_keys = k
+    end
+
+    opts.on("-l N", "--level N", Integer, "Output verbosity level from 0 to 11", "default is 1") do |l|
+      if l < 0 || l > 11
+        STDERR.puts "level out of range"
+        STDERR.puts opt_parser.help
+        exit 1
+      end
+      options.level = l
+    end
+
+    opts.on_tail("-h", "--help", "Show this message") do
+      puts opts
+      exit
+    end
+  end
+
+  begin
+    opt_parser.parse!(ARGV)
+  rescue => e
+    STDERR.puts e.message
     exit 1
   end
-  Snapper.run(ARGV)
+
+  # Must have at least one snap directory
+  if ARGV.empty?
+    STDERR.puts opt_parser.help
+    exit 1
+  end
+  options.dir_list = ARGV
+
+  Snapper.run(options)
 end
