@@ -207,12 +207,15 @@ Backup adapter - ent5:
 EOF
       @result = Netstat_v.new(text, Hash.new).parse["ent4"]
     }
+
     it "parses the hardware MAC address" do
       expect(@result["Hardware Address"]).to eq("40:f2:e9:5a:21:68")
     end
+
     it "parses the two column statistics ouutput" do
       expect(@result["Receive Statistics"]["Interrupts"]).to eq(0)
     end
+
     it "parses the Actor State LACP activity" do
       expect(@result["Actor State"]["LACP activity"]).to eq("Active")
     end

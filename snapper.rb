@@ -44,9 +44,9 @@ class Snapper
     snap_list = options.dir_list.map do |directory|
       db = Db.new
       SnapParser.new(directory, nil, db, Patterns).parse
-      { dir: directory, db: db, alerts: [] }
+      OpenStruct.new({ dir: directory, db: db, alerts: [] })
     end
-    list = { snap_list: snap_list, alerts: [] }
+    list = OpenStruct.new({ snap_list: snap_list, alerts: [] })
     Devices.create(list)
 
     if options.print_keys
@@ -56,9 +56,16 @@ class Snapper
 
     # Just a random sample
     # db = list[:snap_list][0][:db]
+    # devices = db['Devices']
     # ent15 = db['Devices']['ent15']
     # entstat = ent15['entstat']
-    # puts entstat['Port VLAN ID'].class
+    # puts entstat['Port VLAN ID']
+
+    # Or we can do it this way
+    # puts list.snap_list[0].db['Devices'].ent15.entstat.port_vlan_id
+
+    # And the same value is over here:
+    # puts list.snap_list[0].db['Netstat_v'].ent15.port_vlan_id
   end
 end
 

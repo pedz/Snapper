@@ -1,13 +1,13 @@
 require_relative 'logging'
 require 'pp'
 
-class Devices < Hash
+class Devices < Item
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Devices uses.
 
   def self.create(top)
-    top[:snap_list].each do |snap|
-      db = snap[:db]
+    top.snap_list.each do |snap|
+      db = snap.db
       cudvs = db['Cudv']
 
       # pddvs (which may be empty) is a hash by uniquetype
@@ -46,11 +46,11 @@ class Devices < Hash
 
       netstat_v = db['Netstat_v']
 
-      devices = Devices.new
+      devices = Devices.new("", db)
       cudvs.each do |cudv|
         cudv = cudv
         name = cudv['name']
-        device = Device.new
+        device = Device.new("", db)
         devices[name] = device
         device['CuDv'] = cudv
         device['CuAt'] = cuats[name]

@@ -18,35 +18,42 @@ class Odm < FileParser
     full_line = ""
     item = nil
     @io.each_line do |this_line|
-      next if this_line.match(/^\s*$/) # empty line
-      raw_line += this_line
-      this_line = fix_literals(this_line)
+      begin
+        next if this_line.match(/^\s*$/) # empty line
+        raw_line += this_line
+        this_line = fix_literals(this_line)
 
-      # Accumulate continuation lines
-      full_line += this_line
+        # Accumulate continuation lines
+        full_line += this_line
 
-      # if line ends with a continuation character
-      if this_line.match(/\\$/)
-        full_line.chomp!        # kill line terminator
-        full_line.chop!         # kill the \
-        next
-      end
+        # if line ends with a continuation character
+        if this_line.match(/\\$/)
+          full_line.chomp!        # kill line terminator
+          full_line.chop!         # kill the \
+          next
+        end
 
-      # Looks like a new stanza
-      if md = full_line.match(/^(\w+):$/)
-        item = create_item(md[1], @db, raw_line)
+        # Looks like a new stanza
+        if md = full_line.match(/^(\w+):$/)
+          item = create_item(md[1], @db, raw_line)
 
         # looks like an attribute
-      elsif (md = full_line.match(/^\s+(\w+)\s*=\s*((.|\n)*)$/))
-        item << raw_line
-        item[md[1]] = convert(md[2])
-      else                      # format seems broken
-        raise "Bad format"
+        elsif (md = full_line.match(/^\s+(\w+)\s*=\s*((.|\n)*)$/))
+          item << raw_line
+          item[md[1]] = convert(md[2])
+        else                      # format seems broken
+          raise "Bad format"
+        end
+        
+        # line has been processed
+        raw_line = ""
+        full_line = ""
+      rescue => e
+        new_message = e.message.split("\n").insert(1, "Odm: line:#{@io.lineno}").join("\n")
+        new_e = e.exception(new_message)
+        new_e.set_backtrace(e.backtrace)
+        raise new_e
       end
-      
-      # line has been processed
-      raw_line = ""
-      full_line = ""
     end
     self
   end
