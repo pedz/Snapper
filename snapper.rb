@@ -7,9 +7,6 @@ Dir.glob('lib/**/*.rb') { |f| require_relative f }
 
 # A class that represents the snapper program
 class Snapper
-  # Add this back in when create_page is being used again
-  # extend Page
-
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level for the Snapper class
   
@@ -44,23 +41,24 @@ class Snapper
   # Called with dir_list set to an array of directories.  Each
   # directory should point to the top of a snap.
   def self.run(options)
-    db_list = options.dir_list.map do |directory|
+    snap_list = options.dir_list.map do |directory|
       db = Db.new
       SnapParser.new(directory, nil, db, Patterns).parse
-      db
+      { dir: directory, db: db, alerts: [] }
     end
+    list = { snap_list: snap_list, alerts: [] }
+    Devices.create(list)
 
     if options.print_keys
-      puts db_list[0].keys.sort
+      puts snap_list[0][:db].keys.sort
       return
     end
 
-    # We use to call create_page here to create an HTML page with
-    # pretty pictures.  I'm going to leave that call here commented
-    # out for now.
-    # create_page(db_list)
-    # Devices.create(db_list)
-    # Print.out(db_list)
+    # Just a random sample
+    # db = list[:snap_list][0][:db]
+    # ent15 = db['Devices']['ent15']
+    # entstat = ent15['entstat']
+    # puts entstat['Port VLAN ID'].class
   end
 end
 
