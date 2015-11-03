@@ -3,6 +3,7 @@
 require_relative "dot_file_parser"
 require_relative "write_once_hash"
 require_relative "pda"
+require_relative "hash_mixins"
 require "json"
 require "singleton"
 require "stringio"
@@ -14,6 +15,8 @@ require "stringio"
 class Netstat_v < Item
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
+
+  include HashWriteOnce
 
   # Each type of adapter has its own parser for the output the its
   # entstat.foo produces.  These parsers declare their existance by
@@ -313,15 +316,6 @@ class Netstat_v < Item
          pda.pop(1)
        end
       ] + BASE_PRODUCTIONS
-
-    # same as []= for hash except it will fail if the field already
-    # exists in the hash.  All of this is to just make sure that the
-    # parsers are actually correctly parsing.
-    def []=(field, value)
-      fail "Overwriting value #{field}" if key?(field)
-      logger.debug { "Adding field: '#{field}' = '#{value}'" }
-      super
-    end
 
     def parse
       pda = PDA.new(self, productions)
