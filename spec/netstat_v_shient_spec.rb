@@ -243,6 +243,7 @@ EOF
   it "parses the hardware MAC address" do
     expect(@result["Hardware Address"]).to eq("40:f2:e9:d3:45:a1")
   end
+
   it "parses the [q-0] stuff" do
     expect(@result["q"][0]["tx_bytes"]).to eq(0)
   end

@@ -1,6 +1,5 @@
 require_relative 'logging'
 require_relative 'hash_mixins'
-require 'json'
 
 # A place to store things
 class Db < Hash
@@ -20,10 +19,5 @@ class Db < Hash
     else
       self[klass] = [ self[klass], item ]
     end
-  end
-
-  # Converts the database into json
-  def to_json(options = {})
-    self.to_json(options)
   end
 end

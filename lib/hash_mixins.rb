@@ -16,32 +16,48 @@ module HashWriteOnce
 end
 
 ##
-# A mixin for Hash that replaces []= so that a getter method is
-# created for each hash key.
+# A mixin for a Hash subclass which mucks with the key making them
+# valid method names.  Then missing_method is used so that the method
+# name can be used as well as the original key name.  The technique
+# used here defers creating the instance method until the first lookup
+# since in this particular case, there are many more keys created than
+# are level retrieved.
 module HashMakeMethods
-  def HashMakeMethods.included(mod)
-    mod.const_set(:PREDEFINED_METHODS, mod.instance_methods)
+  def respond_to_missing?(method, include_all)
+    find_name(method) || super
   end
 
-  ##
-  # Assigns value to the key in the hash but also creates a method for
-  # key to simplify tests, etc.  The method's name is the same as the
-  # key except it is downcased and any non-alphanumerics are changed
-  # to underscores.  If the method collides with a pre-existing
-  # method, an underscore is added to it.
-  def []=(key, value)
-    method = key.to_s.downcase.gsub(/[^a-z0-9_]/, '_').to_sym
-    predefined_methods = self.class.const_get(:PREDEFINED_METHODS)
-    if predefined_methods.include?(method)
-      method = ("_" + key.to_s.downcase.gsub(/[^a-z0-9_]/, '_')).to_sym
+  def method_missing(method, *args, &proc)
+    if !block_given? && args.length == 0 && self.has_key?(method)
+      return self[method]
     end
-    if self.respond_to?(method)
-      fail "Collision with #{key} to #{method}" unless self.key?(key)
-    else
-      define_singleton_method(method) { self[key] }
-    end
-    logger.debug { "Adding field: '#{field}' = '#{value}'" }
     super
+  end
+
+  def []=(key, value)
+    super(fix_key(key), value)
+  end
+
+  def key?(key)
+    super(fix_key(key))
+  end
+
+  def has_key?(key)
+    super(fix_key(key))
+  end
+
+  def [](key)
+    super(fix_key(key))
+  end
+
+  private
+
+  def fix_key(key)
+    key.to_s.downcase.gsub(/[^a-z0-9_]/, '_').to_sym
+  end
+
+  def find_name(method)
+    self.has_key?(method) && method
   end
 end
 

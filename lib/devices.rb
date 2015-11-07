@@ -1,6 +1,9 @@
 require_relative 'logging'
 require 'pp'
 
+# This class with the create class method will hook up various parts
+# and pieces of a snap but not make any judgements on what is
+# important.  That will be done by the output processing.
 class Devices < Item
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Devices uses.
@@ -44,6 +47,7 @@ class Devices < Item
         (errs[name] ||= []).push(err)
       end
 
+      netstat_in = db['Netstat_in']
       netstat_v = db['Netstat_v']
 
       devices = Devices.new("", db)
@@ -92,6 +96,7 @@ class Devices < Item
         end
 
         device['entstat'] = netstat_v[name]
+        device['netstat_in'] = netstat_in[name]
       end
       db.add(devices)
     end

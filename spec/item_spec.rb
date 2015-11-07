@@ -25,9 +25,9 @@ describe Item do
       expect(subject.this_is__a_test).to eq(14)
     end
 
-    it "should fail when collisions on keys occurs" do
-      expect{ subject["HI"] = 14 }.to raise_error("Collision with HI to hi")
-    end
+    # it "should fail when collisions on keys occurs" do
+    #   expect{ subject["HI"] = 14 }.to raise_error("Collision with HI to hi")
+    # end
 
     it "should allow multiple assignments with the same key" do
       expect{ subject["hi"] = 99 }.not_to raise_error
@@ -39,5 +39,9 @@ describe Item do
       expect{ subject["Dog"] = 99 }.not_to raise_error
       expect(subject.dog).to eq(99)
     end
+  end
+
+  describe "Marshal support" do
+    
   end
 end

@@ -30,4 +30,11 @@ describe Db do
       expect(db["String"][0]).to eq("something")
     end
   end
+
+  it "supports marshaling" do
+    db = Db.new
+    db.add("something")
+    new_db = Marshal.load(Marshal.dump(db))
+    expect(new_db.string).to eq("something")
+  end
 end

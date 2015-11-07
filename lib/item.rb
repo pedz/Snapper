@@ -9,6 +9,14 @@ class Item < Hash
 
   include HashMakeMethods
 
+  def self.inherited(subclass)
+    children.push(subclass.to_s)
+  end
+
+  def self.children
+    @children ||= []
+  end
+
   ##
   # The original text of the entry
   # The database that the item will be part of as db
