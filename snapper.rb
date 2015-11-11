@@ -4,10 +4,24 @@ require 'optparse'
 require 'ostruct'
 require 'zlib'
 
-Dir.glob('lib/**/*.rb') { |f| require_relative f }
-
 # A class that represents the snapper program
 class Snapper
+  def self.add_klass(klass)
+    klasses.push(klass)
+  end
+
+  def self.klasses
+    @klasses ||= []
+  end
+
+  # A sort of tip toe through the tulips... I need Snapper.add_klass
+  # defined before the other files are loaded and I need the other
+  # files loaded before including Logging and referencing the parsers
+  # in the Patterns list.  So I create the Snapper constant and the
+  # add_klass method, load the files, then proceed onward through the
+  # fog.
+  Dir.glob('lib/**/*.rb') { |f| require_relative f }
+
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level for the Snapper class
   
@@ -49,26 +63,28 @@ class Snapper
   def run
     snap_list = @options.dir_list.map do |path|
       path = Pathname(path)
-      result = nil
+      snap = nil
       if path.directory?
         if dump_file(path).file?
           Zlib::GzipReader.open(dump_file(path)) do |gz|
-            result = restore(gz.read)
+            snap = restore(gz.read)
           end
         else
           db = Db.new
           SnapParser.new(path, nil, db, Patterns).parse
-          result = OpenStruct.new({ dir: path, db: db, alerts: [] })
+          snap = OpenStruct.new({ dir: path, db: db, alerts: [], print_list: PrintList.new })
           if @options.dump
             Zlib::GzipWriter.open(dump_file(path), 9) do |gz|
-              Marshal.dump([ Item.children, result ], gz)
+              Marshal.dump([ Item.children, snap ], gz)
             end
           end
         end
-        result
       elsif path.file?
         restore(path.read)
       end
+
+      Snapper.klasses.each { |klass| klass.create(snap) }
+      snap
     end
     list = OpenStruct.new({ snap_list: snap_list, alerts: [] })
 
@@ -76,7 +92,6 @@ class Snapper
     # around in the snap list either creating conveninece items or
     # adding alerts in various places.  In theory, it should be
     # possible to make this an extensible list.
-    Devices.create(list)
 
     # From here down will be output routines
     if @options.print_keys
@@ -91,16 +106,7 @@ class Snapper
 
     # Then for each snap
     list.snap_list.each do |snap|
-      # print the hostname block
-      print_hostname(snap)
-      
-      # print the alerts for this host
-      snap.alerts.each do |alert|
-        # print out alerts
-      end
-      
-      print_interfaces(snap)
-      # print_seas(snap)
+      snap.print_list.items.each { |item| item.print(@options) }
     end
   end
 
@@ -132,24 +138,6 @@ class Snapper
     class_array, result = Marshal.restore(io, p)
     result
   end
-
-  def print_hostname(snap)
-    db = snap.db
-    if @options.level > 2
-      puts "#" * 80
-      puts "##{db.lparstat_out.node_name.center(78)}#"
-      puts "#" * 80
-    else
-      puts "Host: #{db.lparstat_out.node_name}"
-    end
-  end
-
-  def print_interfaces(snap)
-    new = snap.db.devices.select do |key, value|
-      value.netstat_in
-    end
-    puts new.keys
-  end
 end
 
 if __FILE__ == $0
@@ -175,8 +163,8 @@ if __FILE__ == $0
       options.print_keys = k
     end
 
-    opts.on("-l N", "--level N", Integer, "Output verbosity level from 0 to 11", "default is 1") do |l|
-      if l < 0 || l > 11
+    opts.on("-l N", "--level N", Integer, "Output verbosity level from -1 to 11", "default is 1") do |l|
+      if l < -1 || l > 11
         STDERR.puts "level out of range"
         STDERR.puts opt_parser.help
         exit 1
@@ -184,7 +172,7 @@ if __FILE__ == $0
       options.level = l
     end
 
-    opts.on_tail("-h", "--help", "Show this message") do
+    opts.on_tail("-h", "-?", "--help", "Show this message") do
       puts opts
       exit
     end

@@ -1,5 +1,5 @@
+require_relative 'item'
 require_relative 'logging'
-require 'pp'
 
 # This class with the create class method will hook up various parts
 # and pieces of a snap but not make any judgements on what is
@@ -8,41 +8,39 @@ class Devices < Item
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Devices uses.
 
-  def self.create(top)
-    top.snap_list.each do |snap|
+  def self.create(snap)
       db = snap.db
       cudvs = db['Cudv']
 
       # pddvs (which may be empty) is a hash by uniquetype
-      pddvs = {}
+      pddvs = Item.new(@db)
       db['Pddv'].each do |pddv|
         pddv = pddv
         pddvs[pddv['uniquetype']] = pddv
       end
 
       # pdats (which may be empty) is a hash by uniquetype of hashes by attribute name
-      pdats = {}
+      pdats = Item.new(@db)
       db['Pdat'].each do |pdat|
         pdat = pdat
         uniquetype = pdat['uniquetype']
         attribute = pdat['attribute']
-        pdats[uniquetype] ||= {}
+        pdats[uniquetype] ||= Item.new(@db)
         pdats[uniquetype][attribute] = pdat
       end
 
       # cuats is hash by device name of hashes by attribute name
-      cuats = {}
+      cuats = Item.new(@db)
       db['Cuat'].each do |cuat|
         cuat = cuat
         name = cuat['name']
         attribute = cuat['attribute']
-        cuats[name] ||= {}
+        cuats[name] ||= Item.new(@db)
         cuats[name][attribute] = cuat
       end
 
-      errs = {}
+      errs = Item.new(@db)
       db['Errpt'].each do |err|
-        err = err
         name = err['Resource Name']
         (errs[name] ||= []).push(err)
       end
@@ -61,11 +59,11 @@ class Devices < Item
         pddvln = cudv['PdDvLn']
         device['PdDv'] = pddvs[pddvln]
         device['PdAt'] = pdats[pddvln]
-        attributes = {}
-        (device['PdAt'] || device['CuAt'] || {}).keys.each do |key|
+        attributes = Item.new(@db)
+        (device['PdAt'] || device['CuAt'] || Item.new(@db)).keys.each do |key|
           cuat = cuat[key] if cuat = device['CuAt']
           pdat = pdat[key] if pdat = device['PdAt']
-          hash = {}
+          hash = Item.new(@db)
           unless pdat.nil?
             %w{ attribute uniquetype deflt values width type generic rep nls_index }.each do |field|
               hash[field] = pdat[field]
@@ -88,7 +86,7 @@ class Devices < Item
         # async/async.snap.  We assume they will all be equal and pick
         # the first one in that case.
         if temp = db["Lsattr_el#{name}"]
-          if temp.respond_to? :first
+          if temp.is_a? Array
             device['Lsattr_el'] = temp.first
           else
             device['Lsattr_el'] = temp
@@ -99,6 +97,7 @@ class Devices < Item
         device['netstat_in'] = netstat_in[name]
       end
       db.add(devices)
-    end
   end
+
+  Snapper.add_klass(self)
 end

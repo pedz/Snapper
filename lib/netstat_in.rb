@@ -19,7 +19,7 @@ class Netstat_in < Item
       else
         fields = line.split
         name = fields.shift
-        record = (self[name] ||= Interface.new(name, @db))
+        record = (self[name] ||= Interface.new("", { name: name }, @db))
         if fields.length == 8
           mtu, network, address, ipkts, ierrs, opkts, oerrs, coll = fields
         else

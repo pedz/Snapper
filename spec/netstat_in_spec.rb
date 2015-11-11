@@ -18,7 +18,7 @@ EOF
     @result = Netstat_in.new(text, Hash.new).parse
   }
 
-  it "has an entry for each interface" do
+  it "has an entry for each interface plus one for :order" do
     expect(@result.length).to eq(3)
   end
 

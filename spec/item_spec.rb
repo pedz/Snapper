@@ -1,5 +1,5 @@
 require "spec_helper"
-require "netstat_in"
+require "item"
 
 describe Item do
   subject { Item.new("", Hash.new) }
@@ -41,7 +41,15 @@ describe Item do
     end
   end
 
-  describe "Marshal support" do
-    
+  describe "#select" do
+    it "should return an Item" do
+      subject["key1"] = 12
+      subject["key2"] = 15
+      result = subject.select do |key, value|
+        value < 15
+      end
+      expect(result).to be_a(Item)
+      expect(result.length).to eq(1)
+    end
   end
 end

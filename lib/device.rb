@@ -5,30 +5,58 @@ class Device < Item
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Device uses.
 
+  def initilize
+    super
+    self[:printed] = false
+  end
+
   SKIP_LINES = /\A=+\Z/
-  def print(db_list, prefix = "")
-    puts "#{prefix}#{self['CuDv']['name']} #{self['CuDv']['ddins']}"
-    self['Netstat_v'].to_text.each_line do |line|
-      puts "#{prefix}  #{line}" unless SKIP_LINES.match(line)
-    end
-    self['Lsattr_el'].each_line do |line|
-      puts "#{prefix}  #{line}"
-    end
-    if self['CuDv']['ddins'] == "ethchandd"
-      self['attributes']['adapter_names']['value'].split(',').each do |adapter_name|
-        db_list[adapter_name].print(db_list, prefix + "    ")
+  def print(options, indent = 0, prefix = "")
+    unless printed
+      output(options, indent, "#{cudv.name} #{cudv.ddins}")
+      indent += 1
+
+      if options.level > 1
+        @first = nil
+        @last = nil
+        @count = -1
+        errpt && errpt.each do |err|
+          foo(options, indent, prefix, err)
+        end
+        foo(options, indent, prefix, nil)
+      end
+
+      if options.level > 2
+        entstat && entstat.to_text.each_line do |line|
+          output(options, indent, line) unless SKIP_LINES.match(line)
+        end
+      end
+
+      if options.level > 3
+        lsattr_el && lsattr_el.to_text.each_line do |line|
+          output(options, indent, line)
+        end
       end
     end
-    if self['CuDv']['ddins'] == "seadd"
-      self['attributes']['real_adapter']['value'].split(',').each do |adapter_name|
-        db_list[adapter_name].print(db_list, prefix + "    ")
+  end
+
+  private
+
+  def foo(options, indent, prefix, err)
+    if @first && err && @first.label == err.label
+      @count += 1
+      @last = err
+    else
+      if @last
+        if (@count > 0)
+          output(options, indent + 1, "#{@count} duplicates removed")
+        end
+        @last.print(options, indent, prefix)
+        @last = nil
+        @count = -1
       end
-      self['attributes']['virtual_adapters']['value'].split(',').each do |adapter_name|
-        db_list[adapter_name].print(db_list, prefix + "    ")
-      end
-      self['attributes']['control_adapter']['value'].split(',').each do |adapter_name|
-        db_list[adapter_name].print(db_list, prefix + "    ")
-      end
+      err.print(options, indent, prefix) if err
+      @first = err
     end
   end
 end

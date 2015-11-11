@@ -31,12 +31,12 @@ describe SnapParser do
     end
     
     it "respects the prune argument" do
-      # should match .desc, .files, .level, and XS25/XS25.snap
+      # should match XS25/XS25.snap
       mock_class = double("Klass")
       mock_instance = double("instance")
-      expect(mock_class).to receive(:new).exactly(4).times.and_return(mock_instance)
-      expect(mock_instance).to receive(:parse).exactly(4).times.with(no_args).with(no_args)
-      SnapParser.new(TEST_SNAP, %r{#{Regexp.quote(TEST_SNAP.to_s)}/[a-z]}, true, { /./ => mock_class }).parse
+      expect(mock_class).to receive(:new).exactly(1).times.and_return(mock_instance)
+      expect(mock_instance).to receive(:parse).exactly(1).times.with(no_args).with(no_args)
+      SnapParser.new(TEST_SNAP, %r{#{Regexp.quote(TEST_SNAP.to_s)}/[^X]}, true, { /./ => mock_class }).parse
     end
   end
 end
