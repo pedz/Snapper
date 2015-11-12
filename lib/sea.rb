@@ -5,17 +5,17 @@ class Sea < Device
   include Logging
   LOG_LEVEL = Logger::INFO
 
-  def print(options, indent = 0, prefix = "")
+  def print(context)
     super
-    indent += 1
-    attributes.real_adapter.value.split(',').each do |adapter_name|
-      @db.devices[adapter_name].print(options, indent, prefix)
+    attributes.real_adapter.value.split(',').print_list(context.nest) do |context, adapter_name|
+      @db.devices[adapter_name].print(context)
     end
-    attributes.virt_adapters.value.split(',').each do |adapter_name|
-      @db.devices[adapter_name].print(options, indent, prefix)
+    attributes.virt_adapters.value.split(',').print_list(context.nest) do |context, adapter_name|
+      @db.devices[adapter_name].print(context)
     end
-    attributes.ctl_chan.value.split(',').each do |adapter_name|
-      @db.devices[adapter_name].print(options, indent, prefix)
+    attributes.ctl_chan.value.split(',').print_list(context.nest) do |context, adapter_name|
+      @db.devices[adapter_name].print(context)
     end
+    context
   end
 end

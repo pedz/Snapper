@@ -105,9 +105,9 @@ class Item
 
   private
 
-  def output(options, indent = 0, string = "")
+  def output(context, string = "")
     @printed = true
-    puts sprintf("%*s%s", indent*2, "", string) if options.level >= 0
+    puts sprintf("%*s%s", context.indent*2, "", string) if context.options.level >= 0
   end
 
   def fix_key(key)

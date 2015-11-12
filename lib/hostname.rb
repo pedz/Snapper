@@ -15,13 +15,14 @@ class Hostname < Item
 
   Snapper.add_klass(self)
 
-  def print(options, indent = 0, prefix = "")
-    if options.level > 2
+  def print(context)
+    if context.options.level > 2
       puts "#" * 80
       puts "##{node_name.center(78)}#"
       puts "#" * 80
-    elsif options.level >= 0
+    elsif context.options.level >= 0
       puts "Host: #{node_name}"
     end
+    context
   end
 end

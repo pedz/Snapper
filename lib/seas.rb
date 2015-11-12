@@ -21,15 +21,17 @@ class Seas < Item
 
   Snapper.add_klass(self)
 
-  def print(options, indent = 0, prefix = "")
-    self.each_value do |device|
+  def print(context)
+    self.each_value.print_list(context.nest) do |context, device|
       #ugly just to prevent double blank lines.
       unless device.printed
-        device.print(options, indent, prefix)
+        context = device.print(context)
         if options.level > 0
-          output(options, indent, prefix)
+          output(context, "")
         end
       end
+      context
     end
+    context
   end
 end

@@ -5,11 +5,11 @@ class Ethchan < Device
   include Logging
   LOG_LEVEL = Logger::INFO
 
-  def print(options, indent = 0, prefix = "")
+  def print(context)
     super
-    indent += 1
-    attributes.adapter_names.value.split(',').each do |adapter_name|
-      @db.devices[adapter_name].print(options, indent, prefix)
+    attributes.adapter_names.value.split(',').print_list(context.nest) do |context, adapter_name|
+      @db.devices[adapter_name].print(context)
     end
+    context
   end
 end
