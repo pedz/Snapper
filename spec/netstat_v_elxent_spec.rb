@@ -1,7 +1,7 @@
 require "spec_helper"
-require "netstat_v_elxent"
+require "entstat_elxent"
 
-describe Netstat_v_elxent do 
+describe Entstat_elxent do 
   context "PCIe2 2-port 10GbE SR Adapter" do
     before(:all) {
       text = <<EOF

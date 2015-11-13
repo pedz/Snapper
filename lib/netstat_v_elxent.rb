@@ -2,9 +2,9 @@ require_relative "netstat_v"
 
 # Parsers the output from netstat -d entN where entN is a elxent
 # adapter.
-class Netstat_v_elxent < Netstat_v::Base
+class Entstat_elxent < Netstat_v::Base
   include Logging
-  LOG_LEVEL = Logger::INFO # The log level that Netstat_v_elxent uses:
+  LOG_LEVEL = Logger::INFO # The log level that Entstat_elxent uses:
 
   # Includes ENT_PRODUCTIONS and productions to put the RXQ and TXQ
   # statistics into their own hashes index by the queue number.
@@ -48,6 +48,6 @@ class Netstat_v_elxent < Netstat_v::Base
   end
 end
 
-Netstat_v::Parsers.instance.add(Netstat_v_elxent, "PCIe2 2-port 10GbE SR Adapter")
-Netstat_v::Parsers.instance.add(Netstat_v_elxent, "Int Multifunction Card w/ Copper SFP+ 10GbE Adapter")
-Netstat_v::Parsers.instance.add(Netstat_v_elxent, "Int Multifunction Card w/ Base-TX 10/100/1000 1GbE Adapter")
+Netstat_v::Parsers.instance.add(Entstat_elxent, "PCIe2 2-port 10GbE SR Adapter")
+Netstat_v::Parsers.instance.add(Entstat_elxent, "Int Multifunction Card w/ Copper SFP+ 10GbE Adapter")
+Netstat_v::Parsers.instance.add(Entstat_elxent, "Int Multifunction Card w/ Base-TX 10/100/1000 1GbE Adapter")
