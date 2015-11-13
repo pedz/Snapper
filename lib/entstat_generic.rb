@@ -2,7 +2,7 @@ require_relative "netstat_v"
 
 # Parsers the output from netstat -d entN where entN is an adapter
 # type that is not currently known.
-class Netstat_v_generic < Netstat_v::Base
+class Entstat_generic < Netstat_v::Base
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 

@@ -2,7 +2,7 @@ require_relative "netstat_v"
 
 # Parsers the output from netstat -d entN where entN is a goent
 # adapter.
-class Netstat_v_goent < Netstat_v::Base
+class Entstat_goent < Netstat_v::Base
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 
@@ -12,4 +12,4 @@ class Netstat_v_goent < Netstat_v::Base
   end
 end
 
-Netstat_v::Parsers.instance.add(Netstat_v_goent, "4-Port 10/100/1000 Base-TX PCI-Express Adapter (14106803)")
+Netstat_v::Parsers.instance.add(Entstat_goent, "4-Port 10/100/1000 Base-TX PCI-Express Adapter (14106803)")

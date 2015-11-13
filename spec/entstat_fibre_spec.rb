@@ -1,7 +1,7 @@
 require "spec_helper"
-require "netstat_v_fibre"
+require "entstat_fibre"
 
-describe Netstat_v_fibre do
+describe Entstat_fibre do
   context "df1000f114108a0" do
     before(:all) {
       text = <<EOF

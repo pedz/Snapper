@@ -1,7 +1,7 @@
 require "spec_helper"
-require "netstat_v_shient"
+require "entstat_shient"
 
-describe Netstat_v_shient do 
+describe Entstat_shient do 
   before(:all) {
     text = <<EOF
 ETHERNET STATISTICS (ent1) :

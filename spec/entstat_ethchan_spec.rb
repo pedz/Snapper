@@ -1,7 +1,7 @@
 require "spec_helper"
-require "netstat_v_ethchan"
+require "entstat_ethchan"
 
-describe Netstat_v_ethchan do 
+describe Entstat_ethchan do 
   context "operating in normal mode" do
     before(:all) {
       text = <<EOF

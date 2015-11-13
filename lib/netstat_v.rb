@@ -33,7 +33,7 @@ class Netstat_v < Item
     # The netstat_v front end finds the adapter specific parser by
     # passing the string after "Device type:" to this routine
     def find(string)
-      table[string] || Netstat_v_generic
+      table[string] || Entstat_generic
     end
 
     private
@@ -45,7 +45,7 @@ class Netstat_v < Item
 
   class Base < Item
     include Logging
-    LOG_LEVEL = Logger::INFO    # The log level that Netstat_v_elxent uses:
+    LOG_LEVEL = Logger::INFO    # The log level that Netstat_v uses:
 
     # These productions should be in every netstat_v_* parser.  There
     # are four productions:

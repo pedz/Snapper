@@ -1,7 +1,7 @@
 require "spec_helper"
-require "netstat_v_sea"
+require "entstat_sea"
 
-describe Netstat_v_sea do 
+describe Entstat_sea do 
   before(:all) {
     text = <<EOF
 ETHERNET STATISTICS (ent22) :

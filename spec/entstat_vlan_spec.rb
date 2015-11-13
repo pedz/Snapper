@@ -1,7 +1,7 @@
 require "spec_helper"
-require "netstat_v_vlan"
+require "entstat_vlan"
 
-describe Netstat_v_vlan do 
+describe Entstat_vlan do 
   before(:all) {
     text = <<EOF
 ETHERNET STATISTICS (ent13) :

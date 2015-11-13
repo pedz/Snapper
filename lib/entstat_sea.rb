@@ -2,7 +2,7 @@ require_relative "netstat_v"
 
 # Parsers the output from netstat -d entN where entN is a sea
 # adapter.
-class Netstat_v_sea < Netstat_v::Base
+class Entstat_sea < Netstat_v::Base
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 
@@ -166,4 +166,4 @@ class Netstat_v_sea < Netstat_v::Base
   end
 end
 
-Netstat_v::Parsers.instance.add(Netstat_v_sea, "Shared Ethernet Adapter")
+Netstat_v::Parsers.instance.add(Entstat_sea, "Shared Ethernet Adapter")

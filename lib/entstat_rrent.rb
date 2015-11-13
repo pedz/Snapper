@@ -2,7 +2,7 @@ require_relative "netstat_v"
 
 # Parsers the output from netstat -d entN where entN is a rrent
 # adapter.
-class Netstat_v_rrent < Netstat_v::Base
+class Entstat_rrent < Netstat_v::Base
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 
@@ -12,4 +12,4 @@ class Netstat_v_rrent < Netstat_v::Base
   end
 end
 
-Netstat_v::Parsers.instance.add(Netstat_v_rrent, "10 Gigabit Ethernet Adapter (ct3)")
+Netstat_v::Parsers.instance.add(Entstat_rrent, "10 Gigabit Ethernet Adapter (ct3)")

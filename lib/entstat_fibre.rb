@@ -2,9 +2,9 @@ require_relative "netstat_v"
 
 # Parses the entstat output from the fibre channel adapters.  This is
 # for the "fcsdd" driver.
-class Netstat_v_fibre < Netstat_v::Base
+class Entstat_fibre < Netstat_v::Base
   include Logging
-  LOG_LEVEL = Logger::INFO   # The log level that Netstat_v_fibre uses
+  LOG_LEVEL = Logger::INFO   # The log level that Entstat_fibre uses
 
   # Includes BASE_PRODUCTIONS and several other productions for fibre
   # channel stuff.
@@ -193,7 +193,7 @@ class Netstat_v_fibre < Netstat_v::Base
   end
 end
 
-Netstat_v::Parsers.instance.add(Netstat_v_fibre, "FC Adapter (adapter/pciex/df1000f114108a0)")
-Netstat_v::Parsers.instance.add(Netstat_v_fibre, "FC Adapter (adapter/pciex/df1000e21410f10)")
-Netstat_v::Parsers.instance.add(Netstat_v_fibre, "FC Adapter (adapter/pciex/7710018077107f0)")
-Netstat_v::Parsers.instance.add(Netstat_v_fibre, "FC Adapter (adapter/vdevice/IBM,vfc-client)")
+Netstat_v::Parsers.instance.add(Entstat_fibre, "FC Adapter (adapter/pciex/df1000f114108a0)")
+Netstat_v::Parsers.instance.add(Entstat_fibre, "FC Adapter (adapter/pciex/df1000e21410f10)")
+Netstat_v::Parsers.instance.add(Entstat_fibre, "FC Adapter (adapter/pciex/7710018077107f0)")
+Netstat_v::Parsers.instance.add(Entstat_fibre, "FC Adapter (adapter/vdevice/IBM,vfc-client)")

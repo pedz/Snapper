@@ -1,6 +1,6 @@
 require "spec_helper"
 require "netstat_v"
-require "netstat_v_generic"
+require "entstat_generic"
 
 describe Netstat_v do
   before(:each) do
@@ -26,7 +26,7 @@ ETHERNET STATISTICS (ent1) :
 Device Type: blah blah blah
 Hardware Address: e4:1f:13:fd:29:75
 EOF
-    expect(Netstat_v.new(text, @db).parse["ent1"].class).to eq(Netstat_v_generic)
+    expect(Netstat_v.new(text, @db).parse["ent1"].class).to eq(Entstat_generic)
   end
 
   it "has a Parsers nested class" do

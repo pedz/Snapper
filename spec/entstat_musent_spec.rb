@@ -1,7 +1,7 @@
 require "spec_helper"
-require "netstat_v_musent"
+require "entstat_musent"
 
-describe Netstat_v_musent do 
+describe Entstat_musent do 
   context "operating as stand alone" do
     before(:all) {
       text = <<EOF

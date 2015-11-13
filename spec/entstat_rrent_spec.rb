@@ -1,7 +1,7 @@
 require "spec_helper"
-require "netstat_v_rrent"
+require "entstat_rrent"
 
-describe Netstat_v_rrent do 
+describe Entstat_rrent do 
   before(:all) {
     text = <<EOF
 ETHERNET STATISTICS (ent10) :
