@@ -3,7 +3,18 @@ require_relative 'logging'
 
 class Errpt < Item
   def print(context)
-    if context.options.level <= 5
+    case context.options.level
+    when 0
+      # nothing
+    when 1
+      if context.state.nil?
+        context.state = { count: 0 }
+        context.proc = Proc.new do |context|
+          output(context, "#{context.state[:count]} error log entries")
+        end
+      end
+      context.state[:count] += 1
+    when 2, 3, 4, 5
       text = "%*s %s" % [ -22, label, date_time ]
 
       if context.state.nil?
