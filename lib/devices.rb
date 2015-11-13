@@ -14,14 +14,14 @@ class Devices < Item
 
       # pddvs (which may be empty) is a hash by uniquetype
       pddvs = Item.new(@db)
-      db['Pddv'].each do |pddv|
+      db['Pddv'] && db['Pddv'].each do |pddv|
         pddv = pddv
         pddvs[pddv['uniquetype']] = pddv
       end
 
       # pdats (which may be empty) is a hash by uniquetype of hashes by attribute name
       pdats = Item.new(@db)
-      db['Pdat'].each do |pdat|
+      db['Pdat'] && db['Pdat'].each do |pdat|
         pdat = pdat
         uniquetype = pdat['uniquetype']
         attribute = pdat['attribute']

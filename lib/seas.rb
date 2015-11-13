@@ -26,7 +26,7 @@ class Seas < Item
       #ugly just to prevent double blank lines.
       unless device.printed
         context = device.print(context)
-        if options.level > 0
+        if context.options.level > 0
           output(context, "")
         end
       end
