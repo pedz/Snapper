@@ -7,6 +7,8 @@ class Item
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level used by the Item class
 
+  attr_reader :orig_key, :line_number
+
   def self.inherited(subclass)
     children.push(subclass.to_s)
   end
@@ -18,8 +20,12 @@ class Item
   ##
   # The original text of the entry
   # The database that the item will be part of as db
-  def initialize(text = "", hash = {}, db)
-    @text, @hash, @db = text, hash, db
+  def initialize(text = "", hash = {}, orig_key = {}, line_number = {}, db)
+    @text = text
+    @hash = hash
+    @orig_key = orig_key
+    @line_number = line_number
+    @db = db
     @printed = false
   end
 
@@ -77,7 +83,7 @@ class Item
         if result.object_id == orig_hash_id
           self
         else
-          self.class.new(@io, result, @db)
+          self.class.new(@io, result, @orig_key, @line_number, @db)
         end
       else
         result
@@ -88,7 +94,16 @@ class Item
   end
 
   def []=(key, value)
-    @hash[fix_key(key)] = value
+    fixed_key = fix_key(key)
+    if @hash.has_key?(fixed_key)
+      unless key == @orig_key[fixed_key] || key.is_a?(Symbol)
+        fail "Collision of new key #{key.inspect} with previous key #{@orig_key[fixed_key].inspect}"
+      end
+    else
+      @orig_key[fixed_key] = key
+      @line_number[fixed_key] = @io.respond_to?(:lineno) ? @io.lineno : nil
+    end
+    @hash[fixed_key] = value
   end
 
   def key?(key)
