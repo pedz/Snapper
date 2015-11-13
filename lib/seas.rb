@@ -22,7 +22,7 @@ class Seas < Item
   Snapper.add_klass(self)
 
   def print(context)
-    self.each_value.print_list(context.nest) do |context, device|
+    self.each_value.print_list(context) do |context, device|
       #ugly just to prevent double blank lines.
       unless device.printed
         context = device.print(context)
