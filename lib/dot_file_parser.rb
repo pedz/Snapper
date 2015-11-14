@@ -35,7 +35,7 @@ class DotFileParser < FileParser
       name, text = pieces.shift(2)
       next if name.match(/\A *\z/) # yes... it happens :-(
       begin
-        create_item(name, @db, text).parse
+        @db.create_item(name, text).parse
       rescue => e
         new_message = e.message.split("\n").insert(1, "dot file parser: lineno:#{lines}").join("\n")
         new_e = e.exception(new_message)

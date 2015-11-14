@@ -7,9 +7,8 @@ class Interfaces < Item
 
   def self.create(snap)
     db = snap.db
-    interfaces = Interfaces.new(db)
+    interfaces = db.create_item("Interfaces")
     snap.db.netstat_in.each_pair { |key, value| interfaces[key] = value }
-    db.add(interfaces)
     snap.print_list.add(interfaces, 10)
   end
 

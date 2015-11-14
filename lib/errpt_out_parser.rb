@@ -12,7 +12,7 @@ class ErrptOutParser < FileParser
   def parse
     @io.read.split(DashSeparator).each do |entry|
       next if entry.empty?
-      item = create_item("Errpt", @db, entry)
+      item = @db.create_item("Errpt", entry)
       entry.each_line do |line|
         line.chomp!
         if md = Fields.match(line)

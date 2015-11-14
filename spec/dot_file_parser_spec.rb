@@ -1,35 +1,36 @@
 require "spec_helper"
 require "dot_file_parser"
 require "stringio"
+require "db"
 
 describe DotFileParser do
   describe "#parse" do
     it "reads in TEST_TCPIP_SNAP" do
+      item = double("item")
       db = double("db")
-      expect(db).to receive(:add).exactly(15).times
+      expect(db).to receive(:create_item).exactly(15).times.and_return(item)
+      expect(item).to receive(:parse).exactly(15).times
       io = File.open(TEST_TCPIP_SNAP, mode: "r", encoding: "ISO-8859-1")
       DotFileParser.new(io, db).parse
     end
     
     it "calls the parser for the proper class" do
+      item = double("item")
       db = double("db")
-      foo_v = class_double("DotFileParser::Base")
-      foo_instance = instance_double("DotFileParser::Base")
       body = <<EOF
 This is some text
 blah blah blah
 EOF
-      expect(foo_v).to receive(:new).with(body, db).and_return(foo_instance)
-      expect(foo_instance).to receive(:parse).with(no_args)
-      Foo_v = foo_v
+      name = "Foo -v"
       text = <<EOF + body
 
 .....
-..... Foo -v
+..... #{name}
 .....
 
 EOF
-      expect(db).to receive(:add).exactly(1).times
+      expect(db).to receive(:create_item).once.with(name, body).and_return(item)
+      expect(item).to receive(:parse).once
       DotFileParser.new(StringIO.new(text), db).parse
     end
   end

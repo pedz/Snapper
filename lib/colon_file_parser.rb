@@ -18,7 +18,7 @@ class ColonFileParser < FileParser
   def parse
     name = @io.path.sub(/\A.*\//, '')
     text = @io.read
-    item = create_item(name, @db, text)
+    item = @db.create_item(name, text)
     text.each_line do |line|
       fail "Line did not parse" unless (md = LINE_REGEXP.match(line))
       field = md[:field].strip

@@ -7,7 +7,7 @@ class Seas < Item
 
   def self.create(snap)
     db = snap.db
-    seas = Seas.new(db)
+    seas = db.create_item("seas")
     db.devices.each_pair do |key, value|
       if value.cudv.pddvln == "adapter/pseudo/sea"
         new_value = Sea.new(value.to_text, value.to_hash, db)
@@ -15,7 +15,6 @@ class Seas < Item
         seas[key] = new_value
       end
     end
-    db.add(seas)
     snap.print_list.add(seas, 25)
   end
 

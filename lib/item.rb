@@ -1,11 +1,10 @@
 require_relative 'logging'
-require_relative "hash_mixins"
 require 'json'
 
 # The base type for all things in the database.
 class Item
   include Logging
-  LOG_LEVEL = Logger::INFO      # The log level used by the Item class
+  LOG_LEVEL = Logger::INFO
 
   attr_reader :orig_key, :line_number
 

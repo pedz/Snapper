@@ -35,7 +35,7 @@ class Odm < FileParser
 
         # Looks like a new stanza
         if md = full_line.match(/^(\w+):$/)
-          item = create_item(md[1], @db, raw_line)
+          item = @db.create_item(md[1], raw_line)
 
         # looks like an attribute
         elsif (md = full_line.match(/^\s+(\w+)\s*=\s*((.|\n)*)$/))

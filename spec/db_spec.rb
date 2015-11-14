@@ -2,39 +2,46 @@ require "spec_helper"
 require "db"
 
 describe Db do
-  it { is_expected.to respond_to(:add) }
+  it { is_expected.to respond_to(:create_item) }
   it { is_expected.to respond_to(:[]) }
   
-  context "#add" do
+  context "#create_item" do
     it "accepts an item" do
       db = Db.new
-      expect{ db.add("something") }.not_to raise_error
+      expect{ db.create_item("something") }.not_to raise_error
     end
 
     it "starts out empty" do
       db = Db.new
-      expect(db["String"]).to be nil
+      expect(db.empty?).to be true
     end
 
-    it "adds based upon the class being added" do
+    it "creates a class if necessary" do
       db = Db.new
-      db.add("something")
-      expect(db["String"]).to eq("something")
+      db.create_item("something")
+      expect(Something).to be_a(Class)
+    end
+
+    it "adds the optional text if given" do
+      db = Db.new
+      db.create_item("something", "optional text")
+      expect(db["Something"].to_text).to eq("optional text")
     end
 
     it "creates and array if more than one of the same type is added" do
       db = Db.new
-      db.add("something")
-      db.add("else")
-      expect(db["String"].length).to equal 2
-      expect(db["String"][0]).to eq("something")
+      item1 = db.create_item("something")
+      item2 = db.create_item("something")
+      expect(db["Something"].length).to equal 2
+      expect(db["Something"][0]).to eq(item1)
     end
   end
 
   it "supports marshaling" do
     db = Db.new
-    db.add("something")
+    item = db.create_item("foo")
+    item['dog'] = "woof"
     new_db = Marshal.load(Marshal.dump(db))
-    expect(new_db.string).to eq("something")
+    expect(new_db.foo.dog).to eq(item.dog)
   end
 end

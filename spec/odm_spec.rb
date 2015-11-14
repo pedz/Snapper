@@ -1,5 +1,6 @@
 require "spec_helper"
 require 'stringio'
+require "db"
 require "odm"
 
 class MyClass < Item
@@ -18,11 +19,7 @@ foster"
   attr4 = "two\nlines"
 HERE
         @input = StringIO.new(@text)
-        @db = Array.new
-        def @db.add(a)
-          self.push(a)
-        end
-
+        @db = Db.new
         @odm = Odm.new(@input, @db)
       end
 
@@ -32,7 +29,8 @@ HERE
       
       it "saves all the raw lines" do
         @odm.parse
-        expect(@db[0].to_text).to eq(@text)
+        puts @db[:myclass]
+        expect(@db[:myclass].to_text).to eq(@text)
       end
       
       it "adds the new object to the db" do
@@ -42,27 +40,27 @@ HERE
       
       it "creates a new object of the same class as the stanza type" do
         @odm.parse
-        expect(@db[0].class).to eq(Myclass)
+        expect(@db[:myclass].class).to eq(Myclass)
       end
       
       it "parses integer attributes" do
         @odm.parse
-        expect(@db[0]["attr1"]).to eq(15)
+        expect(@db[:myclass]["attr1"]).to eq(15)
       end
       
       it "parses string attributes" do
         @odm.parse
-        expect(@db[0]["attr2"]).to eq("string")
+        expect(@db[:myclass]["attr2"]).to eq("string")
       end
       
       it "joins continuation lines" do
         @odm.parse
-        expect(@db[0]["attr3"]).to eq("bananas foster")
+        expect(@db[:myclass]["attr3"]).to eq("bananas foster")
       end
       
       it "changes \\n into newlines" do
         @odm.parse
-        expect(@db[0]["attr4"]).to eq("two\nlines")
+        expect(@db[:myclass]["attr4"]).to eq("two\nlines")
       end
     end
   end

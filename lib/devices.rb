@@ -1,13 +1,16 @@
 require_relative 'item'
 require_relative 'logging'
 
-# This class with the create class method will hook up various parts
-# and pieces of a snap but not make any judgements on what is
-# important.  That will be done by the output processing.
+# A container (Item) in the db with the customized devices in it by
+# the logical name of the customized device (e.g. ent0)
 class Devices < Item
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Devices uses.
 
+  # Creates the 'devices' entry in the db and fills it with an entry
+  # for each customized device by its logical name.  Note that Lsattr
+  # creates the 'lsattr' entry within the device (which is slighly
+  # icky).
   def self.create(snap)
       db = snap.db
       cudvs = db['Cudv']
@@ -48,7 +51,7 @@ class Devices < Item
       netstat_in = db['Netstat_in']
       netstat_v = db['Netstat_v']
 
-      devices = Devices.new("", db)
+      devices = db.create_item("Devices")
       cudvs.each do |cudv|
         cudv = cudv
         name = cudv['name']
@@ -80,23 +83,9 @@ class Devices < Item
         end
         device['attributes'] = attributes
         device['errpt'] = errs[name]
-
-        # Its possible to have lsattr -El in more than one place.
-        # e.g. vty0 will show up in general/general.snap as well as
-        # async/async.snap.  We assume they will all be equal and pick
-        # the first one in that case.
-        if temp = db["Lsattr_el#{name}"]
-          if temp.is_a? Array
-            device['Lsattr_el'] = temp.first
-          else
-            device['Lsattr_el'] = temp
-          end
-        end
-
         device['entstat'] = netstat_v[name]
         device['netstat_in'] = netstat_in[name]
       end
-      db.add(devices)
   end
 
   Snapper.add_klass(self)
