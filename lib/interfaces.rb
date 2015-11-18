@@ -16,7 +16,7 @@ class Interfaces < Item
 
   def print(context)
     if context.options.level > 2
-      puts "##{"Interfaces".center(78)}#"
+      output(context, "##{"Interfaces".center(78)}#")
     end
     self.each_value.print_list(context.dup)
     context

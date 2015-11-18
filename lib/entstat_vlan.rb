@@ -1,8 +1,9 @@
 require_relative "netstat_v"
+require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is a vlan
 # adapter.
-class Entstat_vlan < Netstat_v::Base
+class Entstat_vlan < Entstat
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 

@@ -6,9 +6,11 @@ class Interface < Item
 
   def print(context)
     unless printed
-      text = "%s mtu:%s mac:%s ipkts:%s ierrs:%s opkts:%s oerrs:%s" %
-             [ self[:name],
-               self[:mtu],
+      text = self[:name]
+      text += " IPv4:#{self[:inet][0][:address]}" if self[:inet]
+      text += " IPv6:#{self[:inet6][0][:address]}" if self[:inet6]
+      text += " mtu:%s mac:%s ipkts:%s ierrs:%s opkts:%s oerrs:%s" %
+             [ self[:mtu],
                self[:mac],
                self[:ipkts],
                self[:ierrs],
@@ -26,7 +28,7 @@ class Interface < Item
         self[:adapter].print(context.nest)
       end
       if context.options.level > 0
-        output(context, "")
+        output(context)
       end
     end
     context

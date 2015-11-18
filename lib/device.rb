@@ -15,13 +15,8 @@ class Device < Item
       output(context, "#{cudv.name} #{cudv.ddins}")
 
       errpt && errpt.print_list(context.nest)
-      entstat && entstat.print(context.nest)
-
-      if context.options.level > 3
-        lsattr_el && lsattr_el.to_text.each_line do |line|
-          output(context.nest, line)
-        end
-      end
+      entstat.print(context.nest) if entstat
+      lsattr && lsattr.print(context.nest)
     end
     context
   end

@@ -1,8 +1,9 @@
 require_relative "netstat_v"
+require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is a sea
 # adapter.
-class Entstat_sea < Netstat_v::Base
+class Entstat_sea < Entstat
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 
@@ -24,7 +25,7 @@ class Entstat_sea < Netstat_v::Base
        
        # We also create a new field and push a state
        field = md[:field]
-       value = []
+       value = List.new
        ret[field] = value
        pda.push(value)
      end,
@@ -75,7 +76,7 @@ class Entstat_sea < Netstat_v::Base
      PDA::Production.new("^\\s*(?<field>SEA THREADS INFORMATION)\\s*$", [:SEA_subparagraphs], :SEA_threads) do |md, pda|
        pda.pop(1)
        field = md[:field]
-       value = []
+       value = List.new
        pda.target[field] = value
        pda.push(value)
      end,

@@ -1,8 +1,9 @@
 require_relative "netstat_v"
+require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is a ethchan
 # adapter.
-class Entstat_ethchan < Netstat_v::Base
+class Entstat_ethchan < Entstat
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 

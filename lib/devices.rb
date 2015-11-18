@@ -45,7 +45,7 @@ class Devices < Item
       errs = Item.new(@db)
       db['Errpt'].each do |err|
         name = err['Resource Name']
-        (errs[name] ||= []).push(err)
+        (errs[name] ||= List.new).push(err)
       end
 
       netstat_in = db['Netstat_in']
@@ -81,6 +81,7 @@ class Devices < Item
           end
           attributes[key] = hash
         end
+        device['lsattr'] = nil  # filled in by Lsattr later
         device['attributes'] = attributes
         device['errpt'] = errs[name]
         device['entstat'] = netstat_v[name]

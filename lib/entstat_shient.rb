@@ -1,8 +1,9 @@
 require_relative "netstat_v"
+require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is a shient
 # adapter.
-class Entstat_shient < Netstat_v::Base
+class Entstat_shient < Entstat
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 
@@ -89,7 +90,7 @@ class Entstat_shient < Netstat_v::Base
        field = md[:field].strip
        value = md[:value].to_i
        target = pda.target
-       target["q"] = [] unless target.has_key?("q")
+       target["q"] = List.new unless target.has_key?("q")
        q = target["q"]
        q[index] = WriteOnceHash.new unless q[index]
        q[index][field] = value

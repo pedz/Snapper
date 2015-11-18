@@ -18,7 +18,7 @@ class ErrptOutParser < FileParser
         if md = Fields.match(line)
           item[md[1]] = md[2]
         else
-          (item['extra'] ||= []).push(line)
+          (item['extra'] ||= List.new).push(line)
         end
       end
     end

@@ -8,12 +8,53 @@ class Item
 
   attr_reader :orig_key, :line_number
 
+  class << self
+    def add_filter(filter)
+      local_filters << filter
+    end
+
+    def filters
+      temp = []
+      entity = self
+      while entity
+        temp << entity.local_filters if entity.respond_to?(:local_filters)
+        entity = entity.superclass
+      end
+      temp.flatten
+    end
+
+    def local_filters
+      (@filters ||= []).sort!
+    end
+  end
+
+  def print(context)
+    if f = self.filters[0]
+      v = f.blah(context, self)
+      output(context, v)
+    end
+  end
+
+  def filters
+    self.class.filters
+  end
+
   def self.inherited(subclass)
     children.push(subclass.to_s)
   end
 
   def self.children
     @children ||= []
+  end
+
+  ##
+  # creates an instance of subclass klass and moves all the instance
+  # variables of the original Item into the new instance.  For
+  # example, in Seas, when a Device is discovered to be a Sea, the
+  # call: device.subclass(Sea) creates a new instance of Sea moving
+  # all of the data from device into the new instance.
+  def subclass(klass)
+    klass.new(@text, @hash, @orig_key, @line_number, @db)
   end
 
   ##
@@ -82,7 +123,7 @@ class Item
         if result.object_id == orig_hash_id
           self
         else
-          self.class.new(@io, result, @orig_key, @line_number, @db)
+          self.class.new(@text, result, @orig_key, @line_number, @db)
         end
       else
         result
@@ -94,13 +135,13 @@ class Item
 
   def []=(key, value)
     fixed_key = fix_key(key)
-    if @hash.has_key?(fixed_key)
+    if @hash.has_key?(fixed_key) && 
       unless key == @orig_key[fixed_key] || key.is_a?(Symbol)
         fail "Collision of new key #{key.inspect} with previous key #{@orig_key[fixed_key].inspect}"
       end
     else
       @orig_key[fixed_key] = key
-      @line_number[fixed_key] = @io.respond_to?(:lineno) ? @io.lineno : nil
+      @line_number[fixed_key] = @text.respond_to?(:lineno) ? @text.lineno : nil
     end
     @hash[fixed_key] = value
   end
@@ -119,9 +160,22 @@ class Item
 
   private
 
-  def output(context, string = "")
+  ##
+  # Does nothing if context.options.level is less than zero.  Sends
+  # text to stdout with proper indentation.  text can be multiple
+  # lines.  If text is nil or unspecified, sends a blank line to
+  # stdout.
+  def output(context, text = nil)
     @printed = true
-    puts sprintf("%*s%s", context.indent*2, "", string) if context.options.level >= 0
+    if context.options.level >= 0
+      if text
+        text.each_line do |line|
+          STDOUT.puts(sprintf("%*s%s", context.indent*2, "", line))
+        end
+      else
+        STDOUT.puts("")
+      end
+    end
   end
 
   def fix_key(key)

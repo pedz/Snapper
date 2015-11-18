@@ -1,8 +1,9 @@
 require_relative "netstat_v"
+require_relative "entstat"
 
 # Parses the entstat output from the fibre channel adapters.  This is
 # for the "fcsdd" driver.
-class Entstat_fibre < Netstat_v::Base
+class Entstat_fibre < Entstat
   include Logging
   LOG_LEVEL = Logger::INFO   # The log level that Entstat_fibre uses
 
@@ -38,7 +39,7 @@ class Entstat_fibre < Netstat_v::Base
      # ULPs" array.
      PDA::Production.new("^\\s*(?<field>Supported ULPs):\\s*$", [:fc4typesULP], :pushingULPs) do |md, pda|
        field = md[:field]
-       value = []
+       value = List.new
        pda.target[field] = value
        pda.push(value)
      end,
@@ -53,7 +54,7 @@ class Entstat_fibre < Netstat_v::Base
      # values are added to the "Active ULPs" array.
      PDA::Production.new("^\\s*(?<field>Active ULPs):\\s*$", [:pushingULPs], :pushingULPs) do |md, pda|
        field = md[:field]
-       value = []
+       value = List.new
        pda.pop(1)
        pda.target[field] = value
        pda.push(value)

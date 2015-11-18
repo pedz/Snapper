@@ -10,7 +10,7 @@ class Seas < Item
     seas = db.create_item("seas")
     db.devices.each_pair do |key, value|
       if value.cudv.pddvln == "adapter/pseudo/sea"
-        new_value = Sea.new(value.to_text, value.to_hash, db)
+        new_value = value.subclass(Sea)
         db.devices[key] = new_value
         seas[key] = new_value
       end
@@ -26,7 +26,7 @@ class Seas < Item
       unless device.printed
         context = device.print(context)
         if context.options.level > 0
-          output(context, "")
+          output(context)
         end
       end
       context

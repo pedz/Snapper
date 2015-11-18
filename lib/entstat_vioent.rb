@@ -1,10 +1,14 @@
 require_relative "netstat_v"
+require_relative "entstat"
+require_relative "filter"
 
 # Parsers the output from netstat -d entN where entN is a vioent
 # adapter.
-class Entstat_vioent < Netstat_v::Base
+class Entstat_vioent < Entstat
   include Logging
   LOG_LEVEL = Logger::INFO # The log level that Entstat_vioent uses:
+
+  OutputRules = [ 15 ]
 
   # Includes ENT_PRODUCTIONS as well as productions for the trailing
   # part which I call "Hyper Info".
@@ -33,7 +37,7 @@ class Entstat_vioent < Netstat_v::Base
        last_indent, target, sizes = pda.target
        field = md[:field].strip
        sizes.push(*md[:sizes].split)
-       new_target = []
+       new_target = List.new
        sizes.each do |size|
          value = WriteOnceHash.new
          target[size] = value
@@ -70,7 +74,7 @@ class Entstat_vioent < Netstat_v::Base
        end
        field = md[:field].strip
        value = WriteOnceHash.new
-       sizes = []
+       sizes = List.new
        pda.target[field] = value
        pda.push([0, value, sizes])
      end,
@@ -126,7 +130,7 @@ class Entstat_vioent < Netstat_v::Base
          fail "Line '#{md[0]}' has indent of #{this_indent} instead of #{last_indent + 2}" 
        end
        if sizes.size > 0
-         new_target = []
+         new_target = List.new
          if target[0]
            sizes.each_with_index do |size, index|
              value = WriteOnceHash.new

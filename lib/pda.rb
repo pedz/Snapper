@@ -1,4 +1,5 @@
 require_relative 'logging'
+require_relative 'list'
 
 # A very simple but effective push down automata.
 class PDA
@@ -60,7 +61,7 @@ class PDA
   # list of productions.
   def initialize(first_target, productions)
     @state = :normal
-    @stack = []
+    @stack = List.new
     @target = first_target
     @productions = productions
   end

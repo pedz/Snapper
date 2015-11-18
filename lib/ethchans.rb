@@ -9,7 +9,7 @@ class Ethchans < Item
     db = snap.db
     db.devices.each_pair do |key, value|
       if value.cudv.pddvln == "adapter/pseudo/ibm_ech"
-        new_value = Ethchan.new(value.to_text, value.to_hash, db)
+        new_value = value.subclass(Ethchan)
         db.devices[key] = new_value
       end
     end

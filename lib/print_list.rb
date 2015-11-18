@@ -2,7 +2,7 @@ require_relative 'logging'
 
 class PrintList
   def initialize
-    @list = []
+    @list = List.new
   end
 
   def add(item, priority)

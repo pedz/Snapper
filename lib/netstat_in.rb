@@ -35,9 +35,9 @@ class Netstat_in < Item
           record[:oerrs] = oerrs.to_i
           record[:coll] = coll.to_i
         elsif INET_REGEXP.match(address)
-          (record[:inet] ||= []).push({ network: network, address: address })
+          (record[:inet] ||= List.new).push({ network: network, address: address })
           else
-          (record[:inet6] ||= []).push({ network: network, address: address })
+          (record[:inet6] ||= List.new).push({ network: network, address: address })
         end
       end
     end

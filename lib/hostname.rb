@@ -16,11 +16,11 @@ class Hostname < Item
 
   def print(context)
     if context.options.level > 2
-      puts "#" * 80
-      puts "##{node_name.center(78)}#"
-      puts "#" * 80
+      output(context, "#" * 80)
+      output(context, "##{node_name.center(78)}#")
+      output(context, "#" * 80)
     elsif context.options.level >= 0
-      puts "Host: #{node_name}"
+      output(context, "Host: #{node_name}")
     end
     context
   end

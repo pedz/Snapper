@@ -1,8 +1,9 @@
 require_relative "netstat_v"
+require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is a elxent
 # adapter.
-class Entstat_elxent < Netstat_v::Base
+class Entstat_elxent < Entstat
   include Logging
   LOG_LEVEL = Logger::INFO # The log level that Entstat_elxent uses:
 
@@ -22,7 +23,7 @@ class Entstat_elxent < Netstat_v::Base
        index = md[:index].to_i
        pda.pop(1) unless pda.state == :normal
        ret = pda.target
-       ret[field] ||= []
+       ret[field] ||= List.new
        fail "Overwriting value #{field}[#{index}]" if ret[field][index]
        value = WriteOnceHash.new
        ret[field][index] = value

@@ -1,8 +1,8 @@
-require_relative "netstat_v"
+require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is an adapter
 # type that is not currently known.
-class Entstat_generic < Netstat_v::Base
+class Entstat_generic < Entstat
   include Logging
   LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
 
@@ -21,7 +21,7 @@ class Entstat_generic < Netstat_v::Base
        pda.pop(1)
        field = 'unmatched'
        ret = pda.target
-       ret[field] = []
+       ret[field] = List.new
        ret[field].push(md[0])
      end,
 
