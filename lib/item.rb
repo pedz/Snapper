@@ -31,7 +31,9 @@ class Item
   def print(context)
     unless @printing
       @printing = true
-      filters(context).first(1).each { |filter| filter.blah(context, self) }
+      filters(context).first(1).each do |filter|
+        filter.run(context, self)
+      end
     end
     @printing = false
     @printed = true
@@ -171,7 +173,38 @@ class Item
     @hash[fix_key(key)]
   end
 
+  ##
+  # An enumerator that produces a flat set of values.  Each value is a
+  # two element array.  The first element is the original keys, separated by
+  # commas, to reach the value.  The second element is the value.  All
+  # values will be simple Fixnums or Strings
+  #
+  # thing may be an Item, List, or WriteOnceHash
+  def flat_keys
+    flatten_keys(self)
+  end
+
   private
+
+  def flatten_keys(thing, nesting = [])
+    Enumerator.new do |yielder|
+      if thing.is_a?(Array)
+        thing.each_with_index do |value, index|
+          flatten_keys(value, nesting.dup.push(index)).each { |h| yielder << h }
+        end
+      elsif thing.is_a?(Hash)
+        thing.each_pair do |key, value|
+          flatten_keys(value, nesting.dup.push(key)).each { |h| yielder << h }
+        end
+      elsif thing.is_a?(Item)
+        thing.each_pair do |key, value|
+          flatten_keys(value, nesting.dup.push(thing.orig_key[key])).each { |h| yielder << h }
+        end
+      else
+        yielder << [ nesting.join(','), thing ]
+      end
+    end.lazy
+  end
 
   def fix_key(key)
     key.to_s.downcase.gsub(/[^a-z0-9_]/, '_').to_sym

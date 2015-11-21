@@ -24,6 +24,30 @@ Filter.add("Device", { level: 0 .. 11 }) do |context, item|
   end
 end
 
+Filter.add("Entstat", { level: 1 }) do |context, item|
+  item.flat_keys.each do |k, v|
+    if /error|overrun|underrun/i.match(k) && v != 0
+      context.output("#{k}:#{v}")
+    end
+  end
+  # Report bad LACP
+  [ 'Actor State', 'Partner State' ].each do |key|
+    if h = item[key]
+      bad_values = []
+      [ ['LACP activity', 'Active'],
+        ['Aggregation', 'Aggregatable'],
+        ['Synchronization', 'IN_SYNC'],
+        ['Collecting', 'Enabled'],
+        ['Distributing', 'Enabled'],
+        ['Defaulted', 'False'],
+        ['Expired', 'False'] ].each do |k, v|
+        bad_values.push("#{k}=#{h[k]}") if h[k] != v
+      end
+      context.output("Bad LACP on #{key}:#{bad_values.join(',')}") unless bad_values.empty?
+    end
+  end
+end
+
 Filter.add("Entstat", { level: 2 .. 11 }) do |context, item|
   text = item.to_text.each_line
   text = text.select { |line| /\A=+\Z/.match(line) ? false : true }

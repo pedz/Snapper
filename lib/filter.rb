@@ -34,11 +34,15 @@ class Filter
     @options[:level]
   end
 
+  def type
+    @options[:type]
+  end
+
   def <=>(b)
     b.level.begin <=> level.begin
   end
 
-  def blah(context, item)
+  def run(context, item)
     if @proc
       @proc.call(context, item)
     end
