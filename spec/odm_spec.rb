@@ -29,7 +29,6 @@ HERE
       
       it "saves all the raw lines" do
         @odm.parse
-        puts @db[:myclass]
         expect(@db[:myclass].to_text).to eq(@text)
       end
       

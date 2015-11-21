@@ -55,18 +55,4 @@ class Lsattr < Item
     end
   end
   Snapper.add_klass(self)
-
-  ##
-  # Curently
-  def print(context)
-    case context.options.level
-    when 0
-    when 1, 2, 3
-    else
-      to_text.each_line do |line|
-        output(context, line)
-      end
-    end
-    context
-  end
 end

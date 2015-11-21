@@ -29,14 +29,24 @@ class Item
   end
 
   def print(context)
-    if f = self.filters[0]
-      v = f.blah(context, self)
-      output(context, v)
+    unless @printing
+      @printing = true
+      filters(context).first(1).each { |filter| filter.blah(context, self) }
     end
+    @printing = false
+    @printed = true
+    context
+  rescue => e
+    STDERR.puts self.class
+    raise e
   end
 
-  def filters
-    self.class.filters
+  def filters(context = nil)
+    if context
+      self.class.filters.select { |filter| filter.level === context.level }
+    else
+      self.class.filters
+    end
   end
 
   def self.inherited(subclass)
@@ -54,7 +64,9 @@ class Item
   # call: device.subclass(Sea) creates a new instance of Sea moving
   # all of the data from device into the new instance.
   def subclass(klass)
-    klass.new(@text, @hash, @orig_key, @line_number, @db)
+    new_item = klass.new(@text, @hash, @orig_key, @line_number, @db)
+    new_item[:super] = self
+    new_item
   end
 
   ##
@@ -67,6 +79,7 @@ class Item
     @line_number = line_number
     @db = db
     @printed = false
+    @printing = false
   end
 
   ##
@@ -159,24 +172,6 @@ class Item
   end
 
   private
-
-  ##
-  # Does nothing if context.options.level is less than zero.  Sends
-  # text to stdout with proper indentation.  text can be multiple
-  # lines.  If text is nil or unspecified, sends a blank line to
-  # stdout.
-  def output(context, text = nil)
-    @printed = true
-    if context.options.level >= 0
-      if text
-        text.each_line do |line|
-          STDOUT.puts(sprintf("%*s%s", context.indent*2, "", line))
-        end
-      else
-        STDOUT.puts("")
-      end
-    end
-  end
 
   def fix_key(key)
     key.to_s.downcase.gsub(/[^a-z0-9_]/, '_').to_sym

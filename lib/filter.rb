@@ -14,7 +14,7 @@ class Filter
   end
 
   Default_Options = {
-    level: 1,
+    level: 1 .. 10,
     type: :key_value,
     key: /.*/,
     value: /.*/
@@ -22,6 +22,7 @@ class Filter
 
   def initialize(options = {}, &proc)
     @options = Default_Options.merge(options)
+    @options[:level] = @options[:level] .. @options[:level] if @options[:level].is_a? Fixnum
     if block_given?
       @proc = proc
     else
@@ -34,7 +35,7 @@ class Filter
   end
 
   def <=>(b)
-    level <=> b.level
+    b.level.begin <=> level.begin
   end
 
   def blah(context, item)

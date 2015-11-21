@@ -314,18 +314,4 @@ class Entstat < Item
   def productions
     fail "Please override this method"
   end
-  
-  SKIP_LINES = /\A=+\Z/
-  def print(context)
-    case context.options.level
-    when 0
-    when 1
-      super
-    else
-      to_text.each_line do |line|
-        output(context, line) unless SKIP_LINES.match(line)
-      end      
-    end
-    context
-  end
 end

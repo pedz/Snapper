@@ -9,15 +9,4 @@ class Device < Item
     super
     self[:printed] = false
   end
-
-  def print(context)
-    unless printed
-      output(context, "#{cudv.name} #{cudv.ddins}")
-
-      errpt && errpt.print_list(context.nest)
-      entstat.print(context.nest) if entstat
-      lsattr && lsattr.print(context.nest)
-    end
-    context
-  end
 end

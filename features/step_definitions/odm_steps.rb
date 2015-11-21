@@ -33,10 +33,7 @@ HERE
 end
 
 Given(/^a db instance$/) do
-  @db = Array.new
-  def @db.add(val)
-    self.push(val)
-  end
+  @db = Db.new
 end
 
 When(/^fed to the parser$/) do
@@ -44,5 +41,5 @@ When(/^fed to the parser$/) do
 end
 
 Then(/^its entries will be available\.$/) do
-  expect(@db.length).to eq(2)
+  expect(@db.cudv.length).to eq(2)
 end

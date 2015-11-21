@@ -12,11 +12,15 @@ require_relative 'logging'
 # enumerable_of_items.inject(context.nest) { |context, item| item.print(context) }.done
 #
 class Context
-  attr_accessor :options, :indent, :state, :proc
+  attr_accessor :indent, :state, :proc
   ##
   # options are the output and command line options
   def initialize(options = {}, indent = 0, state = nil, proc = nil)
     @options, @indent, @state, @proc = options, indent, state, proc
+  end
+
+  def level
+    @options.level
   end
 
   def nest
@@ -25,5 +29,25 @@ class Context
 
   def done
     @proc.call(self) if @proc
+  end
+
+  ##
+  # Does nothing if context.level is less than zero.  Sends
+  # text to stdout with proper indentation.  text can be multiple
+  # lines.  If text is nil or unspecified, sends a blank line to
+  # stdout.
+  def output(text = nil)
+    if level >= 0
+      if text
+        if text.is_a? String
+          text = text.each_line
+        end
+        text.each do |line|
+          STDOUT.puts(sprintf("%*s%s", indent*2, "", line))
+        end
+      else
+        STDOUT.puts("")
+      end
+    end
   end
 end

@@ -8,17 +8,11 @@ class Interfaces < Item
   def self.create(snap)
     db = snap.db
     interfaces = db.create_item("Interfaces")
-    snap.db.netstat_in.each_pair { |key, value| interfaces[key] = value }
+    snap.db.netstat_in.each_pair do |key, item|
+      interfaces[key] = item
+      item['Devices'] = db.devices
+    end
     snap.print_list.add(interfaces, 10)
   end
-
   Snapper.add_klass(self)
-
-  def print(context)
-    if context.options.level > 2
-      output(context, "##{"Interfaces".center(78)}#")
-    end
-    self.each_value.print_list(context.dup)
-    context
-  end
 end

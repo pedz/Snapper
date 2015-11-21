@@ -10,6 +10,7 @@ class Ethchans < Item
     db.devices.each_pair do |key, value|
       if value.cudv.pddvln == "adapter/pseudo/ibm_ech"
         new_value = value.subclass(Ethchan)
+        new_value['Devices'] = db.devices
         db.devices[key] = new_value
       end
     end
