@@ -4,6 +4,7 @@ require 'json'
 # The base type for all things in the database.
 class Item
   include Logging
+  # Default log level is INFO
   LOG_LEVEL = Logger::INFO
 
   attr_reader :orig_key, :line_number

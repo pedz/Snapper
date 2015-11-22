@@ -1,4 +1,3 @@
-require 'optparse'
 require 'ostruct'
 require 'zlib'
 require_relative 'logging'
@@ -6,34 +5,48 @@ require_relative 'logging'
 # A class that represents the snapper program
 class Snapper
   include Logging
-  LOG_LEVEL = Logger::INFO      # The log level for the Snapper class
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
   
   class << self
-    def add_klass(klass)
-      klasses.push(klass)
+    ##
+    # A class can add itself as a snap_processor by calling
+    # Snapper.add_snap_processor(self).  The class must have a
+    # +create+ method which is called passing it a snap as its only
+    # argument.  See Seas.create as an example.
+    def add_snap_processor(klass)
+      snap_processors.push(klass)
     end
 
-    def klasses
-      @klasses ||= []
-    end
-
-    def add_patterns(hash)
+    ##
+    # A class can add itself as a parser by adding calling
+    # Snapper.add_file_parsing_patterns pass in a hash whose keys are
+    # regular expressions that match files and values are the classes
+    # to call to parse them.  The class is passed an IO and a db.
+    # FileParser is often the super class of file parsers.
+    def add_file_parsing_patterns(hash)
       hash.each_pair do |regexp, parser|
-        patterns[regexp] = parser
+        file_parers[regexp] = parser
       end
     end
 
-    def patterns
-      @patterns ||= {}
+    private
+    
+    def snap_processors
+      @snap_processors ||= []
+    end
+
+    def file_parers
+      @file_parers ||= {}
     end
   end
   
+  ##
+  # Passed the command line options
   def initialize(options)
     @options = options
   end
 
-  # Called with dir_list set to an array of directories.  Each
-  # directory should point to the top of a snap.
   def run
     snap_list = @options.dir_list.map do |path|
       path = Pathname(path)
@@ -45,8 +58,8 @@ class Snapper
           end
         else
           db = Db.new
-          SnapParser.new(path, nil, db, patterns).parse
-          snap = OpenStruct.new({ dir: path, db: db, alerts: [], print_list: PrintList.new })
+          SnapParser.new(path, nil, db, file_parers).parse
+          snap = OpenStruct.new({ dir: path, db: db, alerts: List.new, print_list: PrintList.new })
           if @options.dump
             Zlib::GzipWriter.open(dump_file(path), 9) do |gz|
               Marshal.dump([ Item.children, snap ], gz)
@@ -57,7 +70,7 @@ class Snapper
         restore(path.read)
       end
 
-      Snapper.klasses.each { |klass| klass.create(snap) }
+      snap_processors.each { |klass| klass.create(snap) }
       snap
     end
     list = OpenStruct.new({ snap_list: snap_list, alerts: [] })
@@ -86,15 +99,18 @@ class Snapper
 
   private
 
-  def patterns
-    self.class.patterns
+  def file_parers
+    self.class.send :file_parers
   end
-  
+
+  def snap_processors
+    self.class.send :snap_processors
+  end
+
   def dump_file(path)
     @dump_file ||= (path + ".ruby.dump.gz")
   end
 
-  ##
   # The marshaled entity is two element array.  The first element is
   # an array of class names that subclassed Item.  The second element
   # is the OpenStruct which we called result.  The proc finds the

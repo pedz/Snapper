@@ -6,10 +6,32 @@ require_relative 'snapper'
 # Parse the output of "errpt -a"
 class ErrptOutParser < FileParser
   include Logging
-  LOG_LEVEL = Logger::INFO    # The log level that ErrptOutParser uses.
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
+  # A regular expresion for the fields in an error log entry that are
+  # parsed.  Other fields are just added to the _extra_ field.  The
+  # list of known fields are:
+  #
+  # * LABEL
+  # * IDENTIFIER
+  # * Date/Time
+  # * Sequence Number
+  # * Machine Id
+  # * Node Id
+  # * Class
+  # * Type
+  # * WPAR
+  # * Resource Name
   Fields = Regexp.new(/\A(LABEL|IDENTIFIER|Date\/Time|Sequence Number|Machine Id|Node Id|Class|Type|WPAR|Resource Name):[ \t]+([^ \t].*)\Z/)
+
+  # A regular expresion that matches the dashed line between error log
+  # entries.
   DashSeparator = Regexp.new(/^-+\n/)
+
+  # Parses the errpt.out file using DashSeparator to break the entries
+  # apart and then Fields to identify known fields within the error
+  # log entry and put them in to their own entry.
   def parse
     @io.read.split(DashSeparator).each do |entry|
       next if entry.empty?
@@ -27,4 +49,4 @@ class ErrptOutParser < FileParser
   end
 end
 
-Snapper.add_patterns(%r{/general/errpt.out} => ErrptOutParser)
+Snapper.add_file_parsing_patterns(%r{/general/errpt.out} => ErrptOutParser)

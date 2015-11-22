@@ -5,7 +5,8 @@ require_relative 'hash_mixins'
 # sure the various parsers are correctly pasing their input.
 class WriteOnceHash < Hash
   include Logging
-  LOG_LEVEL = Logger::INFO # The log level that WriteOnceHash will use
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
   include HashWriteOnce
 end

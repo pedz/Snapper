@@ -13,5 +13,5 @@ class Hostname < Item
     snap.print_list.add(hostname, 5)
   end
 
-  Snapper.add_klass(self)
+  Snapper.add_snap_processor(self)
 end

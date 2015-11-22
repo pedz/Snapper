@@ -4,6 +4,7 @@ require_relative "interface"
 # Parses the output of netstat -in
 class Netstat_in < Item
   include Logging
+  # Default log level is INFO
   LOG_LEVEL = Logger::INFO
 
   LINK_REGEXP = Regexp.new("link#[0-9]+")

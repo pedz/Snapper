@@ -13,7 +13,8 @@ require_relative 'snapper'
 # An example of one of these is the tcpip.snap file.
 class DotFileParser < FileParser
   include Logging
-  LOG_LEVEL = Logger::INFO    # The log level that DotFileParser uses.
+  # The default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
   # Pattern that matches the separations between the commands.  Note
   # that the command used to produce the file is in a subgroup.
@@ -49,7 +50,7 @@ class DotFileParser < FileParser
   end
 end
 
-Snapper.add_patterns(
+Snapper.add_file_parsing_patterns(
   %r{/XS25/XS25.snap} => DotFileParser,
   %r{/async/async.snap} => DotFileParser,
   %r{/dump/dump.snap} => DotFileParser,

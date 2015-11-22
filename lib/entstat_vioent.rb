@@ -6,12 +6,12 @@ require_relative "filter"
 # adapter.
 class Entstat_vioent < Entstat
   include Logging
-  LOG_LEVEL = Logger::INFO # The log level that Entstat_vioent uses:
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
-  OutputRules = [ 15 ]
-
-  # Includes ENT_PRODUCTIONS as well as productions for the trailing
-  # part which I call "Hyper Info".
+  # Adds vioent specific productions for the trailing part which I
+  # call "Hyper Info".
+  # Includes ENT_PRODUCTIONS, LACP_PRODUCTIONS, and BASE_PRODUCTIONS
   def productions
     [
      # Sample Match:   |empty line

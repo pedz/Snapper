@@ -2,11 +2,13 @@ require_relative 'item'
 require_relative 'logging'
 require_relative 'snapper'
 
-# A container (Item) in the db with the customized devices in it by
-# the logical name of the customized device (e.g. ent0)
+# A container in the db that has an entry for each logical device
+# found in CuDv.  The key for the entry is the logical name
+# (e.g. ent0) and the value is a Device.
 class Devices < Item
   include Logging
-  LOG_LEVEL = Logger::INFO      # The log level the Devices uses.
+  # The default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
   # Creates the 'devices' entry in the db and fills it with an entry
   # for each customized device by its logical name.  Note that Lsattr
@@ -90,5 +92,5 @@ class Devices < Item
       end
   end
 
-  Snapper.add_klass(self)
+  Snapper.add_snap_processor(self)
 end

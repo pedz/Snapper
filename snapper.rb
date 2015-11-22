@@ -1,9 +1,8 @@
 #!/usr/bin/env ruby
 
+require 'optparse'
+# Load Snapper class and then load all the files under lib.
 require_relative 'lib/snapper'
-
-# Snapper needs to be ready to go before the other files are loaded
-# but now we can load all the other files.
 Dir.glob('lib/**/*.rb') { |f| require_relative f }
 
 if __FILE__ == $0
@@ -25,11 +24,17 @@ if __FILE__ == $0
       options.dump = d
     end
 
-    opts.on("-k", "--print_keys", "Print the top level keys") do |k|
+    opts.on("-k",
+            "--print_keys",
+            "Print the top level keys") do |k|
       options.print_keys = k
     end
 
-    opts.on("-l N", "--level N", Integer, "Output verbosity level from -1 to 11", "default is 1") do |l|
+    opts.on("-l N",
+            "--level N",
+            Integer,
+            "Output verbosity level from -1 to 11",
+            "default is 1") do |l|
       if l < -1 || l > 11
         STDERR.puts "level out of range"
         STDERR.puts opt_parser.help
@@ -38,7 +43,10 @@ if __FILE__ == $0
       options.level = l
     end
 
-    opts.on_tail("-h", "-?", "--help", "Show this message") do
+    opts.on_tail("-h",
+                 "-?",
+                 "--help",
+                 "Show this message") do
       puts opts
       exit
     end

@@ -5,10 +5,12 @@ require_relative "entstat"
 # adapter.
 class Entstat_elxent < Entstat
   include Logging
-  LOG_LEVEL = Logger::INFO # The log level that Entstat_elxent uses:
+  # The default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
-  # Includes ENT_PRODUCTIONS and productions to put the RXQ and TXQ
+  # Adds productions to put the RXQ and TXQ
   # statistics into their own hashes index by the queue number.
+  # Includes ENT_PRODUCTIONS, LACP_PRODUCTIONS, and BASE_PRODUCTIONS
   def productions
     [
      # Sample Match:   |Receive statistics for RXQ number: 2

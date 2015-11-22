@@ -3,10 +3,12 @@ require_relative 'item'
 require_relative 'db'
 require 'json'
 
-# The base type for all things in the database.
+# The base type for the various parsers.  This is a virtual class in
+# that its parse method must be overriden.
 class FileParser
   include Logging
-  LOG_LEVEL = Logger::INFO      # The log level used by the FileParser class
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
   ##
   # The original text of the entry as io

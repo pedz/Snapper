@@ -2,12 +2,13 @@ require_relative "netstat_v"
 require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is a rrent
-# adapter.
+# adapter (Red River / CT3)
 class Entstat_rrent < Entstat
   include Logging
-  LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
-  # Includes ENT_PRODUCTIONS as well as SEA specific productions.
+  # Includes ENT_PRODUCTIONS, LACP_PRODUCTIONS, and BASE_PRODUCTIONS
   def productions
     ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end

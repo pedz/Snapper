@@ -5,12 +5,14 @@ require_relative "entstat"
 # adapter.
 class Entstat_sea < Entstat
   include Logging
-  LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
-  # Includes ENT_PRODUCTIONS as well as SEA specific productions.
+  # Adds SEA specific productions.
+  # Includes ENT_PRODUCTIONS, LACP_PRODUCTIONS, and BASE_PRODUCTIONS
   def productions
     [
-     # Sample Match:   |SEA Flags: 00000013
+      # Sample Match:   |SEA Flags: 00000013
      # States Matched: :normal
      # New State:      :SEA_flags
      # State Pushed:   yes

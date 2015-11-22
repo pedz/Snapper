@@ -18,6 +18,7 @@ require_relative 'snapper'
 # like 'devices'
 class Lsattr < Item
   include Logging
+  # Default log level is INFO
   LOG_LEVEL = Logger::INFO
 
   NAME_REGEXP = /\Alsattr_el(.*)\z/
@@ -55,5 +56,5 @@ class Lsattr < Item
       devices[logical_name]['lsattr'] = new_item if devices.has_key?(logical_name)
     end
   end
-  Snapper.add_klass(self)
+  Snapper.add_snap_processor(self)
 end

@@ -5,9 +5,11 @@ require_relative "entstat"
 # adapter.
 class Entstat_shient < Entstat
   include Logging
-  LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
-  # Includes ENT_PRODUCTIONS as well as SEA specific productions.
+  # Adds shiner specific productions
+  # Includes ENT_PRODUCTIONS, LACP_PRODUCTIONS, and BASE_PRODUCTIONS
   def productions
     [
      # Sample Match:   |PCIe2 4-Port Adapter (10GbE SFP+) (e4148a1614109304)
@@ -18,7 +20,6 @@ class Entstat_shient < Entstat
      # Ignored
      PDA::Production.new("^PCIe2 4-Port Adapter \\(1GbE RJ45\\) \\(e4148a1614109404\\)|PCIe2 4-Port Adapter \\(10GbE SFP\\+\\) \\(e4148a1614109304\\)", [:normal]) do |md, pda|
      end,
-
 
      # Sample Match:   |Assigned Interrupt Source Numbers: 
      # States Matched: :normal

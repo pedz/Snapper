@@ -19,7 +19,8 @@ require "stringio"
 # types they can parse.
 class Netstat_v < Item
   include Logging
-  LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
   include HashWriteOnce
 

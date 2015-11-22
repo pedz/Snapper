@@ -11,11 +11,19 @@ require_relative 'snapper'
 # an integer
 class ColonFileParser < FileParser
   include Logging
-  LOG_LEVEL = Logger::INFO    # The log level that ColonFileParser uses.
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
   
+  # The Regexp used to scan each line
   LINE_REGEXP = /\A\s*(?<field>\S.*):\s*(?<value>\S.*)\Z/
+
+  # A Regexp that matches if the string has only digits and at least
+  # one digit.
   ALL_DIGITS = /\A[0-9]+\Z/
 
+  # parses the file line by line matching it against LINE_REGEXP.  If
+  # it matches a new entry is created with the field and value.  Value
+  # is converted to an integer if it only contains digits.
   def parse
     name = @io.path.sub(/\A.*\//, '')
     text = @io.read
@@ -30,4 +38,4 @@ class ColonFileParser < FileParser
   end
 end
 
-Snapper.add_patterns(%r{/general/lparstat.out} => ColonFileParser)
+Snapper.add_file_parsing_patterns(%r{/general/lparstat.out} => ColonFileParser)

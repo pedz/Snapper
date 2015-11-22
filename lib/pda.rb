@@ -4,13 +4,15 @@ require_relative 'list'
 # A very simple but effective push down automata.
 class PDA
   include Logging
-  LOG_LEVEL = Logger::INFO      # The logging level used by PDA
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
   # Represents the production statements in a classical PDA.  These
   # can change states as well as push and pop items onto a stack.
   class Production
     include Logging
-    LOG_LEVEL = Logger::INFO # The logging level used by PDA::Production
+    # Default log level is INFO
+    LOG_LEVEL = Logger::INFO
     
     # Creates the production.  regexp is a regular expression or a
     # string.  states is the set of states that the production is

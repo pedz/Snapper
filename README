@@ -1,9 +1,14 @@
 
-Alerts
--D
-html
+= Snapper
 
-Configurable
+This is a tool to quickly go through one or more snaps.  It currently
+can not work with perfpmr output but that is planned.
+
+== Features
+
+Here are the list of features for snapper
+
+=== Configurable
 
 Snapper is written in Ruby and since Ruby is interpreted, it allows
 snapper to be highly configurable.  Some concepts I have are not
@@ -21,32 +26,34 @@ visible and so you will not need to really "create" fresh Ruby code as
 much as bastardize existing parts... very similar to how typical
 developers work <smirk>.
 
-Phases
+=== Phases
 
-Snapper is set up to roughly be in three phases.  
+Snapper is set up to roughly be in four phases.  
 
 The first phase is the parse phase where the snap is ransacked and as
 much of it is understood as possible.  Details of parsing will be
-described in the Parsers section.
+described in the Parsers[#label-Parsers] section.
 
 The second phase is after the parsing of each snap and are general
 routines that go through the parsed data making things easier to work
 with.  The best example of this is Devices which goes through the
-parsed data created a Device.  The Device will have a name like 'ent0'
-as well as entries for the cudv, cuat, pddv, pdat, entstat, lsattr,
-errpt, etc.  Devices knows where all those different pieces reside in
-the snap and pulls them into one general object.  Another example is
-interfaces that pulls parsed data gathered from netstat -in as well as
-ifconfig -a (if it is present) into a single object.  This allows
-later processing to be more easily written.
+parsed data creating a Device for each logical device in the CuAt
+output.  The Device will have a name like 'ent0' as well as entries
+for the cudv, cuat, pddv, pdat, entstat, lsattr, errpt, etc.  Devices
+knows where all those different pieces reside in the snap and pulls
+them into one general object.  Another example is interfaces that
+pulls parsed data gathered from netstat -in as well as ifconfig -a (if
+it is present) into a single object.  This allows later processing to
+be more easily written.  See Snapper.add_snap_processor for more
+details.
 
-Between the second and third phase I plan to stick in a 2.5 phase that
-will be done after all of the snaps have been gathered.  This phase
-can detect things like making sure that the control channel of two
-SEAs on two different LPARs (but on the same CEC) are using the same
-VLAN tag.
+The third phase has not been implemented yet but will be called batch
+processors to process the entire _batch_ of snaps.  These will be
+called after all of the snaps have been parsed. This phase can detect
+things like making sure that the control channel of two SEAs on two
+different LPARs but on the same CEC are using the same VLAN tag.
 
-The third phrase is the output phase.  The output phrase is done via
+The fourth phrase is the output phase.  The output phrase is done via
 Filter instances.  Currently all of the Finter instances are in the
 Filters.rb file but eventually they will also be pulled in from user
 config files.
@@ -56,7 +63,7 @@ unparsed, he can add in a processing item that is kicked off in phase
 2, and he can add in filters to more precisely control what he wants
 to see in the output.
 
-Levels
+=== Levels
 
 Levels go from -1 up to (as Spinal Tap says) 11.  Level of -1 is for
 debugging.  All normal output is stopped and the user will only see
@@ -65,54 +72,54 @@ the debug statements.
 The purpose of level 0 is to give a very quick overview of the set up.
 The output from the sample snap is this:
 
- 1 Host: aph001
- 2 en9 IPv4:10.201.10.31 mtu:1500 mac:0.0.c9.d9.e8.bf ipkts:0 ierrs:0 opkts:14 oerrs:0
- 3   ent9 pci/elxentdd
- 4 en22 IPv4:10.201.55.100 mtu:1500 mac:e4.1f.13.fd.29.75 ipkts:190896 ierrs:0 opkts:210601 oerrs:0
- 5   ent22 seadd
- 6     ent2 pci/goentdd
- 7     ent15 vioentdd
- 8     ent10 vioentdd
- 9 lo0 IPv4:127.0.0.1 IPv6: mtu:16896 mac: ipkts:5735 ierrs:0 opkts:5735 oerrs:0
-10   lo0 
-11 ent23 seadd
-12   ent20 ethchandd
-13     ent0 pci/elxentdd
-14     ent8 pci/elxentdd
-15   ent16 vioentdd
-16   ent11 vioentdd
-17 ent24 seadd
-18   ent21 ethchandd
-19     ent6 pci/elxentdd
-20     ent7 pci/elxentdd
-21   ent17 vioentdd
-22   ent12 vioentdd
-23 ent25 seadd
-24   ent3 pci/goentdd
-25   ent18 vioentdd
-26   ent13 vioentdd
-27 ent26 seadd
-28   ent4 pci/goentdd
-29   ent19 vioentdd
-30   ent14 vioentdd
+  1 Host: aph001
+  2 en9 IPv4:10.201.10.31 mtu:1500 mac:0.0.c9.d9.e8.bf ipkts:0 ierrs:0 opkts:14 oerrs:0
+  3   ent9 pci/elxentdd
+  4 en22 IPv4:10.201.55.100 mtu:1500 mac:e4.1f.13.fd.29.75 ipkts:190896 ierrs:0 opkts:210601 oerrs:0
+  5   ent22 seadd
+  6     ent2 pci/goentdd
+  7     ent15 vioentdd
+  8     ent10 vioentdd
+  9 lo0 IPv4:127.0.0.1 IPv6: mtu:16896 mac: ipkts:5735 ierrs:0 opkts:5735 oerrs:0
+ 10 ent23 seadd
+ 11   ent20 ethchandd
+ 12     ent0 pci/elxentdd
+ 13     ent8 pci/elxentdd
+ 14   ent16 vioentdd
+ 15   ent11 vioentdd
+ 16 ent24 seadd
+ 17   ent21 ethchandd
+ 18     ent6 pci/elxentdd
+ 19     ent7 pci/elxentdd
+ 20   ent17 vioentdd
+ 21   ent12 vioentdd
+ 22 ent25 seadd
+ 23   ent3 pci/goentdd
+ 24   ent18 vioentdd
+ 25   ent13 vioentdd
+ 26 ent26 seadd
+ 27   ent4 pci/goentdd
+ 28   ent19 vioentdd
+ 29   ent14 vioentdd
 
 Line 1 is the host name.  I do not group CEC yet but that will be done
 so the simple output will start with the CEC, then the hostname.
 
-Line 2 starts the redo of what basically comes from netstat -in.  It
-is the interfaces crunched down to one line with all really useful
-info on one line.
+Line 2 starts what basically comes from netstat -in.  It is the
+interfaces crunched down to one line with all really useful info on
+one line.  Each interface, also prints the device associated with it
+nested one level deeper.
 
 Line 3 is the device that line 2 is on top of.  For level 0, only the
 device name and the driver are printed..
 
 Line 4 starts the 2nd interface.  In this case, the device on line 5
-is a SEA so it is printed along with the adapters that it contains.
+is a SEA so it is printed along with the adapters that it contains
+nested one level further.
 
-Lines 9 and 10 end the interface section.  There actually is a device
-called lo0 that does not have a driver.
+Line 9 ends the interface section with loopback.
 
-Lines 11 through 30 are now the list of SEAs.  Only the SEAs that have
+Lines 10 through 29 are now the list of SEAs.  Only the SEAs that have
 not already been printed are listed (e.g. ent22 is not repeated).
 
 Currently I am thinking that level 0 output is done.  I can't think of
@@ -123,73 +130,72 @@ output.
 The default output of snapper allowing the level to default to 1 is
 shown below:
 
- 1 Host: aph001
- 2 en9 IPv4:10.201.10.31 mtu:1500 mac:0.0.c9.d9.e8.bf ipkts:0 ierrs:0 opkts:14 oerrs:0
- 3   ent9 pci/elxentdd
- 4     Receive Statistics,Receive Errors:685617
- 5     Receive Statistics,DMA Overrun:685617
- 6 
- 7 en22 IPv4:10.201.55.100 mtu:1500 mac:e4.1f.13.fd.29.75 ipkts:190896 ierrs:0 opkts:210601 oerrs:0
- 8   ent22 seadd
- 9     16 error log entries
-10     ent2 pci/goentdd
-11     ent15 vioentdd
-12       Port VLAN ID: 300
-13       Hypervisor Send Failures: 4927
-14     ent10 vioentdd
-15       Port VLAN ID: 1300
-16 
-17 lo0 IPv4:127.0.0.1 IPv6: mtu:16896 mac: ipkts:5735 ierrs:0 opkts:5735 oerrs:0
-18   lo0 
-19 
-20 ent23 seadd
-21   19 error log entries
-22   Receive Statistics,Receive Errors:842400
-23   Receive Statistics,DMA Overrun:842400
-24   Other Statistics,ICMP error packets sent:931
-25   ent20 ethchandd
-26     Receive Statistics,Receive Errors:842400
-27     Receive Statistics,DMA Overrun:842400
-28     ent0 pci/elxentdd
-29       Receive Statistics,Receive Errors:156783
-30       Receive Statistics,DMA Overrun:156783
-31     ent8 pci/elxentdd
-32       Receive Statistics,Receive Errors:685617
-33       Receive Statistics,DMA Overrun:685617
-34   ent16 vioentdd
-35     Port VLAN ID: 4094 VLAN Tag IDs [104, 105, 106, 201, 202, 203, 205, 209, 210, 248, 250, 267, 288, 801, 802]
-36     Hypervisor Send Failures: 21562715
-37   ent11 vioentdd
-38     Port VLAN ID: 1310
-39 
-40 ent24 seadd
-41   14 error log entries
-42   ent21 ethchandd
-43     ent6 pci/elxentdd
-44     ent7 pci/elxentdd
-45   ent17 vioentdd
-46     Port VLAN ID: 320
-47     Hypervisor Send Failures: 141
-48   ent12 vioentdd
-49     Port VLAN ID: 1320
-50 
-51 ent25 seadd
-52   12 error log entries
-53   ent3 pci/goentdd
-54   ent18 vioentdd
-55     Port VLAN ID: 4093 VLAN Tag IDs [270, 275]
-56     Hypervisor Send Failures: 1250
-57   ent13 vioentdd
-58     Port VLAN ID: 1340
-59 
-60 ent26 seadd
-61   16 error log entries
-62   ent4 pci/goentdd
-63   ent19 vioentdd
-64     Port VLAN ID: 4092 VLAN Tag IDs [271, 272, 1288]
-65     Hypervisor Send Failures: 6942
-66   ent14 vioentdd
-67     Port VLAN ID: 1350
+  1 Host: aph001
+  2 en9 IPv4:10.201.10.31 mtu:1500 mac:0.0.c9.d9.e8.bf ipkts:0 ierrs:0 opkts:14 oerrs:0
+  3   ent9 pci/elxentdd
+  4     Receive Statistics,Receive Errors:685617
+  5     Receive Statistics,DMA Overrun:685617
+  6 
+  7 en22 IPv4:10.201.55.100 mtu:1500 mac:e4.1f.13.fd.29.75 ipkts:190896 ierrs:0 opkts:210601 oerrs:0
+  8   ent22 seadd
+  9     16 error log entries
+ 10     ent2 pci/goentdd
+ 11     ent15 vioentdd
+ 12       Port VLAN ID: 300
+ 13       Hypervisor Send Failures: 4927
+ 14     ent10 vioentdd
+ 15       Port VLAN ID: 1300
+ 16 
+ 17 lo0 IPv4:127.0.0.1 IPv6: mtu:16896 mac: ipkts:5735 ierrs:0 opkts:5735 oerrs:0
+ 18
+ 19 ent23 seadd
+ 20   19 error log entries
+ 21   Receive Statistics,Receive Errors:842400
+ 22   Receive Statistics,DMA Overrun:842400
+ 23   Other Statistics,ICMP error packets sent:931
+ 24   ent20 ethchandd
+ 25     Receive Statistics,Receive Errors:842400
+ 26     Receive Statistics,DMA Overrun:842400
+ 27     ent0 pci/elxentdd
+ 28       Receive Statistics,Receive Errors:156783
+ 29       Receive Statistics,DMA Overrun:156783
+ 30     ent8 pci/elxentdd
+ 31       Receive Statistics,Receive Errors:685617
+ 32       Receive Statistics,DMA Overrun:685617
+ 33   ent16 vioentdd
+ 34     Port VLAN ID: 4094 VLAN Tag IDs [104, 105, 106, 201, 202, 203, 205, 209, 210, 248, 250, 267, 288, 801, 802]
+ 35     Hypervisor Send Failures: 21562715
+ 36   ent11 vioentdd
+ 37     Port VLAN ID: 1310
+ 38 
+ 39 ent24 seadd
+ 40   14 error log entries
+ 41   ent21 ethchandd
+ 42     ent6 pci/elxentdd
+ 43     ent7 pci/elxentdd
+ 44   ent17 vioentdd
+ 45     Port VLAN ID: 320
+ 46     Hypervisor Send Failures: 141
+ 47   ent12 vioentdd
+ 48     Port VLAN ID: 1320
+ 49 
+ 50 ent25 seadd
+ 51   12 error log entries
+ 52   ent3 pci/goentdd
+ 53   ent18 vioentdd
+ 54     Port VLAN ID: 4093 VLAN Tag IDs [270, 275]
+ 55     Hypervisor Send Failures: 1250
+ 56   ent13 vioentdd
+ 57     Port VLAN ID: 1340
+ 58 
+ 59 ent26 seadd
+ 60   16 error log entries
+ 61   ent4 pci/goentdd
+ 62   ent19 vioentdd
+ 63     Port VLAN ID: 4092 VLAN Tag IDs [271, 272, 1288]
+ 64     Hypervisor Send Failures: 6942
+ 65   ent14 vioentdd
+ 66     Port VLAN ID: 1350
 
 The flow is the same.  The CEC name (to be done), host name,
 interfaces, and then the SEAs.  In level 1 mode, the intent is to
@@ -199,16 +205,18 @@ alerts will be per snap so they will come out after the CEC's name but
 before the host name.
 
 As you can see on samples of line 4 and 5, entstat fields with the
-word "error", "overrun" or "underrun" are printed out IF the value of
-the field is not zero.
+word "error", "overrun" or "underrun" are printed out *if* the value
+of the field is not zero.
 
 Line 9 shows a sample of level 1 output for error log entries.  A
 count of the error log entries is done to clue the user into the fact
 that this device is having errors in the error log.
 
-Line 35 shows a sample of the VLAN tag information for the VEAs.
+Line 34 shows a sample of the VLAN tag information for the VEAs.
 Since that is very often needed I put that out in the level 1 output
 as well.
+
+Line 35 is our trusty Hypervisor errors we all love.
 
 Since level 1 is the default, the intent is to make the output concise
 yet point the user to the trouble areas.  Higher levels can be used if
@@ -221,9 +229,10 @@ Filters (to be explained) that fit that objective.
 The purpose of level 11 is to essentially "dump" everything.  The
 containers like Ethchan and Sea have filters for level 11 since they
 need to dump out the adapters beneath them.  But most other things do
-not.
+not.  Instead they revert to a Filter for Item that dumps the list of
+flatten keys.
 
-Filters
+=== Filters
 
 Currently there are some concepts that I may change or alter but here
 is the current set up.
@@ -236,14 +245,14 @@ subclassed off of Entstat such as Entstat_goent or Entstat_ethchan.
 
 A filter is added like this:
 
-Filter.add("Device", { level: 0 .. 11 }) do |context, item|
-  unless item.printed
-    context.output("#{item.cudv.name} #{item.cudv.ddins}")
-    item['errpt'].print_list(context.nest) if item['errpt']
-    item['entstat'].print(context.nest)    if item['entstat']
-    item['lsattr'].print(context.nest)     if item['lsattr']
-  end
-end
+ Filter.add("Device", { level: 0 .. 11 }) do |context, item|
+   unless item.printed
+     context.output("#{item.cudv.name} #{item.cudv.ddins}")
+     item['errpt'].print_list(context.nest) if item['errpt']
+     item['entstat'].print(context.nest)    if item['entstat']
+     item['lsattr'].print(context.nest)     if item['lsattr']
+   end
+ end
 
 It is added to the Class that is the first argument.  The second
 argument is the levels that it is valid for.  The 0 .. 11 is exactly
@@ -268,14 +277,14 @@ This current scheme has issues with code reuse and I may alter it.
 As the parsers parse the files, they create trees of items.  For
 example, in the typical intro for an entstat output we see:
 
-Transmit Statistics:                          Receive Statistics:
---------------------                          -------------------
-Packets: 241295                               Packets: 238619
-Bytes: 1995516069                             Bytes: 18097146
-Interrupts: 0                                 Interrupts: 155955
-Transmit Errors: 0                            Receive Errors: 0
-Packets Dropped: 0                            Packets Dropped: 0
-                                              Bad Packets: 0
+ Transmit Statistics:                          Receive Statistics:
+ --------------------                          -------------------
+ Packets: 241295                               Packets: 238619
+ Bytes: 1995516069                             Bytes: 18097146
+ Interrupts: 0                                 Interrupts: 155955
+ Transmit Errors: 0                            Receive Errors: 0
+ Packets Dropped: 0                            Packets Dropped: 0
+                                               Bad Packets: 0
 
 Off of the top Entstat Item will be an entry for 'Transmit Statistics'
 as well as an entry for 'Receive Statistics'.  If you have used hashes
@@ -334,7 +343,7 @@ the key matches the regular expression.  The i at the end is to make
 the match ignore case.  If the regular expression matches the key and
 the value is not zero, we send to the output a string with the key and
 the value.  In the second sample output above where level is set to 1,
-this is how lines 22 through 24 and many other lines of output got
+this is how lines 21 through 23 and many other lines of output got
 produced.
 
 One of the powerful features of Ruby is how code blocks are treated.
@@ -351,7 +360,7 @@ has two methods.  context.level is the level specified by the user on
 the command line.  And context.output will get the argument to
 standard output.
 
-Parsers
+=== Parsers
 
 The top parser is called based upon the file name.  Currently, this
 list can not be modified but we can figure out some way to change that
@@ -362,34 +371,34 @@ structure to them.  For example a section from tcpip.snap is shown
 below.
 
 
-.....
-.....    netstat -in
-.....
-
-Name  Mtu   Network     Address           Ipkts Ierrs    Opkts Oerrs  Coll
-en10  1500  link#2      e4.1d.2d.e.fd.60 3367529084     0 3619873322    28     0
-en10  1500  10.126.137. 10.126.137.189   3367529084     0 3619873322    28     0
-en11  9000  link#3      e4.1d.2d.e.fe.1  223991557     0 144231257     5     0
-en11  9000  10.125.32   10.125.32.126    223991557     0 144231257     5     0
-lo0   16896 link#1                       21470805     0 21467696     0     0
-lo0   16896 127         127.0.0.1        21470805     0 21467696     0     0
-lo0   16896 ::1%1                        21470805     0 21467696     0     0
-
-.....
-.....    netstat -v
-.....
-
--------------------------------------------------------------
-ETHERNET STATISTICS (ent10) :
-Device Type: IEEE 802.3ad Link Aggregation
-Hardware Address: e4:1d:2d:0e:fd:60
-Elapsed Time: 12 days 4 hours 46 minutes 32 seconds
-
-Between each set of output is a banner such as:
-
-.....
-.....    netstat -in
-.....
+ .....
+ .....    netstat -in
+ .....
+ 
+ Name  Mtu   Network     Address           Ipkts Ierrs    Opkts Oerrs  Coll
+ en10  1500  link#2      e4.1d.2d.e.fd.60 3367529084     0 3619873322    28     0
+ en10  1500  10.126.137. 10.126.137.189   3367529084     0 3619873322    28     0
+ en11  9000  link#3      e4.1d.2d.e.fe.1  223991557     0 144231257     5     0
+ en11  9000  10.125.32   10.125.32.126    223991557     0 144231257     5     0
+ lo0   16896 link#1                       21470805     0 21467696     0     0
+ lo0   16896 127         127.0.0.1        21470805     0 21467696     0     0
+ lo0   16896 ::1%1                        21470805     0 21467696     0     0
+ 
+ .....
+ .....    netstat -v
+ .....
+ 
+ -------------------------------------------------------------
+ ETHERNET STATISTICS (ent10) :
+ Device Type: IEEE 802.3ad Link Aggregation
+ Hardware Address: e4:1d:2d:0e:fd:60
+ Elapsed Time: 12 days 4 hours 46 minutes 32 seconds
+ 
+ Between each set of output is a banner such as:
+ 
+ .....
+ .....    netstat -in
+ .....
 
 The DotFileParser converts the command "netstat -in" into a class by
 removing all spaces, convert any non-alphanumeric characters into
@@ -417,7 +426,7 @@ than to read English text trying to describe it.
 The net is however that if some piece of the snap currentl does not
 have a parser for it, one can be created and added by the user.
 
-PDA
+=== PDA
 
 The PDA in snapper is probably the piece that is most cutting edge.
 In Automata theory, the simplest machine is the DFA -- deterministic
@@ -441,18 +450,18 @@ values.
 
 A sample production is:
 
-# Sample Match:   |	Actor State: 
-# States Matched: :normal
-# New State:      :LACP_State
-# State Pushed:   yes
-# States Popped:  0
-# Matched the Actor State: and Partner State: lines
-PDA::Production.new("^\\s*(?<field>(Actor|Partner) State):\\s*$", [:normal, :consumeAll], :LACP_State) do |md, pda|
-  field = md[:field]
-  value = WriteOnceHash.new
-  pda.target[field] = value
-  pda.push(value)
-end
+ # Sample Match:   |	Actor State: 
+ # States Matched: :normal
+ # New State:      :LACP_State
+ # State Pushed:   yes
+ # States Popped:  0
+ # Matched the Actor State: and Partner State: lines
+ PDA::Production.new("^\\s*(?<field>(Actor|Partner) State):\\s*$", [:normal, :consumeAll], :LACP_State) do |md, pda|
+   field = md[:field]
+   value = WriteOnceHash.new
+   pda.target[field] = value
+   pda.push(value)
+ end
 
 The first argument is a regular expression that matches a line in the
 entstat output.  Ruby (like other new languages) has magic regular
@@ -470,3 +479,10 @@ field is overwritten.  I do this so it if obvious if the parser is
 missing states and clobbering data it should not clobber.  The current
 state and target are then pushed machine value the new target for
 subsequence parsing actions.
+
+
+=== Alerts
+
+=== -D
+
+=== html

@@ -122,6 +122,10 @@ end
 Filter.add("Ethchan", { level: 0 .. 11 }) do |context, item|
   item[:super].print(context)
   item[:adapter_names].print(context.nest)
+  if item[:backup_adapter]
+    context.nest.output("Backup")
+    item[:backup_adapter].print(context.nest)
+  end
 end
 
 Filter.add("Hostname", { level: 0 .. 10 }) do |context, item|
@@ -192,6 +196,7 @@ Filter.add("Sea", { level: 0 .. 11 }) do |context, item|
   item[:super].print(context)
   item[:real_adapter].print(context.nest)
   item[:virt_adapters].print(context.nest)
+  context.nest.output("Control")
   item[:ctl_chan].print(context.nest)
 end
 

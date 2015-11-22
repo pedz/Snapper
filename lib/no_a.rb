@@ -4,6 +4,7 @@ require_relative "dot_file_parser"
 # that begin with a digit to Fixnum (integers).
 class No_a < Item
   include Logging
+  # Default log level is INFO
   LOG_LEVEL = Logger::INFO
 
   # Matches a line with:

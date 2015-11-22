@@ -4,9 +4,13 @@ require_relative "entstat"
 # type that is not currently known.
 class Entstat_generic < Entstat
   include Logging
-  LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
+  # The default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
-  # Includes ENT_PRODUCTIONS
+  # Adds a production to catch the blank line after Driver Flags.
+  # From that point on, all line are just appened to an array called
+  # _unmatched_.  The exception is the LACP productions are still
+  # parsed properly.
   def productions
     LACP_PRODUCTIONS + [
       # Sample Match:   |empty line

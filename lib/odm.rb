@@ -8,7 +8,8 @@ require_relative 'snapper'
 # such.
 class Odm < FileParser
   include Logging
-  LOG_LEVEL = Logger::INFO      # The log level used by the Odm class
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
   # Parses io (via each_line) into ODM objects and adds them to db
   # (via add).  The stanza type determines the type of object.  For
@@ -86,4 +87,4 @@ class Odm < FileParser
   end
 end
 
-Snapper.add_patterns(%r{/general/([^.]*\.)(?!vc\.)add\z} => Odm)
+Snapper.add_file_parsing_patterns(%r{/general/([^.]*\.)(?!vc\.)add\z} => Odm)

@@ -6,6 +6,7 @@ require_relative 'snapper'
 
 class Seas < Item
   include Logging
+  # Default log level is INFO
   LOG_LEVEL = Logger::INFO
 
   def self.create(snap)
@@ -27,5 +28,5 @@ class Seas < Item
     snap.print_list.add(seas, 25)
   end
 
-  Snapper.add_klass(self)
+  Snapper.add_snap_processor(self)
 end

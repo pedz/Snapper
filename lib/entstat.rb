@@ -3,20 +3,38 @@ require_relative 'logging'
 require_relative "pda"
 require_relative "item"
 
+# The _virtual_ base class for the other Entstat_foo classes.  This
+# defines three arrays of productions that the subclasses can leverage
+# as well as the needed parse method that the subclasses probably do
+# not need to replicate.
 class Entstat < Item
   include Logging
-  LOG_LEVEL = Logger::INFO    # The log level that Netstat_v uses:
+  # The default log level is INFO
+  LOG_LEVEL = Logger::INFO
   
-  OutputRules = [ 12 ]
-
-  # These productions should be in every netstat_v_* parser.  There
-  # are four productions:
-  #   1: | *field: int_value
-  #   2: | *field: optional_value
-  #   3: |Real Adapter: entNN (as well as Virtual and Control)
-  #   4: |burst and empty lines
+  # These productions should be included in every subclass.  There are
+  # four productions:
+  #   1: |Real Adapter: entNN (as well as Virtual, Control and Backup)
+  #   2: |burst and empty lines
+  #   3: | *field: int_value
+  #   4: | *field: optional_value
   BASE_PRODUCTIONS =
     [
+      # Sample Match:   |Control Adapter: ent14
+      # States Matched: :all
+      # New State:      :no_change
+      # State Pushed:   none
+      # Lines which are always ignored.
+      PDA::Production.new("^(Control|Backup|Real|Virtual) Adapter: ent\\d+\\s*$") do |md, pda|
+     end,
+
+      # Sample Match:   |empty lines and lines with only -'s and ='s
+      # States Matched: :all
+      # New State:      :no_change
+      # State Pushed:   none
+      PDA::Production.new("^(\\s|-|=)*$") do |md, pda|
+      end,
+
       # Sample Match:   |Adapter Reset Count: 0
       # States Matched: :normal
       # New State:      :no_change
@@ -31,7 +49,7 @@ class Entstat < Item
         value = md[:value].to_i
         pda.target[field] = value
       end,
-      
+
       # Sample Match:   |  Device Type: FC Adapter (adapter/pciex/df1000f114108a0)
       # States Matched: :normal
       # New State:      :no_change
@@ -44,24 +62,13 @@ class Entstat < Item
         field = md[:field].strip
         value = md[:value].strip
         pda.target[field] = value
-      end,
-      
-      # Sample Match:   |Control Adapter: ent14
-      # States Matched: :all
-      # New State:      :no_change
-      # State Pushed:   none
-      # Lines which are always ignored.
-      PDA::Production.new("^(Control|Backup|Real|Virtual) Adapter: ent\\d+\\s*$") do |md, pda|
-      end,
-      
-      # Sample Match:   |empty lines and lines with only -'s and ='s
-      # States Matched: :all
-      # New State:      :no_change
-      # State Pushed:   none
-      PDA::Production.new("^(\\s|-|=)*$") do |md, pda|
-      end       
+      end
     ]
   
+  # A set of productions to find and parse the LACP stanzas found at
+  # the base of each real adapter's entstat output.  These also work
+  # from the Entstat_generic class so unknown adapters will still find
+  # and parse the LACP stanzas.
   LACP_PRODUCTIONS =
     [
       # The LACP stanzas that 802.3ad aggregation adds to each
@@ -120,8 +127,7 @@ class Entstat < Item
       end
     ]
   
-  # Productions (including BASE_PRODUCTIONS) that all netstat_v_*
-  # parsers for ethernet adapters need.
+  # Productions which are entstat for ethernet specific.
   ENT_PRODUCTIONS =
     [
       # Sample Match:   |  Elapsed Time: 0 days 0 hours 0 minutes 0 seconds
@@ -282,6 +288,9 @@ class Entstat < Item
       end
     ]
 
+  # The parse method which is usually called from the Netstat_v#parse
+  # method.  subclasses generally do not need to override this.  It
+  # creates a PDA and drives the parser passing it each line of text.
   def parse
     pda = PDA.new(self, productions)
     lineno = 0
@@ -290,20 +299,32 @@ class Entstat < Item
       line.chomp!
       begin
         matched = pda.match_productions(line)
+        # This is for error recovery and trying to provide as much
+        # useful information to the programmer as possible.
+        # Yes... this is "unless match == true"  i.e. If we failed to
+        # parse.
         unless matched == true
           original_state = pda.state
+          # Try popping the stack using the state at least level to
+          # try and match the input line.  By default, there is no
+          # error or warning when this occurs because some states do
+          # not have a natural place to end.
           until (matched == true) || pda.stack.size == 0
             from = pda.state
             pda.pop(1)
             logger.debug {  "popping due to unmatched from #{from} to #{pda.state}" }
             matched = pda.match_productions(line)
           end
+          # If we still did not match, fail as if we were in the
+          # original state
           unless matched == true
             pda.state = original_state
             fail "Miss: '#{line}'"
           end
         end
       rescue => e
+        # As the exception unwinds the stack, we add in tidbits to the
+        # message to help us locate where we were in the parse.
         new_message = e.message.split("\n").insert(1, "line: #{lineno}\nstate: #{pda.state}\n#{line}\n#{e.message}").join("\n")
         new_e = e.exception(new_message)
         new_e.set_backtrace(e.backtrace)
@@ -313,7 +334,10 @@ class Entstat < Item
     self
   end
   
-  # A "virtual" function in the Ruby sense.
+  # A "virtual" function in the Ruby sense.  This must be overridden
+  # by all of the subclasses.  Generally, the want to define a list of
+  # productions and then append  ENT_PRODUCTIONS, LACP_PRODUCTIONS,
+  # and BASE_PRODUCTIONS (in that order).
   def productions
     fail "Please override this method"
   end

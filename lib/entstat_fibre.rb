@@ -5,7 +5,8 @@ require_relative "entstat"
 # for the "fcsdd" driver.
 class Entstat_fibre < Entstat
   include Logging
-  LOG_LEVEL = Logger::INFO   # The log level that Entstat_fibre uses
+  # The default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
   # Includes BASE_PRODUCTIONS and several other productions for fibre
   # channel stuff.
