@@ -106,7 +106,7 @@ class Snapper
 
     # Then for each snap
     list.snap_list.each do |snap|
-      snap.print_list.items.print_list(Context.new(@options))
+      snap.print_list.items.print(Context.new(@options))
     end
   end
 

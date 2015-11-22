@@ -18,7 +18,7 @@ require_relative "seas"
 Filter.add("Device", { level: 0 .. 11 }) do |context, item|
   unless item.printed
     context.output("#{item.cudv.name} #{item.cudv.ddins}")
-    item['errpt'].print_list(context.nest) if item['errpt']
+    item['errpt'].print(context.nest) if item['errpt']
     item['entstat'].print(context.nest)    if item['entstat']
     item['lsattr'].print(context.nest)     if item['lsattr']
   end
@@ -48,7 +48,7 @@ Filter.add("Entstat", { level: 1 }) do |context, item|
   end
 end
 
-Filter.add("Entstat", { level: 2 .. 11 }) do |context, item|
+Filter.add("Entstat", { level: 2 .. 10 }) do |context, item|
   text = item.to_text.each_line
   text = text.select { |line| /\A=+\Z/.match(line) ? false : true }
   context.output(text)
@@ -121,12 +121,10 @@ end
 
 Filter.add("Ethchan", { level: 0 .. 11 }) do |context, item|
   item[:super].print(context)
-  item.attributes.adapter_names.value.split(',').print_list(context.nest) do |context, adapter_name|
-    item.devices[adapter_name].print(context)
-  end
+  item[:adapter_names].print(context.nest)
 end
 
-Filter.add("Hostname", { level: 0 .. 11 }) do |context, item|
+Filter.add("Hostname", { level: 0 .. 10 }) do |context, item|
   if context.level > 2
     context.output("#" * 80)
     context.output("##{item.node_name.center(78)}#")
@@ -149,11 +147,8 @@ Filter.add("Interface", { level: 0 .. 11 }) do |context, item|
               item[:opkts],
               item[:oerrs]]
     context.output(text)
-    if item.devices
-      device_name = item.name.sub(/e[nt]/, "ent")
-      if adapter = item.devices[device_name]
-        adapter.print(context.nest)
-      end
+    if item[:adapter]
+      item[:adapter].print(context.nest)
     end
     if context.level > 0
       context.output()
@@ -165,21 +160,27 @@ Filter.add("Interfaces", { level: 0 .. 11 }) do |context, item|
   if context.level > 2
     context.output("##{"Interfaces".center(78)}#")
   end
-  item.each_value.print_list(context.dup)
+  item.each_value.print(context.dup)
 end
 
 Filter.add("Ethchans", { level: 0 .. 11 }) do |context, item|
   if context.level > 2
     context.output("##{"Interfaces".center(78)}#")
   end
-  item.each_value.print_list(context.dup)
+  item.each_value.print(context.dup)
 end
 
 Filter.add("Item", { level: 0 }) { |context, item| } # do nothing
 
-Filter.add("Item", { level: 6 .. 11 }) do |context, item| # print all the text
+Filter.add("Item", { level: 6 .. 10 }) do |context, item| # print all the text
   unless item.printed
     context.output(item.to_text)
+  end
+end
+
+Filter.add("Item", { level: 11 }) do |context, item|
+  item.flat_keys.each do |key, value|
+    context.output("#{key}:#{value}")
   end
 end
 
@@ -189,19 +190,13 @@ end
 
 Filter.add("Sea", { level: 0 .. 11 }) do |context, item|
   item[:super].print(context)
-  item.attributes.real_adapter.value.split(',').print_list(context.nest) do |context, adapter_name|
-    item.devices[adapter_name].print(context)
-  end
-  item.attributes.virt_adapters.value.split(',').print_list(context.nest) do |context, adapter_name|
-    item.devices[adapter_name].print(context)
-  end
-  item.attributes.ctl_chan.value.split(',').print_list(context.nest) do |context, adapter_name|
-    item.devices[adapter_name].print(context)
-  end
+  item[:real_adapter].print(context.nest)
+  item[:virt_adapters].print(context.nest)
+  item[:ctl_chan].print(context.nest)
 end
 
 Filter.add("Seas", { level: 0 .. 11 }) do |context, item|
-  item.each_value.print_list(context) do |context, device|
+  item.each_value.print(context) do |context, device|
     unless device.printed
       context = device.print(context)
       if context.level > 0

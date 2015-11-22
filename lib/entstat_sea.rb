@@ -163,7 +163,7 @@ class Entstat_sea < Entstat
      PDA::Production.new("^\\s*(?<field>Type of Packets Received):\\s*$", [:normal]) do |md, pda|
        logger.debug { "Ignored #{md[:field]}" }
      end
-    ] + ENT_PRODUCTIONS
+    ] + ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
 end
 

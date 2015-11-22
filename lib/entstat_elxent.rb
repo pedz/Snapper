@@ -45,7 +45,7 @@ class Entstat_elxent < Entstat
        value = md[:value].to_i
        pda.target[field] = value
      end
-    ] + ENT_PRODUCTIONS
+    ] + ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
 end
 

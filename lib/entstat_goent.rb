@@ -9,7 +9,7 @@ class Entstat_goent < Entstat
 
   # Includes ENT_PRODUCTIONS
   def productions
-    ENT_PRODUCTIONS
+    ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
 end
 

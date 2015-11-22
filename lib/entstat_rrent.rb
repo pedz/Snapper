@@ -9,7 +9,7 @@ class Entstat_rrent < Entstat
 
   # Includes ENT_PRODUCTIONS as well as SEA specific productions.
   def productions
-    ENT_PRODUCTIONS
+    ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
 end
 

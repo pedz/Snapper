@@ -239,7 +239,7 @@ class Entstat_vioent < Entstat
        v2 = md[:v2].strip
        pda.target[f2] = v2
      end
-    ] + ENT_PRODUCTIONS
+    ] + ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
 end
 

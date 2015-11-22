@@ -95,7 +95,7 @@ class Entstat_shient < Entstat
        q[index] = WriteOnceHash.new unless q[index]
        q[index][field] = value
      end
-    ] + ENT_PRODUCTIONS
+    ] + ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
 end
 
