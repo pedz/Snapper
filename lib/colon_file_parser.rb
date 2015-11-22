@@ -1,6 +1,7 @@
 require_relative 'logging'
 require_relative 'file_parser'
 require_relative 'item'
+require_relative 'snapper'
 
 # Parses lparstat.out but it may be general enough to parse other
 # files as well.  In brief, each line has a field name on the left, a
@@ -28,3 +29,5 @@ class ColonFileParser < FileParser
     end
   end
 end
+
+Snapper.add_patterns(%r{/general/lparstat.out} => ColonFileParser)

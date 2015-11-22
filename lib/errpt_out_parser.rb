@@ -1,6 +1,7 @@
 require_relative "file_parser"
 require_relative "item"
 require_relative 'logging'
+require_relative 'snapper'
 
 # Parse the output of "errpt -a"
 class ErrptOutParser < FileParser
@@ -25,3 +26,5 @@ class ErrptOutParser < FileParser
     self
   end
 end
+
+Snapper.add_patterns(%r{/general/errpt.out} => ErrptOutParser)

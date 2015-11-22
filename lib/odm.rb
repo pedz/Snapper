@@ -1,6 +1,7 @@
 require_relative 'logging'
 require_relative 'file_parser'
 require_relative 'item'
+require_relative 'snapper'
 
 # A class that parses the ODM files found in a snap such as CuAt.add,
 # etc.  The class might should have been called OdmParser or some
@@ -84,3 +85,5 @@ class Odm < FileParser
     raise "Can not convert #{a}"
   end
 end
+
+Snapper.add_patterns(%r{/general/([^.]*\.)(?!vc\.)add\z} => Odm)

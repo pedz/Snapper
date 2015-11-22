@@ -1,5 +1,6 @@
 require_relative 'item'
 require_relative 'logging'
+require_relative 'snapper'
 
 # A container (Item) in the db with the customized devices in it by
 # the logical name of the customized device (e.g. ent0)

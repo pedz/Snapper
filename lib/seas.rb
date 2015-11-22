@@ -2,6 +2,7 @@ require_relative 'devices'
 # Must run after ethchans have been converted
 require_relative 'seas'
 require_relative 'logging'
+require_relative 'snapper'
 
 class Seas < Item
   include Logging

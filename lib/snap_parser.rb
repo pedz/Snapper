@@ -33,11 +33,11 @@ class SnapParser
         Find.prune
       end
       if path.file?
-        @patterns.each do |ele|
-          if ele.first.match(path.to_s)
+        @patterns.each do |regexp, parser|
+          if regexp.match(path.to_s)
             path.open("r:ISO-8859-1") do |io|
               begin
-                ele.last.new(io, @db).parse
+                parser.new(io, @db).parse
               rescue => e
                 new_message = e.message.split("\n").insert(1, "snap parser: path:#{path}").join("\n")
                 new_e = e.exception(new_message)

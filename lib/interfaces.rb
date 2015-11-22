@@ -4,6 +4,7 @@ require_relative 'devices'
 require_relative 'seas'
 require_relative 'ethchans'
 require_relative 'logging'
+require_relative 'snapper'
 
 class Interfaces < Item
   include Logging

@@ -1,5 +1,6 @@
 require_relative 'devices'
 require_relative 'logging'
+require_relative 'snapper'
 
 class Ethchans < Item
   include Logging

@@ -1,4 +1,5 @@
 require_relative 'devices'
+require_relative 'snapper'
 
 # Scattered about there are lsattr -El foo output in places like
 # general.snap, async.snap, and perfpmr's config.sum.  These do not
