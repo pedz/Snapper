@@ -1,8 +1,41 @@
 
+
 = Snapper
 
 This is a tool to quickly go through one or more snaps.  It currently
 can not work with perfpmr output but that is planned.
+
+== Usage
+
+The simplest form is:
+
+  snapper.rb path/to/snap
+
+where +path/to/snap+ is to the top directory of the snap -- the
+directory that contains general and other directories.  A list of
+snaps can be supplied on a single command line and ultimately that is
+where this tool is heading so that configuration errors in VIOS HA
+environments can be found or following the packets from a particular
+interface on a particular virtual client out through the SEA to its
+real adapter and out to the real network.
+
+  Usage: snapper.rb [options] <path to snap1> [ <path to snap2> ... ]
+      -D, --dump                       For each snap, creates a .ruby.dump.gz file
+				       at the base directory of the snap with the
+				       parse tree of the snap.  This file will be
+				       automatically loaded instead of re-parsing
+				       the files within the snap.
+      -k, --print_keys                 Print the top level keys
+      -l, --level N                    Output verbosity level from -1 to 11
+				       default is 1
+      -h, -?, --help                   Show this message
+
+The +-D+ option is detailed in the -D[#label-D] section.
+
+The +--print_keys+ option is to help with debugging new code.  It
+prints out the keys in the top level database container.
+
+The levels are described in the Levels[#label-Levels] section.
 
 == Features
 
@@ -14,8 +47,8 @@ Snapper is written in Ruby and since Ruby is interpreted, it allows
 snapper to be highly configurable.  Some concepts I have are not
 implemented yet but I know how I will implement them.  In the end,
 almost all of snapper will be configurable by the individual user.  As
-will be described, snapper operates in phases.  The method used in all
-of these phases allow users to add in their own code.  In brief, a
+will be described, snapper operates in phases.  The methods used in
+all of these phases allow users to add in their own code.  In brief, a
 user will be able to have a .snapper directory in his home directory
 with Ruby snippets that will be loaded when snapper is run.
 
@@ -26,37 +59,48 @@ visible and so you will not need to really "create" fresh Ruby code as
 much as bastardize existing parts... very similar to how typical
 developers work <smirk>.
 
+Currently, snapper is glaringly focused on TCP Kernel users but I
+truly hope some volunteers step up and help make this more useful to
+other groups.
+
 === Phases
 
-Snapper is set up to roughly be in four phases.  
+Snapper is set up to work in four phases.  
 
 The first phase is the parse phase where the snap is ransacked and as
 much of it is understood as possible.  Details of parsing will be
-described in the Parsers[#label-Parsers] section.
+described in the Parsers[#label-Parsers] section.  If the +-D+ option
+was given, a compressed version of the parse tree is saved in
++.ruby.snap.bz+ in the top level directory.  See -D[#label-D] for more
+details.  Adding a parser depends upon if an entire file needs to be
+parsed (see Snapper.add_file_parsing_patterns) or if a section of a
+"dot file" needs to be parsed (see DotFileParser and
+DotFileParser#parse).
 
 The second phase is after the parsing of each snap and are general
 routines that go through the parsed data making things easier to work
-with.  The best example of this is Devices which goes through the
-parsed data creating a Device for each logical device in the CuAt
-output.  The Device will have a name like 'ent0' as well as entries
-for the cudv, cuat, pddv, pdat, entstat, lsattr, errpt, etc.  Devices
-knows where all those different pieces reside in the snap and pulls
-them into one general object.  Another example is interfaces that
-pulls parsed data gathered from netstat -in as well as ifconfig -a (if
-it is present) into a single object.  This allows later processing to
-be more easily written.  See Snapper.add_snap_processor for more
-details.
+with for the later stages.  The best example of this is Devices which
+goes through the parsed data creating a Device for each logical device
+in the CuAt output.  The Device will have a name like 'ent0' as well
+as entries for the cudv, cuat, pddv, pdat, entstat, lsattr, errpt,
+etc.  Devices knows where all those different pieces reside in the
+snap and pulls them into one general object.  Another example is
+Interfaces that pulls parsed data gathered from netstat -in as well as
+ifconfig -a (if it is present) into a single object.  This allows
+later processing to be more easily written.  See
+Snapper.add_snap_processor for more details.
 
 The third phase has not been implemented yet but will be called batch
 processors to process the entire _batch_ of snaps.  These will be
 called after all of the snaps have been parsed. This phase can detect
 things like making sure that the control channel of two SEAs on two
-different LPARs but on the same CEC are using the same VLAN tag.
+different LPARs but on the same CEC are using the same VLAN tag.  The
+first of these processors will group the snaps by CEC.
 
 The fourth phrase is the output phase.  The output phrase is done via
-Filter instances.  Currently all of the Finter instances are in the
+Filter instances.  Currently all of the Filter instances are in the
 Filters.rb file but eventually they will also be pulled in from user
-config files.
+config files.  You can view this file on the Filters page.
 
 As mentioned, a user can add in a parser for a file that is currently
 unparsed, he can add in a processing item that is kicked off in phase
@@ -102,8 +146,9 @@ The output from the sample snap is this:
  28   ent19 vioentdd
  29   ent14 vioentdd
 
-Line 1 is the host name.  I do not group CEC yet but that will be done
-so the simple output will start with the CEC, then the hostname.
+Line 1 is the host name.  I do not group CECs yet but that will be
+done so the simple output will start with the CEC id, then the
+hostname.
 
 Line 2 starts what basically comes from netstat -in.  It is the
 interfaces crunched down to one line with all really useful info on
@@ -111,11 +156,15 @@ one line.  Each interface, also prints the device associated with it
 nested one level deeper.
 
 Line 3 is the device that line 2 is on top of.  For level 0, only the
-device name and the driver are printed..
+device name and the driver are printed.  I could add the description
+as seen from lsdev.adapters but I personally find that useless.
 
 Line 4 starts the 2nd interface.  In this case, the device on line 5
 is a SEA so it is printed along with the adapters that it contains
-nested one level further.
+nested one level further.  A bugabo that needs to be addressed is the
+entry on line 8 is the control adapter.  It needs to be marked as
+such otherwise users might mistake it as one of the bridging VEAs.
+Also, the PVID adapter probably should be marked as well.
 
 Line 9 ends the interface section with loopback.
 

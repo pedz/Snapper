@@ -20,8 +20,8 @@ end
 # valid method names.  Then missing_method is used so that the method
 # name can be used as well as the original key name.  The technique
 # used here defers creating the instance method until the first lookup
-# since in this particular case, there are many more keys created than
-# are level retrieved.
+# since in this particular use case, there are many more keys created
+# than are ever retrieved.
 module HashMakeMethods
   def respond_to_missing?(method, include_all)
     find_name(method) || super

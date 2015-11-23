@@ -6,11 +6,17 @@ require_relative 'ethchans'
 require_relative 'logging'
 require_relative 'snapper'
 
+# A snap processor that runs and creates an Intefaces container in the
+# top level db.
 class Interfaces < Item
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
 
+  # This is where the ifconfig -a output needs to be merged in.  The
+  # only added field is +:adapter+ which is the Device entry for the
+  # underlying device after the name has been modified.  e.g. en0
+  # points to the ent0 Device.
   def self.create(snap)
     db = snap.db
     interfaces = db.create_item("Interfaces")

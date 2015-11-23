@@ -52,19 +52,15 @@ class Snapper
       path = Pathname(path)
       snap = nil
       if path.directory?
-        if dump_file(path).file?
-          Zlib::GzipReader.open(dump_file(path)) do |gz|
+        if dump_path(path).file?
+          Zlib::GzipReader.open(dump_path(path)) do |gz|
             snap = restore(gz.read)
           end
         else
           db = Db.new
           SnapParser.new(path, nil, db, file_parers).parse
           snap = OpenStruct.new({ dir: path, db: db, alerts: List.new, print_list: PrintList.new })
-          if @options.dump
-            Zlib::GzipWriter.open(dump_file(path), 9) do |gz|
-              Marshal.dump([ Item.children, snap ], gz)
-            end
-          end
+          dump(path, snap) if @options.dump
         end
       elsif path.file?
         restore(path.read)
@@ -107,17 +103,25 @@ class Snapper
     self.class.send :snap_processors
   end
 
-  def dump_file(path)
-    @dump_file ||= (path + ".ruby.dump.gz")
+  def dump_path(path)
+    @dump_path ||= (path + ".ruby.dump.gz")
+  end
+
+  # calls Marhal.dump to marshal out a two item array.  The first item
+  # is the list from Item.children.  The second item is snap
+  def dump(path, snap)
+    Zlib::GzipWriter.open(dump_path(path), 9) do |gz|
+      Marshal.dump([ Item.children, snap ], gz)
+    end
   end
 
   # The marshaled entity is two element array.  The first element is
   # an array of class names that subclassed Item.  The second element
-  # is the OpenStruct which we called result.  The proc finds the
-  # first array during the deserializing and then scans that array of
-  # strings creating classes.  This occurs before any of the result is
+  # is the OpenStruct which we called snap.  The proc finds the first
+  # array during the deserializing and then scans that array of
+  # strings creating classes.  This occurs before any of the snap is
   # scanned.  Thus the classes created during the parsing are
-  # recreated before the result is scanned.
+  # recreated before the snap is scanned.
   def restore(io)
     done = false
     p = Proc.new  { |obj|
