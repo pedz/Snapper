@@ -3,7 +3,7 @@
 require 'optparse'
 # Load Snapper class and then load all the files under lib.
 require_relative 'lib/snapper'
-Dir.glob('lib/**/*.rb') { |f| require_relative f }
+Dir.glob(__FILE__ + '/../lib/**/*.rb') { |f| require_relative f }
 
 if __FILE__ == $0
   options = OpenStruct.new

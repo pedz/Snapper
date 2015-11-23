@@ -1,5 +1,6 @@
 require 'ostruct'
 require 'zlib'
+require 'pathname'
 require_relative 'logging'
 
 # A class that represents the snapper program
