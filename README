@@ -521,17 +521,86 @@ This production says that it is valid if the machine is in the normal
 or the consumeAll states.  It says that it moves to a new state -- the
 LACP_State.
 
-Within the code block, a new hash is created and added to the current
-target.  So this will add a 'Actor State' field.  The value will be a
-new hash.  I use the WriteOnceHash because it throws an error if a
-field is overwritten.  I do this so it if obvious if the parser is
-missing states and clobbering data it should not clobber.  The current
-state and target are then pushed machine value the new target for
-subsequence parsing actions.
+Within the code block, the first line retrieves the actual text of the
+match.  The second line creates a new hash.  The WriteOnceHash is used
+so that if the parser gets confused and tried to overwrite a previous
+field, it throws an exception.  This makes parser errors obvious and
+reduces the possibility that information is being lost in the parsing
+phases.
 
+A new field is added to the current target using the matched text as
+the key and the new hash as its value.  A push is then done to push
+the current state and target.  The new state, briefly is the same as
+it was but the new target is the new hash +value+.  When the block
+exits, because of the new state of +LACP_State, specified in the third
+argument, that state will be entered.
+
+Other Production rules become enabled now that we are in the
++LACP_State+.  In particular, a Production will pop the stack when the
+empty line after the "Expired:" line is encountered returning us to
+the previous state.
 
 === Alerts
 
+At the end of parsing each snap, a Snap is created that includes the
+database, the path to the top level snap directory, and a list of
+alerts.  Likewise at the end of processing all of the snaps, just
+before the start of phase 3, a Batch is created that has the list of
+snaps, the command line options, and a list of alerts.
+
+The concept is that the snap processors may add to the alert list of
+the Snap and the batch processors may add alerts to the alert list of
+the Batch.  These lists currently exist but the Alert class and the
+routines to print them out do not.
+
+I believe the Alert class will have a text message and it may include
+a coloring or it may be that Alerts are always colored red or it may
+be that I refuse to do any text coloring at all or (most likely) will
+default on but will have a command line option to turn it off and will
+automatically turn off when the output is not a tty.
+
 === -D
 
+When the +-D+ command line option is given, snapper will dump the
+current state of the database out to a file called +.ruby.snap.gz+ in
+the top level directory as the snap.  Once this file is created, it
+will be used in place of the phase 1 parsing.  Note that the dump
+currently occurs before the phase 2 processing.  Also, if you are
+adding features to snapper, you might need to delete the file to get
+the new features to work because the file is really a saved state.  If
+you are adding or modifying a parser in particular, the reloaded saved
+state will be from before the changes made to the parser.
+
 === html
+
+Currently this is all broken.
+
+== ToDos
+
+1.  From the command line, set a global and a per class log level.
+
+1.  From the command line, set an output file for the log
+    information.  Again it would be nice if this could be done
+    globally as well as per class.
+
+1.  Create a Snap and a Batch class so their fields can be documented
+    rather than just use OpenStruct.
+
+1.  Create Alerts.
+
+1.  Create batch processors.
+
+1.  Fix the HTML output.
+
+1.  Given a single directory with multiple snaps under it, process the
+    individual snaps as if the paths to their base directories had
+    been listed on the command line.
+ 
+1.  Create a way for invoker of print to either include a text string
+    that will proceed the first line of output or be appended to the
+    first line of output.  It would also be nice if context.output
+    could have options such as adding color or not putting a new
+    line in every case.
+
+1.  Add ability to direct output to a file from the command line
+    rather than redirect stdout.
