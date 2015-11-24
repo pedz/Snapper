@@ -33,10 +33,12 @@ class Snapper
 
     private
     
+    # Returns the list of snap processors
     def snap_processors
       @snap_processors ||= []
     end
 
+    # Returns the list of file parsers
     def file_parers
       @file_parers ||= {}
     end
@@ -48,6 +50,8 @@ class Snapper
     @options = options
   end
 
+  # Processes the list of snaps probably best described in
+  # Phases[index.html#label-Phases].
   def run
     snap_list = @options.dir_list.map do |path|
       path = Pathname(path)
@@ -96,14 +100,17 @@ class Snapper
 
   private
 
+  # Returns the list of file parsers to the instance
   def file_parers
     self.class.send :file_parers
   end
 
+  # Returns the list of snap processors to the instance
   def snap_processors
     self.class.send :snap_processors
   end
 
+  # Returns the path to the marshal dump file
   def dump_path(path)
     @dump_path ||= (path + ".ruby.dump.gz")
   end

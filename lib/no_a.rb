@@ -15,6 +15,8 @@ class No_a < Item
   #  5: whitespace (again, usually exactly 1 space)
   #  6: non-whitespace until EOL (value)
   NO_A_REGEXP = /\A\s*(?<key>\S+)\s*=\s*(?<value>\S.*)\Z/
+
+  # Parses the no -a output.
   def parse
     @text.each_line do |line|
       next unless md = NO_A_REGEXP.match(line)

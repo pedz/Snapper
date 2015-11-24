@@ -1,5 +1,3 @@
-# Loaded by dot_file_parser so we know that logging is already
-# loaded.
 require_relative 'logging'
 require_relative "dot_file_parser"
 require_relative "write_once_hash"
@@ -10,13 +8,6 @@ require "singleton"
 require "stringio"
 
 # Parses the output from netstat -v that is found within a snap.
-# netstat -v is essentially a sequence of calling entstat -d <device>
-# for all of the ethernet devices, all the fiber channel devices, and
-# the VASI devices (whatever the hell those are).  As a result, the
-# subclasses of Netstat_v are Entstat_foo where foo is some type of
-# meaningful mnemonic -- e.g. sea or goent or elxent.  The subclasses
-# register with Netstat_v via the Parsers nested class of what device
-# types they can parse.
 class Netstat_v < Item
   include Logging
   # Default log level is INFO
@@ -61,6 +52,28 @@ class Netstat_v < Item
   DEVICE_TYPE_REGEXP = Regexp.new("^\n?Device Type: +(.*)")
   private_constant :DEVICE_TYPE_REGEXP
   
+  # netstat -v is essentially a sequence of calling entstat -d
+  # <device> for all of the ethernet devices, all the fiber channel
+  # devices, and the VASI devices (whatever those are).
+  #
+  # This parser splits the entire netstat -v output into pieces by
+  # looking for such things as +ETHERNET STATISTICS+ This is done by
+  # the DEVICE_BOUNDARY Regexp.
+  #
+  # Each piece is then taken as a separate entity.  The first line has
+  # the device name somewhere within it (e.g. +ETHERNET STATISTICS
+  # (ent1) :+ has "ent1" within it.  This provides the logical device
+  # name.  In the case of ethernet, the second line is a device type
+  # like +Device Type: PCIe2 2-port 10GbE SR Adapter+.
+  #
+  # The separate decice specific parsers suchs as Entstat_goent
+  # register with the Netstat_v parser which device types they can
+  # parse.  Thus at parse time, the Netstat_v parser tries to match
+  # the second line with one of the registered device types.  If a
+  # match is found, a parser of that specific class is created and the
+  # parsing is handed off to that instance.  If no match is found, a
+  # new Entstat_generic instance is created and the parsing is handed
+  # off to it.
   def parse
     parts = @text.split(DEVICE_BOUNDARY)
     fail "No device boundaries found" if parts.length < 3

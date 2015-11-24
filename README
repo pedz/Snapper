@@ -604,3 +604,9 @@ Currently this is all broken.
 
 1.  Add ability to direct output to a file from the command line
     rather than redirect stdout.
+
+1.  Fix the parser for lsattr.  The batch of attributes need to be
+    considered as a whole and the indent column for the value,
+    description, and alterable field can be determined by scanning
+    vertically for columns of spaces.  Not impossible.  Just not what
+    I wanna do right now.

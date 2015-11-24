@@ -7,8 +7,19 @@ class Netstat_in < Item
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
 
+  # A Regexp pattern that matches the "link line" (line #1 below).
   LINK_REGEXP = Regexp.new("link#[0-9]+")
+
+  # A Regexp patter that matches an IPv4 address
   INET_REGEXP = Regexp.new("([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)")
+
+  # For reference, there are two types of lines in the netstat -in
+  # output as shown below
+  #   1.  en9   1500  link#2      0.0.c9.d9.e8.bf         0     0       14     0     0
+  #   2.  en9   1500  10.201.10   10.201.10.31            0     0       14     0     0
+  # Parses the lines and creates entries in the Netstat_in with keys
+  # of the interface name (e.g. en9 or lo0).  Each entry is an
+  # Interface whose keys are described there.
   def parse
     headings = nil
     @text.each_line do |line|
