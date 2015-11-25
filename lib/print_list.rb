@@ -18,4 +18,10 @@ class PrintList
   def items
     @list.sort { |a, b| a[:priority] <=> b[:priority] }.map { |a| a[:item] }
   end
+
+  # Print the list of items in the order of their priority (lowest to
+  # highest).
+  def print(options)
+    items.print(Context.new(options))
+  end
 end

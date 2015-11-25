@@ -1,4 +1,3 @@
-require 'ostruct'
 require 'zlib'
 require 'pathname'
 require_relative 'logging'
@@ -64,7 +63,7 @@ class Snapper
         else
           db = Db.new
           SnapParser.new(path, nil, db, file_parers).parse
-          snap = OpenStruct.new({ dir: path, db: db, alerts: List.new, print_list: PrintList.new })
+          snap = Snap.new({ dir: path, db: db })
           dump(path, snap) if @options.dump
         end
       elsif path.file?
@@ -94,7 +93,7 @@ class Snapper
 
     # Then for each snap
     list.snap_list.each do |snap|
-      snap.print_list.items.print(Context.new(@options))
+      snap.print(@options)
     end
   end
 

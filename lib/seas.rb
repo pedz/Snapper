@@ -31,7 +31,7 @@ class Seas < Item
         seas[key] = new_value
       end
     end
-    snap.print_list.add(seas, 25)
+    snap.add_item(seas, 25)
   end
 
   Snapper.add_snap_processor(self)

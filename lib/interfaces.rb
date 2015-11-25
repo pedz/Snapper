@@ -29,7 +29,7 @@ class Interfaces < Item
       end
       interfaces[key] = item
     end
-    snap.print_list.add(interfaces, 10)
+    snap.add_item(interfaces, 10)
   end
   Snapper.add_snap_processor(self)
 end
