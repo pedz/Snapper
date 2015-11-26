@@ -69,7 +69,7 @@ class Context
   # context.
   def done
     @proc.call(self) if @proc
-    STDOUT.puts if @last_output_had_nocr
+    @options.puts if @last_output_had_nocr
   end
 
   # Does nothing if context.level is less than zero.  Sends text to
@@ -119,14 +119,14 @@ class Context
     return if level < 0
     if text.nil? || text.empty?
       unless attrs.include?(:nocr)
-        STDOUT.puts
+        @options.puts
         @last_output_had_nocr = false
       end
       return
     end
     lead, sep, tail = cvt_attrs(attrs)
     text = text.join(sep) if text.is_a? Array
-    STDOUT.printf("%s%s%s", lead, text, tail)
+    @options.printf("%s%s%s", lead, text, tail)
   end
 
   private

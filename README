@@ -577,15 +577,7 @@ Currently this is all broken.
 
 == ToDos
 
-1.  From the command line, set a global and a per class log level.
-
-1.  From the command line, set an output file for the log
-    information.  Again it would be nice if this could be done
-    globally as well as per class.
-
-1.  Create Alerts.
-
-1.  Create batch processors.
+1.  Create batch processor to order snaps by id_to_system.
 
 1.  Fix the HTML output.
 
@@ -593,15 +585,6 @@ Currently this is all broken.
     individual snaps as if the paths to their base directories had
     been listed on the command line.
  
-1.  Create a way for invoker of print to either include a text string
-    that will proceed the first line of output or be appended to the
-    first line of output.  It would also be nice if context.output
-    could have options such as adding color or not putting a new
-    line in every case.
-
-1.  Add ability to direct output to a file from the command line
-    rather than redirect stdout.
-
 1.  Fix the parser for lsattr.  The batch of attributes need to be
     considered as a whole and the indent column for the value,
     description, and alterable field can be determined by scanning

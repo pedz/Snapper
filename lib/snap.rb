@@ -20,6 +20,10 @@ class Snap
     @print_list = (options[:print_list] || PrintList.new)
   end
 
+  def add_alert(text)
+    @alerts << Alert.new(text, @db)
+  end
+
   # Adds an item to be printed along with its priority in the print
   # list
   def add_item(item, priority)
@@ -28,6 +32,7 @@ class Snap
 
   # prints the list of items added according to the supplied options.
   def print(options)
+    @alerts.print(Context.new(options))
     @print_list.print(options)
   end
 end

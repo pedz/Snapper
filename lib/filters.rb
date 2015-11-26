@@ -19,6 +19,10 @@ require_relative "seas"
 # copy of where to start
 # :startdoc:
 
+Filter.add("Alert", { level: 1 .. 10 }) do |context, item|
+  context.output(item.to_text, [ :red ])
+end
+
 # Device filter for all levels calls output for the currenct device as
 # well as the error log entries from errpt.out, the entstat -d output
 # from tcpip.snap, and the lsattr output from general.snap

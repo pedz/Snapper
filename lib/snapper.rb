@@ -14,10 +14,19 @@ class Snapper
     ##
     # A class can add itself as a snap_processor by calling
     # Snapper.add_snap_processor(self).  The class must have a
-    # +create+ method which is called passing it a snap as its only
+    # +create+ method which is called passing it a Snap as its only
     # argument.  See Seas.create as an example.
     def add_snap_processor(klass)
       snap_processors.push(klass)
+    end
+
+    ##
+    # A class can add itself as a batch_processor by calling
+    # Snapper.add_batch_processor(self).  The class must have a
+    # +create+ method which is called passing it a Batch as its only
+    # argument.
+    def add_batch_processor(klass)
+      batch_processors.push(klass)
     end
 
     ##
@@ -37,6 +46,11 @@ class Snapper
     # Returns the list of snap processors
     def snap_processors
       @snap_processors ||= []
+    end
+    
+    # Returns the list of batch processors
+    def batch_processors
+      @batch_processors ||= []
     end
 
     # Returns the list of file parsers
@@ -59,9 +73,7 @@ class Snapper
       snap = nil
       if path.directory?
         if dump_path(path).file?
-          Zlib::GzipReader.open(dump_path(path)) do |gz|
-            snap = restore(gz.read)
-          end
+          snap = restore(dump_path(path))
         else
           db = Db.new
           SnapParser.new(path, nil, db, file_parers).parse
@@ -69,21 +81,24 @@ class Snapper
           dump(path, snap) if @options.dump
         end
       elsif path.file?
-        restore(path.read)
+        snap = restore(path)
+      else
+        $stderr.puts "snapper.rb: #{path} is not a directory nor a snapper dump"
+        exit 1
       end
 
       snap_processors.each { |klass| klass.create(snap) }
       snap
     end
+
     batch = Batch.new(snap_list)
+    batch_processors.each { |klass| klass.create(batch) }
 
-    # From here down will be output routines
     if @options.print_keys
-      puts snap_list[0][:db].keys.sort
-      return
+      @options.puts(batch.snap_list[0].db.keys.sort)
+    else
+      batch.print(@options)
     end
-
-    batch.print(@options)
   end
 
   private
@@ -96,6 +111,11 @@ class Snapper
   # Returns the list of snap processors to the instance
   def snap_processors
     self.class.send :snap_processors
+  end
+
+  # Returns the list of batch processors to the instance
+  def batch_processors
+    self.class.send :batch_processors
   end
 
   # Returns the path to the marshal dump file
@@ -118,18 +138,23 @@ class Snapper
   # strings creating classes.  This occurs before any of the snap is
   # scanned.  Thus the classes created during the parsing are
   # recreated before the snap is scanned.
-  def restore(io)
-    done = false
-    p = Proc.new  { |obj|
-      if (done == false) && (obj.class == Array)
-        obj.each do |classname|
-          ::Object.const_set(classname, Class.new(Item)) unless ::Object.const_defined?(classname)
+  def restore(path)
+    Zlib::GzipReader.open(path) do |gz|
+      done = false
+      p = Proc.new  { |obj|
+        if (done == false) && (obj.class == Array)
+          obj.each do |classname|
+            ::Object.const_set(classname, Class.new(Item)) unless ::Object.const_defined?(classname)
+          end
+          done = true
         end
-        done = true
-      end
-      obj
-    }
-    class_array, result = Marshal.restore(io, p)
-    result
+        obj
+      }
+      class_array, result = Marshal.restore(gz, p)
+      result
+    end
+  rescue => e
+    $stderr.puts "snapper.rb: Can not restore from #{path}: #{e.message}"
+    exit 1
   end
 end
