@@ -66,6 +66,8 @@ class Item
     end
     @printing = false
     @printed = true
+    context.done unless context.in_list
+    # return context so inject can be used
     context
   rescue => e
     STDERR.puts self.class

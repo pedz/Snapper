@@ -583,9 +583,6 @@ Currently this is all broken.
     information.  Again it would be nice if this could be done
     globally as well as per class.
 
-1.  Create a Snap and a Batch class so their fields can be documented
-    rather than just use OpenStruct.
-
 1.  Create Alerts.
 
 1.  Create batch processors.

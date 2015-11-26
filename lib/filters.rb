@@ -24,7 +24,7 @@ require_relative "seas"
 # from tcpip.snap, and the lsattr output from general.snap
 Filter.add("Device", { level: 0 .. 11 }) do |context, item|
   unless item.printed
-    context.output("#{item.cudv.name} #{item.cudv.ddins}")
+    context.output("#{item.cudv.name} #{item.cudv.ddins} #{context.modifier}")
     item['errpt'].print(context.nest) if item['errpt']
     item['entstat'].print(context.nest)    if item['entstat']
     item['lsattr'].print(context.nest)     if item['lsattr']
@@ -154,8 +154,7 @@ Filter.add("Ethchan", { level: 0 .. 11 }) do |context, item|
   item[:super].print(context)
   item[:adapter_names].print(context.nest)
   if item[:backup_adapter]
-    context.nest.output("Backup")
-    item[:backup_adapter].print(context.nest)
+    item[:backup_adapter].print(context.nest.modifier("BACKUP"))
   end
 end
 
@@ -181,16 +180,26 @@ end
 Filter.add("Interface", { level: 0 .. 11 }) do |context, item|
   unless item.printed
     text = item[:name]
-    text += " IPv4:#{item[:inet][0][:address]}" if item[:inet]
-    text += " IPv6:#{item[:inet6][0][:address]}" if item[:inet6]
-    text += " mtu:%s mac:%s ipkts:%s ierrs:%s opkts:%s oerrs:%s" %
+    text += " #{item[:inet][0][:address]}" if item[:inet]
+    text += " #{item[:inet6][0][:address]}" if item[:inet6]
+    text += " mtu:%s mac:%s ipkts:%s opkts:%s" %
             [ item[:mtu],
               item[:mac],
               item[:ipkts],
-              item[:ierrs],
-              item[:opkts],
-              item[:oerrs]]
-    context.output(text)
+              item[:opkts] ]
+    if item[:ierrs] > 0 || item[:oerrs] > 0
+      context.output(text, [ :nocr ])
+      text = []
+      if item[:ierrs] > 0
+        text << ("ierrs:%s" % item[:ierrs])
+      end
+      if item[:oerrs] > 0
+        text << ("oerrs:%s" % item[:oerrs])
+      end
+      context.output(text, [ :red ])
+    else
+      context.output(text)
+    end
     if item[:adapter]
       item[:adapter].print(context.nest)
     end
@@ -248,8 +257,7 @@ Filter.add("Sea", { level: 0 .. 11 }) do |context, item|
   item[:super].print(context)
   item[:real_adapter].print(context.nest)
   item[:virt_adapters].print(context.nest)
-  context.nest.output("Control")
-  item[:ctl_chan].print(context.nest)
+  item[:ctl_chan].print(context.nest.modifier("ctrl channel"))
 end
 
 # The list of Sea entries which have not already been printed are

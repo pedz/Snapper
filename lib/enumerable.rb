@@ -12,6 +12,7 @@ module Enumerable
   #   @db.devices[adapter_name].print(context)
   # end
   def print(context, &proc)
+    context.start_list
     if block_given?
       inject(context, &proc).done
     else

@@ -1,6 +1,8 @@
 require 'zlib'
 require 'pathname'
 require_relative 'logging'
+require_relative 'snap'
+require_relative 'batch'
 
 # A class that represents the snapper program
 class Snapper
@@ -73,12 +75,7 @@ class Snapper
       snap_processors.each { |klass| klass.create(snap) }
       snap
     end
-    list = OpenStruct.new({ snap_list: snap_list, alerts: [] })
-
-    # This section will be a sequence of calls that will rummage
-    # around in the snap list either creating conveninece items or
-    # adding alerts in various places.  In theory, it should be
-    # possible to make this an extensible list.
+    batch = Batch.new(snap_list)
 
     # From here down will be output routines
     if @options.print_keys
@@ -86,15 +83,7 @@ class Snapper
       return
     end
 
-    # put out the top level alerts first -- perhaps with splats.
-    list.alerts.each do |alert|
-      # print out alerts
-    end
-
-    # Then for each snap
-    list.snap_list.each do |snap|
-      snap.print(@options)
-    end
+    batch.print(@options)
   end
 
   private
