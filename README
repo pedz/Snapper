@@ -12,30 +12,78 @@ The simplest form is:
   snapper.rb path/to/snap
 
 where +path/to/snap+ is to the top directory of the snap -- the
-directory that contains general and other directories.  A list of
+directory that contains +general+ and other directories.  A list of
 snaps can be supplied on a single command line and ultimately that is
 where this tool is heading so that configuration errors in VIOS HA
-environments can be found or following the packets from a particular
-interface on a particular virtual client out through the SEA to its
-real adapter and out to the real network.
+environments can be found or packets from a particular interface on a
+particular virtual client flowing out through a SEA and a real adapter
+and out to the real network can be easily followed.
 
-  Usage: snapper.rb [options] <path to snap1> [ <path to snap2> ... ]
+  Usage: options.rb [options] <path to snap1> [ <path to snap2> ... ]
       -D, --dump                       For each snap, creates a .ruby.dump.gz file
 				       at the base directory of the snap with the
 				       parse tree of the snap.  This file will be
 				       automatically loaded instead of re-parsing
 				       the files within the snap.
-      -k, --print_keys                 Print the top level keys
+      -L, --LOG [class:]level[:path]   If no class is specified, sets the log
+				       level for all loggers and optionally the
+				       log file. If a class is specified, sets the
+				       log level and optionally the log file for
+				       the specified class.  level can be 0, 1, 2,
+				       3, 4, DEBUG, INFO, WARN, ERROR, or FATAL.
+				       path may be a path to a file that is opened
+				       in append mode or STDERR.  Multiple -L
+				       options can be specified and are processed
+				       in order.  The default level is INFO (1)
+				       and the default output is STDERR.
+      -k, --print_keys                 Print the top level keys of the first snap
       -l, --level N                    Output verbosity level from -1 to 11
 				       default is 1
-      -h, -?, --help                   Show this message
+      -o, --output file                Specify an output file
+				       Default is STDOUT
+      -q file                          Sets the file that the Quick debug goes to
+				       default is $stderr
+      -h, --html path                  Outputs an html file that shows the layout
+				       of the systems
+	  --[no-]one-file              Embed (the default --one-file) the
+				       Javascript and CSS files into the HTML
+				       output or (--no-one-file) keep them
+				       separate.
+      -?, --help                       Show this message
 
 The +-D+ option is detailed in the -D[#label-D] section.
+
+The +-L+ option is to tweak the logging of the different classes.
+This is used mostly for debugging purposes.  You can set a global log
+level and output file that applies to all classes as well as specify
+individual levels and files per class.  Radical overkill but it was
+educational.
 
 The +--print_keys+ option is to help with debugging new code.  It
 prints out the keys in the top level database container.
 
 The levels are described in the Levels[#label-Levels] section.
+
+For completeness sake, the output file can be specified with the +-o+
+or +--output+ option.
+
+The code has a +qb+ method for quickly adding debug statements.  The
++-q+ option can route this to a specific file.
+
+Snapper can also produce an html view of the snaps.  This is specified
+with the +-h+ or +--html+ option.  If +path+ does not end with
++.html+, it is added on for you.  These files can get to be grossly
+huge but the browsers seem to eat them up fine.  See HTML[#label-HTML]
+as well.
+
+For debugging the html output, it is nice if the Javascript and CSS
+are not put into the HTML document but are read in when the document
+is loaded.  In this way the Javascript code can be developed by simply
+doing a browser refresh rather than recreate and reload the entire
+HTML file.  The +--no-one-file++ option keeps the Javascript and CSS
+separate.  The default +--one-file++ option embeds the Javascript and
+CSS code which makes it easy to move the HTML file around and load it
+into a browser.
 
 == Features
 
@@ -571,9 +619,59 @@ the new features to work because the file is really a saved state.  If
 you are adding or modifying a parser in particular, the reloaded saved
 state will be from before the changes made to the parser.
 
-=== html
+=== HTML
 
-Currently this is all broken.
+Snapper can load up a list of snaps and then produce an HTML document
+that shows the configuration of the various LPARs and CECs.  Here is a
+simple one snap sample. link:../images/snapper-sample.jpg
+
+The diagram may need some explaining.  
+
+The outer grey rectangle is a CEC.  Multiple CECs are handled although
+I've only tried two CECs.
+
+The next grey rectangle that consumes the bottom 2/3rds is an LPAR
+with a hostname of aph001.  Multiple LPARs within a CEC are handled.
+
+The blue box at the top labeled "ETHERNET0" is a virtual switch as
+gleamed from the entstat output from the varoius VEAs that connect to
+it.  Multiple virtual switches are handled although, again, I've only
+tried two.
+
+The other small blue boxes are some type of ethernet adapter -- either
+real, virtual, etherchannel, or SEA.
+
+A pure virtual LPAR has only VEAs.  It will be placed above the
+virtual switches.  Other LPARs are put below the virtual switches.
+This gives a flow from virtual client out to the real network as going
+from top to bottom.
+
+In this case, the LPAR has 5 SEAs which are represented as grey boxes
+that encompases the adapters contained within each SEA.  e.g. the grey
+box that encompasses ent15, ent10, ent22, and ent2.  The SEA itself is
+the center box (going top to bottom) e.g. ent25 is a SEA.  The
+adapters above the SEA are the virtual adapters.  The ones connected
+to the top of the SEA are the VEAs that carry the load.  e.g. ent15.
+There can be multiple of these.  The VEA that connects to the side of
+the SEA (e.g. eng14) is the control channel.  The real adapter
+connects to the bottom of the SEA.
+
+ent23 and ent24 are SEAs that have a real adapter that is an
+etherchannel.  Etherchannels are represented similar to a SEA.  They
+have a surrounding grey box that emcompasses all the adapters within
+the etherchannel.  The top box is the etherchannel itself with the
+primary adapters connecting to the bottom of the etherchannel box (as
+all of these here do).  The backup adapter connects to the side of the
+etherchannel.
+
+The black triangles are interfaces connect to the left side of the
+adapter they are on top of.
+
+Currently vlandds are not handled.  The plan is to have them connect
+on the side of their underlying adapter like the interfaces do.
+
+Currently the output is static although if you poke at it enough it
+will pop up menus which will currently only lead you to frustration.
 
 == ToDos
 

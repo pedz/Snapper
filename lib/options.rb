@@ -185,7 +185,11 @@ class Options
         @html = File.open(path, "w")
       end
 
-      opts.on("--[no-]one-file") do |v|
+      opts.on("--[no-]one-file",
+              "Embed (the default --one-file) the",
+              "Javascript and CSS files into the HTML",
+              "output or (--no-one-file) keep them",
+              "separate.") do |v|
         @one_file = v
       end
 

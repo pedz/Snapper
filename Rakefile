@@ -9,7 +9,6 @@ end
 desc "Make the rdoc documentation"
 task :rdoc do
   exclude = %w{
-  		.*\.html
 		Gemfile
 		Gemfile\.lock
 		Rakefile
@@ -24,6 +23,8 @@ task :rdoc do
 		spec
 		temp
 		test\.snap
+  		.*\.html
+                .*\.jpg
 	      }
   # We copy filters.rb over to doc/filters which will create a page
   # calle Filters.  We start after the line that contains :startdoc:.
