@@ -35,4 +35,12 @@ class Snap
     @alerts.print(Context.new(options))
     @print_list.print(options)
   end
+
+  def to_json(options = {})
+    {
+      dir: @dir,
+      db: @db,
+      alerts: @alerts
+    }.to_json(options)
+  end
 end

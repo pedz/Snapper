@@ -22,10 +22,26 @@ class Options
   # is false.
   attr_reader :print_keys
   
+  ##
+  # The path to write the html file out to.  The default is that this
+  # is nil and the text output is done.  When this is set, the text
+  # output is not done.
+  attr_reader :html
+
+  ##
+  # The html file can be done in two ways.  The css and javascript can
+  # be included into the file.  This makes it easy to move the file
+  # around and the output still works.  Or, the css and javascript can
+  # be pulled in when the page is loaded.  This makes debugging the
+  # css and javascript much easier.  The default is --one-file.
+  attr_reader :one_file
+  
   def initialize
     @dir_list = nil
     @dump = false
+    @html = nil
     @level = 1
+    @one_file = true
     @output = $stdout
     @print_keys = false
   end
@@ -155,8 +171,25 @@ class Options
         $qb = File.open(path, "w")
       end
 
-      opts.on_tail("-h",
-                   "-?",
+      opts.on("-h path",
+              "--html path",
+              "Outputs an html file that shows the layout",
+              "of the systems") do |path|
+        if path.nil?
+          path = "snapper.html"
+        else
+          unless /\.html$/.match(path)
+            path += ".html"
+          end
+        end
+        @html = File.open(path, "w")
+      end
+
+      opts.on("--[no-]one-file") do |v|
+        @one_file = v
+      end
+
+      opts.on_tail("-?",
                    "--help",
                    "Show this message") do
         STDERR.puts opts

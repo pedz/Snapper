@@ -109,8 +109,9 @@ class Item
   # call: device.subclass(Sea) creates a new instance of Sea moving
   # all of the data from device into the new instance.
   def subclass(klass)
-    new_item = klass.new(@text, @hash, @orig_key, @line_number, @db)
-    new_item[:super] = self
+    # The @hash.dup is key or we create a loop and we can't produce json
+    new_item = klass.new(@text, @hash.dup, @orig_key, @line_number, @db)
+    new_item[:super] = self.dup
     new_item
   end
 
@@ -235,6 +236,13 @@ class Item
   # values will be simple Fixnums or Strings
   def flat_keys
     flatten_keys(self)
+  end
+
+  def to_json(options = {})
+    temp = @hash.dup
+    temp[:text] = @text
+    temp[:orig_key] = @orig_key
+    temp.to_json(options)
   end
 
   private

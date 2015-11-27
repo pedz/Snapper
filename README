@@ -579,8 +579,6 @@ Currently this is all broken.
 
 1.  Create batch processor to order snaps by id_to_system.
 
-1.  Fix the HTML output.
-
 1.  Given a single directory with multiple snaps under it, process the
     individual snaps as if the paths to their base directories had
     been listed on the command line.
@@ -590,3 +588,7 @@ Currently this is all broken.
     description, and alterable field can be determined by scanning
     vertically for columns of spaces.  Not impossible.  Just not what
     I wanna do right now.
+
+1.  There is a bug in the way I do attributes because some attributes
+    can have multiple CuAt entries and I have not taken that into
+    account in the Ruby code (the javascript code did).

@@ -60,6 +60,7 @@ class Devices < Item
         name = cudv['name']
         device = Device.new("", db)
         devices[name] = device
+        device[:name] = name
         device['CuDv'] = cudv
         device['CuAt'] = cuats[name]
         pddvln = cudv['PdDvLn']

@@ -96,6 +96,8 @@ class Snapper
 
     if @options.print_keys
       @options.puts(batch.snap_list[0].db.keys.sort)
+    elsif @options.html
+      Page.new(batch, @options.html, @options.one_file).create_page
     else
       batch.print(@options)
     end

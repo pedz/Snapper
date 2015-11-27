@@ -26,4 +26,11 @@ class Batch
       snap.print(options)
     end
   end
+
+  def to_json(options = {})
+    {
+      snap_list: @snap_list,
+      alerts: @alerts
+    }.to_json(options)
+  end
 end
