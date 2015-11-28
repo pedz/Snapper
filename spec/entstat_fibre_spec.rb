@@ -3,7 +3,7 @@ require "entstat_fibre"
 
 describe Entstat_fibre do
   context "df1000f114108a0" do
-    before(:all) {
+    before(:context) {
       text = <<EOF
 FIBRE CHANNEL STATISTICS REPORT: fcs3
 
@@ -83,7 +83,7 @@ EOF
   end
 
   context "IBM,vfc-client" do
-    before(:all) {
+    before(:context) {
       text = <<EOF
 FIBRE CHANNEL STATISTICS REPORT: fcs0
 
@@ -158,7 +158,7 @@ EOF
   end
 
   context "7710018077107f0" do
-    before(:all) {
+    before(:context) {
       text = <<EOF
 FIBRE CHANNEL STATISTICS REPORT: fcs0
 

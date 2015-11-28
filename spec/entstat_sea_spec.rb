@@ -2,7 +2,7 @@ require "spec_helper"
 require "entstat_sea"
 
 describe Entstat_sea do 
-  before(:all) {
+  before(:context) {
     text = <<EOF
 ETHERNET STATISTICS (ent22) :
 Device Type: Shared Ethernet Adapter

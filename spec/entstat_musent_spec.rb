@@ -3,7 +3,7 @@ require "entstat_musent"
 
 describe Entstat_musent do 
   context "operating as stand alone" do
-    before(:all) {
+    before(:context) {
       text = <<EOF
 ETHERNET STATISTICS (ent6) :
 Device Type: Gigabit Ethernet PCIe Adapter (e4145716e4142004)
@@ -77,7 +77,7 @@ EOF
   end
 
   context "operating as part of an 802.3ad link aggregation" do
-    before(:all) {
+    before(:context) {
       text = <<EOF
 ETHERNET STATISTICS (ent4) :
 Device Type: Gigabit Ethernet PCIe Adapter (e4145716e4142004)

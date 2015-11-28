@@ -3,7 +3,7 @@ require "entstat_ethchan"
 
 describe Entstat_ethchan do 
   context "operating in normal mode" do
-    before(:all) {
+    before(:context) {
       text = <<EOF
 ETHERNET STATISTICS (ent20) :
 Device Type: EtherChannel
@@ -91,7 +91,7 @@ EOF
   end
 
   context "operating in 802.3ad mode" do
-    before(:all) {
+    before(:context) {
       text = <<EOF
 ETHERNET STATISTICS (ent10) :
 Device Type: IEEE 802.3ad Link Aggregation

@@ -2,7 +2,7 @@ require "spec_helper"
 require "entstat_rrent"
 
 describe Entstat_rrent do 
-  before(:all) {
+  before(:context) {
     text = <<EOF
 ETHERNET STATISTICS (ent10) :
 Device Type: 10 Gigabit Ethernet Adapter (ct3)

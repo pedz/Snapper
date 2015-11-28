@@ -2,7 +2,7 @@ require "spec_helper"
 require "entstat_vlan"
 
 describe Entstat_vlan do 
-  before(:all) {
+  before(:context) {
     text = <<EOF
 ETHERNET STATISTICS (ent13) :
 Device Type: 

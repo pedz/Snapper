@@ -2,7 +2,7 @@ require "spec_helper"
 require "netstat_in"
 
 describe Netstat_in do
-  before(:all) {
+  before(:context) {
     text = <<EOF
 
 Name  Mtu   Network     Address           Ipkts Ierrs    Opkts Oerrs  Coll

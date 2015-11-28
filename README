@@ -19,7 +19,7 @@ environments can be found or packets from a particular interface on a
 particular virtual client flowing out through a SEA and a real adapter
 and out to the real network can be easily followed.
 
-  Usage: options.rb [options] <path to snap1> [ <path to snap2> ... ]
+  Usage: snapper.rb [options] <path to snap1> [ <path to snap2> ... ]
       -D, --dump                       For each snap, creates a .ruby.dump.gz file
 				       at the base directory of the snap with the
 				       parse tree of the snap.  This file will be
@@ -681,12 +681,6 @@ will pop up menus which will currently only lead you to frustration.
     individual snaps as if the paths to their base directories had
     been listed on the command line.
  
-1.  Fix the parser for lsattr.  The batch of attributes need to be
-    considered as a whole and the indent column for the value,
-    description, and alterable field can be determined by scanning
-    vertically for columns of spaces.  Not impossible.  Just not what
-    I wanna do right now.
-
 1.  There is a bug in the way I do attributes because some attributes
     can have multiple CuAt entries and I have not taken that into
     account in the Ruby code (the javascript code did).

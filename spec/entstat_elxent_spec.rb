@@ -3,7 +3,7 @@ require "entstat_elxent"
 
 describe Entstat_elxent do 
   context "PCIe2 2-port 10GbE SR Adapter" do
-    before(:all) {
+    before(:context) {
       text = <<EOF
 ETHERNET STATISTICS (ent0) :
 Device Type: PCIe2 2-port 10GbE SR Adapter
@@ -133,7 +133,7 @@ EOF
   end
 
   context "Int Multifunction Card w/ Copper SFP+ 10GbE Adapter" do
-    before(:all) {
+    before(:context) {
       text = <<EOF
 ETHERNET STATISTICS (ent0) :
 Device Type: Int Multifunction Card w/ Copper SFP+ 10GbE Adapter
@@ -265,7 +265,7 @@ EOF
   end
 
   context "Int Multifunction Card w/ Copper SFP+ 10GbE Adapter" do
-    before(:all) {
+    before(:context) {
       text = <<EOF
 ETHERNET STATISTICS (ent2) :
 Device Type: Int Multifunction Card w/ Base-TX 10/100/1000 1GbE Adapter

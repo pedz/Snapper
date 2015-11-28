@@ -2,7 +2,7 @@ require "spec_helper"
 require "entstat_shient"
 
 describe Entstat_shient do 
-  before(:all) {
+  before(:context) {
     text = <<EOF
 ETHERNET STATISTICS (ent1) :
 Device Type: PCIe2 4-Port Adapter (10GbE SFP+) (e4148a1614109304)

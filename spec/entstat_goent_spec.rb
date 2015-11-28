@@ -2,7 +2,7 @@ require "spec_helper"
 require "entstat_goent"
 
 describe Entstat_goent do 
-  before(:all) {
+  before(:context) {
     text = <<EOF
 ETHERNET STATISTICS (ent2) :
 Device Type: 4-Port 10/100/1000 Base-TX PCI-Express Adapter (14106803)

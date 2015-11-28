@@ -2,7 +2,7 @@ require "spec_helper"
 require "entstat_vioent"
 
 describe Entstat_vioent do 
-  before(:all) {
+  before(:context) {
     text = <<EOF
 ETHERNET STATISTICS (ent4) :
 Device Type: Virtual I/O Ethernet Adapter (l-lan)

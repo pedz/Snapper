@@ -2,7 +2,7 @@ require "spec_helper"
 require "no_a"
 
 describe No_a do
-  before(:all) {
+  before(:context) {
     text = <<'EOF'
 
                  arpqsize = 1024

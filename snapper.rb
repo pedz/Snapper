@@ -5,6 +5,7 @@ require_relative 'lib/snapper'
 require_relative 'lib/options'
 Dir.glob(__FILE__ + '/../lib/**/*.rb') { |f| require_relative f }
 
+$progname = __FILE__.sub(/.*\//, "")
 $qb = $stderr
 # "Quick Bug" -- used for quick printf style debugging
 def qb(*args)
@@ -14,7 +15,7 @@ end
 
 if __FILE__ == $0
   begin
-    options = Options.new.parse!(ARGV)
+    options = Options.new($progname).parse!(ARGV)
   rescue => e
     STDERR.puts e.message
     exit 1

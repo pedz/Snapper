@@ -36,7 +36,8 @@ class Options
   # css and javascript much easier.  The default is --one-file.
   attr_reader :one_file
   
-  def initialize
+  def initialize(progname)
+    @progname = progname
     @dir_list = nil
     @dump = false
     @html = nil
@@ -79,7 +80,7 @@ class Options
 
   def opt_parser
     @opt_parser ||= OptionParser.new do |opts|
-      opts.banner = "Usage: #{__FILE__.sub(/.*\//, "")} [options] <path to snap1> [ <path to snap2> ... ]"
+      opts.banner = "Usage: #{@progname} [options] <path to snap1> [ <path to snap2> ... ]"
 
       opts.on("-D",
               "--dump",

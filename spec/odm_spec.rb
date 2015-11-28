@@ -9,7 +9,7 @@ end
 describe Odm do
   describe "#parse" do
     context "simple input" do
-      before(:each) do
+      before(:context) do
         @text = <<'HERE'
 MyClass:
   attr1 = 15
