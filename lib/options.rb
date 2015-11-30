@@ -200,7 +200,7 @@ class Options
         @one_file = v
       end
 
-      opts.on("--flat_keys",
+      opts.on("--flat-keys",
               "Print the flat_keys and value of the entire",
               "database from the first snap.") do |flat_keys|
         @flat_keys = flat_keys
