@@ -94,7 +94,9 @@ class Snapper
     batch = Batch.new(snap_list)
     batch_processors.each { |klass| klass.create(batch) }
 
-    if @options.print_keys
+    if @options.flat_keys
+      flat_keys(batch)
+    elsif @options.print_keys
       @options.puts(batch.snap_list[0].db.keys.sort)
     elsif @options.html
       Page.new(batch, @options.html, @options.one_file).create_page
@@ -158,5 +160,22 @@ class Snapper
   rescue => e
     $stderr.puts "snapper.rb: Can not restore from #{path}: #{e.message}"
     exit 1
+  end
+
+  def flat_keys(batch)
+    batch.snap_list[0].db.keys.sort.each do |key|
+      klass = batch.snap_list[0].db[key]
+      if klass.is_a? Array
+        klass.each_index do |index|
+          klass[index].flat_keys([key, index]).each do |k, v|
+            @options.puts("#{k}:#{v}")
+          end
+        end
+      else
+        klass.flat_keys([key]).each do |k, v|
+          @options.puts("#{k}:#{v}")
+        end
+      end
+    end
   end
 end

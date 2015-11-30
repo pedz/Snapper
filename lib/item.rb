@@ -234,8 +234,8 @@ class Item
   # two element array.  The first element is the original keys, separated by
   # commas, to reach the value.  The second element is the value.  All
   # values will be simple Fixnums or Strings
-  def flat_keys
-    flatten_keys(self)
+  def flat_keys(nesting = [])
+    flatten_keys(self, nesting)
   end
 
   def to_json(options = {})
@@ -260,8 +260,12 @@ class Item
           flatten_keys(value, nesting.dup.push(key)).each { |h| yielder << h }
         end
       elsif thing.is_a?(Item)
-        thing.each_pair do |key, value|
-          flatten_keys(value, nesting.dup.push(thing.orig_key[key])).each { |h| yielder << h }
+        if thing.keys.empty?
+          yielder << [ nesting.join(','), "<not parsed>"]
+        else
+          thing.each_pair do |key, value|
+            flatten_keys(value, nesting.dup.push(thing.orig_key[key])).each { |h| yielder << h }
+          end
         end
       else
         yielder << [ nesting.join(','), thing ]

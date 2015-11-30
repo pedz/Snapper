@@ -8,6 +8,11 @@ class Options
   attr_accessor :dir_list
   
   ##
+  # true if the --flat_keys flag was given on the command line.  The
+  # default is false.
+  attr_reader :flat_keys
+
+  ##
   # true if the -D flag was given on the command line.  Default is
   # false.
   attr_reader :dump
@@ -37,7 +42,6 @@ class Options
   attr_reader :one_file
   
   def initialize(progname)
-    @progname = progname
     @dir_list = nil
     @dump = false
     @html = nil
@@ -45,6 +49,8 @@ class Options
     @one_file = true
     @output = $stdout
     @print_keys = false
+    @progname = progname
+    @flat_keys = false
   end
 
   # Parse the arguments
@@ -192,6 +198,12 @@ class Options
               "output or (--no-one-file) keep them",
               "separate.") do |v|
         @one_file = v
+      end
+
+      opts.on("--flat_keys",
+              "Print the flat_keys and value of the entire",
+              "database from the first snap.") do |flat_keys|
+        @flat_keys = flat_keys
       end
 
       opts.on_tail("-?",
