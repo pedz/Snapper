@@ -3,7 +3,7 @@
 # Load Snapper class and then load all the files under lib.
 require_relative 'lib/snapper'
 require_relative 'lib/options'
-Pathname.glob(Pathname.new(__FILE__).parent + "lib/**/*.rb") { |f| require_relative f }
+Pathname.glob(Pathname.new(__FILE__).parent.realpath + "lib/**/*.rb") { |f| require_relative f }
 
 $progname = __FILE__.sub(/.*\//, "")
 $qb = $stderr
