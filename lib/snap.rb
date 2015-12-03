@@ -20,6 +20,30 @@ class Snap
     @print_list = (options[:print_list] || PrintList.new)
   end
 
+  # Returns Db#date_time from the contained db.
+  def date_time
+    @db.date_time
+  end
+
+  # Returns Db#hostname
+  def hostname
+    @db.hostname
+  end
+
+  # Returns Db#id_to_partition
+  def id_to_partition
+    @db.id_to_partition
+  end
+
+  # Returns Db#id_to_system
+  def id_to_system
+    @db.id_to_system
+  end
+  
+  def <=>(b)
+    self.date_time <=> b.date_time
+  end
+
   def add_alert(text)
     @alerts << Alert.new(text, @db)
   end

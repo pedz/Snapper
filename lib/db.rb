@@ -11,6 +11,12 @@ class Db < Hash
 
   include HashMakeMethods
 
+  ##
+  # Pulled from one of the files and set by FileParser or one of its
+  # subclasses.  Currently the only class that sets this is
+  # DotFileParser when general.snap is scanned.
+  attr_accessor :date_time
+
   # Create an item of class name with the given text within the db.
   # Calls Object#get_class to find and create the class if necessary passing
   # it name and base.
@@ -19,6 +25,38 @@ class Db < Hash
     item = klass.new(text, self)
     add(item)
     item
+  end
+
+  # If an entry for +hostname+ exists, returns the Hostname#node_name
+  # in that entry, otherwise returns +UnknownHostname+
+  def hostname
+    if self['hostname']
+      self.hostname.node_name
+    else
+      "UnknownHostname"
+    end
+  end
+
+  # If an entry for +hostname+ exists, returns the
+  # Hostname#id_to_partition in that entry, otherwise returns
+  # +UnknownIdToPartition+
+  def id_to_partition
+    if self['hostname']
+      self.hostname.id_to_partition
+    else
+      "UnknownIdToPartition"
+    end
+  end
+
+  # If an entry for +hostname+ exists, returns the
+  # Hostname#id_to_system in that entry, otherwise returns
+  # +UnknownIdToSystem+.
+  def id_to_system
+    if self['hostnam']
+      self.hostname.id_to_system
+    else
+      "UnknownIdToSystem"
+    end
   end
 
   private

@@ -37,7 +37,7 @@ class Snapper
     # FileParser is often the super class of file parsers.
     def add_file_parsing_patterns(hash)
       hash.each_pair do |regexp, parser|
-        file_parers[regexp] = parser
+        file_parsers[regexp] = parser
       end
     end
 
@@ -54,8 +54,8 @@ class Snapper
     end
 
     # Returns the list of file parsers
-    def file_parers
-      @file_parers ||= {}
+    def file_parsers
+      @file_parsers ||= {}
     end
   end
   
@@ -76,7 +76,7 @@ class Snapper
           snap = restore(dump_path(path))
         else
           db = Db.new
-          SnapParser.new(path, nil, db, file_parers).parse
+          SnapParser.new(path, nil, db, file_parsers).parse
           snap = Snap.new({ dir: path, db: db })
           dump(path, snap) if @options.dump
         end
@@ -108,8 +108,8 @@ class Snapper
   private
 
   # Returns the list of file parsers to the instance
-  def file_parers
-    self.class.send :file_parers
+  def file_parsers
+    self.class.send :file_parsers
   end
 
   # Returns the list of snap processors to the instance

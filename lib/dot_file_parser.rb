@@ -1,3 +1,5 @@
+require 'date'
+require 'time'
 require_relative 'logging'
 require_relative 'file_parser'
 require_relative 'item'
@@ -31,13 +33,20 @@ class DotFileParser < FileParser
     #     ... ]
     # The lines0 piece is thrown away.
     pieces = @io.read.split(DotSeparator)
-    not_used = pieces.shift     # date or blanks before 1st command
+    maybe_date = pieces.shift     # date or blanks before 1st command
+    unless @path && @path.basename == "general.snap" && maybe_date.empty?
+      begin
+        @db.date_time = DateTime.parse(maybe_date)
+      rescue ArgumentError => e
+      end
+    end
     lines = 5
     while pieces.length > 1
       name, text = pieces.shift(2)
       next if name.match(/\A *\z/) # yes... it happens :-(
       begin
-        @db.create_item(name, text).parse
+        item = @db.create_item(name, text).parse
+        # item['Date/Time'] = date_time
       rescue => e
         new_message = e.message.split("\n").insert(1, "dot file parser: lineno:#{lines}").join("\n")
         new_e = e.exception(new_message)

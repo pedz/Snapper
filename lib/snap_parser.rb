@@ -38,7 +38,7 @@ class SnapParser
           if regexp.match(path.to_s)
             path.open("r:ISO-8859-1") do |io|
               begin
-                parser.new(io, @db).parse
+                parser.new(io, @db, path).parse
               rescue => e
                 new_message = e.message.split("\n").insert(1, "snap parser: path:#{path}").join("\n")
                 new_e = e.exception(new_message)

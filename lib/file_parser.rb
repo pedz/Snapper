@@ -11,10 +11,11 @@ class FileParser
   LOG_LEVEL = Logger::INFO
 
   ##
-  # The original text of the entry as io
-  # The database that the item will be part of as db
-  def initialize(io, db)
-    @io, @db = io, db
+  # io is usually a File and path is the path the file came from.  But
+  # for testing, path can be nil and io is a StringIO.  db is the
+  # database.
+  def initialize(io, db, path = nil)
+    @io, @db, @path = io, db, path
   end
 
   ##
