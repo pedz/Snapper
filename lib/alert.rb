@@ -4,7 +4,6 @@ require_relative 'item'
 # attention.
 class Alert < Item
   # def print(x)
-  #   puts "AHAHAHAHAH"
   #   x
   # end
 end

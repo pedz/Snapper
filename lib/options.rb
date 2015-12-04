@@ -107,10 +107,11 @@ class Options
               "the specified class.  level can be 0, 1, 2,",
               "3, 4, DEBUG, INFO, WARN, ERROR, or FATAL.",
               "path may be a path to a file that is opened",
-              "in append mode or STDERR.  Multiple -L",
-              "options can be specified and are processed",
-              "in order.  The default level is INFO (1)",
-              "and the default output is STDERR.") do |arg|
+              "in append mode, \"STDERR\", or \"STDOUT\".",
+              "Multiple -L options can be specified and",
+              "are processed in order.  The default level",
+              "is INFO (1) and the default output is",
+              "STDERR.") do |arg|
         words = arg.split(':')
         klass = nil
         new_level = nil
@@ -136,8 +137,11 @@ class Options
           end
         end
         path = words[1]
-        if path && path == "STDERR"
+        case path
+        when "STDERR"
           path = $stderr
+        when "STDOUT"
+          path = $stdout
         end
         if klass
           Logging.set_new_logger(klass, path, new_level)

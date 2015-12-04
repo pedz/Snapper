@@ -1,19 +1,5 @@
 require_relative "filter"
-# We need to require each class that we add a filter to or else when
-# we create the class its filters will be empty.
-require_relative "device"
-require_relative "entstat"
-require_relative "entstat_vioent"
-require_relative "errpt"
-require_relative "ethchan"
-require_relative "ethchans"
-require_relative "hostname"
-require_relative "interface"
-require_relative "interfaces"
-require_relative "item"
-require_relative "lsattr"
-require_relative "sea"
-require_relative "seas"
+
 # Note that this file is copied over to doc/filters and munged so we
 # can get it into the documentation.  The startdoc below clues the
 # copy of where to start

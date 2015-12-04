@@ -1,4 +1,5 @@
 require_relative 'logging'
+require_relative 'filter'
 require 'json'
 
 # The base type used by most everything in the database with the
@@ -95,6 +96,7 @@ class Item
   # reloaded.  See Snapper#restore for more info
   def self.inherited(subclass)
     children.push(subclass.to_s)
+    ::Filter.load_filters(subclass)
   end
 
   # This is just a convenience method to initialize children to an
