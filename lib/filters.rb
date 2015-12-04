@@ -162,6 +162,23 @@ Filter.add("Ethchan", { level: 0 .. 11 }) do |context, item|
   end
 end
 
+Filter.add("Ethernet_adapters", { level: 0 .. 11 }) do |context, item|
+  first_item = true
+  item.each_value.print(context) do |context, device|
+    unless device.printed
+      if first_item
+        context.output("Unused Adapters")
+        first_item = false
+      end
+      device.print(context.nest)
+    end
+    context
+  end
+  if first_item
+    context.output("No unused adapters")
+  end
+end
+
 # This could be broken into two filters possibly.  For levels greater
 # than 2, a banner is printed with the host name centered.  For level
 # 0 and 1, a simpler "Host: foo" is printed.
