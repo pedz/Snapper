@@ -26,10 +26,25 @@ class Item
   attr_reader :line_number
 
   class << self
-    # Each class can have its own set of filters.  This method is
-    # called from Filter.add.
-    def add_filter(filter)
-      local_filters << filter
+    # First time I've done this.  I like the name so much that I
+    # overloaded it.
+    #
+    # If called with one argument that is a Filter, then
+    # local_add_filter is called.
+    #
+    # If called with any other signature, Item.add_filter is called if
+    # the target is not Item.  If the target is Item, then
+    # Item.add_filter_to_class is called.
+    def add_filter(*args, &proc)
+      if args.length == 1 && args[0].is_a?(Filter)
+        local_add_filter(args[0])
+      else
+        if self == Item
+          add_filter_to_class(args[0], args[1], &proc)
+        else
+          Item.add_filter(*args, &proc)
+        end
+      end
     end
 
     # Returns the list of filters for this class and all of its super
@@ -50,6 +65,74 @@ class Item
     # The set of filters only for this class sorted using Filter#<=>
     def local_filters
       (@filters ||= []).sort!
+    end
+
+    # Magic needed to get marshaling to work.  Many classes are
+    # created during parse time.  When the dumped file is loaded
+    # again, Ruby must already have those classes defined.  This is
+    # the first step in the magic.  This is called when any class
+    # inherits (or is a subclass) of Item.  Since all of the
+    # autmatically created classes inherit from Item, this is a super
+    # set of the list of classes that need to be created before the
+    # marshaled snap file can be reloaded.  See Snapper#restore for
+    # more info
+    def inherited(subclass)
+      # puts "#{self.to_s}" if self != Item
+      children.push(subclass.to_s)
+      Item.load_filters(subclass)
+    end
+
+    # Called via Item.inherited to load the filters for the new class
+    # when it is created.
+    def load_filters(klass)
+      if self == Item
+        hash[klass.to_s].each { |filter| klass.add_filter(filter) }
+      else
+        Item.load_filters(klass)
+      end
+    end
+
+    private
+
+    # A new Filter is created using options and proc and added to the
+    # class named by the first argument.  The first argument is
+    # converted to a string if it is not one already.
+    #
+    # This works even before the class exists by saving the Filter in
+    # a local hash and then adding them when the class is created via
+    # the Item.inherited method.
+    #
+    # Note that it is assumed that the target of the message is Item
+    # since this is a private method and the code in add_filter makes
+    # sure that Item is the target before calling this method.
+    def add_filter_to_class(klass, options = {}, &proc)
+      klass = klass.to_s
+      filter = Filter.new(options, &proc)
+      if (::Object.const_defined?(klass) &&
+          (klass = ::Object.const_get(klass)) &&
+          klass.respond_to?(:add_filter))
+        klass.add_filter(filter)
+      else
+        hash[klass] << filter
+      end
+    end
+
+    # Each class has its own set of filters.  This method adds Filter
+    # to the class that is the target of the message.
+    # e.g. Foo.add_filter(filter) will add the Filter to class Foo.
+    def local_add_filter(filter)
+      local_filters << filter
+    end
+
+    # The local hash used by add_filter_to_class and load_filters.
+    def hash
+      @hash ||= Hash.new { |hash, key| hash[key] = [] }
+    end
+
+    # This is just a convenience method to initialize children to an
+    # empty array.
+    def children
+      @children ||= []
     end
   end
 
@@ -84,25 +167,6 @@ class Item
     else
       self.class.filters
     end
-  end
-
-  # Magic needed to get marshaling to work.  Many classes are created
-  # during parse time.  When the dumped file is loaded again, Ruby
-  # must already have those classes defined.  This is the first step
-  # in the magic.  This is called when any class inherits (or is a
-  # subclass) of Item.  Since all of the autmatically created classes
-  # inherit from Item, this is a super set of the list of classes that
-  # need to be created before the marshaled snap file can be
-  # reloaded.  See Snapper#restore for more info
-  def self.inherited(subclass)
-    children.push(subclass.to_s)
-    ::Filter.load_filters(subclass)
-  end
-
-  # This is just a convenience method to initialize children to an
-  # empty array.
-  def self.children
-    @children ||= []
   end
 
   # creates an instance of subclass klass and moves all the instance
@@ -207,9 +271,9 @@ class Item
   def []=(key, value)
     fixed_key = fix_key(key)
     if @hash.has_key?(fixed_key) && 
-      unless key == @orig_key[fixed_key] || key.is_a?(Symbol)
-        fail "Collision of new key #{key.inspect} with previous key #{@orig_key[fixed_key].inspect}"
-      end
+       unless key == @orig_key[fixed_key] || key.is_a?(Symbol)
+         fail "Collision of new key #{key.inspect} with previous key #{@orig_key[fixed_key].inspect}"
+       end
     else
       @orig_key[fixed_key] = key
       @line_number[fixed_key] = @text.respond_to?(:lineno) ? @text.lineno : nil

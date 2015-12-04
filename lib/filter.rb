@@ -4,33 +4,10 @@ require_relative "logging"
 # filter has a range of levels that it is active for.  It also has a
 # Proc that is invoked to produce the desired output.
 class Filter
-  class << self
-    # Creates a new Filter passing options and proc and then adds it to
-    # the class specified by klass.
-    def add(klass, options = {}, &proc)
-      klass = klass.to_s
-      filter = Filter.new(options, &proc)
-      if (::Object.const_defined?(klass) &&
-          (klass = ::Object.const_get(klass)) &&
-          klass.respond_to?(:add_filter))
-        klass.add_filter(filter)
-      else
-        hash[klass] << filter
-      end
-    end
+  include Logging
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
 
-    def load_filters(klass)
-      hash[klass.to_s].each { |filter|
-        klass.add_filter(filter) }
-    end
-
-    private
-
-    def hash
-      @hash ||= Hash.new { |hash, key| hash[key] = [] }
-    end
-
-  end
   # The default options for Filter
   # Currently the only one used is level which defaults to 1 .. 10
   Default_Options = {
@@ -72,7 +49,20 @@ class Filter
   # calls the proc for the Filter with context and item.
   def run(context, item)
     if @proc
+      if logger.level == Logger::DEBUG
+        original_modifier = context.modifier
+        loc = @proc.source_location
+        t = " from #{loc[0]}:#{loc[1]}"
+        context.modifier(original_modifier + t)
+      end
       @proc.call(context, item)
+      if logger.level == Logger::DEBUG
+        context.modifier(original_modifier)
+      end
     end
+  end
+
+  def source_location
+    @proc && @proc.source_location
   end
 end
