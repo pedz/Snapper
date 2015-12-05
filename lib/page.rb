@@ -77,7 +77,9 @@ EOF
   end
 
   # Adds in the call to addSnap and the json representation of db into
-  # the html page.
+  # the html page.  Produces a script tag which calls
+  # {window.snapper.world.addBatch}[../javascript/Snapper-World.html#addBatch]
+  # passing it the JSON output of batch.
   def add_data(batch)
     @outfile.puts "    <script>"
     @outfile.puts "        window.snapper.world.addBatch(";
