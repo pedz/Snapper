@@ -22,11 +22,11 @@ if __FILE__ == $0
   end
 
   # Must have at least one snap path
-  if ARGV.empty?
+  if options.dir_list.empty?
     STDERR.puts options.help
     exit 1
   end
-  options.dir_list = ARGV
+  # options.dir_list = ARGV
 
   Snapper.new(options).run
 end

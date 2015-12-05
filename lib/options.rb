@@ -6,6 +6,11 @@ class Options
   ##
   # The list of snaps to process
   attr_accessor :dir_list
+
+  ##
+  # true if the -D flag was given on the command line.  Default is
+  # false.
+  attr_reader :dump
   
   ##
   # true if the --flat_keys flag was given on the command line.  The
@@ -13,9 +18,9 @@ class Options
   attr_reader :flat_keys
 
   ##
-  # true if the -D flag was given on the command line.  Default is
-  # false.
-  attr_reader :dump
+  # If the --interactive command line option was specified, this flag
+  # will be true and false otherwise.
+  attr_reader :interactive
   
   ##
   # The level indicated by the -l option on the command line.  The
@@ -42,15 +47,16 @@ class Options
   attr_reader :one_file
   
   def initialize(progname)
-    @dir_list = nil
+    @dir_list = []
     @dump = false
+    @flat_keys = false
     @html = nil
+    @interactive = false
     @level = 1
     @one_file = true
     @output = $stdout
     @print_keys = false
     @progname = progname
-    @flat_keys = false
   end
 
   # Parse the arguments
@@ -62,6 +68,9 @@ class Options
   # Parse and modify the arguments
   def parse!(args)
     opt_parser.parse!(args)
+    while args.length > 0
+      @dir_list.push(args.shift)
+    end
     self
   end
 
@@ -208,6 +217,11 @@ class Options
               "Print the flat_keys and value of the entire",
               "database from the first snap.") do |flat_keys|
         @flat_keys = flat_keys
+      end
+
+      opts.on("--interactive",
+              "Drops the user into an irb session") do |interactive|
+        @interactive = interactive
       end
 
       opts.on_tail("-?",

@@ -91,18 +91,24 @@ class Snapper
       snap
     end
 
-    batch = Batch.new(snap_list)
-    batch_processors.each { |klass| klass.create(batch) }
+    @batch = Batch.new(snap_list)
+    batch_processors.each { |klass| klass.create(@batch) }
 
     if @options.flat_keys
-      flat_keys(batch)
+      flat_keys
     elsif @options.print_keys
-      @options.puts(batch.snap_list[0].db.keys.sort)
+      print_keys
     elsif @options.html
-      Page.new(batch, @options.html, @options.one_file).create_page
+      html
+    elsif @options.interactive
+      interactive
     else
-      batch.print(@options)
+      print
     end
+  end
+
+  def to_s
+    "Sample"
   end
 
   private
@@ -162,9 +168,30 @@ class Snapper
     exit 1
   end
 
-  def flat_keys(batch)
-    batch.snap_list[0].db.keys.sort.each do |key|
-      klass = batch.snap_list[0].db[key]
+  def print_keys
+    @options.puts(@batch.snap_list[0].db.keys.sort)
+  end
+
+  def html
+    Page.new(@batch, @options.html, @options.one_file).create_page
+  end
+
+  def print
+    @batch.print(@options)
+  end
+
+  def interactive
+    require 'irb'
+    IRB.setup(nil)
+    workspace = IRB::WorkSpace.new(binding)
+    irb = IRB::Irb.new(workspace)
+    IRB.conf[:MAIN_CONTEXT] = irb.context
+    irb.eval_input
+  end
+
+  def flat_keys
+    @batch.snap_list[0].db.keys.sort.each do |key|
+      klass = @batch.snap_list[0].db[key]
       if klass.is_a? Array
         klass.each_index do |index|
           klass[index].flat_keys([key, index]).each do |k, v|
