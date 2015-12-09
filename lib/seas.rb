@@ -1,8 +1,8 @@
-require_relative 'devices'
-# Must run after ethchans have been converted
-require_relative 'seas'
 require_relative 'logging'
+require_relative 'item'
 require_relative 'snapper'
+# The load order is devices, ethchans, seas, vlans, interfaces
+require_relative 'ethchans'
 
 # A snap processor that runs through the Devices looking Sea devices.
 class Seas < Item
@@ -20,6 +20,7 @@ class Seas < Item
     seas = db.create_item("seas")
     db.devices.each_pair do |key, value|
       if value.cudv.pddvln == "adapter/pseudo/sea"
+        logger.debug { "Converting #{key} into a Sea"}
         new_value = value.subclass(Sea)
         new_value[:real_adapter] = db['Devices'][value.attributes.real_adapter.value]
         new_value[:virt_adapters] = List.new

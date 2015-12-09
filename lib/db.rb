@@ -31,7 +31,7 @@ class Db < Hash
   # in that entry, otherwise returns +UnknownHostname+
   def hostname
     if self['hostname']
-      self.hostname.node_name
+      self.hostname.hostname
     else
       "UnknownHostname"
     end

@@ -1,5 +1,8 @@
-require_relative 'devices'
-require_relative 'seas'
+require_relative 'logging'
+require_relative 'item'
+require_relative 'snapper'
+# The load order is devices, ethchans, seas, vlans, interfaces
+require_relative 'vlans'
 
 # Finds all the ethernet adapters.
 class EthernetAdapters

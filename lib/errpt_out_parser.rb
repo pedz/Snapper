@@ -39,11 +39,16 @@ class ErrptOutParser < FileParser
       entry.each_line do |line|
         line.chomp!
         if md = Fields.match(line)
+          logger.debug { "adding #{md[1]}"}
           item[md[1]] = md[2]
         else
           (item['extra'] ||= List.new).push(line)
         end
       end
+    end
+    if @db["Errpt"].is_a? Item
+      @db.create_item("Errpt", "")
+      @db["Errpt"].pop
     end
     self
   end

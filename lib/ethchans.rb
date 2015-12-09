@@ -1,6 +1,8 @@
-require_relative 'devices'
 require_relative 'logging'
+require_relative 'item'
 require_relative 'snapper'
+# The load order is devices, ethchans, seas, vlans, interfaces
+require_relative 'devices'
 
 # A snap processor that finds ether channels and converts their
 # Devices entry into the Ethchan subclass.  Creates and populates the
@@ -18,6 +20,7 @@ class Ethchans < Item
     db = snap.db
     db.devices.each_pair do |key, value|
       if value.cudv.pddvln == "adapter/pseudo/ibm_ech"
+        logger.debug { "Converting #{key} into a Ethchan"}
         new_value = value.subclass(Ethchan)
         new_value[:adapter_names] = List.new
         value.attributes.adapter_names.value.split(',').each do |adapter_name|

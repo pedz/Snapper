@@ -3,7 +3,6 @@
 # Load Snapper class and then load all the files under lib.
 require_relative 'lib/snapper'
 require_relative 'lib/options'
-Pathname.glob(Pathname.new(__FILE__).parent.realpath + "lib/**/*.rb") { |f| require_relative f }
 
 $progname = __FILE__.sub(/.*\//, "")
 $qb = $stderr
@@ -11,7 +10,6 @@ $qb = $stderr
 def qb(*args)
   $qb.puts(*args)
 end
-
 
 if __FILE__ == $0
   begin
@@ -21,12 +19,13 @@ if __FILE__ == $0
     exit 1
   end
 
+  Pathname.glob(Pathname.new(__FILE__).parent.realpath + "lib/**/*.rb") { |f| require_relative f }
+
   # Must have at least one snap path
   if options.dir_list.empty?
     STDERR.puts options.help
     exit 1
   end
-  # options.dir_list = ARGV
 
   Snapper.new(options).run
 end

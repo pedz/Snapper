@@ -17,6 +17,7 @@ class Snapper
     # +create+ method which is called passing it a Snap as its only
     # argument.  See Seas.create as an example.
     def add_snap_processor(klass)
+      logger.debug { "add_snap_processor #{klass}"}
       snap_processors.push(klass)
     end
 
@@ -69,6 +70,7 @@ class Snapper
   # Phases[index.html#label-Phases].
   def run
     snap_list = @options.dir_list.map do |path|
+      logger.debug { "Processing #{path}"}
       path = Pathname(path)
       snap = nil
       if path.directory?
@@ -78,7 +80,9 @@ class Snapper
           db = Db.new
           SnapParser.new(path, nil, db, file_parsers).parse
           snap = Snap.new({ dir: path, db: db })
-          dump(path, snap) if @options.dump
+          if @options.dump
+            dump(path, snap)
+          end
         end
       elsif path.file?
         snap = restore(path)
@@ -87,12 +91,18 @@ class Snapper
         exit 1
       end
 
-      snap_processors.each { |klass| klass.create(snap) }
+      snap_processors.each do |klass|
+        logger.debug { "calling snap_processor for #{klass}"}
+        klass.create(snap)
+      end
       snap
     end
 
     @batch = Batch.new(snap_list)
-    batch_processors.each { |klass| klass.create(@batch) }
+    batch_processors.each do |klass|
+      logger.debug { "calling batch_processor for #{klass}"}
+      klass.create(@batch)
+    end
 
     if @options.flat_keys
       flat_keys
@@ -130,7 +140,7 @@ class Snapper
 
   # Returns the path to the marshal dump file
   def dump_path(path)
-    @dump_path ||= (path + ".ruby.dump.gz")
+    path + ".ruby.dump.gz"
   end
 
   # calls Marhal.dump to marshal out a two item array.  The first item

@@ -65,6 +65,8 @@ end
 Item.add_filter("Entstat_vioent", { level: 1 .. 5 })  do |context, item|
   text = "Port VLAN ID: #{item["Port VLAN ID"]}"
   text += " VLAN Tag IDs #{item["VLAN Tag IDs"]}" unless item["VLAN Tag IDs"] == "None"
+  text += " on #{item["Switch ID"]}"
+  text += " Active:#{item["Active"]}" if item['Trunk Adapter'] == "True"
   text = [ text ]
   unless item["Hypervisor Send Failures"] == 0
     text.push("Hypervisor Send Failures: #{item["Hypervisor Send Failures"]}")
@@ -262,7 +264,15 @@ end
 # identified from the virtual adapters used to bridge packets.
 # Likewise, the backup adapter for ethchan also needs to be marked.
 Item.add_filter("Sea", { level: 0 .. 11 }) do |context, item|
-  item[:super].print(context)
+  if entstat = item.super.entstat
+    bridge_mode = entstat['Bridge Mode']
+    state = entstat['State']
+    modifier = "State:#{state} Bridge Mode:#{bridge_mode}"
+  else
+    modifier = ""
+  end
+  # bridge_mode = item.super.
+  item[:super].print(context.modifier(modifier))
   item[:real_adapter].print(context.nest)
   item[:virt_adapters].print(context.nest)
   item[:ctl_chan].print(context.nest.modifier("ctrl channel"))
@@ -280,4 +290,10 @@ Item.add_filter("Seas", { level: 0 .. 11 }) do |context, item|
     end
     context
   end
+end
+
+Item.add_filter("Vlan", { level: 1 .. 11 }) do |context, item|
+  modifier = "VLAN ID: #{item.attributes.vlan_tag_id.value}"
+  item[:super].print(context.modifier(modifier))
+  item[:base_adapter].print(context.nest)
 end

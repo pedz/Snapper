@@ -86,10 +86,16 @@ class Item
     # when it is created.
     def load_filters(klass)
       if self == Item
-        hash[klass.to_s].each { |filter| klass.add_filter(filter) }
+        class_hash[klass.to_s].each { |filter| klass.add_filter(filter) }
       else
         Item.load_filters(klass)
       end
+    end
+
+    # This is just a convenience method to initialize children to an
+    # empty array.
+    def children
+      @children ||= []
     end
 
     private
@@ -113,7 +119,7 @@ class Item
           klass.respond_to?(:add_filter))
         klass.add_filter(filter)
       else
-        hash[klass] << filter
+        class_hash[klass] << filter
       end
     end
 
@@ -125,14 +131,8 @@ class Item
     end
 
     # The local hash used by add_filter_to_class and load_filters.
-    def hash
-      @hash ||= Hash.new { |hash, key| hash[key] = [] }
-    end
-
-    # This is just a convenience method to initialize children to an
-    # empty array.
-    def children
-      @children ||= []
+    def class_hash
+      @class_hash ||= Hash.new { |hash, key| hash[key] = [] }
     end
   end
 

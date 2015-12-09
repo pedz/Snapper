@@ -1,10 +1,8 @@
-require_relative 'devices'
-# We must execute after the device has been converted to a sea or
-# ethchan
-require_relative 'seas'
-require_relative 'ethchans'
 require_relative 'logging'
+require_relative 'item'
 require_relative 'snapper'
+# The load order is devices, ethchans, seas, vlans, interfaces
+require_relative 'vlans'
 
 # A snap processor that runs and creates an Intefaces container in the
 # top level db.
@@ -24,6 +22,7 @@ class Interfaces < Item
       if db['Devices'] && (md = /\Ae[nt](?<number>[0-9]+)\z/.match(item.name))
         device_name = "ent#{md[:number]}"
         if adapter = db['Devices'][device_name]
+          logger.debug { "adapter is #{adapter.class}"}
           item[:adapter] = adapter
         end
       end

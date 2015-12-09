@@ -1,5 +1,4 @@
 require_relative 'snapper'
-require_relative 'devices'
 require_relative 'logging'
 
 # This is a file that has snap_processors that create alerts.
