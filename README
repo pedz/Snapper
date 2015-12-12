@@ -358,7 +358,9 @@ not.  Instead they revert to a Filter for Item that dumps the list of
 flatten keys.
 
 Levels 2 and up are very raw and will are changing frequently at this
-point.
+point.  Currently level 2 is the same as level 1 except it reports
+lists the error report errors but removes the duplicates.  Level 3
+starts to add builtifiers such as splats between hosts.
 
 === Filters
 

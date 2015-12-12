@@ -127,7 +127,7 @@ class Context
     lead, sep, tail = cvt_attrs(attrs)
     # Prints the stack of the caller for debugging purposes.
     logger.debug { caller(4 .. 15).join("\n") }
-    text = text.join(sep) if text.is_a? Array
+    text = text.map(&:chomp).join(sep) if text.is_a? Array
     @options.printf("%s%s%s", lead, text, tail)
   end
 

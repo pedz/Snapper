@@ -15,7 +15,7 @@ if __FILE__ == $0
   begin
     options = Options.new($progname).parse!(ARGV)
   rescue => e
-    STDERR.puts e.message
+    STDERR.puts "#{$progname}: #{e.message}"
     exit 1
   end
 

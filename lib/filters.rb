@@ -25,7 +25,7 @@ end
 # The level 1 Entstat filter prints out lines that contain error,
 # overrun, or underrun if the values are not zero.  It also checks the
 # LACP Actor and Partner State to make sure that the state is good.
-Item.add_filter("Entstat", { level: 1 }) do |context, item|
+Item.add_filter("Entstat", { level: 1 .. 5 }) do |context, item|
   item.flat_keys.each do |k, v|
     if /error|overrun|underrun/i.match(k) && v != 0
       context.output("#{k}:#{v}")
@@ -52,7 +52,7 @@ end
 # The level 2 through 10 filter for Entstat simply dumps the text to
 # output.  This probably needs to be improved.  Perhaps the above
 # filter's range could be 1 .. 4 and this filter could be 5 .. 10.
-Item.add_filter("Entstat", { level: 2 .. 10 }) do |context, item|
+Item.add_filter("Entstat", { level: 6 .. 10 }) do |context, item|
   text = item.to_text.each_line
   text = text.select { |line| /\A=+\Z/.match(line) ? false : true }
   context.output(text)
@@ -264,18 +264,22 @@ end
 # identified from the virtual adapters used to bridge packets.
 # Likewise, the backup adapter for ethchan also needs to be marked.
 Item.add_filter("Sea", { level: 0 .. 11 }) do |context, item|
-  if entstat = item.super.entstat
+  sea_ent = item[:super]
+  if (sea_ent.attributes.ha_mode.value != "disabled" &&
+      entstat = item.super.entstat)
     bridge_mode = entstat['Bridge Mode']
     state = entstat['State']
     modifier = "State:#{state} Bridge Mode:#{bridge_mode}"
   else
-    modifier = ""
+    modifier = "ha_mode: #{sea_ent.attributes.ha_mode.value}"
   end
   # bridge_mode = item.super.
-  item[:super].print(context.modifier(modifier))
+  sea_ent.print(context.modifier(modifier))
   item[:real_adapter].print(context.nest)
   item[:virt_adapters].print(context.nest)
-  item[:ctl_chan].print(context.nest.modifier("ctrl channel"))
+  if item[:ctl_chan]
+    item[:ctl_chan].print(context.nest.modifier("ctrl channel"))
+  end
 end
 
 # The list of Sea entries which have not already been printed are
