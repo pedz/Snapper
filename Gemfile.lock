@@ -36,6 +36,7 @@ GEM
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
     yard (0.8.7.6)
+    yard-js (0.1.3)
 
 PLATFORMS
   ruby
@@ -45,6 +46,7 @@ DEPENDENCIES
   jasmine
   rspec
   yard
+  yard-js
 
 BUNDLED WITH
    1.10.6
