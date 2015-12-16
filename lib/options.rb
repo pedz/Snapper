@@ -1,8 +1,22 @@
 require 'optparse'
+require 'forwardable'
 require_relative 'logging'
 
 # The options that snapper.rb can accept
 class Options
+  include Logging
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
+
+  # def order!(*args, &proc)
+  #   opt_parser.order!(*args, &proc)
+  # end
+
+  extend Forwardable
+  def_delegators :opt_parser, :order!, :on, :on_head, :on_tail, :help,
+                 :add_officious, :banner, :banner=, :program_name,
+                 :abort, :release, :release=, :version, :version=
+
   ##
   # The list of snaps to process
   attr_accessor :dir_list
@@ -46,7 +60,7 @@ class Options
   # css and javascript much easier.  The default is --one-file.
   attr_reader :one_file
   
-  def initialize(progname)
+  def initialize(program_name)
     @dir_list = []
     @dump = false
     @flat_keys = false
@@ -56,7 +70,7 @@ class Options
     @one_file = true
     @output = $stdout
     @print_keys = false
-    @progname = progname
+    @program_name = program_name
   end
 
   # Parse the arguments
@@ -80,23 +94,25 @@ class Options
     @output.puts(*args)
   end
 
-  # produces the help message
-  def help
-    opt_parser.help
-  end
-
   # Does a printf with the specified arguments to the output file
   # specified.  The default output file is $stdout.
   def printf(*args)
     @output.printf(*args)
   end
 
+  def add_cmd(cmd)
+    cmds << cmd
+  end
+
+  def cmds
+    @cmds ||= []
+  end
+
   private
 
   def opt_parser
     @opt_parser ||= OptionParser.new do |opts|
-      opts.banner = "Usage: #{@progname} [options] <path to snap1> [ <path to snap2> ... ]"
-
+      opts.program_name = @program_name
       opts.on("-D",
               "--dump",
               "For each snap, creates a .ruby.dump.gz file",
@@ -107,7 +123,8 @@ class Options
         @dump = d
       end
 
-      opts.on("-L [class:]level[:path]",
+      opts.on(:REQUIRED,
+              "-L [class:]level[:path]",
               "--LOG [class:]level[:path]",
               "If no class is specified, sets the log",
               "level for all loggers and optionally the",
@@ -171,9 +188,7 @@ class Options
               "Output verbosity level from -1 to 11",
               "default is 1") do |l|
         if l < -1 || l > 11
-          STDERR.puts "level out of range"
-          STDERR.puts opt_parser.help
-          exit 1
+          raise OptionParser::InvalidArgument.new(l)
         end
         @level = l
       end
@@ -213,22 +228,15 @@ class Options
         @one_file = v
       end
 
-      opts.on("--flat-keys",
-              "Print the flat_keys and value of the entire",
-              "database from the first snap.") do |flat_keys|
-        @flat_keys = flat_keys
-      end
+      # opts.on("--flat-keys",
+      #         "Print the flat_keys and value of the entire",
+      #         "database from the first snap.") do |flat_keys|
+      #   @flat_keys = flat_keys
+      # end
 
       opts.on("--interactive",
               "Drops the user into an irb session") do |interactive|
         @interactive = interactive
-      end
-
-      opts.on_tail("-?",
-                   "--help",
-                   "Show this message") do
-        STDERR.puts opts
-        exit
       end
     end
   end

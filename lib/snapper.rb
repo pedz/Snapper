@@ -1,6 +1,7 @@
 require 'zlib'
 require 'pathname'
 require_relative 'logging'
+require_relative 'options'
 require_relative 'snap'
 require_relative 'batch'
 
@@ -42,6 +43,15 @@ class Snapper
       end
     end
 
+    def current_instance=(instance)
+      @current_instance = instance
+    end
+
+    def add_command_line_option
+      fail "Snapper.add_command called at an odd time" if @current_instance.nil?
+      yield *@current_instance
+    end
+
     private
     
     # Returns the list of snap processors
@@ -59,16 +69,83 @@ class Snapper
       @file_parsers ||= {}
     end
   end
+
+  def initialize
+    @options = Options.new(File.basename($0))
+    help = OptionParser::Officious.delete('help') 
+    @options.version = [ 1, 0, 0 ]
+    @options.release = "a"
+    @options.banner = @options.banner + " <path to snap1> [ <path to snap2> ... ]"
+    OptionParser::Officious['help'] = help
+  end
+
+  # Now the main program.
+  #
+  # We load and process the options but ignore any errors so that any
+  # logging can be turned on as early as possible
+  def run
+    first_option_parse
+    load_files
+    second_option_parse
+    create_batch
+    run_batch_processors
+    do_cmd
+  end
+
+  # Needed to get interactive to work
+  def to_s
+    "Sample"
+  end
+
+  private
   
+  # Options are parsed in two stages.  As early as possible, the
+  # options are parsed so the various debugging and logging options
+  # can be set as early as possible.  Then the files are loaded which
+  # may define new options.  A second parse of the options is then
+  # done and then the general processing is done.
+  def first_option_parse
+    @args = []
+    begin
+      @options.order!(ARGV) do |opt|
+        @args << opt
+      end
+    rescue OptionParser::InvalidOption => e
+      e.recover(ARGV)
+      @args << ARGV.shift
+      retry
+    rescue => e
+      @options.abort(e.message)
+    end
+    @options.add_officious
+  end
+
+  def second_option_parse
+    begin
+      @options.parse!(@args)
+      raise OptionParser::MissingArgument.new("<path to snap1>") if @options.dir_list.empty?
+    rescue => e
+      @options.abort(e.message)
+    end
+  end
+
+  def load_files
+    Snapper.current_instance = [ self, @options ]
+    Pathname.glob(Pathname.new(__FILE__).parent.realpath + "**/*.rb") do |f|
+      require_relative f
+    end
+    Snapper.current_instance = nil
+  end
+
   ##
   # Passed the command line options
-  def initialize(options)
-    @options = options
-  end
+  # def initialize(options)
+  #   @options = options
+  # end
 
   # Processes the list of snaps probably best described in
   # Phases[index.html#label-Phases].
-  def run
+  def create_batch
     snap_list = @options.dir_list.map do |path|
       logger.debug { "Processing #{path}"}
       path = Pathname(path)
@@ -99,29 +176,27 @@ class Snapper
     end
 
     @batch = Batch.new(snap_list)
+  end
+
+  def run_batch_processors
     batch_processors.each do |klass|
       logger.debug { "calling batch_processor for #{klass}"}
       klass.create(@batch)
     end
-
-    if @options.flat_keys
-      flat_keys
-    elsif @options.print_keys
-      print_keys
-    elsif @options.html
-      html
-    elsif @options.interactive
-      interactive
-    else
-      print
-    end
   end
 
-  def to_s
-    "Sample"
+  def do_cmd
+    @options.cmds.each { |cmd| cmd.call(@batch, @options) }
+    # if @options.print_keys
+    #   print_keys
+    # elsif @options.html
+    #   html
+    # elsif @options.interactive
+    #   interactive
+    # else
+    #   print
+    # end
   end
-
-  private
 
   # Returns the list of file parsers to the instance
   def file_parsers
@@ -197,22 +272,5 @@ class Snapper
     irb = IRB::Irb.new(workspace)
     IRB.conf[:MAIN_CONTEXT] = irb.context
     irb.eval_input
-  end
-
-  def flat_keys
-    @batch.snap_list[0].db.keys.sort.each do |key|
-      klass = @batch.snap_list[0].db[key]
-      if klass.is_a? Array
-        klass.each_index do |index|
-          klass[index].flat_keys([key, index]).each do |k, v|
-            @options.puts("#{k}:#{v}")
-          end
-        end
-      else
-        klass.flat_keys([key]).each do |k, v|
-          @options.puts("#{k}:#{v}")
-        end
-      end
-    end
   end
 end
