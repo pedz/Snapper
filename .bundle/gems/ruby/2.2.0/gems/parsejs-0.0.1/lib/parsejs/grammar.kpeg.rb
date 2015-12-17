@@ -938,7 +938,7 @@ class ParseJS::Parser < KPeg::CompiledParser
 
   # SourceCharacter = /[\x00-\xff]/n
   def _SourceCharacter
-    _tmp = scan(/\A(?-mix:[\x00-\xff])/)
+    _tmp = scan(/\A(?-mix:[\x00-\xff])/n)
     set_failed_rule :_SourceCharacter unless _tmp
     return _tmp
   end
@@ -9281,7 +9281,8 @@ class ParseJS::Parser < KPeg::CompiledParser
   Rules[:_SnoLB] = rule_info("SnoLB", "(WhiteSpace | SingleLineComment | MultiLineCommentNoLB)+")
   Rules[:_WhiteSpace] = rule_info("WhiteSpace", "/[\\t\\v\\f ]+/ { nil }")
   Rules[:_LF] = rule_info("LF", "\"\\n\"")
-  Rules[:_CR] = rule_info("CR", "\"\"")
+  # Rules[:_CR] = rule_info("CR", "\"\"")
+  Rules[:_CR] = rule_info("CR", "\"\\r\"")
   Rules[:_LineTerminator] = rule_info("LineTerminator", "/[\\n\\r]+/")
   Rules[:_LineTerminatorSequence] = rule_info("LineTerminatorSequence", "< /\\n|\\r\\n|\\r/ > { text }")
   Rules[:_Comment] = rule_info("Comment", "(MultiLineComment | SingleLineComment)")
