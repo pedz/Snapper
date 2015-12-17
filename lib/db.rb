@@ -31,7 +31,7 @@ class Db < Hash
   # in that entry, otherwise returns +UnknownHostname+
   def hostname
     if self['hostname']
-      self.hostname.hostname
+      self['hostname'].hostname
     else
       "UnknownHostname"
     end
@@ -42,7 +42,7 @@ class Db < Hash
   # +UnknownIdToPartition+
   def id_to_partition
     if self['hostname']
-      self.hostname.id_to_partition
+      self['hostname'].id_to_partition
     else
       "UnknownIdToPartition"
     end
@@ -52,8 +52,8 @@ class Db < Hash
   # Hostname#id_to_system in that entry, otherwise returns
   # +UnknownIdToSystem+.
   def id_to_system
-    if self['hostnam']
-      self.hostname.id_to_system
+    if self['hostname']
+      self['hostname'].id_to_system
     else
       "UnknownIdToSystem"
     end

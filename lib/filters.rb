@@ -166,6 +166,9 @@ Item.add_filter("Ethernet_adapters", { level: 0 .. 11 }) do |context, item|
   if first_item
     context.output("No unused adapters")
   end
+  if context.level > 0
+    context.output()
+  end
 end
 
 # This could be broken into two filters possibly.  For levels greater

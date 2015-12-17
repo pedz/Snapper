@@ -21,7 +21,7 @@ class PrintList
 
   # Print the list of items in the order of their priority (lowest to
   # highest).
-  def print(options)
-    items.print(Context.new(options))
+  def print(context)
+    items.print(context)
   end
 end

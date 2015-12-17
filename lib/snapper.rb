@@ -186,16 +186,16 @@ class Snapper
   end
 
   def do_cmd
-    @options.cmds.each { |cmd| cmd.call(@batch, @options) }
-    # if @options.print_keys
-    #   print_keys
-    # elsif @options.html
-    #   html
-    # elsif @options.interactive
-    #   interactive
-    # else
-    #   print
-    # end
+    # @options.cmds.each { |cmd| cmd.call(@batch, @options) }
+    if @options.print_keys
+      print_keys
+    elsif @options.html
+      html
+    elsif @options.interactive
+      interactive
+    else
+      print
+    end
   end
 
   # Returns the list of file parsers to the instance
@@ -262,7 +262,7 @@ class Snapper
   end
 
   def print
-    @batch.print(@options)
+    @batch.print(Context.new(@options))
   end
 
   def interactive

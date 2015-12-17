@@ -22,7 +22,7 @@ class Hostname < Item
     hostname['Partition Name'] = db.lparstat_out.partition_name
     hostname['id_to_partition'] = db.devices.sys0.attributes.id_to_partition.value
     hostname['id_to_system'] = db.devices.sys0.attributes.id_to_system.value
-    snap.add_item(hostname, 5)
+    # snap.add_item(hostname, 5)
   end
 
   Snapper.add_snap_processor(self)

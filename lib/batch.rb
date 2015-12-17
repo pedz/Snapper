@@ -17,14 +17,29 @@ class Batch
     @alerts << alert
   end
 
-  def print(options)
+  def print(context)
     @alerts.each do |alert|
-      alert.print(options)
+      alert.print(context)
     end
 
-    @snap_list.each do |snap|
-      snap.print(options)
+    cecs = @snap_list.group_by { |snap| snap.id_to_system }
+    cecs.each_pair do |key, list|
+      cecs[key] = list.group_by { |snap| snap.hostname }
     end
+    nested = context.nest
+    cecs.keys.sort.each do |id_to_system|
+      context.output("Id to System: #{id_to_system}")
+      cec = cecs[id_to_system]
+      cec.keys.sort.each do |hostname|
+        cec[hostname].each do |snap|
+          nested.output("Host: #{hostname}")
+          snap.print(nested.nest)
+        end
+      end
+    end
+    # @snap_list.each do |snap|
+    #   snap.print(context)
+    # end
   end
 
   def to_json(options = {})

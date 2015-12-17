@@ -84,7 +84,8 @@ class Netstat_v < Item
       logger.debug { "DEVICE NAME: #{device_name}" }
 
       begin
-        self[device_name] = find_parser(rest).new(rest, @db).parse
+        temp = find_parser(rest).new(rest, @db).parse
+        self[device_name] = temp unless self[device_name]
       rescue => e
         new_message = e.message.split("\n").insert(1, "Device name: #{device_name}").join("\n")
         new_e = e.exception(new_message)

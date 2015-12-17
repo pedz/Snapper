@@ -55,9 +55,9 @@ class Snap
   end
 
   # prints the list of items added according to the supplied options.
-  def print(options)
-    @alerts.print(Context.new(options))
-    @print_list.print(options)
+  def print(context)
+    @alerts.print(context)
+    @print_list.print(context)
   end
 
   def to_json(options = {})
