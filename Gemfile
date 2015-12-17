@@ -7,4 +7,5 @@ group :development do
   gem "jasmine"
   gem "yard"
   gem "yard-js"
+  gem "parsejs"
 end
