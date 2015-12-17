@@ -1,12 +1,16 @@
 require_relative 'logging'
 require_relative 'list'
 
-# A container for a list of Snaps[Snap.html] and Alerts[Alert.html]
+# A container for a list of {Snap Snaps} and {Alert Alerts}.  This
+# concept may go away eventually because once the snaps are parsed,
+# they will get put into groups by CEC ({Snap#id_to_system
+# id_to_system}) and then by LPAR ({Snap#hostname hostname}).
 class Batch
-  # The Db database passed
+  # @return [Array<Snap>] The list of {Snap Snaps} passed in via new.
   attr_reader :snap_list
 
   # Passed a list of snaps
+  # @param snap_list [Array<Snap>] A list of {Snap Snaps}.
   def initialize(snap_list)
     @snap_list = snap_list
     @alerts = List.new
