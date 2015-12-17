@@ -35,8 +35,7 @@ Item.add_filter("Entstat", { level: 1 .. 5 }) do |context, item|
   [ 'Actor State', 'Partner State' ].each do |key|
     if h = item[key]
       bad_values = []
-      [ ['LACP activity', 'Active'],
-        ['Aggregation', 'Aggregatable'],
+      [ ['Aggregation', 'Aggregatable'],
         ['Synchronization', 'IN_SYNC'],
         ['Collecting', 'Enabled'],
         ['Distributing', 'Enabled'],
