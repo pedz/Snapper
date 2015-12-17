@@ -3,3 +3,5 @@ temp
 doc/Filters
 doc/javascript
 doc/ruby
+doc/yard
+.yardoc
