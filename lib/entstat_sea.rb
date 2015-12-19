@@ -84,13 +84,14 @@ class Entstat_sea < Entstat
      end,
      
      # Sample Match:   |	Thread .............. #0
-     # States Matched: :SEA_threads and :SEA_thread_gather
+     # States Matched: :SEA_threads, :SEA_thread_gather, and :SEA_thread_queue_gather
      # New State:      :SEA_thread_gather
      # State Pushed:   yes
      # States Popped:  1 if in :SEA_thread_gather
-     PDA::Production.new("^\\s*Thread[ .]*#(?<index>\\d+)\\s*$", [:SEA_threads, :SEA_thread_gather], :SEA_thread_gather) do |md, pda|
+     PDA::Production.new("^\\s*Thread[ .]*#(?<index>\\d+)\\s*$", [:SEA_threads, :SEA_thread_gather, :SEA_thread_queue_gather], :SEA_thread_gather) do |md, pda|
        index = md[:index].to_i
        value = WriteOnceHash.new
+       pda.pop(1) if pda.state == :SEA_thread_queue_gather
        pda.pop(1) if pda.state == :SEA_thread_gather
        pda.target[index] = value
        pda.push(value)
@@ -98,24 +99,26 @@ class Entstat_sea < Entstat
      
      # Sample Match:   |    SEA Default Queue #8 
      # States Matched: :SEA_thread_gather
-     # New State:      :no_change
+     # New State:      :SEA_thread_queue_gather
      # State Pushed:   none
      # States Popped:  0
      # Special case pattern but really just another field value pair
-     PDA::Production.new("^\\s*(?<field>SEA Default Queue)\\s*#(?<value>\\d+)\\s*$", [:SEA_thread_gather]) do |md, pda|
-       field = md[:field]
-       value = md[:value].to_i
+     PDA::Production.new("^\\s*(?<field>SEA( Default)? Queue)\\s*#(?<value>\\d+)\\s*$", [:SEA_thread_gather, :SEA_thread_queue_gather], :SEA_thread_queue_gather) do |md, pda|
+       field = md[0]
+       pda.pop(1) if pda.state == :SEA_thread_queue_gather
+       value = WriteOnceHash.new
        pda.target[field] = value
+       pda.push(value)
      end,
      
      # Sample Match:   |High Availability Statistics:
-     # States Matched: :SEA_thread_gather
+     # States Matched: :SEA_thread_queue_gather
      # New State:      :no_change
      # State Pushed:   none
      # States Popped:  2
      # end of thread specific statistics.
-     PDA::Production.new("High Availability Statistics", [:SEA_thread_gather]) do |md, pda|
-       pda.pop(2)
+     PDA::Production.new("High Availability Statistics", [:SEA_thread_queue_gather]) do |md, pda|
+       pda.pop(3)
      end,
      
      # Sample Match:   |Statistics for adapters in the Shared Ethernet Adapter ent22
@@ -150,7 +153,7 @@ class Entstat_sea < Entstat
      # md[:field].  Text after colon is md[:value].  Leading and
      # trailing white space from both are stripped.  Value can not
      # be empty and is converted to an integer.
-     PDA::Production.new("^\\s*(?<field>[^: ][^:]+):\\s*(?<value>-?\\d+)\\s*$", [:normal, :SEA_subparagraphs, :SEA_thread_gather]) do |md, pda|
+     PDA::Production.new("^\\s*(?<field>[^: ][^:]+):\\s*(?<value>-?\\d+)\\s*$", [:normal, :SEA_subparagraphs, :SEA_thread_gather, :SEA_thread_queue_gather]) do |md, pda|
        field = md[:field].strip
        value = md[:value].to_i
        pda.target[field] = value

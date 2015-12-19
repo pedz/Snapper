@@ -1,5 +1,8 @@
 require_relative 'logging'
 require_relative 'list'
+require_relative 'cec'
+require_relative 'lpar'
+require_relative 'snap'
 
 # A container for a list of {Snap Snaps} and {Alert Alerts}.  This
 # concept may go away eventually because once the snaps are parsed,
@@ -26,24 +29,18 @@ class Batch
       alert.print(context)
     end
 
-    cecs = @snap_list.group_by { |snap| snap.id_to_system }
-    cecs.each_pair do |key, list|
-      cecs[key] = list.group_by { |snap| snap.hostname }
-    end
-    nested = context.nest
-    cecs.keys.sort.each do |id_to_system|
-      context.output("Id to System: #{id_to_system}")
-      cec = cecs[id_to_system]
-      cec.keys.sort.each do |hostname|
-        cec[hostname].each do |snap|
-          nested.output("Host: #{hostname}")
-          snap.print(nested.nest)
-        end
+    # I don't know really where to put thsi code yet.
+    @cecs ||= @snap_list.group_by(&:id_to_system).map do |id, list|
+      cec = CEC.new(list[0].db)
+      lpars = list.group_by(&:hostname).map do |id, snaps|
+        lpar = LPAR.new(snaps[0].db)
+        lpar.snaps.push(*snaps.sort)
+        lpar
       end
-    end
-    # @snap_list.each do |snap|
-    #   snap.print(context)
-    # end
+      cec.lpars.push(*lpars.sort)
+      cec
+    end.sort
+    @cecs.print(context)
   end
 
   def to_json(options = {})

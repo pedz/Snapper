@@ -77,7 +77,6 @@ class Item
     # marshaled snap file can be reloaded.  See Snapper#restore for
     # more info
     def inherited(subclass)
-      # puts "#{self.to_s}" if self != Item
       children.push(subclass.to_s)
       Item.load_filters(subclass)
     end

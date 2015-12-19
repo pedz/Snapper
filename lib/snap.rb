@@ -56,8 +56,10 @@ class Snap
 
   # prints the list of items added according to the supplied options.
   def print(context)
-    @alerts.print(context)
-    @print_list.print(context)
+    context.output("Snap taken #{date_time}")
+    @alerts.print(context.nest)
+    @print_list.print(context.nest)
+    context
   end
 
   def to_json(options = {})
