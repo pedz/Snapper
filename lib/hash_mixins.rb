@@ -31,6 +31,11 @@ module HashMakeMethods
     if !block_given? && args.length == 0 && self.has_key?(method)
       return self[method]
     end
+    # An alternative coding leveraging EmptyItem but I'm not sure I
+    # really like it.
+    # if !block_given? && args.length == 0
+    #   return self[method] || EmptyItem.new
+    # end
     super
   end
 

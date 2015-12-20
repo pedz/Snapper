@@ -14,6 +14,7 @@ class EthernetAdapters
   # within the db and adds a print item at level 50 which will cause
   # all the unused ethernet adapters to be listed.
   def self.create(snap)
+    logger.debug { "create called"}
     db = snap.db
     adapters = db.create_item("Ethernet_adapters")
     db.devices.each_pair do |key, value|

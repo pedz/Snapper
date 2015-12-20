@@ -12,17 +12,17 @@ class Snapper
   LOG_LEVEL = Logger::INFO
   
   class << self
-    ##
     # A class can add itself as a snap_processor by calling
     # Snapper.add_snap_processor(self).  The class must have a
     # +create+ method which is called passing it a Snap as its only
-    # argument.  See Seas.create as an example.
+    # argument.
+    # @see Seas.create
+    # @param klass [Class]
     def add_snap_processor(klass)
       logger.debug { "add_snap_processor #{klass}"}
       snap_processors.push(klass)
     end
 
-    ##
     # A class can add itself as a batch_processor by calling
     # Snapper.add_batch_processor(self).  The class must have a
     # +create+ method which is called passing it a Batch as its only
@@ -31,7 +31,6 @@ class Snapper
       batch_processors.push(klass)
     end
 
-    ##
     # A class can add itself as a parser by adding calling
     # Snapper.add_file_parsing_patterns pass in a hash whose keys are
     # regular expressions that match files and values are the classes
@@ -43,13 +42,25 @@ class Snapper
       end
     end
 
-    def current_instance=(instance)
-      @current_instance = instance
+    # def current_instance=(instance)
+    #   @@current_instance = instance
+    # end
+
+    # def current_instance
+    #   @@current_instance
+    # end
+
+    # def command_line_option
+    #   fail "Snapper.command_line_option called at an odd time" if current_instance.nil?
+    #   yield *current_instance
+    # end
+
+    def add_command_line_option(&proc)
+      add_command_procs << proc
     end
 
-    def add_command_line_option
-      fail "Snapper.add_command called at an odd time" if @current_instance.nil?
-      yield *@current_instance
+    def add_command_procs
+      @@add_command_procs ||= []
     end
 
     private
@@ -120,6 +131,8 @@ class Snapper
     @options.add_officious
   end
 
+  # The second parse of the command line options after load_files has
+  # been called.
   def second_option_parse
     begin
       @options.parse!(@args)
@@ -129,14 +142,19 @@ class Snapper
     end
   end
 
+  # Currently loads only the files within the same directory as this
+  # file but the plan is to load all of the files also in ~/.snapper
+  # and also allow an option to add to the lists of directories to
+  # load.
   def load_files
-    Snapper.current_instance = [ self, @options ]
     Pathname.glob(Pathname.new(__FILE__).parent.realpath + "**/*.rb") do |f|
       require_relative f
     end
-    Snapper.current_instance = nil
+    @@add_command_procs.each do |proc|
+      proc.call(self, @options)
+    end
   end
-
+  
   ##
   # Passed the command line options
   # def initialize(options)
@@ -186,16 +204,16 @@ class Snapper
   end
 
   def do_cmd
-    # @options.cmds.each { |cmd| cmd.call(@batch, @options) }
-    if @options.print_keys
-      print_keys
-    elsif @options.html
-      html
-    elsif @options.interactive
-      interactive
-    else
-      print
-    end
+    @options.cmds.each { |cmd| cmd.call(@batch, @options) }
+    # if @options.print_keys
+    #   print_keys
+    # elsif @options.html
+    #   html
+    # elsif @options.interactive
+    #   interactive
+    # else
+    #   print
+    # end
   end
 
   # Returns the list of file parsers to the instance
@@ -239,7 +257,10 @@ class Snapper
       p = Proc.new  { |obj|
         if (done == false) && (obj.class == Array)
           obj.each do |classname|
-            ::Object.const_set(classname, Class.new(Item)) unless ::Object.const_defined?(classname)
+            unless ::Object.const_defined?(classname)
+              logger.debug { "restore #{classname}" }
+              eval("class ::#{classname} < Item; end")
+            end
           end
           done = true
         end

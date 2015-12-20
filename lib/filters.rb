@@ -153,7 +153,9 @@ end
 Item.add_filter("Ethernet_adapters", { level: 0 .. 11 }) do |context, item|
   first_item = true
   item.each_value.print(context) do |context, device|
-    unless device.printed
+    # @todo this probably should change at higher levels to print the
+    #   name and then print the status beside it.
+    unless device.printed || (device.cudv.status == 0)
       if first_item
         context.output("Unused Adapters")
         first_item = false

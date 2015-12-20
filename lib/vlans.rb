@@ -4,12 +4,16 @@ require_relative 'snapper'
 # The load order is devices, ethchans, seas, vlans, interfaces
 require_relative "seas"
 
-# Finds vlan adapters and converts their type much like ethchans do.
+# A snap processor which finds vlan adapters and converts their type
+# much like Ethchans does.
 class Vlans < Item
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
 
+  # Runs through the Devices of the Snap looking for devices with a
+  # PdDvLn of +adapter/vlan/eth+ and converts them to a Vlan.
+  # param snap [Snap] The snap to review.
   def self.create(snap)
     db = snap.db
     db.devices.each_pair do |key, value|

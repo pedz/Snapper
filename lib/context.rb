@@ -68,6 +68,7 @@ class Context
   # called at the end of processing a list of items using the same
   # context.
   def done
+    @in_list = false
     @proc.call(self) if @proc
     @options.puts if @last_output_had_nocr
   end

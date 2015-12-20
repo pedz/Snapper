@@ -51,8 +51,8 @@ class Devices < Item
         (errs[name] ||= List.new).push(err)
       end
 
-      netstat_in = db['Netstat_in']
-      netstat_v = db['Netstat_v']
+      netstat_in = (db['Netstat_in'] ||= {})
+      netstat_v = (db['Netstat_v'] ||= {})
 
       devices = db.create_item("Devices")
       cudvs.each do |cudv|

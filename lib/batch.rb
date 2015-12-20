@@ -9,28 +9,15 @@ require_relative 'snap'
 # they will get put into groups by CEC ({Snap#id_to_system
 # id_to_system}) and then by LPAR ({Snap#hostname hostname}).
 class Batch
-  # @return [Array<Snap>] The list of {Snap Snaps} passed in via new.
-  attr_reader :snap_list
+  # @return [Array<CEC>] The list of known {CEC CECs}.
+  attr_reader :cec_list
 
   # Passed a list of snaps
   # @param snap_list [Array<Snap>] A list of {Snap Snaps}.
   def initialize(snap_list)
     @snap_list = snap_list
     @alerts = List.new
-  end
-
-  # Add an alert
-  def add_alert(alert)
-    @alerts << alert
-  end
-
-  def print(context)
-    @alerts.each do |alert|
-      alert.print(context)
-    end
-
-    # I don't know really where to put thsi code yet.
-    @cecs ||= @snap_list.group_by(&:id_to_system).map do |id, list|
+    @cec_list = @snap_list.group_by(&:id_to_system).map do |id, list|
       cec = CEC.new(list[0].db)
       lpars = list.group_by(&:hostname).map do |id, snaps|
         lpar = LPAR.new(snaps[0].db)
@@ -40,9 +27,24 @@ class Batch
       cec.lpars.push(*lpars.sort)
       cec
     end.sort
-    @cecs.print(context)
   end
 
+  # Add an alert
+  # @param text [String] The alert text to add
+  def add_alert(text)
+    @alerts << Alert.new(text, @db)
+  end
+
+  # Print out the batch.
+  # @param context [Context] The context to use for printing, etc.
+  def print(context)
+    @alerts.print(context)
+    @cec_list.print(context)
+    context
+  end
+
+  # Currently we dump out the snap_list and not the cec_list
+  # @param options [Hash] The normal to_json options.
   def to_json(options = {})
     {
       snap_list: @snap_list,

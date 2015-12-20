@@ -21,6 +21,7 @@ class Db < Hash
   # Calls Object#get_class to find and create the class if necessary passing
   # it name and base.
   def create_item(name, text = "", base = Item)
+    logger.debug { "create_item(#{name}, #{text[0 .. 10]}, #{base.name})"}
     klass = get_class(name, base)
     item = klass.new(text, self)
     add(item)

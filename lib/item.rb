@@ -1,5 +1,7 @@
 require_relative 'logging'
 require_relative 'filter'
+# See alternative coding below
+# require_relative 'empty_item'
 require 'json'
 
 # The base type used by most everything in the database with the
@@ -85,6 +87,7 @@ class Item
     # when it is created.
     def load_filters(klass)
       if self == Item
+        logger.debug { "load #{class_hash[klass.to_s].length} filters for #{klass}" }
         class_hash[klass.to_s].each { |filter| klass.add_filter(filter) }
       else
         Item.load_filters(klass)
@@ -116,8 +119,10 @@ class Item
       if (::Object.const_defined?(klass) &&
           (klass = ::Object.const_get(klass)) &&
           klass.respond_to?(:add_filter))
+        logger.debug { "adding filter at #{proc.source_location} to #{klass} "}
         klass.add_filter(filter)
       else
+        logger.debug { "storing filter at #{proc.source_location} for #{klass} "}
         class_hash[klass] << filter
       end
     end
@@ -126,6 +131,7 @@ class Item
     # to the class that is the target of the message.
     # e.g. Foo.add_filter(filter) will add the Filter to class Foo.
     def local_add_filter(filter)
+      logger.debug { "#{name}.local_add_filter called" }
       local_filters << filter
     end
 
@@ -238,14 +244,21 @@ class Item
     if !block_given? && args.length == 0 && @hash.has_key?(method)
       return @hash[method]
     end
+    # An alternative coding leveraging EmptyItem but I'm not sure I
+    # really like it.
+    # Also see similar comment in HashMakeMethods
+    # if !block_given? && args.length == 0 && !@hash.respond_to?(method)
+    #   return @hash[method] if @hash.has_key?(method)
+    #   return EmptyItem.new
+    # end
 
     # The default is the send the message to @hash.  If the method
     # returns a hash, we check to see if it is the original hash.  If
     # it is, we return (the modified) self.  If it is not, we create a
     # new Item with the appropriate elements.  Last, if the result is
     # not a hash (e.g. length), we just return the result.
-    orig_hash_id = @hash.object_id
     if @hash.respond_to?(method)
+      orig_hash_id = @hash.object_id
       result = @hash.send(method, *args, &proc)
       if result.class == Hash
         if result.object_id == orig_hash_id

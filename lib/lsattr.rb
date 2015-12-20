@@ -100,8 +100,11 @@ class Lsattr < Item
         value = line[left[1] .. right[1]].strip
         desc  = line[left[2] .. right[2]].strip
         alter = line[left[3] .. right[3]].strip
-        value = nil if value.empty?
-        value = value.to_i if /\A[0-9]+\Z/.match(value)
+        if value.empty?
+          value = nil
+        else
+          value = value.to_i if /\A[0-9]+\Z/.match(value)
+        end
         target = Item.new("", db)
         target[:value] = value
         target[:desc]  = desc

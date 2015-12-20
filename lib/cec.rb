@@ -32,6 +32,8 @@ class CEC
     @model = "Unknown"
     @cpu_type = "Unknown"
     @lpars = List.new
+    @alerts = List.new
+    @db = db
     if devices = db['devices']
       if sys0 = devices['sys0']
         attrs = sys0.attributes
@@ -46,13 +48,39 @@ class CEC
     end
   end
 
+  # Add an alert to the CEC.
+  # @param text [String] The alert text to add
+  def add_alert(text)
+    @alerts << Alert.new(text, @db)
+  end
+
+  # Compares with the id_to_system value
+  # @param b [CEC] The other CEC to compare to.
   def <=>(b)
     self.id_to_system <=> b.id_to_system
   end
 
+  # Print the CEC out which prints out the info about the CEC along
+  # with the list of {Alert Alerts} and {LPAR LPARs} nested one level
+  # deeper.
+  # @param context [Context] The context to use for printing.
   def print(context)
     context.output("CEC model:#{model} CPU:#{cpu_type} firmware:#{firmware_level} Id:#{id_to_system}")
+    @alerts.print(context.nest)
     @lpars.print(context.nest)
     context
+  end
+
+  # Marshal out the CEC as a JSON object
+  # @param options [Hash] usual option hash for to_json
+  def to_json(options = {})
+    {
+      alerts:         @alerts,
+      cpu_type:       @cpu_type,
+      firmware_level: @firmware_level,
+      id_to_system:   @id_to_system,
+      lpars:          @lpars,
+      model:          @model
+    }.to_json(options)
   end
 end
