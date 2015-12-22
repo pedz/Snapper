@@ -8,62 +8,79 @@ class Options
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
 
-  # def order!(*args, &proc)
-  #   opt_parser.order!(*args, &proc)
-  # end
-
   extend Forwardable
-  def_delegators :opt_parser, :order!, :on, :on_head, :on_tail, :help,
-                 :add_officious, :banner, :banner=, :program_name,
-                 :abort, :release, :release=, :version, :version=
 
-  ##
-  # The list of snaps to process
+  # @!macro [attach] def_delegators
+  #   @!method $2
+  #     Forwards to $1.
+  #     @see OptParser#$2
+  def_delegators :opt_parser, :order!
+  def_delegators :opt_parser, :on
+  def_delegators :opt_parser, :on_head
+  def_delegators :opt_parser, :on_tail
+  def_delegators :opt_parser, :help
+  def_delegators :opt_parser, :add_officious
+  def_delegators :opt_parser, :banner
+  def_delegators :opt_parser, :banner=
+                              true # Added to keep emacs formatting happy
+  def_delegators :opt_parser, :program_name
+  def_delegators :opt_parser, :abort
+  def_delegators :opt_parser, :release
+                              true # Added to keep emacs formatting happy
+  def_delegators :opt_parser, :release=
+  def_delegators :opt_parser, :version
+  def_delegators :opt_parser, :version=
+                              true # Added to keep emacs formatting happy
+  
+  # @!macro [attach] def_delegators
+  #   @!method $2(*args)
+  #     Forwards to $1.
+  #     @see IO#$2
+  def_delegators :output, :puts
+  def_delegators :output, :printf
+
+  # @return [Array<String>] The list of snaps to process
   attr_accessor :dir_list
 
-  ##
-  # true if the -D flag was given on the command line.  Default is
-  # false.
+  # @return [Boolean] true if the -D flag was given on the command
+  #   line.  Default is false.
   attr_reader :dump
   
-  ##
-  # true if the --flat_keys flag was given on the command line.  The
-  # default is false.
-  attr_reader :flat_keys
-
-  ##
-  # If the --interactive command line option was specified, this flag
-  # will be true and false otherwise.
+  # @return [Boolean] true if the --interactive command line option
+  #   was specified and false otherwise.
   attr_reader :interactive
   
-  ##
-  # The level indicated by the -l option on the command line.  The
-  # default is 1.  Valid values are -1 up to 11.
+  # @return [-1 .. 11] The level indicated by the -l option on the
+  #   command line.  The default is 1.
   attr_reader :level
 
-  ##
-  # True if the -k option was given on the command line.  The default
-  # is false.
+  # @return [Boolean] True if the -k option was given on the command
+  #   line.  The default is false.
   attr_reader :print_keys
   
-  ##
-  # The path to write the html file out to.  The default is that this
-  # is nil and the text output is done.  When this is set, the text
-  # output is not done.
+  # @return [File] The file to write the html file out to.  The
+  #   default is that this is nil and the text output is done.  When
+  #   this is set, the text output is not done.
   attr_reader :html
 
-  ##
-  # The html file can be done in two ways.  The css and javascript can
-  # be included into the file.  This makes it easy to move the file
-  # around and the output still works.  Or, the css and javascript can
-  # be pulled in when the page is loaded.  This makes debugging the
-  # css and javascript much easier.  The default is --one-file.
+  # @return [Boolean] True if --one-file was given on the command line
+  #   and false if the --no-one-file was given.  The html file can be
+  #   done in two ways.  The css and javascript can be included into
+  #   the file.  This makes it easy to move the file around and the
+  #   output still works.  Or, the css and javascript can be pulled in
+  #   when the page is loaded.  This makes debugging the css and
+  #   javascript much easier.  The default is --one-file.
   attr_reader :one_file
   
-  def initialize(program_name)
+  # @return [File] Returns the file which text output should be sent.
+  #   Defaults to $stderr but may be altered by the +-o+ command line
+  #   argument.
+  attr_reader :output
+
+  # @param program_name [String] The name of the program.
+  def initialize(program_name = File.basename($0))
     @dir_list = []
     @dump = false
-    @flat_keys = false
     @html = nil
     @interactive = false
     @level = 1
@@ -73,13 +90,18 @@ class Options
     @program_name = program_name
   end
 
-  # Parse the arguments
+  # Parse the arguments but does not modify them.
+  # @param args [Array<String>] The arguments to parse.
+  # @return [Options] self
   def parse(args)
     opt_parser.parse(args)
     self
   end
 
-  # Parse and modify the arguments
+  # Parse and modify the arguments.  Also fills out {#dir_list} with
+  # the unused arguments.
+  # @param args [Array<String>] The arguments to parse.
+  # @return [Options] self
   def parse!(args)
     opt_parser.parse!(args)
     while args.length > 0
@@ -88,28 +110,22 @@ class Options
     self
   end
 
-  # Does a puts with the specified arguments to the output file
-  # specified.  The default output file is $stdout.
-  def puts(*args)
-    @output.puts(*args)
-  end
-
-  # Does a printf with the specified arguments to the output file
-  # specified.  The default output file is $stdout.
-  def printf(*args)
-    @output.printf(*args)
-  end
-
+  # The name will likely change.  Adds +cmd+ to the list that needs to
+  # be executed.
+  # @param cmd [Proc] the command to add to the list
   def add_cmd(cmd)
     cmds << cmd
   end
 
+  # @return [Array<Proc>] returns the current list of commands.
   def cmds
     @cmds ||= []
   end
 
   private
 
+  # Creates the OptionsParser along with many of the command's
+  # arguments.
   def opt_parser
     @opt_parser ||= OptionParser.new do |opts|
       opts.program_name = @program_name
@@ -177,7 +193,7 @@ class Options
       end
 
       opts.on("-k",
-              "--print_keys",
+              "--print-keys",
               "Print the top level keys of the first snap") do |k|
         @print_keys = k
       end
@@ -227,12 +243,6 @@ class Options
               "separate.") do |v|
         @one_file = v
       end
-
-      # opts.on("--flat-keys",
-      #         "Print the flat_keys and value of the entire",
-      #         "database from the first snap.") do |flat_keys|
-      #   @flat_keys = flat_keys
-      # end
 
       opts.on("--interactive",
               "Drops the user into an irb session") do |interactive|

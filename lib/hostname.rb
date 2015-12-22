@@ -4,16 +4,22 @@ require_relative 'snapper'
 require_relative 'snap'
 
 # An Item that contains these fields:
-# [hostname]        - The value of the hostname attribute from the
-#                     inet0 device.
-# [Node Name]       - The Node Name as gathered from lparstat.out
-# [Partition Name]  - The Partion Name also from lparstat.out
-# [id_to_partition] - The id_to_partition attribute groked from sys0
-#                     attributes.
-# [id_to_system]    - The id_to_system also from sys0 attributes.
+# [hostname]        The value of the hostname attribute from the
+#                   inet0 device.
 #
-# This is the simplest example of a snap processor (stage 2)
+# [Node Name]       The Node Name as gathered from lparstat.out
+#
+# [Partition Name]  The Partion Name also from lparstat.out
+#
+# [id_to_partition] The id_to_partition attribute groked from sys0
+#                   attributes.
+#
+# [id_to_system]    The id_to_system also from sys0 attributes.
+#
+# This is the simplest example of a snap processor.  I'm not sure
+# anyone uses this any more.
 class Hostname < Item
+  # @param snap [Snap] The snap to process.
   def self.create(snap)
     db = snap.db
     hostname = db.create_item("Hostname")
@@ -22,7 +28,6 @@ class Hostname < Item
     hostname['Partition Name'] = db.lparstat_out.partition_name
     hostname['id_to_partition'] = db.devices.sys0.attributes.id_to_partition.value
     hostname['id_to_system'] = db.devices.sys0.attributes.id_to_system.value
-    # snap.add_item(hostname, 5)
   end
 
   Snapper.add_snap_processor(self)

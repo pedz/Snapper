@@ -21,6 +21,21 @@ class Filter
   # of levels the Filter is active for.  If level is passed in as a
   # Fixnum, it is converted to a Range.  See run for how the proc is
   # invoked.
+  # @param options [Hash] A hash of options.
+  # @option options [Range, Fixnum] :level The range of levels that
+  #   the filter is valid.  If an integer is passed it, it is
+  #   converted to a range of value .. value.  Defaults to 1 .. 10.
+  # @option options [Symbol] :type Currently not used but may might be
+  #   used for different types of filters.
+  # @option options [Regexp] :key Currently not used but might be used
+  #   as a regular expression to match the keys within the item being
+  #   filtered.
+  # @option options [Regexp] :value Currently not used but might be
+  #   used as a regular expression to match the values within the item
+  #   being filtered.
+  #
+  # Currently the {Item#flat_keys} facility accompishes that the
+  # +:type+, +:key+, and +:value+ options were intended to do.
   def initialize(options = {}, &proc)
     @options = Default_Options.merge(options)
     @options[:level] = @options[:level] .. @options[:level] if @options[:level].is_a? Fixnum
@@ -31,14 +46,9 @@ class Filter
     end
   end
 
-  # Forwards to options.level
+  # @return [Fixnum] Forwards to options.level
   def level
     @options[:level]
-  end
-
-  # Not used but forwards to options.type
-  def type
-    @options[:type]
   end
 
   # Sorts based upon the level.begin
@@ -47,6 +57,11 @@ class Filter
   end
 
   # calls the proc for the Filter with context and item.
+  # @param context [Context] the context to pass to the proc of the
+  #   filter.
+  # @param item [Item] the item to pass to the proc of the filter
+  # @yieldparam context [Context] the context passed in.
+  # @yieldparam item [Item] the item passed in.
   def run(context, item)
     if @proc
       if logger.level == Logger::DEBUG
@@ -62,6 +77,8 @@ class Filter
     end
   end
 
+  # @return [Array(String, Fixnum)] Forwarded to proc.
+  # @see Proc#source_location
   def source_location
     @proc && @proc.source_location
   end

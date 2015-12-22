@@ -1,16 +1,17 @@
 require_relative 'snapper'
 require_relative 'logging'
 
-# This is a file that has snap_processors that create alerts.
-
+# This is a file that has snap processor that create alerts.
 class TcpAlerts
+  # Adds an alert if tcptr_enable is not zero and if tcp_tcp_secure
+  # has bit 4 set.
+  # @param snap [Snap] the snap to process
   def self.create(snap)
     db = snap.db
     if db['no_a']
       snap.add_alert("tcptr_enable is not zero") if db.no_a.tcptr_enable != 0
       snap.add_alert("tcp_tcpsecure has bit 4 set") if (db.no_a.tcp_tcpsecure & 4) == 4
     end
-    # I need a sample dump so I can create an alert when IPSec is enabled.
   end
 
   Snapper.add_snap_processor(self)

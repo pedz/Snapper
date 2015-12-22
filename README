@@ -21,38 +21,38 @@ and out to the real network can be easily followed.
 
   Usage: snapper.rb [options] <path to snap1> [ <path to snap2> ... ]
       -D, --dump                       For each snap, creates a .ruby.dump.gz file
-				       at the base directory of the snap with the
-				       parse tree of the snap.  This file will be
-				       automatically loaded instead of re-parsing
-				       the files within the snap.
+                                       at the base directory of the snap with the
+                                       parse tree of the snap.  This file will be
+                                       automatically loaded instead of re-parsing
+                                       the files within the snap.
       -L, --LOG [class:]level[:path]   If no class is specified, sets the log
-				       level for all loggers and optionally the
-				       log file. If a class is specified, sets the
-				       log level and optionally the log file for
-				       the specified class.  level can be 0, 1, 2,
-				       3, 4, DEBUG, INFO, WARN, ERROR, or FATAL.
-				       path may be a path to a file that is opened
-				       in append mode, "STDERR", or "STDOUT".
-				       Multiple -L options can be specified and
-				       are processed in order.  The default level
-				       is INFO (1) and the default output is
-				       STDERR.
-      -k, --print_keys                 Print the top level keys of the first snap
+                                       level for all loggers and optionally the
+                                       log file. If a class is specified, sets the
+                                       log level and optionally the log file for
+                                       the specified class.  level can be 0, 1, 2,
+                                       3, 4, DEBUG, INFO, WARN, ERROR, or FATAL.
+                                       path may be a path to a file that is opened
+                                       in append mode, +STDERR+, or +STDOUT+.
+                                       Multiple -L options can be specified and
+                                       are processed in order.  The default level
+                                       is INFO (1) and the default output is
+                                       STDERR.
+      -k, --print-keys                 Print the top level keys of the first snap
       -l, --level N                    Output verbosity level from -1 to 11
-				       default is 1
+                                       default is 1
       -o, --output file                Specify an output file
-				       Default is STDOUT
+                                       Default is STDOUT
       -q file                          Sets the file that the Quick debug goes to
-				       default is $stderr
+                                       default is $stderr
       -h, --html path                  Outputs an html file that shows the layout
-				       of the systems
-	  --[no-]one-file              Embed (the default --one-file) the
-				       Javascript and CSS files into the HTML
-				       output or (--no-one-file) keep them
-				       separate.
-	  --flat-keys                  Print the flat_keys and value of the entire
-				       database from the first snap.
-	  --interactive                Drops the user into an irb session
+                                       of the systems
+          --[no-]one-file              Embed (the default --one-file) the
+                                       Javascript and CSS files into the HTML
+                                       output or (--no-one-file) keep them
+                                       separate.
+          --flat-keys                  Print the flat_keys and value of the entire
+                                       database from the first snap.
+          --interactive                Drops the user into an irb session
       -?, --help                       Show this message
 
 The +-D+ option is detailed in the -D[#label-D] section.
@@ -84,12 +84,12 @@ For debugging the html output, it is nice if the Javascript and CSS
 are not put into the HTML document but are read in when the document
 is loaded.  In this way the Javascript code can be developed by simply
 doing a browser refresh rather than recreate and reload the entire
-HTML file.  The +--no-one-file++ option keeps the Javascript and CSS
-separate.  The default +--one-file++ option embeds the Javascript and
+HTML file.  The +--no-one-file+ option keeps the Javascript and CSS
+separate.  The default +--one-file+ option embeds the Javascript and
 CSS code which makes it easy to move the HTML file around and load it
 into a browser.
 
-The +--flat_keys++ option dumps out the flattened keys (see
+The +--flat-keys+ option dumps out the flattened keys (see
 Item#flat_keys) of the database from the first snap.  This is useful
 in debugging to show the path to get to particular fields but it may
 also be useful for diagnostic purposes because after the output is
@@ -98,8 +98,7 @@ quickly.
 
 The +--interactive+ flag is a bit experimental but in essence it
 parses the dump and then drops the user into an interactive Ruby
-session.  Again, you say "But I don't know Ruby".  Well... tough.  Go
-learn it; be happy.
+session.
 
 == Features
 
@@ -116,11 +115,11 @@ all of these phases allow users to add in their own code.  In brief, a
 user will be able to have a .snapper directory in his home directory
 with Ruby snippets that will be loaded when snapper is run.
 
-"Oh Gee..", you say, "I don't know Ruby".  True enough but you
-probably can mimic other code snippets and poke at them until you get
-them to do what you want.  Since Ruby is interpreted, the source is
-visible and so you will not need to really "create" fresh Ruby code as
-much as bastardize existing parts... very similar to how typical
+<b>Oh Gee..</b>, you say, <b>I don't know Ruby</b>.  True enough but
+you probably can mimic other code snippets and poke at them until you
+get them to do what you want.  Since Ruby is interpreted, the source
+is visible and so you will not need to really *create* fresh Ruby code
+as much as bastardize existing parts... very similar to how typical
 developers work <smirk>.
 
 Currently, snapper is glaringly focused on TCP Kernel users but I
@@ -131,267 +130,285 @@ other groups.
 
 Snapper is set up to work in four phases.  
 
-The first phase is the parse phase where the snap is ransacked and as
-much of it is understood as possible.  Details of parsing will be
+The first phase is the parse phase where the snaps are ransacked and
+as much of it is parsed as possible.  Details of parsing will be
 described in the Parsers[#label-Parsers] section.  If the +-D+ option
 was given, a compressed version of the parse tree is saved in
 +.ruby.snap.bz+ in the top level directory.  See -D[#label-D] for more
 details.  Adding a parser depends upon if an entire file needs to be
-parsed (see Snapper.add_file_parsing_patterns) or if a section of a
-"dot file" needs to be parsed (see DotFileParser and
-DotFileParser#parse).
+parsed (see {Snapper.add_file_parsing_patterns}) or if a section of a
+dot file needs to be parsed (see {DotFileParser} and
+{DotFileParser#parse}).
 
 The second phase is after the parsing of each snap and are general
-routines that go through the parsed data making things easier to work
-with for the later stages.  The best example of this is Devices which
-goes through the parsed data creating a Device for each logical device
-in the CuAt output.  The Device will have a name like 'ent0' as well
-as entries for the cudv, cuat, pddv, pdat, entstat, lsattr, errpt,
-etc.  Devices knows where all those different pieces reside in the
-snap and pulls them into one general object.  Another example is
-Interfaces that pulls parsed data gathered from netstat -in as well as
-ifconfig -a (if it is present) into a single object.  This allows
-later processing to be more easily written.  See
-Snapper.add_snap_processor for more details.
+routines that go through a single {Snap} making things easier to work
+with for the later stages.  The best example of this is {Devices}
+which goes through the parsed data creating a {Device} for each
+logical device in the +CuDv+ output.  The Device will have a name like
+_ent0_ as well as entries for the +cudv+, +cuat+, +pddv+, +pdat+,
++entstat+, +lsattr+, +errpt+, etc.  Devices knows where all those
+different pieces reside in the snap and pulls them into one general
+object.  Another example is Interfaces that pulls parsed data gathered
+from <tt>netstat -in</tt> as well as <tt>ifconfig -a</tt> (if it is
+present) into a single object.  This allows later processing to be
+more easily written.  See {Snapper.add_snap_processor} for more
+details.
 
-The third phase has not been implemented yet but will be called batch
-processors to process the entire _batch_ of snaps.  These will be
-called after all of the snaps have been parsed. This phase can detect
-things like making sure that the control channel of two SEAs on two
-different LPARs but on the same CEC are using the same VLAN tag.  The
-first of these processors will group the snaps by CEC.
+The third phase has been implemented but there are no examples yet.
+They are called batch processors to process the entire {Batch} of
+snaps.  After all the snaps are parsed, a {Batch} is created which has
+a list of {CEC}s.  Each CEC has a list of {LPAR}s.  Each LPAR has a
+list of {Snap}s.  The batch processors will be passed the batch and
+will be able to do things like making sure that the control channel of
+two SEAs on two different LPARs but on the same CEC are using the same
+VLAN tag.
 
 The fourth phrase is the output phase.  The output phrase is done via
-Filter instances.  Currently all of the Filter instances are in the
+{Filter} instances.  Currently all of the Filter instances are in the
 Filters.rb file but eventually they will also be pulled in from user
-config files.  You can view this file on the Filters page.
+config files.  You can view this file on the {file:Filters Filters}
+page.
 
-As mentioned, a user can add in a parser for a file that is currently
-unparsed, he can add in a processing item that is kicked off in phase
-2, and he can add in filters to more precisely control what he wants
-to see in the output.
+As mentioned, a user can add in a parser for an part of a snap
+currently unparsed, add in a Snap processor, a Batch processor, and
+create filters to more precisely control the output.
 
 === Levels
 
-Levels go from -1 up to (as Spinal Tap says) 11.  Level of -1 is for
-debugging.  All normal output is stopped and the user will only see
-the debug statements.
+Levels go from -1 up to (as Spinal Tap says) 11.  
+
+The purpose of level -1 is for debugging.  All normal output is
+stopped and the user will only see the debug statements.
 
 The purpose of level 0 is to give a very quick overview of the set up.
 The output from the sample snap is this:
 
-  1 Host: aph001
-  2 en9 10.201.10.31 mtu:1500 mac:0.0.c9.d9.e8.bf ipkts:0 opkts:14
-  3   ent9 pci/elxentdd 
-  4 en22 10.201.55.100 mtu:1500 mac:e4.1f.13.fd.29.75 ipkts:190896 opkts:210601
-  5   ent22 seadd State:PRIMARY Bridge Mode:All
-  6     ent2 pci/goentdd 
-  7     ent15 vioentdd 
-  8     ent10 vioentdd ctrl channel
-  9 lo0 127.0.0.1  mtu:16896 mac: ipkts:5735 opkts:5735
- 10 ent23 seadd State:PRIMARY Bridge Mode:All
- 11   ent20 ethchandd 
- 12     ent0 pci/elxentdd 
- 13     ent8 pci/elxentdd 
- 14   ent16 vioentdd 
- 15   ent11 vioentdd ctrl channel
- 16 ent24 seadd State:PRIMARY Bridge Mode:All
- 17   ent21 ethchandd 
- 18     ent6 pci/elxentdd 
- 19     ent7 pci/elxentdd 
- 20   ent17 vioentdd 
- 21   ent12 vioentdd ctrl channel
- 22 ent25 seadd State:PRIMARY Bridge Mode:All
- 23   ent3 pci/goentdd 
- 24   ent18 vioentdd 
- 25   ent13 vioentdd ctrl channel
- 26 ent26 seadd State:PRIMARY Bridge Mode:All
- 27   ent4 pci/goentdd 
- 28   ent19 vioentdd 
- 29   ent14 vioentdd ctrl channel
- 30 Unused Adapters
- 31   ent1 pci/elxentdd 
- 32   ent5 pci/goentdd 
+   1 CEC model:9117-MMC CPU:POWER7 firmware:AM740_100 Id:0X8000007F46B00000
+   2   Host: aph001
+   3     Snap taken 2013-07-17T08:18:26+02:00
+   4       en9 10.201.10.31 mtu:1500 mac:0.0.c9.d9.e8.bf ipkts:0 opkts:14
+   5         ent9 pci/elxentdd 
+   6       en22 10.201.55.100 mtu:1500 mac:e4.1f.13.fd.29.75 ipkts:190896 opkts:210601
+   7         ent22 seadd State:PRIMARY Bridge Mode:All
+   8           ent2 pci/goentdd 
+   9           ent15 vioentdd 
+  10           ent10 vioentdd ctrl channel
+  11       lo0 127.0.0.1  mtu:16896 mac: ipkts:5735 opkts:5735
+  12       ent23 seadd State:PRIMARY Bridge Mode:All
+  13         ent20 ethchandd 
+  14           ent0 pci/elxentdd 
+  15           ent8 pci/elxentdd 
+  16         ent16 vioentdd 
+  17         ent11 vioentdd ctrl channel
+  18       ent24 seadd State:PRIMARY Bridge Mode:All
+  19         ent21 ethchandd 
+  20           ent6 pci/elxentdd 
+  21           ent7 pci/elxentdd 
+  22         ent17 vioentdd 
+  23         ent12 vioentdd ctrl channel
+  24       ent25 seadd State:PRIMARY Bridge Mode:All
+  25         ent3 pci/goentdd 
+  26         ent18 vioentdd 
+  27         ent13 vioentdd ctrl channel
+  28       ent26 seadd State:PRIMARY Bridge Mode:All
+  29         ent4 pci/goentdd 
+  30         ent19 vioentdd 
+  31         ent14 vioentdd ctrl channel
+  32       Unused Adapters
+  33         ent1 pci/elxentdd 
+  34         ent5 pci/goentdd 
 
-Line 1 is the host name.  I do not group CECs yet but that will be
-done so the simple output will start with the CEC id, then the
-hostname.  The hostname is pulled from the hostname attribute of the
-inet0 device.
+Line 1 is for the CEC and includes the mode, CPU type, firmware level,
+and a little known attribute called +id_to_system+ that is found in
+the +sys0+ device.
 
-Line 2 starts what basically comes from netstat -in.  It is the
-interfaces crunched down to one line with all really useful info on
-one line.  Each interface, also prints the device associated with it
+Line 2 is the hostname.  The hostname is pulled from the hostname
+attribute of the inet0 device.  Note it is indented below the CEC.
+The indenting is how children of a parent container are denoted.
+
+Line 3 is for the {Snap}.  There can be multiple snaps for the same
+host.  The date and time that the +general.snap+ file was created is
+given.
+
+Line 4 starts the interfaces.  Part of snappre is it also represents
+how I think and go through a snap.  The first piece I want is the
+interfaces.  This tells me which adapters are being used.  Most of the
+data shown on the interface comes from the <tt>netstat -in</tt>
+section of +tcpip.snap+.  I want to also add in <tt>ifconfig -a</tt>
+if it is present and much of the data could also come from +CuDv+ and
++CuAt+ entries if no <tt>netstat -in</tt> section is found in the
+snap.  Each interface, also prints the device associated with it
 nested one level deeper.
 
-Line 3 is the device that line 2 is on top of.  For level 0, only the
+Line 5 is the device that line 4 is on top of.  For level 0, only the
 device name and the driver are printed.  I could add the description
 as seen from lsdev.adapters but I personally find that useless.
 
-Line 4 starts the 2nd interface.  In this case, the device on line 5
+Line 6 starts the 2nd interface.  In this case, the device on line 7
 is a SEA so it is printed along with the adapters that it contains
 nested one level further.  The real adapter is listed first.  Then the
 VEAs used to carry the load.  Last the control adapter.  The control
 adapter is marked as such.
 
-Line 9 ends the interface section with loopback.
+Line 11 ends the interface section with loopback.
 
-Lines 10 through 29 are now the list of SEAs.  Only the SEAs that have
-not already been printed are listed (e.g. ent22 is not repeated).
+Lines 12 through 31 are now the list of SEAs.  Only the SEAs that have
+not already been printed are listed (e.g. ent22 is not repeated).  In
+my thought process, this is the second step.  At this point, I have
+all the active pieces listed out.
 
-Last, lines 30 through 32 list the unused adapters since recently that
-has been something that has been important.
+Last, lines 32 through 34 list the unused adapters since recently that
+has been something that has been important.  These are listed if they
+are not part of a SEA, have no interface on top of them (or their
+container in the case of adapters within an ether channel), and are
+not in the Defined state.
 
-Currently I am thinking that level 0 output is done.  I can't think of
-what else I want to add to it.  Remember, the default is level 1 so the
-user must ask for level 0 output so I assume he really does want minimal
-output.
+I believe that level 0 output is done.  I can't think of what else I
+want to add to it.  Remember, the default is level 1 so the user must
+ask for level 0 output so I assume minimal output is desired.
 
 The default output of snapper allowing the level to default to 1 is
 shown below:
 
-  1 Host: aph001
-  2 en9 10.201.10.31 mtu:1500 mac:0.0.c9.d9.e8.bf ipkts:0 opkts:14
-  3   ent9 pci/elxentdd 
-  4     Receive Statistics,Receive Errors:685617
-  5     Receive Statistics,DMA Overrun:685617
-  6 
-  7 en22 10.201.55.100 mtu:1500 mac:e4.1f.13.fd.29.75 ipkts:190896 opkts:210601
-  8   ent22 seadd State:PRIMARY Bridge Mode:All
-  9     16 error log entries
- 10     ent2 pci/goentdd 
- 11     ent15 vioentdd 
- 12       Port VLAN ID: 300 on ETHERNET0 Active:True
- 13       Hypervisor Send Failures: 4927
- 14     ent10 vioentdd ctrl channel
- 15       Port VLAN ID: 1300 on ETHERNET0
- 16 
- 17 lo0 127.0.0.1  mtu:16896 mac: ipkts:5735 opkts:5735
- 18 
- 19 ent23 seadd State:PRIMARY Bridge Mode:All
- 20   19 error log entries
- 21   Receive Statistics,Receive Errors:842400
- 22   Receive Statistics,DMA Overrun:842400
- 23   Other Statistics,ICMP error packets sent:931
- 24   ent20 ethchandd 
- 25     Receive Statistics,Receive Errors:842400
- 26     Receive Statistics,DMA Overrun:842400
- 27     ent0 pci/elxentdd 
- 28       Receive Statistics,Receive Errors:156783
- 29       Receive Statistics,DMA Overrun:156783
- 30     ent8 pci/elxentdd 
- 31       Receive Statistics,Receive Errors:685617
- 32       Receive Statistics,DMA Overrun:685617
- 33   ent16 vioentdd 
- 34     Port VLAN ID: 4094 VLAN Tag IDs [104, 105, 106, 201, 202, 203, 205, 209, 210, 248, 250, 267, 288, 801, 802] on ETHERNET0 Active:True
- 35     Hypervisor Send Failures: 21562715
- 36   ent11 vioentdd ctrl channel
- 37     Port VLAN ID: 1310 on ETHERNET0
- 38 
- 39 ent24 seadd State:PRIMARY Bridge Mode:All
- 40   14 error log entries
- 41   ent21 ethchandd 
- 42     ent6 pci/elxentdd 
- 43     ent7 pci/elxentdd 
- 44   ent17 vioentdd 
- 45     Port VLAN ID: 320 on ETHERNET0 Active:True
- 46     Hypervisor Send Failures: 141
- 47   ent12 vioentdd ctrl channel
- 48     Port VLAN ID: 1320 on ETHERNET0
- 49 
- 50 ent25 seadd State:PRIMARY Bridge Mode:All
- 51   12 error log entries
- 52   ent3 pci/goentdd 
- 53   ent18 vioentdd 
- 54     Port VLAN ID: 4093 VLAN Tag IDs [270, 275] on ETHERNET0 Active:True
- 55     Hypervisor Send Failures: 1250
- 56   ent13 vioentdd ctrl channel
- 57     Port VLAN ID: 1340 on ETHERNET0
- 58 
- 59 ent26 seadd State:PRIMARY Bridge Mode:All
- 60   16 error log entries
- 61   ent4 pci/goentdd 
- 62   ent19 vioentdd 
- 63     Port VLAN ID: 4092 VLAN Tag IDs [271, 272, 1288] on ETHERNET0 Active:True
- 64     Hypervisor Send Failures: 6942
- 65   ent14 vioentdd ctrl channel
- 66     Port VLAN ID: 1350 on ETHERNET0
- 67 
- 68 Unused Adapters
- 69   ent1 pci/elxentdd 
- 70   ent5 pci/goentdd 
+   1 CEC model:9117-MMC CPU:POWER7 firmware:AM740_100 Id:0X8000007F46B00000
+   2   Host: aph001
+   3     Snap taken 2013-07-17T08:18:26+02:00
+   4       en9 10.201.10.31 mtu:1500 mac:0.0.c9.d9.e8.bf ipkts:0 opkts:14
+   5         ent9 pci/elxentdd 
+   6           Receive Statistics,Receive Errors:685617
+   7           Receive Statistics,DMA Overrun:685617
+   8 
+   9       en22 10.201.55.100 mtu:1500 mac:e4.1f.13.fd.29.75 ipkts:190896 opkts:210601
+  10         ent22 seadd State:PRIMARY Bridge Mode:All
+  11           16 error log entries
+  12           ent2 pci/goentdd 
+  13           ent15 vioentdd 
+  14             Port VLAN ID: 300 on ETHERNET0 Active:True
+  15             Hypervisor Send Failures: 4927
+  16           ent10 vioentdd ctrl channel
+  17             Port VLAN ID: 1300 on ETHERNET0
+  18 
+  19       lo0 127.0.0.1  mtu:16896 mac: ipkts:5735 opkts:5735
+  20 
+  21       ent23 seadd State:PRIMARY Bridge Mode:All
+  22         19 error log entries
+  23         Receive Statistics,Receive Errors:842400
+  24         Receive Statistics,DMA Overrun:842400
+  25         Other Statistics,ICMP error packets sent:931
+  26         ent20 ethchandd 
+  27           Receive Statistics,Receive Errors:842400
+  28           Receive Statistics,DMA Overrun:842400
+  29           ent0 pci/elxentdd 
+  30             Receive Statistics,Receive Errors:156783
+  31             Receive Statistics,DMA Overrun:156783
+  32           ent8 pci/elxentdd 
+  33             Receive Statistics,Receive Errors:685617
+  34             Receive Statistics,DMA Overrun:685617
+  35         ent16 vioentdd 
+  36           Port VLAN ID: 4094 VLAN Tag IDs [104, 105, 106, 201, 202, 203, 205, 209, 210, 248, 250, 267, 288, 801, 802] on ETHERNET0 Active:True
+  37           Hypervisor Send Failures: 21562715
+  38         ent11 vioentdd ctrl channel
+  39           Port VLAN ID: 1310 on ETHERNET0
+  40 
+  41       ent24 seadd State:PRIMARY Bridge Mode:All
+  42         14 error log entries
+  43         ent21 ethchandd 
+  44           ent6 pci/elxentdd 
+  45           ent7 pci/elxentdd 
+  46         ent17 vioentdd 
+  47           Port VLAN ID: 320 on ETHERNET0 Active:True
+  48           Hypervisor Send Failures: 141
+  49         ent12 vioentdd ctrl channel
+  50           Port VLAN ID: 1320 on ETHERNET0
+  51 
+  52       ent25 seadd State:PRIMARY Bridge Mode:All
+  53         12 error log entries
+  54         ent3 pci/goentdd 
+  55         ent18 vioentdd 
+  56           Port VLAN ID: 4093 VLAN Tag IDs [270, 275] on ETHERNET0 Active:True
+  57           Hypervisor Send Failures: 1250
+  58         ent13 vioentdd ctrl channel
+  59           Port VLAN ID: 1340 on ETHERNET0
+  60 
+  61       ent26 seadd State:PRIMARY Bridge Mode:All
+  62         16 error log entries
+  63         ent4 pci/goentdd 
+  64         ent19 vioentdd 
+  65           Port VLAN ID: 4092 VLAN Tag IDs [271, 272, 1288] on ETHERNET0 Active:True
+  66           Hypervisor Send Failures: 6942
+  67         ent14 vioentdd ctrl channel
+  68           Port VLAN ID: 1350 on ETHERNET0
+  69 
+  70       Unused Adapters
+  71         ent1 pci/elxentdd 
+  72         ent5 pci/goentdd 
 
-The flow is the same.  The CEC name (to be done), host name,
-interfaces, and then the SEAs.  In level 1 mode, the intent is to
-still be very concise yet point to possible problem areas.  level 1
-output will contain alerts which is yet to be done as well.  The
-alerts will be per snap so they will come out after the CEC's name but
-before the host name.
+The flow is the same.  The CEC, host, interfaces, SEAs, and finally
+the unused adapters.
 
-As you can see on samples of line 4 and 5, entstat fields with the
-word "error", "overrun" or "underrun" are printed out *if* the value
+In level 1 mode, the intent is to still be very concise yet point to
+possible problem areas.  level 1 output contains alerts which are
+settings or conditions that one of the various processors believes to
+be either an issue or often leads to an issue.  Processors can add
+alerts to the Batch, CEC, LPAR, or Snap depending.
+
+As you can see on samples of line 6 and 7, entstat fields with the
+word +error+, +overrun+ or +underrun+ are printed out *if* the value
 of the field is not zero.
 
-Line 9 shows a sample of level 1 output for error log entries.  A
+Line 11 shows a sample of level 1 output for error log entries.  A
 count of the error log entries is done to clue the user into the fact
 that this device is having errors in the error log.
 
-Line 34 shows a sample of the VLAN tag information for the VEAs.
-Since that is very often needed I put that out in the level 1 output
-as well.  It also includes which virtual switch the VEA is connected
-to and if the adapter has Trunk set to true, then the Active status is
-given so it should be easy to follow packets in a sharing VIOS setup.
+Line 36 shows a sample of the VLAN tag information for the VEAs.  It
+also includes which virtual switch the VEA is connected to and if the
+adapter has Trunk set to true, then the Active status is given so it
+should be easy to follow packets in a sharing VIOS setup.
 
-Line 35 is our trusty Hypervisor errors we all love.
+Line 37 is our trusty Hypervisor errors we all love.
 
 Since level 1 is the default, the intent is to make the output concise
 yet point the user to the trouble areas.  Higher levels can be used if
-the user needs more details.  For example, at level 4, all of the
-attributes are printed out under the device.  At level 2 through 5,
-duplicate error log entries are removed.  As time go by, the objective
-is to come up with a "philosophy" of each level and then create
-Filters (to be explained) that fit that objective.
+the user needs more details.
 
-The purpose of level 11 is to essentially "dump" everything.  The
-containers like Ethchan and Sea have filters for level 11 since they
-need to dump out the adapters beneath them.  But most other things do
-not.  Instead they revert to a Filter for Item that dumps the list of
-flatten keys.
-
-Levels 2 and up are very raw and will are changing frequently at this
-point.  Currently level 2 is the same as level 1 except it reports
-lists the error report errors but removes the duplicates.  Level 3
-starts to add builtifiers such as splats between hosts.
+Levels 2 through 11 are very raw and will are changing frequently at
+this point.  Currently level 2 is the same as level 1 except it
+reports lists the error report errors but removes the duplicates.
 
 === Filters
 
 Currently there are some concepts that I may change or alter but here
 is the current set up.
 
-The lower level "object" that the parsers create is called an Item.
-Subclasses of Item are Device, Interface, etc.  There is a tree of
-classes for entstat starting with the base of Entstat which is a
-subclass of Item and then specific parsers for the adapters are
-subclassed off of Entstat such as Entstat_goent or Entstat_ethchan.
+The base class that the parsers create is an {Item}.  Subclasses of
+Item are {Device}, {Interface}, etc.  There is a tree of classes for
+entstat starting with the base of {Entstat} which is a subclass of
+Item and then specific parsers for the adapters are subclassed off of
+Entstat such as {Entstat_goent} or {Entstat_ethchan}.
+
+The output is generated or +filtered+ by {Filter}s that are class as
+well as level specific.
 
 A filter is added like this:
 
- Filter.add("Device", { level: 0 .. 11 }) do |context, item|
-   unless item.printed
-     context.output("#{item.cudv.name} #{item.cudv.ddins}")
-     item['errpt'].print_list(context.nest) if item['errpt']
-     item['entstat'].print(context.nest)    if item['entstat']
-     item['lsattr'].print(context.nest)     if item['lsattr']
-   end
- end
+  Item.add_filter("Device", { level: 0 .. 11 }) do |context, item|
+    unless item.printed
+      context.output([ item.cudv.name, item.cudv.ddins, context.modifier ].join(' '))
+      item['errpt'].print(context.nest) if item['errpt']
+      item['entstat'].print(context.nest)    if item['entstat']
+      item['lsattr'].print(context.nest)     if item['lsattr']
+    end
+  end
 
-It is added to the Class that is the first argument.  The second
-argument is the levels that it is valid for.  The 0 .. 11 is exactly
-what it appears -- a range from 0 to 11 inclusive.  We can see that
-this calls context.output with a string which ends up going to
-standard output.  We also see it calling print_list for items within
-the device such as the list of error log entries, the entstat output,
-and the lsattr output.  As mentioned, this hangs off of the Device
-class.
+The first argument specifies the class as a string.  The second
+argument is a Range of levels that it is valid for.  The 0 .. 11 is
+exactly what it appears -- a range from 0 to 11 inclusive.  We can see
+that this calls {Context#output context.output} with a string which
+ends up going to standard output.  We also see it calling print for
+items within the device such as the list of error log entries, the
+entstat output, and the lsattr output.  As mentioned, this hangs off
+of the Device class.  Thus when an item's print method is called and
+the item is a Device, this filter will get involved.
 
 If, for example, a Sea needs to be printed, since Sea is a subclass of
 Device, and Device is a subclass of Item, the list of available
@@ -416,37 +433,39 @@ example, in the typical intro for an entstat output we see:
  Packets Dropped: 0                            Packets Dropped: 0
                                                Bad Packets: 0
 
-Off of the top Entstat Item will be an entry for 'Transmit Statistics'
-as well as an entry for 'Receive Statistics'.  If you have used hashes
-in other languages (like Perl), then you should be familiar with a
-syntax like:
+A field of the {Entstat} item will be an entry for 'Transmit
+Statistics' as well as an entry for 'Receive Statistics'.  If you have
+used hashes in other languages (like Perl), then you should be
+familiar with a syntax like:
 
-item['Receive Statistics']
+  item['Receive Statistics']
 
-which returns a hash with entries for each of the things listed below
-receive statistics such as Packets, Bytes, Interrupts, etc.
+which returns a hash with entries for each of the attributes listed
+below receive statistics such as +Packets+, +Bytes+, +Interrupts+,
+etc.
 
 Items have many cute features.  One of them is the key is actually
-modified so you can also retrieve the same information via
+modified so you can also retrieve the same information via the
+original text as above but also via altered text:
 
-item['receive_statistics']
+  item['receive_statistics']
 
 and you can also retrieve it using dot notition
 
-item.receive_statistics
+  item.receive_statistics
 
 These can be cascaded so
 
-item.receive_statistics.packets
+  item.receive_statistics.packets
 
-would return 238619 and the 238619 is already recognized as an integer
-so arithmatic can be done on it.  It should be not super difficult to
-compute error rates or percentages.
+would return 238619 and the 238619 is recognized as an integer so
+arithmatic can be done on it.  It should be relatively easy to compute
+error rates or percentages.
 
-But, all this parsing and nesting leaves filtering hard to do.  You
-don't really want to pre-find all of the entstat output that have
-"error" somewhere in them and then create special statements digging
-into the structures just to ask if it is not zero, then print it out.
+All this parsing and nesting leaves filtering hard to do.  You don't
+really want to pre-find all of the entstat output that have _error_
+somewhere in them and then create special statements digging into the
+structures just to ask if it is not zero, then print it out.
 
 Added to Item is a method called flat_keys.  Rather than explain what
 it does, I'll just show you how to use it:
@@ -464,7 +483,7 @@ could use it.  The output of flat_keys is a list of tuples.  The first
 is the flattened key, the second is the value.  The flattened key is
 the list of hash keys needed to get to the entry separated by commas.
 For example, the number of packets received has a flattened key of
-"Receive Statistics,Packets" and in our example, value would be
++Receive Statistics,Packets+ and in our example, value would be
 238619.
 
 Lines 2 and 6 create a loop.  Inside that loop, key and value are set
@@ -479,16 +498,18 @@ produced.
 One of the powerful features of Ruby is how code blocks are treated.
 They are treated (surprise surprise) as objects.  When Filter.add is
 called, it actually has three arguments.  The name, the level, and the
-code block starting at the "do" on line 1 and ending at line 7.  When
-the filter code determines that the filter matches and needs to
-execute, it just calls the code block (called a Proc) passing the
-arguments that it wants to pass.  In this case, the context and the
-item.
+code block starting at the +do+ on line 1 and ending with the +end+ at
+line 7.  When the filter code determines that the filter matches and
+needs to execute, it just calls the code block (called a Proc) passing
+the arguments that it wants to pass.  In this case, the context and
+the item.
 
 We have not talked about context.  For now, its enough to know that it
-has two methods.  context.level is the level specified by the user on
-the command line.  And context.output will get the argument to
-standard output.
+has two methods.  {Context#level context.level} is the level specified
+by the user on the command line.  And {Context#output context.output}
+will get the argument to standard output.  The arguments in this case
+are rather aggressively converted to strings by calling their +to_s+
+method.
 
 === Parsers
 
@@ -580,7 +601,7 @@ values.
 
 A sample production is:
 
- # Sample Match:   |	Actor State: 
+ # Sample Match:   | Actor State: 
  # States Matched: :normal
  # New State:      :LACP_State
  # State Pushed:   yes
@@ -654,6 +675,9 @@ state will be from before the changes made to the parser.
 
 === HTML
 
+<b>The HTML feature is often broken as I rearrange the internals of
+Snapper.</b>
+
 Snapper can load up a list of snaps and then produce an HTML document
 that shows the configuration of the various LPARs and CECs.  Here is a
 simple one snap sample. link:../images/snapper-sample.jpg
@@ -710,13 +734,14 @@ will pop up menus which will currently only lead you to frustration.
 
 Some ToDos that I can think of... I'm sure there are others.
 
-1.  Create batch processor to order snaps by id_to_system most as an
-    example of a batch processor.
-
-1.  Given a single directory with multiple snaps under it, process the
-    individual snaps as if the paths to their base directories had
-    been listed on the command line.
- 
 1.  There is a bug in the way I do attributes because some attributes
     can have multiple CuAt entries and I have not taken that into
     account in the Ruby code (the javascript code did).
+
+1.  A more comprehensive review of VIOS settings with the SEAs.  This
+    requires matching pairs of SEAs probably via the control channel
+    and then making sure that the VEAs are paired correctly.  This is
+    especially key for sharing mode.
+
+1.  The coloring output needs to automatically turn off if output is
+    not a tty and couple this with options to force it on or off.

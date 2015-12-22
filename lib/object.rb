@@ -1,8 +1,14 @@
 
 class Object
-  ##
   # Gets the class "name" and creates the class if necessary using
   # base as the super class
+  # @param name [String] The string is modified by removing all
+  #   spaces, changing any non-alphanumerics into an underscore, and
+  #   then capitalizing the result.  e.g. <tt>lsattr -El foo</tt>
+  #   becomes +Lsattr_elfoo+ where the +_+ is from the +-+ and not the
+  #   space.
+  # @param base [Class] If the desired class does not exist, it is
+  #   creating using +base+ as its superclass.
   def get_class(name, base)
     # Doing this with eval causes the inherited class method of the
     # base (usually Item) to be called with class that has a name.

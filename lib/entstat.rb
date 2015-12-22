@@ -3,6 +3,7 @@ require_relative 'logging'
 require_relative "pda"
 require_relative "item"
 
+# @abstract Subclass and override {#productions}.
 # The _virtual_ base class for the other Entstat_foo classes.  This
 # defines three arrays of productions that the subclasses can leverage
 # as well as the needed parse method that the subclasses probably do
@@ -291,6 +292,7 @@ class Entstat < Item
   # The parse method which is usually called from the Netstat_v#parse
   # method.  subclasses generally do not need to override this.  It
   # creates a PDA and drives the parser passing it each line of text.
+  # @raise [RuntimeError] If a line does not match any rules.
   def parse
     pda = PDA.new(self, productions)
     lineno = 0
@@ -334,11 +336,14 @@ class Entstat < Item
     self
   end
   
-  # A "virtual" function in the Ruby sense.  This must be overridden
-  # by all of the subclasses.  Generally, the want to define a list of
-  # productions and then append  ENT_PRODUCTIONS, LACP_PRODUCTIONS,
-  # and BASE_PRODUCTIONS (in that order).
+  # @return [Array<PDA::Production>] A "virtual" function in the Ruby
+  #   sense.  This must be overridden by all of the subclasses.
+  #   Generally, they want to define a list of productions and then
+  #   append {ENT_PRODUCTIONS}, {LACP_PRODUCTIONS}, and
+  #   {BASE_PRODUCTIONS} (in that order).
+  # @raise [RuntimeError] if the method is not overridden.
   def productions
     fail "Please override this method"
   end
+  # @param  remove me
 end

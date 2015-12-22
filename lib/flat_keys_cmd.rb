@@ -1,6 +1,7 @@
-# require_relative "command_line_option"
 require_relative "snapper"
 
+# An example of a command that is added separately.  This creates and
+# implements the --flat-keys command line option.
 class FlatKeysCmd < Snapper
   add_command_line_option do |snapper, options|
     flat_keys_cmd = ->(batch, options) do
@@ -32,4 +33,5 @@ class FlatKeysCmd < Snapper
       options.add_cmd(flat_keys_cmd) if fk
     end
   end
+  # @param  remove me
 end

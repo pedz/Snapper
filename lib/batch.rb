@@ -4,16 +4,17 @@ require_relative 'cec'
 require_relative 'lpar'
 require_relative 'snap'
 
-# A container for a list of {Snap Snaps} and {Alert Alerts}.  This
-# concept may go away eventually because once the snaps are parsed,
-# they will get put into groups by CEC ({Snap#id_to_system
-# id_to_system}) and then by LPAR ({Snap#hostname hostname}).
+# A container for a list of {Snap}s and {Alert}s.  This concept may go
+# away eventually because once the snaps are parsed, they will get put
+# into groups by CEC ({Snap#id_to_system id_to_system}) and then by
+# LPAR ({Snap#hostname hostname}).
 class Batch
-  # @return [Array<CEC>] The list of known {CEC CECs}.
+  # @return [Array<CEC>] The list of known {CEC}s.
   attr_reader :cec_list
+  alias cecs cec_list
 
   # Passed a list of snaps
-  # @param snap_list [Array<Snap>] A list of {Snap Snaps}.
+  # @param snap_list [Array<Snap>] A list of {Snap}s.
   def initialize(snap_list)
     @snap_list = snap_list
     @alerts = List.new

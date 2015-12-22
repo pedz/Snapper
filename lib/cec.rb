@@ -21,17 +21,18 @@ class CEC
   #   the proc0 device.
   attr_reader :cpu_type
 
-  # @return [Array<Lpar>] The list of {LPAR LPARs} within this CEC.
-  attr_reader :lpars
+  # @return [Array<Lpar>] The list of {LPAR}s within this CEC.
+  attr_reader :lpar_list
+  alias lpars lpar_list
 
-  # @param db [Db] The database from one of the {Snap Snaps} that
-  #   belong to the CEC being created.
+  # @param db [Db] The database from one of the {Snap}s that belong to
+  #   the CEC being created.
   def initialize(db)
     @id_to_system = "Unkonwn"
     @firmware_level = "Unknown"
     @model = "Unknown"
     @cpu_type = "Unknown"
-    @lpars = List.new
+    @lpar_list = List.new
     @alerts = List.new
     @db = db
     if devices = db['devices']
@@ -61,13 +62,12 @@ class CEC
   end
 
   # Print the CEC out which prints out the info about the CEC along
-  # with the list of {Alert Alerts} and {LPAR LPARs} nested one level
-  # deeper.
+  # with the list of {Alert}s and {LPAR}s nested one level deeper.
   # @param context [Context] The context to use for printing.
   def print(context)
     context.output("CEC model:#{model} CPU:#{cpu_type} firmware:#{firmware_level} Id:#{id_to_system}")
     @alerts.print(context.nest)
-    @lpars.print(context.nest)
+    @lpar_list.print(context.nest)
     context
   end
 

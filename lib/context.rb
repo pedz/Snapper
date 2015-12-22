@@ -8,24 +8,30 @@ require_relative 'logging'
 # A Context is created and inject is used.  The print methods must
 # return a context which is used in the next call.  The idiom is then
 # to call done -- e.g.
-#
-# enumerable_of_items.inject(context.nest) { |context, item| item.print(context) }.done
+#   enumerable_of_items.inject(context.nest) { |context, item| item.print(context) }.done
+# This idiom has been sweetened with various pieces of syntatic sugar.
 #
 class Context
   include Logging
   # default log level is INFO
   LOG_LEVEL = Logger::INFO
 
-  # An attribute that can be freely manipulated by the Filter to save
-  # whatever state it needs to save between calls.
+  # @return [Object] An attribute that can be freely manipulated by
+  #   the Filter to save whatever state it needs to save between
+  #   calls.
   attr_accessor :state
 
-  # A Proc set by the Filter and is called with context.done is
-  # called.  context.done is automatically called at the end of
-  # processing a list of items.
+  # @return [Proc] A Proc set by the Filter and is called with
+  #   context.done is called.  context.done is automatically called at
+  #   the end of processing a list of items.
   attr_accessor :proc
 
-  # options are the output and command line options
+  # @param options [Options] The parsed command line options --
+  #   defaults to an empty hash
+  # @param indent [Fixnum] The indentation level of this context --
+  #   defaults to 0.
+  # @param state [Object] The initial state -- defaults to nil
+  # @param proc [Proc] The block to call via {#done}.
   def initialize(options = {}, indent = 0, state = nil, proc = nil)
     @options, @indent, @state, @proc = options, indent, state, proc
     @last_output_had_nocr = false
@@ -37,6 +43,10 @@ class Context
   # may add a modifier which the item below may incorporate in its
   # output.  Currently this is used to specify the control channel of
   # the Sea and the backup adapter for Ethchan
+  # @overload modifier(text)
+  #   @param text [String] Sets the modifier to text.
+  # @overload modifier
+  #   @return [String] returns the current modifier.
   def modifier(text = nil)
     if text
       @modifier = text
@@ -46,27 +56,38 @@ class Context
     end
   end
 
-  # The level set on the command line
+  # @return [Fixnum] Forwards to {Options#level}.
   def level
     @options.level
   end
 
-  # Create a new Context nesting one level deeper.
+  # @return [Context] Creates a new Context nesting one level deeper.
   def nest
     self.class.new(@options, @indent + 1)
   end
 
+  # Used by {Enumerable} to signify the context is now being used
+  # within a list.  {Item#print} uses {Context#in_list} to not call
+  # {Context#done} and puts that burden upon the entity that is
+  # processing the list.
+  # @see in_list
   def start_list
     @in_list = true
   end
 
+  # Used by {Item#print} to see if {Enumerable} is currently printing
+  # a list of items in which case {Context#done} is not called by
+  # {Item#print} but is called by {Enumerable#print}
+  # @return [Boolean] True if {#start_list} called since last call to
+  #   {#done}.
   def in_list
     @in_list
   end
 
   # Call the proc if one has been defined.  This method should be
   # called at the end of processing a list of items using the same
-  # context.
+  # context.  The +in_list+ state is set back to false and if the last
+  # call to {#output} had +:nocr+ set, then a newline is output.
   def done
     @in_list = false
     @proc.call(self) if @proc
@@ -74,47 +95,50 @@ class Context
   end
 
   # Does nothing if context.level is less than zero.  Sends text to
-  # stdout with proper indentation and attributes applied.  text can
-  # be array of strings.  If text is nil or empty, sends a blank line
-  # to stdout.
+  # {Options#printf} with proper indentation and attributes applied.
+  # text can be array of strings.  If text is nil or empty, sends a
+  # blank line to the output.
   #
-  # Attributes supported:
+  # @param text [String, Array<String>] The text to output.  If text
+  #   is nil or empty, color attributes will have no effect. If text
+  #   is nil or empty and :nocr is specified, no output is produced.
+  # @param attrs [Array<Symbol>] A list of attributes to use during
+  #   the output of the text.
   #
-  # [ :cr ] append carriage return (new line) -- default
-  #
-  # [ :nocr ] do not append return.  See below
-  #
-  # [ :black ] output text in black
-  #
-  # [ :red ] output text in red
-  #
-  # [ :green ] output text in green
-  #
-  # [ :yellow ] output text in yellow
-  #
-  # [ :blue ] output text in blue
-  #
-  # [ :magenta ] output text in magenta
-  #
-  # [ :cyan ] output text in cyan
-  #
-  # [ :white ] output text in white
-  #
-  # [ :bold ] output text in bold
-  #
-  # [ :bg ] background specified by the next color attribute  e.g. [
-  #         :bg, :red ] would produce text with a red background but [
-  #         :bg, :cr, :red ] would as well.
-  #
-  # Attributes apply only for the text specified (it does not change
-  # state so all text has those attributes until they are cleared).
-  # If :nocr is specified and text is an array of strings, it is the
-  # equivalent of: output(text.join(' '), <original attributes>)
-  #
-  # if text is nil or empty, color attributes will have no effect.
-  #
-  # if text is nil or empty and :nocr is specified, no output is
-  # produced.
+  #   Attributes supported:
+  #  
+  #   :cr:: append carriage return (new line) -- default
+  #  
+  #   :nocr:: do not append return.  If :nocr is specified and text is
+  #           an array of strings, it is the equivalent of:
+  #           <tt>output(text.join(' '), attrs)</tt>
+  #  
+  #   :black:: output text in black
+  #  
+  #   :red:: output text in red
+  #  
+  #   :green:: output text in green
+  #  
+  #   :yellow:: output text in yellow
+  #  
+  #   :blue:: output text in blue
+  #  
+  #   :magenta:: output text in magenta
+  #  
+  #   :cyan:: output text in cyan
+  #  
+  #   :white:: output text in white
+  #  
+  #   :bold:: output text in bold
+  #  
+  #   :bg:: background specified by the next color attribute
+  #         e.g. <tt>[ :bg, :red ]</tt> would produce text with a red
+  #         background but <tt>[ :bg, :cr, :red ]</tt> would as well.
+  #    
+  #   Attributes apply only for the text specified (it does not change
+  #   state so all text has those attributes until they are cleared).
+  # @example Output in red
+  #   context.output(item.to_text, [ :red ])
   def output(text = nil, attrs = [ :cr ])
     # get edge cases out of the way
     return if level < 0
@@ -140,6 +164,13 @@ class Context
   BOLD = 1
   RESET = 0
 
+  # Converts the attrs to a 3-tuple used by {#output}.
+  # @param attrs [Array<Symbol>] Same as for {#output}.
+  # @return [Array(String, String, String)] The 3-tuple returns is
+  #   +lead+, +sep+, and +tail+.  +lead+ comes before any text.  +sep+
+  #   comes between items if text is an array.  And +tail+ comes at
+  #   the end and includes the newline if appropriate.
+  # @raise [RuntimeError] if an unknown attribute is passed in.
   def cvt_attrs(attrs)
     bg = false
     cr = true

@@ -5,7 +5,10 @@ require_relative 'filter'
 require 'json'
 
 # The base type used by most everything in the database with the
-# exception of List and WriteOnceHash.
+# exception of {List}, and {WriteOnceHash}.
+#
+# This is the class of this project that probably has way too many
+# responsibilities.
 class Item
   include Logging
   # Default log level is INFO
@@ -24,36 +27,32 @@ class Item
   # purposes).
   attr_reader :orig_key
 
-  # Currently not used and will probably go away soon.
-  attr_reader :line_number
-
   class << self
-    # First time I've done this.  I like the name so much that I
-    # overloaded it.
-    #
-    # If called with one argument that is a Filter, then
-    # local_add_filter is called.
-    #
-    # If called with any other signature, Item.add_filter is called if
-    # the target is not Item.  If the target is Item, then
-    # Item.add_filter_to_class is called.
+    # @overload add_filter(filter)
+    #   Adds filter to the class.
+    #   @param filter [Filter] The filter to add to the class.
+    # @overload add_filter(klass, options = {}, &proc)
+    #   Creates a Filter using options and proc and adds it to the
+    #   class specified by klass.
+    #   @param klass [String] Specifies the class to add the filter
+    #     to.
+    #   @param options [Hash] The options to pass to Filter.new.
+    #   @param proc [Proc] The proc to pass to Filter.new.
+    #   @see add_filter_to_class
     def add_filter(*args, &proc)
       if args.length == 1 && args[0].is_a?(Filter)
         local_add_filter(args[0])
       else
-        if self == Item
-          add_filter_to_class(args[0], args[1], &proc)
-        else
-          Item.add_filter(*args, &proc)
-        end
+        add_filter_to_class(args[0], args[1], &proc)
       end
     end
 
-    # Returns the list of filters for this class and all of its super
-    # classes that support the call.  Thus if Ethchan is a subclass of
-    # Device and Device is a subclass of Item, calling Ethchan.filters
-    # results in the filters for Ethchan followed by the filters for
-    # Device, followed by the filters for Item.
+    # @return [Array<Filter>] The list of filters for this class and
+    #   all of its super classes that support the call.  Thus if
+    #   Ethchan is a subclass of Device and Device is a subclass of
+    #   Item, calling Ethchan.filters results in the filters for
+    #   Ethchan followed by the filters for Device, followed by the
+    #   filters for Item.
     def filters
       temp = []
       entity = self
@@ -64,7 +63,8 @@ class Item
       temp.flatten
     end
 
-    # The set of filters only for this class sorted using Filter#<=>
+    # @return [Array<Filter>] The set of filters only for this class
+    #   sorted using Filter#<=>
     def local_filters
       (@filters ||= []).sort!
     end
@@ -76,22 +76,25 @@ class Item
     # inherits (or is a subclass) of Item.  Since all of the
     # autmatically created classes inherit from Item, this is a super
     # set of the list of classes that need to be created before the
-    # marshaled snap file can be reloaded.  See Snapper#restore for
-    # more info
+    # marshaled snap file can be reloaded.
+    #
+    # This is also where the filters defined for a subclass are loaded
+    # into the class.
+    #
+    # @see Snapper#restore
+    # @param subclass [Class] The class that just subclassed the
+    #   class.
     def inherited(subclass)
       children.push(subclass.to_s)
-      Item.load_filters(subclass)
+      load_filters(subclass)
     end
 
-    # Called via Item.inherited to load the filters for the new class
-    # when it is created.
+    # Called via {Item#inherited} to load the filters for the new
+    # class when it is created.
+    # @param klass [Symbol] The class to load the filters for.
     def load_filters(klass)
-      if self == Item
-        logger.debug { "load #{class_hash[klass.to_s].length} filters for #{klass}" }
-        class_hash[klass.to_s].each { |filter| klass.add_filter(filter) }
-      else
-        Item.load_filters(klass)
-      end
+      logger.debug { "load #{class_hash[klass.to_s].length} filters for #{klass}" }
+      class_hash[klass.to_s].each { |filter| klass.add_filter(filter) }
     end
 
     # This is just a convenience method to initialize children to an
@@ -113,6 +116,13 @@ class Item
     # Note that it is assumed that the target of the message is Item
     # since this is a private method and the code in add_filter makes
     # sure that Item is the target before calling this method.
+    #
+    # Creates a Filter using options and proc and adds it to the
+    # class specified by klass.
+    # @param klass [String] Specifies the class to add the filter
+    #   to.
+    # @param options [Hash] The options to pass to Filter.new.
+    # @param proc [Proc] The proc to pass to Filter.new.
     def add_filter_to_class(klass, options = {}, &proc)
       klass = klass.to_s
       filter = Filter.new(options, &proc)
@@ -130,22 +140,24 @@ class Item
     # Each class has its own set of filters.  This method adds Filter
     # to the class that is the target of the message.
     # e.g. Foo.add_filter(filter) will add the Filter to class Foo.
+    # @param filter [Filter] The filter to add.
     def local_add_filter(filter)
-      logger.debug { "#{name}.local_add_filter called" }
+      logger.debug { "local_add_filter #{filter.source_location}" }
       local_filters << filter
     end
 
-    # The local hash used by add_filter_to_class and load_filters.
+    # Returns the class variable.
     def class_hash
-      @class_hash ||= Hash.new { |hash, key| hash[key] = [] }
+      @@class_hash ||= Hash.new { |hash, key| hash[key] = [] }
     end
   end
 
   # In concept, prints the item.  In reality, it finds the first
-  # filter from #filters that is valid for context#level and then
-  # calls that filter's Filter#run method.  Sets #printed to true
-  # after the filter is run.  Sets internal #printing to true while
+  # filter from {#filters} that is valid for {Context#level} and then
+  # calls that filter's {Filter#run} method.  Sets +@printed+ to true
+  # after the filter is run.  Sets internal +@printing+ to true while
   # filter is running and thens it back to false when it completes.
+  # @param context [Context] The context to use for printing.
   def print(context)
     unless @printing
       @printing = true
@@ -163,9 +175,16 @@ class Item
     raise e
   end
 
-  # A convenience method.  With no context, it calls Item.filters.
-  # With a context, it selects the result of Item.filters with
-  # Filter#level === Context#level
+  # @overload filters
+  #   @return [Array<Filter>] returns the full list of filters
+  #     returned by {Item.filters}.
+  # @overload filter(context)
+  #   @param context [Context] Provides the level as specified on the
+  #     command line.
+  #   @return [Array<Filter>] returns the list of filters returned by
+  #     {Item.filter} but filtered such that {Filter#level} ===
+  #     {Context#level}.  Note: {Filter#level} is a range so the test
+  #     above is true if {Filter#level} contains {Context#level}.
   def filters(context = nil)
     if context
       self.class.filters.select { |filter| filter.level === context.level }
@@ -177,54 +196,62 @@ class Item
   # creates an instance of subclass klass and moves all the instance
   # variables of the original Item into the new instance.  For
   # example, in Seas, when a Device is discovered to be a Sea, the
-  # call: device.subclass(Sea) creates a new instance of Sea moving
-  # all of the data from device into the new instance.
+  # call: <tt>device.subclass(Sea)</tt> creates a new instance of Sea
+  # moving all of the data from device into the new instance.
+  # The +:super+ method points to the original target.
+  # @param klass [Class] The class of the new item that is returned.
+  # @return [Klass] A new item of class Klass.
   def subclass(klass)
     # The @hash.dup is key or we create a loop and we can't produce json
-    new_item = klass.new(@text, @hash.dup, @orig_key, @line_number, @db)
+    new_item = klass.new(@text, @hash.dup, @orig_key, @db)
     new_item[:super] = self.dup
     new_item
   end
 
-  # The original text of the entry
-  # The database that the item will be part of as db
-  # hash, orig_key, and line_number are present just to get the magic
-  # needed for #subclass and missing_method to work.
-  def initialize(text = "", hash = {}, orig_key = {}, line_number = {}, db)
+  # @param text [String] The initial value of text.  Can be added to
+  #   via {#<<}.
+  # @param hash [Hash] The initial value of hash.  Can be added to via
+  #   {#[]=} which will also alter orig_key.
+  # @param orig_key [Hash] The initial value of orig_key.
+  # @param db [Db] The database instane to use.
+  def initialize(text = "", hash = {}, orig_key = {}, db)
     @text = text
     @hash = hash
     @orig_key = orig_key
-    @line_number = line_number
     @db = db
     @printed = false
     @printing = false
   end
 
-  # Returns if entity has been printed
+  # @return [Boolean] true if entity has been printed
   def printed
     @printed
   end
 
-  # if the text representation is being built up line by line then use
-  # this entry.
+  # If the text representation is being built up line by line then use
+  # this entry.  (Not sure this is used anywhere).
+  # @param line [String] a line of text.
+  # @return [Item] self
   def <<(line)
     @text << line
     self
   end
 
-  # to return the original text that was parsed for this item.
+  # @return [String] the text of the item.
   def to_text
     @text
   end
 
-  # optional parse method used by some subclasses.  It should always
-  # return self when done.
+  # optional parse method used by some subclasses.
+  # @return [Item] self
   def parse
     self
   end
 
-  # Part of the method_missing magic.  Returns true if the method
-  # matches a key in the hash or if Hash responds to the method.
+  # Part of the method_missing magic.  
+  # @param method [Symbol] The symbol to check.
+  # @return [Boolean] true if the method matches a key in the hash or
+  #   if Hash responds to the method.
   def respond_to_missing?(method, include_all)
     find_name(method) || @hash.respond_to?(method, include_all)
   end
@@ -235,11 +262,15 @@ class Item
   # method that Hash responds to is called, then that method is sent
   # to the @hash instance variable.  If the result is a new hash, then
   # a new Item (of the same class as the original) is returned with
-  # the original orig_key, line_numbers, text, and db but with the
+  # the original orig_key, text, and db but with the
   # new hash.  If the result is the same hash, then the method must
   # have modified the existing hash and self is returned.  Last, if
   # the method returns a different value (like +length+), then that
   # value is returned.
+  # @param method [Symbol] The method that was involved upon the
+  #   target.
+  # @param args [Array<Object>] The arguments passed.
+  # @param proc [Proc] The proc (if any) that was passed.
   def method_missing(method, *args, &proc)
     if !block_given? && args.length == 0 && @hash.has_key?(method)
       return @hash[method]
@@ -264,7 +295,7 @@ class Item
         if result.object_id == orig_hash_id
           self
         else
-          self.class.new(@text, result, @orig_key, @line_number, @db)
+          self.class.new(@text, result, @orig_key, @db)
         end
       else
         result
@@ -274,12 +305,16 @@ class Item
     end
   end
 
-  # In simple terms, sends the message to the hash instance variable
+  # In simple terms, forward the message to the hash instance variable
   # but first, key is modified by fix_key.  Also, if this call is
   # going to create a new field within the hash, the original key is
   # saved off in orig_key.  If there is already an existing value,
   # then the key is compared to the value in orig_key and if they
   # differ, an exception is thrown.
+  # @param key [String] The field or key to set.
+  # @param value [Object] The value to set the field to.
+  # @return [Object] value is returned.
+  # @raise [RuntimeError] if key would collide with an existing key.
   def []=(key, value)
     fixed_key = fix_key(key)
     if @hash.has_key?(fixed_key) && 
@@ -288,34 +323,37 @@ class Item
        end
     else
       @orig_key[fixed_key] = key
-      @line_number[fixed_key] = @text.respond_to?(:lineno) ? @text.lineno : nil
     end
     @hash[fixed_key] = value
   end
 
-  # Checks to see if <tt>fix_key(key)</tt> is a key of the hash.
+  # @return [Boolean] true if hash has an entry for +fix_key(key)+.
+  # @param key [String] The key to look up.
   def key?(key)
-    @hash[fix_key(key)]
+    @hash.key?(fix_key(key))
   end
+  alias has_key? key?
 
-  # same as #key?
-  def has_key?(key)
-    @hash.has_key?(fix_key(key))
-  end
-
-  # Returns the value at <tt>fix_key(key)</tt>
+  # @param key [String] passed to {#fix_key} and the result is used as
+  #   the key to the local hash.
+  # @return [Object] The value found at +fix_key(key)+.
   def [](key)
     @hash[fix_key(key)]
   end
 
-  # An enumerator that produces a flat set of values.  Each value is a
-  # two element array.  The first element is the original keys, separated by
-  # commas, to reach the value.  The second element is the value.  All
-  # values will be simple Fixnums or Strings
+  # An enumerator that produces a flat set of values.
+  # @param nesting [Array<String>] The starting nesting to use.
+  # @return [Array<Array(String, Object)>] An array of two element
+  #   items: the first element is the flattened key.  The second
+  #   element is value.
   def flat_keys(nesting = [])
     flatten_keys(self, nesting)
   end
 
+  # @param options [Hash] The usual options passed to +to_json+.
+  # @return [String] The JSON representation of the target.  The
+  #   internal hash, the text, and the original keys are marshaled
+  #   out.
   def to_json(options = {})
     temp = @hash.dup
     temp[:text] = @text
@@ -325,8 +363,12 @@ class Item
 
   private
 
-  # The magic behind flat_keys: a lazy recursive enumerator.  thing
-  # may be an Item, List, WriteOnceHash, or a simple value
+  # The magic behind flat_keys: a lazy recursive enumerator.
+  # @param thing [Item, Array, Hash, other] The entity to return the
+  #   flat keys for.
+  # @param nesting [Array<String>] The list of keys needed to get to
+  #   +thing+.
+  # @return (see #flat_keys)
   def flatten_keys(thing, nesting = [])
     Enumerator.new do |yielder|
       if thing.is_a?(Array)
@@ -354,12 +396,17 @@ class Item
   # converts key to lowercase and replaces all characters that are not
   # letters, digits, or the underscore character with the underscore
   # character.
+  # @param key [String, Symbol] The original key as passed in to the
+  #   public method.
+  # @return [Symbol] key, to_s, downcase, replace non-alphanumerics
+  #   with underscore, then convert to Symbol.
   def fix_key(key)
     key.to_s.downcase.gsub(/[^a-z0-9_]/, '_').to_sym
   end
 
-  # not sure why but returns method if has_key? returns true and nil
-  # otherwise.  Used by respond_to_missing?
+  # @param method [Symbol] the method to find.
+  # @return [Boolean] not sure why but returns method if
+  #   +has_key?(method)+ returns true and nil otherwise
   def find_name(method)
     @hash.has_key?(method) && method
   end

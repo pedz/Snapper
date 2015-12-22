@@ -7,4 +7,5 @@ class Sea < Device
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
+  # @param remove me
 end

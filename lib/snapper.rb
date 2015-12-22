@@ -42,19 +42,6 @@ class Snapper
       end
     end
 
-    # def current_instance=(instance)
-    #   @@current_instance = instance
-    # end
-
-    # def current_instance
-    #   @@current_instance
-    # end
-
-    # def command_line_option
-    #   fail "Snapper.command_line_option called at an odd time" if current_instance.nil?
-    #   yield *current_instance
-    # end
-
     def add_command_line_option(&proc)
       add_command_procs << proc
     end
@@ -81,13 +68,15 @@ class Snapper
     end
   end
 
+  # The main snapper program creates a Snapper instance and calls the
+  # {Snapper#run run} method.
   def initialize
-    @options = Options.new(File.basename($0))
+    @options = Options.new
     help = OptionParser::Officious.delete('help') 
-    @options.version = [ 1, 0, 0 ]
-    @options.release = "a"
+    version = OptionParser::Officious.delete('version') 
     @options.banner = @options.banner + " <path to snap1> [ <path to snap2> ... ]"
     OptionParser::Officious['help'] = help
+    OptionParser::Officious['version'] = version
   end
 
   # Now the main program.
@@ -147,9 +136,15 @@ class Snapper
   # and also allow an option to add to the lists of directories to
   # load.
   def load_files
+    youngest = Time.new(2000)
     Pathname.glob(Pathname.new(__FILE__).parent.realpath + "**/*.rb") do |f|
+      youngest = f.mtime if youngest < f.mtime
       require_relative f
     end
+    youngest.utc
+    @options.version = [ youngest.year , youngest.month, youngest.day ]
+    @options.release = "#{"%02d:%02d:%02d" % [youngest.hour, youngest.min,youngest.sec]}"
+
     @@add_command_procs.each do |proc|
       proc.call(self, @options)
     end
@@ -205,15 +200,15 @@ class Snapper
 
   def do_cmd
     @options.cmds.each { |cmd| cmd.call(@batch, @options) }
-    # if @options.print_keys
-    #   print_keys
-    # elsif @options.html
-    #   html
-    # elsif @options.interactive
-    #   interactive
-    # else
-    #   print
-    # end
+    if @options.print_keys
+      print_keys
+    elsif @options.html
+      html
+    elsif @options.interactive
+      interactive
+    else
+      print
+    end
   end
 
   # Returns the list of file parsers to the instance
@@ -275,7 +270,7 @@ class Snapper
   end
 
   def print_keys
-    @options.puts(@batch.snap_list[0].db.keys.sort)
+    @options.puts(@batch.cecs[0].lpars[0].snaps[0].db.keys.sort)
   end
 
   def html

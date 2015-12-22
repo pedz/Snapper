@@ -14,8 +14,9 @@ class Ethchans < Item
 
   # Runs through the Devices in the snap looking for ones with
   # uniquetype of +adapter/pseudo/ibm_ech+.  It converts the Devices
-  # entry for these into the Ethchan subclass as well as creates and
-  # populates the :adapter_names and :backup_adapter fields.
+  # entry for these into the {Ethchan} subclass as well as creates and
+  # populates the +adapter_names+ and +backup_adapter+ fields.
+  # @param snap [Snap] The snap to process.
   def self.create(snap)
     db = snap.db
     db.devices.each_pair do |key, value|

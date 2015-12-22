@@ -1,7 +1,7 @@
 require_relative "dot_file_parser"
 
-# Parses the no -a output found in tcpip/tcpip.snap.  Converts values
-# that begin with a digit to Fixnum (integers).
+# Parses the <tt>no -a</tt> output found in +tcpip/tcpip.snap+.
+# Converts values that begin with a digit to Fixnum (integers).
 class No_a < Item
   include Logging
   # Default log level is INFO
@@ -27,4 +27,5 @@ class No_a < Item
     end
     self
   end
+  # @param  remove me
 end

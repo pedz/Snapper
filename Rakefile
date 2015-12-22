@@ -3,29 +3,39 @@ load 'jasmine/tasks/jasmine.rake'
 
 desc "Make the jsdoc3 documentation for the javascript"
 task :jsdoc do
-  system "jsdoc --configure doc/conf.json"
+  echo_system "jsdoc --configure doc/conf.json"
 end
 
-desc "Make the rdoc documentation"
-task :rdoc do
-  exclude = %w{
-		Gemfile
-		Gemfile\.lock
-		Rakefile
-		\.bundle
-		\.git
-		doc/conf\.json
-		doc/javascript
-		doc/ruby
-		features
-		lib/javascript
-		lib/stylesheets
-		spec
-		temp
-		test\.snap
-  		.*\.html
-                .*\.jpg
-	      }
+def exclude_list
+  %w{
+  .*\.html
+  .*\.jpg
+  Gemfile
+  Gemfile\.lock
+  Rakefile
+  \.bundle
+  \.git
+  doc/conf\.json
+  doc/javascript
+  doc/rdoc
+  doc/ri
+  doc/yard
+  features
+  lib/javascript
+  lib/stylesheets
+  spec
+  temp
+  test\.snap
+}.join('|')
+end
+
+def echo_system(s)
+  system("echo #{s}")
+  system(s)
+end
+
+desc "Create the Filters file for rdoc to consume"
+task :make_filters do
   # We copy filters.rb over to doc/filters which will create a page
   # calle Filters.  We start after the line that contains :startdoc:.
   # When we copy, if the line starts with a #, the # and one space is
@@ -49,15 +59,48 @@ task :rdoc do
   end
   from.close
   to.close
+end
 
-  system [ "echo rdoc",
-           "'--all'",
-           "'--main=README'",
-           "'--exclude=\\./(#{exclude.join('|')})'",
-           "'--output=doc/ruby'" ].join(' ')
-  system [ "rdoc",
-           "'--all'",
-           "'--main=README'",
-           "'--exclude=\\./(#{exclude.join('|')})'",
-           "'--output=doc/ruby'" ].join(' ')
+desc "Make the yard documentation"
+task :yard => [:make_filters] do
+  echo_system [
+    "yard",
+    "'--title=Snapper'",
+    "'--main=README'",
+    "'--private'",
+    "'--files=doc/Filters'",
+    "'--exclude=\\./(#{exclude_list})'",
+    "'--output=doc/yard'"
+  ].join(' ')
+end
+
+desc "Make the rdoc documentation"
+task :rdoc => [:make_filters] do
+  echo_system [
+    "rdoc",
+    "'--all'",
+    "'--main=README'",
+    "'--exclude=\\./(#{exclude_list})'",
+    "'--output=doc/rdoc'"
+  ].join(' ')
+end
+
+desc "Make the ri documentation"
+task :ri => [:make_filters] do
+  echo_system [
+    "rdoc",
+    "'--all'",
+    "'--ri'",
+    "'--main=README'",
+    "'--exclude=\\./(#{exclude_list})'",
+    "'--output=doc/ri'"
+  ].join(' ')
+end
+
+desc "Makes the rdoc, ri, yard, and jsdoc documentation"
+task "all-docs" => [ :ri, :jsdoc, :yard ]
+
+desc "Clean up all the documentation directories"
+task "clean-docs" do
+  echo_system("rm -rf .yardoc doc/yard doc/rdoc doc/javascript doc/ri")
 end

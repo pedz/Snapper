@@ -10,16 +10,16 @@ class LPAR
   #   id_to_partition attribute of the sys0 device.
   attr_reader :id_to_partition
   
-  # @return [Array<Snap>] A list of {Snap Snaps} that belong to the
-  #   LPAR.
-  attr_accessor :snaps
+  # @return [Array<Snap>] A list of {Snap}s that belong to the LPAR.
+  attr_accessor :snap_list
+  alias snaps snap_list
 
-  # @param db [Db] The database from one of the {Snap Snaps} that
-  #   belong to the LPAR being created.
+  # @param db [Db] The database from one of the {Snap}s that belong to
+  #   the LPAR being created.
   def initialize(db)
     @hostname = "Unknown"
     @id_to_partition = "Unknown"
-    @snaps = List.new
+    @snap_list = List.new
     @alerts = List.new
     if devices = db['devices']
       if sys0 = devices['sys0']
@@ -44,13 +44,13 @@ class LPAR
   end
 
   # Print the LPAR out which prints out the info about the LPAR along
-  # with the list of {Alert Alerts} and the list of {Snap Snaps}
-  # nested one level deeper.
+  # with the list of {Alert}s and the list of {Snap}s nested one level
+  # deeper.
   # @param context [Context] The context to use for printing.
   def print(context)
     context.output("Host: #{hostname}")
     @alerts.print(context.nest)
-    @snaps.print(context.nest)
+    @snap_list.print(context.nest)
     context
   end
 

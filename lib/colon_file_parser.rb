@@ -24,6 +24,7 @@ class ColonFileParser < FileParser
   # parses the file line by line matching it against LINE_REGEXP.  If
   # it matches a new entry is created with the field and value.  Value
   # is converted to an integer if it only contains digits.
+  # @raise [RuntimeError] if a line does not parse.
   def parse
     name = @io.path.sub(/\A.*\//, '')
     text = @io.read
@@ -36,6 +37,7 @@ class ColonFileParser < FileParser
       item[field] = value
     end
   end
+  # @param  remove me
 end
 
 Snapper.add_file_parsing_patterns(%r{/general/lparstat.out} => ColonFileParser)

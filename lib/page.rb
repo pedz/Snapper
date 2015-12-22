@@ -3,9 +3,17 @@ require 'pathname'
 
 # class that produces the html page.
 class Page
+  # Directory where the css stylesheets live.
   StylesheetDir = File.expand_path("../stylesheets", __FILE__)
+
+  # Directory where the javascript lives.
   JavascriptDir = File.expand_path("../javascript", __FILE__)
 
+  # @param batch [Batch] The batch produced by the current run.
+  # @param outfile [File] The file to write the HTML to.
+  # @param one_file [Boolean] If true, then add the javascript code
+  #   and stylesheets inline with the HTML.  If false, pull them in
+  #   via the appropiate link or script tags.
   def initialize(batch, outfile = $stdout, one_file = true)
     @batch = batch
     @outfile = outfile

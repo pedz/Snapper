@@ -1,11 +1,11 @@
 require_relative 'devices'
 require_relative 'snapper'
 
-# Scattered about there are lsattr -El foo output in places like
-# general.snap, async.snap, and perfpmr's config.sum.  These do not
-# match a common class at parse time nor can a match be made based
-# upon the device's type because the device's type is not know at that
-# point in time.
+# Scattered about there are <tt>lsattr -El foo</tt> output in places
+# like +general.snap+, +async.snap+, and perfpmr's +config.sum+.
+# These do not match a common class at parse time nor can a match be
+# made based upon the device's type because the device's type is not
+# know at that point in time.
 #
 # A pass is made to alter these to be of class Lsattr or one of its
 # subclasses which will be based on the basename of the ddins.
@@ -14,15 +14,15 @@ require_relative 'snapper'
 # created.
 #
 # A container of the the lsattr entries is made in the db called
-# 'lsattrs' and has each lsattr under the device's logical name (much
-# like 'devices'
+# +lsattrs+ and has each lsattr under the device's logical name (much
+# like +devices+.
 class Lsattr < Item
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
 
-  # A Regexp pattern that matches the original class like
-  # lsattr_elent0 where ent0 is the logical name of the device.
+  # @return [Regexp] Pattern that matches the original class like
+  #   lsattr_elent0 where ent0 is the logical name of the device.
   NAME_REGEXP = /\Alsattr_el(.*)\z/
 
   # Scans the lines capture by the lsattr_elfoo class and tries to
@@ -30,6 +30,8 @@ class Lsattr < Item
   # values.  Creates an lsattrs entry in the db which has keys of the
   # logical name for the device and an item which has the fields of
   # +:attr+, +:value+, +:desc+, and +:alter+.
+  # @param snap [Snap] the snap to scan.
+  # @raise [RuntimeError] if the parse failed.
   def self.create(snap)
     db = snap.db
     lsattrs = db.create_item("lsattrs")

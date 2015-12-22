@@ -8,10 +8,11 @@ class Entstat_ethchan < Entstat
   # The default log level is INFO
   LOG_LEVEL = Logger::INFO
 
-  # Includes ENT_PRODUCTIONS, LACP_PRODUCTIONS, and BASE_PRODUCTIONS
+  # (see Entstat_goent#productions)
   def productions
     ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
+  # @param  remove me
 end
 
 Netstat_v::Parsers.instance.add(Entstat_ethchan, "EtherChannel")

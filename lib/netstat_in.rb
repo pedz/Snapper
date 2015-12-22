@@ -1,7 +1,7 @@
 require_relative "dot_file_parser"
 require_relative "interface"
 
-# Parses the output of netstat -in
+# Parses the output of <tt>netstat -in</tt>
 class Netstat_in < Item
   include Logging
   # Default log level is INFO
@@ -55,4 +55,5 @@ class Netstat_in < Item
     end
     self
   end
+  # @param  remove me
 end

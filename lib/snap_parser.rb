@@ -10,18 +10,20 @@ class SnapParser
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
 
-  # dir is a string or a Pathname of the starting directory to walk
-  # down.  Pathname.find |path| is then called.
-  #
-  # If prune.match(path) returns true, the path will be pruned (via
-  # Find.prune).
-  #
-  # db is passed as the second argument to the parse methods (keep
-  # reading).
-  #
-  # patterns.each should result in elements that respond to first and
-  # last.  If first.match(path) returns true, then last.parse(io, db)
-  # will be called where io is the open file for path.
+  # @param dir [String, Pathname] The starting directory to walk
+  #   down.  Pathname.find |path| is then called.
+  # @param prune [Regexp] A regular express of directories not to
+  #   traverse.  @see Find::find
+  # @param db [Db] The database to populate during the parse.
+  # @param patterns [Array<Array(Regexp, Class)>] An array of tuples of
+  #   a regular expression that is matched against the pathname of the
+  #   files found and the class to call to parse those files if the
+  #   regular expression matches.  This list is created by calls to
+  #   {Snapper.add_file_parsing_patterns}.  A duck type way of saying
+  #   the above: patterns.each should result in elements that respond
+  #   to first and last.  If first.match(path) returns true, then
+  #   last.parse(io, db) will be called where io is the open file for
+  #   path.
   def initialize(dir, prune, db, patterns)
     @dir, @prune, @db, @patterns = dir, prune, db, patterns
   end

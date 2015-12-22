@@ -12,9 +12,10 @@ class Odm < FileParser
   LOG_LEVEL = Logger::INFO
 
   # Parses io (via each_line) into ODM objects and adds them to db
-  # (via add).  The stanza type determines the type of object.  For
-  # example, a stanza starting with CuAt will do CuAt.new(hash) where
-  # hash is the attributes found in the ODM stanza.
+  # (via {Db#create_item}).  The stanza type determines the type of
+  # object.  For example, a stanza starting with CuAt will do
+  # CuAt.new(hash) where hash is the attributes found in the ODM
+  # stanza.
   def parse
     raw_line = ""
     full_line = ""
@@ -62,7 +63,9 @@ class Odm < FileParser
 
   private
 
-  # replace string literals e.g. "\n" with a newline and "\\" with 
+  # @param line [String] The original line from the file
+  # @return [String] replace string literals e.g. "\n" with a newline
+  #   and "\\" with a single backslash
   def fix_literals(line)
     line.gsub(/\\./) { |match|
       case match
@@ -76,6 +79,12 @@ class Odm < FileParser
   # files what it means.  In particular, a string is quoted with an
   # extra set of double quotes and an integer comes in as a string and
   # is converted to an integer.
+  # @param a [String] original value from the odm file
+  # @return [String, Fixnum] If an extra set of double quotes surround
+  #   the string, they are removed and the result is returned.  If the
+  #   value is only digits with an optional leading minus sign, the
+  #   string is converted to an Integer and returned.
+  # @raise [RuntimeError] if neither of the two items happens.
   def convert(a)
     if md = a.match(/"((.|\n)*)"/)
       return md[1]

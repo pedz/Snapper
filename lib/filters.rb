@@ -3,6 +3,7 @@ require_relative "filter"
 # Note that this file is copied over to doc/filters and munged so we
 # can get it into the documentation.  The startdoc below clues the
 # copy of where to start
+# @param  remove me
 # :startdoc:
 
 Item.add_filter("Alert", { level: 1 .. 10 }) do |context, item|
@@ -15,7 +16,6 @@ end
 Item.add_filter("Device", { level: 0 .. 11 }) do |context, item|
   unless item.printed
     context.output([ item.cudv.name, item.cudv.ddins, context.modifier ].join(' '))
-    # context.output("#{item.cudv.name} #{item.cudv.ddins} #{context.modifier}")
     item['errpt'].print(context.nest) if item['errpt']
     item['entstat'].print(context.nest)    if item['entstat']
     item['lsattr'].print(context.nest)     if item['lsattr']
@@ -277,7 +277,6 @@ Item.add_filter("Sea", { level: 0 .. 11 }) do |context, item|
   else
     modifier = "ha_mode: #{sea_ent.attributes.ha_mode.value}"
   end
-  # bridge_mode = item.super.
   sea_ent.print(context.modifier(modifier))
   item[:real_adapter].print(context.nest)
   item[:virt_adapters].print(context.nest)

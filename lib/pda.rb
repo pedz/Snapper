@@ -14,13 +14,17 @@ class PDA
     # Default log level is INFO
     LOG_LEVEL = Logger::INFO
     
-    # Creates the production.  regexp is a regular expression or a
-    # string.  states is the set of states that the production is
-    # valid in.  The special symbol :all means that it is valid in all
-    # states.  new_state is the state to move to.  :no_change is a
-    # special value that means the state is not changed.  block is
-    # yielded to if the regular expression match and is passed the
-    # match data of the match and the parent PDA.
+    # Creates the production.
+    # @param regexp [Regexp] Is a regular expression or a string.
+    # @param states [:all, Array<Symbol>] is the set of states that
+    #   the production is valid in.  The special symbol :all means
+    #   that it is valid in all states.
+    # @param new_state [no_change, Symbol] is the state to move to.
+    #   :no_change is a special value that means the state is not
+    #   changed.
+    # @param block [Proc] is yielded to if the regular expression
+    #   match and is passed the match data of the match and the parent
+    #   PDA.
     def initialize(regexp, states = :all, new_state = :no_change, &block)
       raise "Bad Block" unless block.arity == 2
       @regexp = Regexp.new(regexp)
@@ -37,6 +41,15 @@ class PDA
     # the match data and the parent PDA.  When it returns, if
     # new_state is not :no_change, then the parent PDA's state is
     # changed to the Production's new_state and returns true.
+    # @param line [String] A line of text
+    # @param pda [PDA] The parent PDA of this production
+    # @return [Boolean] If text does not match regexp of the
+    #   production or if the current state is not in the set of valid
+    #   states for this production.  Otherwise, call block and return
+    #   true.
+    # @yieldparam md [MatchData] the match data from the match of the
+    #   regular expression to the line of text.
+    # @yieldparam pda [PDA] The parent PDA.
     def match(line, pda)
       current_state = pda.state
       return false unless (@valid_states == :all) || (@valid_states.include?(current_state))
@@ -48,19 +61,25 @@ class PDA
 
     # Currently returns the regular expression as a string.  I believe
     # this is only used for debugging purposes.
+    # @return [String] forwards to regexp#to_s.
     def to_s
       @regexp.to_s
     end
   end
 
-  # Probably a very bad name and poorly implemented.  The block within
-  # the productions can use this as a scratch pad to keep state
-  # variables and other things.  This is passed in to the
-  # initialize method.
+  # @return [Object] An opaque object passed in to the PDA at
+  #   initialization time and modified by the productions.  Probably a
+  #   very bad name and poorly implemented.  The block within the
+  #   productions can use this as a scratch pad to keep state
+  #   variables and other things.  This is passed in from the parser
+  #   to the initialize method.
   attr_accessor :target
 
   # Initializes the PDA with the initial value of the "target" and the
   # list of productions.
+  # @param first_target [Object] Set as the initial {#target}.
+  # @param productions [Array<PDA::Production>] The productions to use
+  #   for this parse.
   def initialize(first_target, productions)
     @state = :normal
     @stack = List.new
@@ -69,8 +88,10 @@ class PDA
   end
 
   # Determines if any of the productions matches the line of text.
-  # The first hit terminates the search.  Returns true if there was a
-  # hit and false otherwise.
+  # The first hit terminates the search.
+  # @param line [String] The line of text to parse.
+  # @return [Boolean] Returns true if there was a hit and false
+  #   otherwise.
   def match_productions(line)
     logger.debug { "match_productions: #{@state}; #{@stack.size}; line: '#{line}'" }
     @productions.any? do |prod|
@@ -80,24 +101,28 @@ class PDA
     end
   end
 
-  # accessor to the stack used by the PDA.
+  # @return [Array<Array(Object, Symbol)>] A stack of tuples that
+  #   include the {#target}s and the {#state}s that have been pushed
+  #   onto the stack by the {#push} call.
   def stack
     @stack
   end
 
   # Assigns a new state
+  # @param new_state [Symbol] the new state
   def state=(new_state)
     logger.debug { "new state: #{new_state}" }
     @state = new_state
   end
 
-  # Accessor to the current state of the PDA.
+  # @return [Symbol] the current state.
   def state
     @state
   end
 
-  # pushes the current target onto the stack along with the current
-  # state and sets target equal to the new_target.
+  # pushes the current target and state onto the stack and sets target
+  # equal to the new_target (but does not change to a new state).
+  # @param new_target [Object] An opaque object.
   def push(new_target)
     logger.debug { "pushing state #{@state}" }
     @stack.push([@target, @state])
@@ -106,6 +131,7 @@ class PDA
 
   # Pops cnt levels off the stack assigning the current state and
   # target to the value that is now the new top of the stack.
+  # @param cnt [Integer] The number of levels to pop from the stack.
   def pop(cnt = 1)
     if cnt > 0
       @stack.pop(cnt - 1)

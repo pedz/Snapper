@@ -1,7 +1,8 @@
-test.snap
-temp
+.yardoc
 doc/Filters
 doc/javascript
-doc/ruby
+doc/rdoc
+doc/ri
 doc/yard
-.yardoc
+temp
+test.snap

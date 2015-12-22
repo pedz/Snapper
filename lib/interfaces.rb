@@ -6,6 +6,8 @@ require_relative 'vlans'
 
 # A snap processor that runs and creates an Intefaces container in the
 # top level db.
+# @todo Also need to look for the ifconfig -a output and add in fields
+#   from it.
 class Interfaces < Item
   include Logging
   # Default log level is INFO
@@ -15,6 +17,7 @@ class Interfaces < Item
   # only added field is +:adapter+ which is the Device entry for the
   # underlying device after the name has been modified.  e.g. en0
   # points to the ent0 Device.
+  # @param snap [Snap] The snap to process
   def self.create(snap)
     db = snap.db
     interfaces = db.create_item("Interfaces")

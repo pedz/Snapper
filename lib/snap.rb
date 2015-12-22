@@ -13,6 +13,8 @@ class Snap
   # Must pass in the :dir (directory to the snap) and :db (the Db used
   # in the parsing).  Other options can be :alerts (a List of Alerts)
   # and :print_list (a PrintList)
+  # @raise [RuntimeError] if options do not specify a +:db+ and a
+  #   +:dir+ entry.
   def initialize(options)
     fail "Must have :db and :dir entries" unless options.has_key?(:db) and options.has_key?(:dir)
     @dir = options[:dir]
@@ -21,7 +23,7 @@ class Snap
     @print_list = (options[:print_list] || PrintList.new)
   end
 
-  # Returns Db#date_time from the contained db.
+  # @return [DateTime] Forwards to {Db#date_time}
   def date_time
     @db.date_time
   end
@@ -59,15 +61,15 @@ class Snap
   # Adds an item to be printed along with its priority in the print
   # list
   # @param item [Item] The item to print out.
-  # @param priority [Integer] The position (smallest first) of the
+  # @param priority [Fixnum] The position (smallest first) of the
   #   item.
   def add_item(item, priority)
     @print_list.add(item, priority)
   end
 
   # Print the Snap out which prints out the info about the Snap along
-  # with the list of {Alert Alerts} and the list of {Item Items} the
-  # were added via {Snap#add_item add_item} nested one level deeper.
+  # with the list of {Alert}s and the list of {Item}s the were added
+  # via {Snap#add_item add_item} nested one level deeper.
   # @param context [Context] The context to use for printing.
   def print(context)
     context.output("Snap taken #{date_time}")

@@ -26,6 +26,7 @@ GEM
     phantomjs (1.9.7.0)
     rack (1.5.2)
     rake (10.2.2)
+    rdoc (4.2.0)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
@@ -49,6 +50,7 @@ DEPENDENCIES
   cucumber
   jasmine
   parsejs
+  rdoc
   rspec
   yard
   yard-js

@@ -7,12 +7,8 @@ class Entstat_generic < Entstat
   # The default log level is INFO
   LOG_LEVEL = Logger::INFO
 
-  # Adds a production to catch the blank line after Driver Flags.
-  # From that point on, all line are just appened to an array called
-  # _unmatched_.  The exception is the LACP productions are still
-  # parsed properly.
-  def productions
-    LACP_PRODUCTIONS + [
+  GENERIC_PRODUCTIONS =
+    [
       # Sample Match:   |empty line
       # States Matched: :driverFlags
       # New State:      :consumeAll
@@ -41,6 +37,15 @@ class Entstat_generic < Entstat
         ret = pda.target
         ret[field].push(md[0])
       end,
-    ] + ENT_PRODUCTIONS + BASE_PRODUCTIONS
+    ]
+
+  # @return [Array<PDA::Production>] Lists {LACP_PRODUCTIONS} first,
+  #   then {GENERIC_PRODUCTIONS} followed by {ENT_PRODUCTIONS} and
+  #   {BASE_PRODUCTIONS}.  This causes the parser to find the LACP
+  #   data but otherwise, everything after the driver flags is put
+  #   into the +unmatched+ field.
+  def productions
+    LACP_PRODUCTIONS + GENERIC_PRODUCTIONS + ENT_PRODUCTIONS + BASE_PRODUCTIONS
   end
+  # @param  remove me
 end

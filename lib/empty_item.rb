@@ -19,4 +19,5 @@ class EmptyItem < BasicObject
   def respond_to_missing?(method, include_private = false)
     nil.respond_to?(method) or super
   end
+  # @param  remove me
 end

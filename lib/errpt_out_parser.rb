@@ -46,12 +46,17 @@ class ErrptOutParser < FileParser
         end
       end
     end
-    if @db["Errpt"].is_a? Item
+    # We always want errpt to be an array so we add two items (which
+    # forces it to be an array even if it was empty originally) and
+    # then pop them off.
+    unless @db["Errpt"].is_a? Array
       @db.create_item("Errpt", "")
-      @db["Errpt"].pop
+      @db.create_item("Errpt", "")
+      @db["Errpt"].pop(2)
     end
     self
   end
+  # @param  remove me
 end
 
 Snapper.add_file_parsing_patterns(%r{/general/errpt.out} => ErrptOutParser)

@@ -34,7 +34,7 @@ class DotFileParser < FileParser
     # The lines0 piece is thrown away.
     pieces = @io.read.split(DotSeparator)
     maybe_date = pieces.shift     # date or blanks before 1st command
-    unless @path && @path.basename == "general.snap" && maybe_date.empty?
+    if @path && (!maybe_date.empty?) && (@path.basename.to_s == "general.snap")
       begin
         @db.date_time = DateTime.parse(maybe_date)
       rescue ArgumentError => e
@@ -46,7 +46,6 @@ class DotFileParser < FileParser
       next if name.match(/\A *\z/) # yes... it happens :-(
       begin
         item = @db.create_item(name, text).parse
-        # item['Date/Time'] = date_time
       rescue => e
         new_message = e.message.split("\n").insert(1, "dot file parser: lineno:#{lines}").join("\n")
         new_e = e.exception(new_message)
@@ -57,6 +56,7 @@ class DotFileParser < FileParser
     end
     self
   end
+  # @param  remove me
 end
 
 Snapper.add_file_parsing_patterns(

@@ -9,7 +9,6 @@ describe DotFileParser do
       item = double("item")
       db = double("db")
       expect(db).to receive(:create_item).exactly(15).times.and_return(item)
-      expect(db).to receive(:date_time=).once
       expect(item).to receive(:parse).exactly(15).times
       path = Pathname.new(TEST_TCPIP_SNAP)
       io = path.open(mode: "r", encoding: "ISO-8859-1")
