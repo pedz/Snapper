@@ -246,7 +246,11 @@ class EntstatVioent < Entstat
   def productions
     VIOENT_PRODUCTIONS + ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
-  # @param  remove me
+
+  # parses the text
+  def parse
+    super
+  end
 end
 
 NetstatV::Parsers.instance.add(EntstatVioent, "Virtual I/O Ethernet Adapter (l-lan)")

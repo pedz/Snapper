@@ -3,7 +3,6 @@ require_relative "filter"
 # Note that this file is copied over to doc/filters and munged so we
 # can get it into the documentation.  The startdoc below clues the
 # copy of where to start
-# @param  remove me
 # :startdoc:
 
 Item.add_filter("Alert", { level: 1 .. 10 }) do |context, item|

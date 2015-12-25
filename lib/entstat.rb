@@ -345,5 +345,4 @@ class Entstat < Item
   def productions
     fail "Please override this method"
   end
-  # @param  remove me
 end

@@ -16,5 +16,4 @@ require_relative 'logging'
 #
 # The other fields are appened to the +extra+ field.
 class Errpt < Item
-  # @param  remove me
 end

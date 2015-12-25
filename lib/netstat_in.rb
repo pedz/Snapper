@@ -55,5 +55,4 @@ class NetstatIn < Item
     end
     self
   end
-  # @param  remove me
 end

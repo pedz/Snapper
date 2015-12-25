@@ -56,7 +56,6 @@ class DotFileParser < FileParser
     end
     self
   end
-  # @param  remove me
 end
 
 Snapper.add_file_parsing_patterns(

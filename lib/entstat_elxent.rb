@@ -52,7 +52,11 @@ class EntstatElxent < Entstat
   def productions
     ELXENT_PRODUCTIONS + ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
-  # @param  remove me
+
+  # parses the text
+  def parse
+    super
+  end
 end
 
 NetstatV::Parsers.instance.add(EntstatElxent, "PCIe2 2-port 10GbE SR Adapter")

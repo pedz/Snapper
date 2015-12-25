@@ -2,7 +2,7 @@ require "spec_helper"
 require "entstat_vioent"
 
 describe EntstatVioent do 
-  describe "#productions" do
+  describe "#parse" do
     before(:context) {
       text = <<EOF
 ETHERNET STATISTICS (ent4) :

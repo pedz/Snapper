@@ -2,9 +2,10 @@ require "spec_helper"
 require "entstat_elxent"
 
 describe EntstatElxent do 
-  context "PCIe2 2-port 10GbE SR Adapter" do
-    before(:context) {
-      text = <<EOF
+  describe "#parse" do
+    context "PCIe2 2-port 10GbE SR Adapter" do
+      before(:context) {
+        text = <<EOF
 ETHERNET STATISTICS (ent0) :
 Device Type: PCIe2 2-port 10GbE SR Adapter
 Hardware Address: 00:00:c9:d9:d8:96
@@ -119,22 +120,23 @@ Transmit statistics for TXQ number: 1
 	TCP segmentation offload maximum packet size: 0
 	Maximum entries used on this transmit queue: 180
 EOF
-      @result = NetstatV.new(text, Hash.new).parse["ent0"]
-    }
-    it "parses the hardware MAC address" do
-      expect(@result["Hardware Address"]).to eq("00:00:c9:d9:d8:96")
-    end
-    it "parses the two column statistics ouutput" do
-      expect(@result["Receive Statistics"]["Interrupts"]).to eq(157147159)
-    end
-    it "parses RXQ statistics" do
-      expect(@result["Receive statistics for RXQ number"][0]["Number of receive interrupts"]).to eq(78848)
-    end
-  end
+        @result = NetstatV.new(text, Hash.new).parse["ent0"]
+      }
 
-  context "Int Multifunction Card w/ Copper SFP+ 10GbE Adapter" do
-    before(:context) {
-      text = <<EOF
+      it "parses the hardware MAC address" do
+        expect(@result["Hardware Address"]).to eq("00:00:c9:d9:d8:96")
+      end
+      it "parses the two column statistics ouutput" do
+        expect(@result["Receive Statistics"]["Interrupts"]).to eq(157147159)
+      end
+      it "parses RXQ statistics" do
+        expect(@result["Receive statistics for RXQ number"][0]["Number of receive interrupts"]).to eq(78848)
+      end
+    end
+    
+    context "Int Multifunction Card w/ Copper SFP+ 10GbE Adapter" do
+      before(:context) {
+        text = <<EOF
 ETHERNET STATISTICS (ent0) :
 Device Type: Int Multifunction Card w/ Copper SFP+ 10GbE Adapter
 Hardware Address: e4:1f:13:d7:28:14
@@ -251,22 +253,22 @@ Transmit statistics for TXQ number: 1
 	TCP segmentation offload maximum packet size: 0
 	Maximum entries used on this transmit queue: 0
 EOF
-      @result = NetstatV.new(text, Hash.new).parse["ent0"]
-    }
-    it "parses the hardware MAC address" do
-      expect(@result["Hardware Address"]).to eq("e4:1f:13:d7:28:14")
+        @result = NetstatV.new(text, Hash.new).parse["ent0"]
+      }
+      it "parses the hardware MAC address" do
+        expect(@result["Hardware Address"]).to eq("e4:1f:13:d7:28:14")
+      end
+      it "parses the two column statistics ouutput" do
+        expect(@result["Receive Statistics"]["Interrupts"]).to eq(0)
+      end
+      it "parses RXQ statistics" do
+        expect(@result["Receive statistics for RXQ number"][0]["Number of receive interrupts"]).to eq(0)
+      end
     end
-    it "parses the two column statistics ouutput" do
-      expect(@result["Receive Statistics"]["Interrupts"]).to eq(0)
-    end
-    it "parses RXQ statistics" do
-      expect(@result["Receive statistics for RXQ number"][0]["Number of receive interrupts"]).to eq(0)
-    end
-  end
-
-  context "Int Multifunction Card w/ Copper SFP+ 10GbE Adapter" do
-    before(:context) {
-      text = <<EOF
+    
+    context "Int Multifunction Card w/ Base-TX 10/100/1000 1GbE Adapter" do
+      before(:context) {
+        text = <<EOF
 ETHERNET STATISTICS (ent2) :
 Device Type: Int Multifunction Card w/ Base-TX 10/100/1000 1GbE Adapter
 Hardware Address: e4:1f:13:d7:28:15
@@ -393,19 +395,20 @@ IEEE 802.3ad Port Statistics:
 -------------------------------------------------------------
 
 EOF
-      @result = NetstatV.new(text, Hash.new).parse["ent2"]
-    }
-    it "parses the hardware MAC address" do
-      expect(@result["Hardware Address"]).to eq("e4:1f:13:d7:28:15")
-    end
-    it "parses the two column statistics ouutput" do
-      expect(@result["Receive Statistics"]["Interrupts"]).to eq(62)
-    end
-    it "parses RXQ statistics" do
-      expect(@result["Receive statistics for RXQ number"][0]["Number of receive interrupts"]).to eq(62)
-    end
-    it "parses Actor State" do
-      expect(@result["Actor State"]["LACP activity"]).to eq("Active")
+        @result = NetstatV.new(text, Hash.new).parse["ent2"]
+      }
+      it "parses the hardware MAC address" do
+        expect(@result["Hardware Address"]).to eq("e4:1f:13:d7:28:15")
+      end
+      it "parses the two column statistics ouutput" do
+        expect(@result["Receive Statistics"]["Interrupts"]).to eq(62)
+      end
+      it "parses RXQ statistics" do
+        expect(@result["Receive statistics for RXQ number"][0]["Number of receive interrupts"]).to eq(62)
+      end
+      it "parses Actor State" do
+        expect(@result["Actor State"]["LACP activity"]).to eq("Active")
+      end
     end
   end
 end

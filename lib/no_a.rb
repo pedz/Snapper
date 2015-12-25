@@ -27,5 +27,4 @@ class NoA < Item
     end
     self
   end
-  # @param  remove me
 end

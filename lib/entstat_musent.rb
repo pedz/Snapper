@@ -53,7 +53,11 @@ class EntstatMusent < Entstat
   def productions
     MUSENT_PRODUCTIONS + ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
-  # @param  remove me
+
+  # parses the text
+  def parse
+    super
+  end
 end
 
 NetstatV::Parsers.instance.add(EntstatMusent, "Gigabit Ethernet PCIe Adapter (e4145716e4142004)")

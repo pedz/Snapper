@@ -13,7 +13,11 @@ class EntstatGoent < Entstat
   def productions
     ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
-  # @param  remove me
+
+  # parses the text
+  def parse
+    super
+  end
 end
 
 NetstatV::Parsers.instance.add(EntstatGoent, "4-Port 10/100/1000 Base-TX PCI-Express Adapter (14106803)")

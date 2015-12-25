@@ -2,8 +2,9 @@ require "spec_helper"
 require "entstat_shient"
 
 describe EntstatShient do 
-  before(:context) {
-    text = <<EOF
+  describe "#parse" do
+    before(:context) {
+      text = <<EOF
 ETHERNET STATISTICS (ent1) :
 Device Type: PCIe2 4-Port Adapter (10GbE SFP+) (e4148a1614109304)
 Hardware Address: 40:f2:e9:d3:45:a1
@@ -238,13 +239,14 @@ Tx LPI entry count:	0
 	[q-3]: tx_bcast_packets:	0
 -------------------------------------------------------------
 EOF
-    @result = NetstatV.new(text, Hash.new).parse["ent1"]
-  }
-  it "parses the hardware MAC address" do
-    expect(@result["Hardware Address"]).to eq("40:f2:e9:d3:45:a1")
-  end
-
-  it "parses the [q-0] stuff" do
-    expect(@result["q"][0]["tx_bytes"]).to eq(0)
+      @result = NetstatV.new(text, Hash.new).parse["ent1"]
+    }
+    it "parses the hardware MAC address" do
+      expect(@result["Hardware Address"]).to eq("40:f2:e9:d3:45:a1")
+    end
+    
+    it "parses the [q-0] stuff" do
+      expect(@result["q"][0]["tx_bytes"]).to eq(0)
+    end
   end
 end

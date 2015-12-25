@@ -2,8 +2,9 @@ require "spec_helper"
 require "entstat_vlan"
 
 describe EntstatVlan do 
-  before(:context) {
-    text = <<EOF
+  describe "#parse" do
+    before(:context) {
+      text = <<EOF
 ETHERNET STATISTICS (ent13) :
 Device Type: 
 Hardware Address: e4:1f:13:d8:28:c4
@@ -46,29 +47,30 @@ Driver Flags: Up Broadcast Running
 	DataRateSet 
 
 EOF
-    @result = NetstatV.new(text, Hash.new).parse["ent13"]
-  }
-
-  it "parses the hardware MAC address" do
-    expect(@result["Hardware Address"]).to eq("e4:1f:13:d8:28:c4")
-  end
-
-  it "parses the transmit packets as an integer" do
-    expect(@result["Transmit Statistics"]["Packets"]).to eq(600602)
-  end
-
-  it "parses the receive bytes as an integer" do
-    expect(@result["Receive Statistics"]["Bytes"]).to eq(57750627)
-  end
-
-  it "parses the Driver Flags as an array of strings" do
-    expect(@result["Driver Flags"]).to eq(["Up", "Broadcast", "Running",
-                                         "Simplex", "64BitSupport",
-                                         "ChecksumOffload",
-                                         "DataRateSet"])
-  end
-
-  it "parses 'Current HW Transmit Queue Length' under the Transmit Statistics" do
-    expect(@result["Transmit Statistics"]["Current HW Transmit Queue Length"]).to eq(0)
+      @result = NetstatV.new(text, Hash.new).parse["ent13"]
+    }
+    
+    it "parses the hardware MAC address" do
+      expect(@result["Hardware Address"]).to eq("e4:1f:13:d8:28:c4")
+    end
+    
+    it "parses the transmit packets as an integer" do
+      expect(@result["Transmit Statistics"]["Packets"]).to eq(600602)
+    end
+    
+    it "parses the receive bytes as an integer" do
+      expect(@result["Receive Statistics"]["Bytes"]).to eq(57750627)
+    end
+    
+    it "parses the Driver Flags as an array of strings" do
+      expect(@result["Driver Flags"]).to eq(["Up", "Broadcast", "Running",
+                                             "Simplex", "64BitSupport",
+                                             "ChecksumOffload",
+                                             "DataRateSet"])
+    end
+    
+    it "parses 'Current HW Transmit Queue Length' under the Transmit Statistics" do
+      expect(@result["Transmit Statistics"]["Current HW Transmit Queue Length"]).to eq(0)
+    end
   end
 end

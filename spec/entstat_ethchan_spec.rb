@@ -1,10 +1,11 @@
 require "spec_helper"
 require "entstat_ethchan"
 
-describe EntstatEthchan do 
-  context "operating in normal mode" do
-    before(:context) {
-      text = <<EOF
+describe EntstatEthchan do
+  describe "#parse" do
+    context "operating in normal mode" do
+      before(:context) {
+        text = <<EOF
 ETHERNET STATISTICS (ent20) :
 Device Type: EtherChannel
 Hardware Address: 00:00:c9:d9:d8:96
@@ -58,41 +59,41 @@ Hash mode: Destination IP address
 -------------------------------------------------------------
 
 EOF
-      @result = NetstatV.new(text, Hash.new).parse["ent20"]
-    }
-
-    it "parses the hardware MAC address" do
-      expect(@result["Hardware Address"]).to eq("00:00:c9:d9:d8:96")
+        @result = NetstatV.new(text, Hash.new).parse["ent20"]
+      }
+      
+      it "parses the hardware MAC address" do
+        expect(@result["Hardware Address"]).to eq("00:00:c9:d9:d8:96")
+      end
+      
+      it "parses the transmit packets as an integer" do
+        expect(@result["Transmit Statistics"]["Packets"]).to eq(615469971)
+      end
+      
+      it "parses the receive bytes as an integer" do
+        expect(@result["Receive Statistics"]["Bytes"]).to eq(751885396976)
+      end
+      
+      it "parses the Driver Flags as an array of strings" do
+        expect(@result["Driver Flags"]).to eq(["Up",
+                                               "Broadcast",
+                                               "Running",
+                                               "Simplex",
+                                               "Promiscuous",
+                                               "64BitSupport",
+                                               "ChecksumOffload",
+                                               "LargeSend",
+                                               "DataRateSet"])
+      end
+      
+      it "parses Operating mode" do
+        expect(@result["Operating mode"]).to eq("Standard mode")
+      end
     end
-
-    it "parses the transmit packets as an integer" do
-      expect(@result["Transmit Statistics"]["Packets"]).to eq(615469971)
-    end
-
-    it "parses the receive bytes as an integer" do
-      expect(@result["Receive Statistics"]["Bytes"]).to eq(751885396976)
-    end
-
-    it "parses the Driver Flags as an array of strings" do
-      expect(@result["Driver Flags"]).to eq(["Up",
-                                             "Broadcast",
-                                             "Running",
-                                             "Simplex",
-                                             "Promiscuous",
-                                             "64BitSupport",
-                                             "ChecksumOffload",
-                                             "LargeSend",
-                                             "DataRateSet"])
-    end
-
-    it "parses Operating mode" do
-      expect(@result["Operating mode"]).to eq("Standard mode")
-    end
-  end
-
-  context "operating in 802.3ad mode" do
-    before(:context) {
-      text = <<EOF
+    
+    context "operating in 802.3ad mode" do
+      before(:context) {
+        text = <<EOF
 ETHERNET STATISTICS (ent10) :
 Device Type: IEEE 802.3ad Link Aggregation
 Hardware Address: e4:1f:13:d8:28:c4
@@ -157,35 +158,36 @@ Hash mode: Destination IP address
 -------------------------------------------------------------
 
 EOF
-      @result = NetstatV.new(text, Hash.new).parse["ent10"]
-    }
-
-    it "parses the hardware MAC address" do
-      expect(@result["Hardware Address"]).to eq("e4:1f:13:d8:28:c4")
-    end
-
-    it "parses the transmit packets as an integer" do
-      expect(@result["Transmit Statistics"]["Packets"]).to eq(127492)
-    end
-
-    it "parses the receive bytes as an integer" do
-      expect(@result["Receive Statistics"]["Bytes"]).to eq(43872971)
-    end
-
-    it "parses the Driver Flags as an array of strings" do
-      expect(@result["Driver Flags"]).to eq(["Up",
-                                             "Broadcast",
-                                             "Running",
-                                             "Simplex",
-                                             "Promiscuous",
-                                             "64BitSupport",
-                                             "ChecksumOffload",
-                                             "LargeSend",
-                                             "DataRateSet"])
-    end
-    
-    it "parses Operating mode" do
-      expect(@result["Operating mode"]).to eq("Standard mode (IEEE 802.3ad)")
+        @result = NetstatV.new(text, Hash.new).parse["ent10"]
+      }
+      
+      it "parses the hardware MAC address" do
+        expect(@result["Hardware Address"]).to eq("e4:1f:13:d8:28:c4")
+      end
+      
+      it "parses the transmit packets as an integer" do
+        expect(@result["Transmit Statistics"]["Packets"]).to eq(127492)
+      end
+      
+      it "parses the receive bytes as an integer" do
+        expect(@result["Receive Statistics"]["Bytes"]).to eq(43872971)
+      end
+      
+      it "parses the Driver Flags as an array of strings" do
+        expect(@result["Driver Flags"]).to eq(["Up",
+                                               "Broadcast",
+                                               "Running",
+                                               "Simplex",
+                                               "Promiscuous",
+                                               "64BitSupport",
+                                               "ChecksumOffload",
+                                               "LargeSend",
+                                               "DataRateSet"])
+      end
+      
+      it "parses Operating mode" do
+        expect(@result["Operating mode"]).to eq("Standard mode (IEEE 802.3ad)")
+      end
     end
   end
 end

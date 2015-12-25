@@ -68,6 +68,7 @@ task :yard => [:make_filters] do
     "'--main=README'",
     "--plugin",
     "rspec",
+    "--verbose",
     "'--private'",
     "'--files=doc/Filters'",
     "'--exclude=\\./(#{exclude_list})'",

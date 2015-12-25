@@ -173,7 +173,11 @@ class EntstatSea < Entstat
   def productions
     SEA_PRODUCTIONS + ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
-  # @param  remove me
+
+  # parses the text
+  def parse
+    super
+  end
 end
 
 NetstatV::Parsers.instance.add(EntstatSea, "Shared Ethernet Adapter")

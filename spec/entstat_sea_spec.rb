@@ -2,8 +2,9 @@ require "spec_helper"
 require "entstat_sea"
 
 describe EntstatSea do 
-  before(:context) {
-    text = <<EOF
+  describe "#parse" do
+    before(:context) {
+      text = <<EOF
 ETHERNET STATISTICS (ent22) :
 Device Type: Shared Ethernet Adapter
 Hardware Address: e4:1f:13:fd:29:75
@@ -160,46 +161,47 @@ Type of Packets Received:
 Real Adapter: ent2
 
 EOF
-    @result = NetstatV.new(text, Hash.new).parse["ent22"]
-  }
-  it "parses the hardware MAC address" do
-    expect(@result["Hardware Address"]).to eq("e4:1f:13:fd:29:75")
-  end
-
-  it "parses the transmit packets as an integer" do
-    expect(@result["Transmit Statistics"]["Packets"]).to eq(359754)
-  end
-
-  it "parses the receive bytes as an integer" do
-    expect(@result["Receive Statistics"]["Bytes"]).to eq(22016683)
-  end
-
-  it "parses the Driver Flags as an array of strings" do
-    expect(@result["Driver Flags"]).to eq(["Up",
-                                           "Broadcast",
-                                           "Running",
-                                           "Simplex",
-                                           "64BitSupport",
-                                           "ChecksumOffload",
-                                           "LargeSend",
-                                           "DataRateSet"])
-  end
-
-  it "parses SEA Flags (hex)" do
-    expect(@result["SEA Flags (hex)"]).to eq(19)
-  end
-
-  it "parses SEA Flags" do
-    expect(@result["SEA Flags"]).to eq(["THREAD",
-                                        "LARGESEND",
-                                        "LARGE_RECEIVE"])
-  end
-
-  it "parses VLAN Ids" do
-    expect(@result["VLAN Ids"]["ent15"]).to eq([ 300 ])
-  end
-
-  it "parses Real Side Statistics" do
-    expect(@result["Real Side Statistics"]["Packets transmitted"]).to eq(241274)
+      @result = NetstatV.new(text, Hash.new).parse["ent22"]
+    }
+    it "parses the hardware MAC address" do
+      expect(@result["Hardware Address"]).to eq("e4:1f:13:fd:29:75")
+    end
+    
+    it "parses the transmit packets as an integer" do
+      expect(@result["Transmit Statistics"]["Packets"]).to eq(359754)
+    end
+    
+    it "parses the receive bytes as an integer" do
+      expect(@result["Receive Statistics"]["Bytes"]).to eq(22016683)
+    end
+    
+    it "parses the Driver Flags as an array of strings" do
+      expect(@result["Driver Flags"]).to eq(["Up",
+                                             "Broadcast",
+                                             "Running",
+                                             "Simplex",
+                                             "64BitSupport",
+                                             "ChecksumOffload",
+                                             "LargeSend",
+                                             "DataRateSet"])
+    end
+    
+    it "parses SEA Flags (hex)" do
+      expect(@result["SEA Flags (hex)"]).to eq(19)
+    end
+    
+    it "parses SEA Flags" do
+      expect(@result["SEA Flags"]).to eq(["THREAD",
+                                          "LARGESEND",
+                                          "LARGE_RECEIVE"])
+    end
+    
+    it "parses VLAN Ids" do
+      expect(@result["VLAN Ids"]["ent15"]).to eq([ 300 ])
+    end
+    
+    it "parses Real Side Statistics" do
+      expect(@result["Real Side Statistics"]["Packets transmitted"]).to eq(241274)
+    end
   end
 end

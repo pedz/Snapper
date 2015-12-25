@@ -47,5 +47,9 @@ class EntstatGeneric < Entstat
   def productions
     LACP_PRODUCTIONS + GENERIC_PRODUCTIONS + ENT_PRODUCTIONS + BASE_PRODUCTIONS
   end
-  # @param  remove me
+
+  # parses the text
+  def parse
+    super
+  end
 end

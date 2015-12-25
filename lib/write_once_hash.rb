@@ -9,5 +9,4 @@ class WriteOnceHash < Hash
   LOG_LEVEL = Logger::INFO
 
   include HashWriteOnce
-  # @param remove me
 end

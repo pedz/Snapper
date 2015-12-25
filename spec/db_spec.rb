@@ -5,7 +5,7 @@ describe Db do
   it { is_expected.to respond_to(:create_item) }
   it { is_expected.to respond_to(:[]) }
   
-  context "#create_item" do
+  describe "#create_item" do
     it "accepts an item" do
       db = Db.new
       expect{ db.create_item("something") }.not_to raise_error

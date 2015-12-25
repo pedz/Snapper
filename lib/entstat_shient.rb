@@ -101,7 +101,11 @@ class EntstatShient < Entstat
   def productions
     SHIENT_PRODUCTIONS + ENT_PRODUCTIONS + LACP_PRODUCTIONS + BASE_PRODUCTIONS
   end
-  # @param  remove me
+
+  # parses the text
+  def parse
+    super
+  end
 end
 
 NetstatV::Parsers.instance.add(EntstatShient, "PCIe2 4-Port Adapter (10GbE SFP+) (e4148a1614109304)")

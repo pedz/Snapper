@@ -196,7 +196,11 @@ class EntstatFibre < Entstat
   def productions
     FIBRE_PRODUCTIONS + BASE_PRODUCTIONS
   end
-  # @param  remove me
+
+  # parses the text
+  def parse
+    super
+  end
 end
 
 # On a Mac, the following list is produced with the command:

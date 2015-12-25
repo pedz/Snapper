@@ -2,8 +2,9 @@ require "spec_helper"
 require "entstat_goent"
 
 describe EntstatGoent do 
-  before(:context) {
-    text = <<EOF
+  describe "#parse" do
+    before(:context) {
+      text = <<EOF
 ETHERNET STATISTICS (ent2) :
 Device Type: 4-Port 10/100/1000 Base-TX PCI-Express Adapter (14106803)
 Hardware Address: e4:1f:13:fd:29:75
@@ -62,26 +63,27 @@ Transmit and Receive Flow Control Threshold (High): 40960
 Transmit and Receive Flow Control Threshold (Low): 20480
 Transmit and Receive Storage Allocation (TX/RX): 4/44
 EOF
-        @result = NetstatV.new(text, Hash.new).parse["ent2"]
-  }
-  it "parses the hardware MAC address" do
-    expect(@result["Hardware Address"]).to eq("e4:1f:13:fd:29:75")
-  end
-  it "parses the Receive Statistics" do
-    expect(@result["Receive Statistics"]["Multicast Packets"]).to eq(5663)
-  end
-  it "parses the Drive Flags" do
-    expect(@result["Driver Flags"]).to eq(["Up",
-                                           "Broadcast",
-                                           "Running",
-                                           "Simplex",
-                                           "Promiscuous",
-                                           "64BitSupport",
-                                           "ChecksumOffload",
-                                           "LargeSend",
-                                           "DataRateSet"])
-  end
-  it "parses the Transmit and Receive Flow Control Status" do
-    expect(@result["Transmit and Receive Flow Control Status"]).to eq("Disabled")
+      @result = NetstatV.new(text, Hash.new).parse["ent2"]
+    }
+    it "parses the hardware MAC address" do
+      expect(@result["Hardware Address"]).to eq("e4:1f:13:fd:29:75")
+    end
+    it "parses the Receive Statistics" do
+      expect(@result["Receive Statistics"]["Multicast Packets"]).to eq(5663)
+    end
+    it "parses the Drive Flags" do
+      expect(@result["Driver Flags"]).to eq(["Up",
+                                             "Broadcast",
+                                             "Running",
+                                             "Simplex",
+                                             "Promiscuous",
+                                             "64BitSupport",
+                                             "ChecksumOffload",
+                                             "LargeSend",
+                                             "DataRateSet"])
+    end
+    it "parses the Transmit and Receive Flow Control Status" do
+      expect(@result["Transmit and Receive Flow Control Status"]).to eq("Disabled")
+    end
   end
 end

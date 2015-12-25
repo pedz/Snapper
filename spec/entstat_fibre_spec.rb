@@ -2,9 +2,10 @@ require "spec_helper"
 require "entstat_fibre"
 
 describe EntstatFibre do
-  context "df1000f114108a0" do
-    before(:context) {
-      text = <<EOF
+  describe "#parse" do
+    context "df1000f114108a0" do
+      before(:context) {
+        text = <<EOF
 FIBRE CHANNEL STATISTICS REPORT: fcs3
 
 Device Type: FC Adapter (adapter/pciex/df1000f114108a0)
@@ -61,30 +62,30 @@ IP over FC Traffic Statistics
 
 Adapter Effective max transfer value:   0x100000
 EOF
-      @result = NetstatV.new(text, Hash.new).parse["fcs3"]
-    }
-
-    # Note, the sample used above is incorrect.  The 2nd section with
-    # 'No DMA Resource Count: 0' should have been grepped out as well as
-    # the second section with "Input Requests:".  This may eventually
-    # cause grief with duplicate values.
-    it "parses the serial number" do
-      expect(@result["Serial Number"]).to eq("1A203001E4")
+        @result = NetstatV.new(text, Hash.new).parse["fcs3"]
+      }
+      
+      # Note, the sample used above is incorrect.  The 2nd section with
+      # 'No DMA Resource Count: 0' should have been grepped out as well as
+      # the second section with "Input Requests:".  This may eventually
+      # cause grief with duplicate values.
+      it "parses the serial number" do
+        expect(@result["Serial Number"]).to eq("1A203001E4")
+      end
+      it "parses World Wide Node Name" do
+        expect(@result["World Wide Node Name"]).to eq("0x20000000C9D660FA")
+      end
+      it "parses the transmit statistics" do
+        expect(@result["Transmit Statistics"]["Frames"]).to eq(180323917)
+      end
+      it "parses the IP over FC Adapter Driver Information" do
+        expect(@result["IP over FC Adapter Driver Information"]["No DMA Resource Count"]).to eq(0)
+      end
     end
-    it "parses World Wide Node Name" do
-      expect(@result["World Wide Node Name"]).to eq("0x20000000C9D660FA")
-    end
-    it "parses the transmit statistics" do
-      expect(@result["Transmit Statistics"]["Frames"]).to eq(180323917)
-    end
-    it "parses the IP over FC Adapter Driver Information" do
-      expect(@result["IP over FC Adapter Driver Information"]["No DMA Resource Count"]).to eq(0)
-    end
-  end
-
-  context "IBM,vfc-client" do
-    before(:context) {
-      text = <<EOF
+    
+    context "IBM,vfc-client" do
+      before(:context) {
+        text = <<EOF
 FIBRE CHANNEL STATISTICS REPORT: fcs0
 
 Device Type: FC Adapter (adapter/vdevice/IBM,vfc-client)
@@ -140,26 +141,26 @@ IP over FC Traffic Statistics
 
 Adapter Effective max transfer value:   0x100000
 EOF
-      @result = NetstatV.new(text, Hash.new).parse["fcs0"]
-    }
+        @result = NetstatV.new(text, Hash.new).parse["fcs0"]
+      }
+      
+      it "parses the serial number" do
+        expect(@result["Serial Number"]).to eq("UNKNOWN")
+      end
+      it "parses World Wide Node Name" do
+        expect(@result["World Wide Node Name"]).to eq("0xC05076053FEF003C")
+      end
+      it "parses the transmit statistics" do
+        expect(@result["Transmit Statistics"]["Frames"]).to eq(0)
+      end
+      it "parses the IP over FC Adapter Driver Information" do
+        expect(@result["IP over FC Adapter Driver Information"]["No DMA Resource Count"]).to eq(0)
+      end
+    end
     
-    it "parses the serial number" do
-      expect(@result["Serial Number"]).to eq("UNKNOWN")
-    end
-    it "parses World Wide Node Name" do
-      expect(@result["World Wide Node Name"]).to eq("0xC05076053FEF003C")
-    end
-    it "parses the transmit statistics" do
-      expect(@result["Transmit Statistics"]["Frames"]).to eq(0)
-    end
-    it "parses the IP over FC Adapter Driver Information" do
-      expect(@result["IP over FC Adapter Driver Information"]["No DMA Resource Count"]).to eq(0)
-    end
-  end
-
-  context "7710018077107f0" do
-    before(:context) {
-      text = <<EOF
+    context "7710018077107f0" do
+      before(:context) {
+        text = <<EOF
 FIBRE CHANNEL STATISTICS REPORT: fcs0
 
 Device Type: FC Adapter (adapter/pciex/7710018077107f0)
@@ -218,20 +219,21 @@ IP over FC Traffic Statistics
 Adapter Effective max transfer value:   0x100000
 
 EOF
-      @result = NetstatV.new(text, Hash.new).parse["fcs0"]
-    }
-    
-    it "parses the serial number" do
-      expect(@result["Serial Number"]).to eq("11S42C1831YK5122217GYP")
-    end
-    it "parses World Wide Node Name" do
-      expect(@result["World Wide Node Name"]).to eq("0x200000C0DD1E0C01")
-    end
-    it "parses the transmit statistics" do
-      expect(@result["Transmit Statistics"]["Frames"]).to eq(1440907)
-    end
-    it "parses the IP over FC Adapter Driver Information" do
-      expect(@result["IP over FC Adapter Driver Information"]["No DMA Resource Count"]).to eq(0)
+        @result = NetstatV.new(text, Hash.new).parse["fcs0"]
+      }
+      
+      it "parses the serial number" do
+        expect(@result["Serial Number"]).to eq("11S42C1831YK5122217GYP")
+      end
+      it "parses World Wide Node Name" do
+        expect(@result["World Wide Node Name"]).to eq("0x200000C0DD1E0C01")
+      end
+      it "parses the transmit statistics" do
+        expect(@result["Transmit Statistics"]["Frames"]).to eq(1440907)
+      end
+      it "parses the IP over FC Adapter Driver Information" do
+        expect(@result["IP over FC Adapter Driver Information"]["No DMA Resource Count"]).to eq(0)
+      end
     end
   end
 end

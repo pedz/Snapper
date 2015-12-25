@@ -2,8 +2,9 @@ require "spec_helper"
 require "entstat_rrent"
 
 describe EntstatRrent do 
-  before(:context) {
-    text = <<EOF
+  describe "#parse" do
+    before(:context) {
+      text = <<EOF
 ETHERNET STATISTICS (ent10) :
 Device Type: 10 Gigabit Ethernet Adapter (ct3)
 Hardware Address: 34:40:b5:b6:bb:18
@@ -74,9 +75,10 @@ QSet[1] Current Number of Transmit Bytes Overflowed:   0
 Virtual Adapter: ent14
 
 EOF
-    @result = NetstatV.new(text, Hash.new).parse["ent10"]
-  }
-  it "parses the hardware MAC address" do
-    expect(@result["Hardware Address"]).to eq("34:40:b5:b6:bb:18")
+      @result = NetstatV.new(text, Hash.new).parse["ent10"]
+    }
+    it "parses the hardware MAC address" do
+      expect(@result["Hardware Address"]).to eq("34:40:b5:b6:bb:18")
+    end
   end
 end

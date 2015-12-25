@@ -56,7 +56,6 @@ class ErrptOutParser < FileParser
     end
     self
   end
-  # @param  remove me
 end
 
 Snapper.add_file_parsing_patterns(%r{/general/errpt.out} => ErrptOutParser)

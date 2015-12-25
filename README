@@ -384,7 +384,7 @@ The base class that the parsers create is an {Item}.  Subclasses of
 Item are {Device}, {Interface}, etc.  There is a tree of classes for
 entstat starting with the base of {Entstat} which is a subclass of
 Item and then specific parsers for the adapters are subclassed off of
-Entstat such as {Entstat_goent} or {Entstat_ethchan}.
+Entstat such as {EntstatGoent} or {EntstatEthchan}.
 
 The output is generated or +filtered+ by {Filter}s that are class as
 well as level specific.
@@ -565,7 +565,7 @@ The basic concept continues.  The Netstat_v parser pickes up the
 string after Device Type, in our example "IEEE 802.3ad Link
 Aggregation".  In this case, it is a two step process.  It looks to
 see if any class has registered to parse that particular device.  In
-this case, the Entstat_ethchan class has said that it can.  So an
+this case, the EntstatEthchan class has said that it can.  So an
 instance of that class is created and parse is called.
 
 When the instance is created, the file io object is passed to it as

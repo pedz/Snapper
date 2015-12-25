@@ -37,7 +37,6 @@ class ColonFileParser < FileParser
       item[field] = value
     end
   end
-  # @param  remove me
 end
 
 Snapper.add_file_parsing_patterns(%r{/general/lparstat.out} => ColonFileParser)

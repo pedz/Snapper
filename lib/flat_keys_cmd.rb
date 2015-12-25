@@ -33,5 +33,4 @@ class FlatKeysCmd < Snapper
       options.add_cmd(flat_keys_cmd) if fk
     end
   end
-  # @param  remove me
 end

@@ -2,9 +2,10 @@ require "spec_helper"
 require "entstat_musent"
 
 describe EntstatMusent do 
-  context "operating as stand alone" do
-    before(:context) {
-      text = <<EOF
+  describe "#parse" do
+    context "operating as stand alone" do
+      before(:context) {
+        text = <<EOF
 ETHERNET STATISTICS (ent6) :
 Device Type: Gigabit Ethernet PCIe Adapter (e4145716e4142004)
 Hardware Address: 6c:ae:8b:02:d7:68
@@ -66,19 +67,19 @@ Receive TCP Segment Aggregation: Disabled
 Virtual Adapter: ent0
 
 EOF
-      @result = NetstatV.new(text, Hash.new).parse["ent6"]
-    }
-    it "parses the hardware MAC address" do
-      expect(@result["Hardware Address"]).to eq("6c:ae:8b:02:d7:68")
+        @result = NetstatV.new(text, Hash.new).parse["ent6"]
+      }
+      it "parses the hardware MAC address" do
+        expect(@result["Hardware Address"]).to eq("6c:ae:8b:02:d7:68")
+      end
+      it "parses the two column statistics ouutput" do
+        expect(@result["Receive Statistics"]["Interrupts"]).to eq(92721)
+      end
     end
-    it "parses the two column statistics ouutput" do
-      expect(@result["Receive Statistics"]["Interrupts"]).to eq(92721)
-    end
-  end
-
-  context "operating as part of an 802.3ad link aggregation" do
-    before(:context) {
-      text = <<EOF
+    
+    context "operating as part of an 802.3ad link aggregation" do
+      before(:context) {
+        text = <<EOF
 ETHERNET STATISTICS (ent4) :
 Device Type: Gigabit Ethernet PCIe Adapter (e4145716e4142004)
 Hardware Address: 40:f2:e9:5a:21:68
@@ -205,19 +206,20 @@ Backup adapter - ent5:
 ======================
 
 EOF
-      @result = NetstatV.new(text, Hash.new).parse["ent4"]
-    }
-
-    it "parses the hardware MAC address" do
-      expect(@result["Hardware Address"]).to eq("40:f2:e9:5a:21:68")
-    end
-
-    it "parses the two column statistics ouutput" do
-      expect(@result["Receive Statistics"]["Interrupts"]).to eq(0)
-    end
-
-    it "parses the Actor State LACP activity" do
-      expect(@result["Actor State"]["LACP activity"]).to eq("Active")
+        @result = NetstatV.new(text, Hash.new).parse["ent4"]
+      }
+      
+      it "parses the hardware MAC address" do
+        expect(@result["Hardware Address"]).to eq("40:f2:e9:5a:21:68")
+      end
+      
+      it "parses the two column statistics ouutput" do
+        expect(@result["Receive Statistics"]["Interrupts"]).to eq(0)
+      end
+      
+      it "parses the Actor State LACP activity" do
+        expect(@result["Actor State"]["LACP activity"]).to eq("Active")
+      end
     end
   end
 end
