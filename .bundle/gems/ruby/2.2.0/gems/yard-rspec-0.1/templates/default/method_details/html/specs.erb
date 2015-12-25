@@ -2,26 +2,28 @@
 <div class="tags">
   <h3>Specifications:</h3>
   <ul class="specs">
-    <% for spec in object[:specifications] %>
-      <li><%= spec[:name] %>
-        <div class="source_code">
-          <table>
-            <tr>
-              <td>
-                <pre class="lines">
-
-
+    <% object[:specifications].keys.sort.each do |context| %>
+    <%   specs = object[:specifications][context] %>
+    <%= "<li><h4>#{context}</h4><ul>" unless context.empty? %>
+    <%   for spec in specs do %>
+	  <li><%= spec[:name] %>
+	    <div class="source_code">
+	      <table>
+		<tr>
+		  <td>
+		    <pre class="lines">
 <%= spec[:source].split("\n").size.times.to_a.map {|i| spec[:line] + i }.join("\n") %></pre>
-              </td>
-              <td>
-                <pre class="code"><span class="info file"># File '<%= h spec[:file] %>', line <%= spec[:line] %></span>
-
+		  </td>
+		  <td>
+		    <pre class="code"><span class="info file"># File '<%= h spec[:file] %>', line <%= spec[:line] %></span>
 <%= html_syntax_highlight format_source(spec[:source]) %></pre>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </li>
+		  </td>
+		</tr>
+	      </table>
+	    </div>
+          </li>
+      <% end %>
+    <%= "</ul></li>" unless context.empty? %>
     <% end %>
   </ul>
 </div>
