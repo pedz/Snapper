@@ -30,6 +30,11 @@ class Batch
     end.sort
   end
 
+  # Just syntatic sugar for cecs.each
+  def each_cec(&proc)
+    cecs.each(&proc)
+  end
+
   # Add an alert
   # @param text [String] The alert text to add
   def add_alert(text)

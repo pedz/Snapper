@@ -31,6 +31,11 @@ class LPAR
     end
   end
 
+  # Just syntatic sugar for snaps.each
+  def each_snap(&proc)
+    snaps.each(&proc)
+  end
+
   # Add an alert to the LPAR.
   # @param text [String] The alert text to add
   def add_alert(text)

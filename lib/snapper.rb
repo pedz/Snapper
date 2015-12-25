@@ -14,20 +14,22 @@ class Snapper
   class << self
     # A class can add itself as a snap_processor by calling
     # Snapper.add_snap_processor(self).  The class must have a
-    # +create+ method which is called passing it a Snap as its only
+    # +process_snap+ method which is called passing it a Snap as its only
     # argument.
-    # @see Seas.create
+    # @see Seas.process_snap
     # @param klass [Class]
     def add_snap_processor(klass)
-      logger.debug { "add_snap_processor #{klass}"}
+      logger.debug { "add_snap_processor(#{klass})"}
       snap_processors.push(klass)
     end
 
     # A class can add itself as a batch_processor by calling
     # Snapper.add_batch_processor(self).  The class must have a
-    # +create+ method which is called passing it a Batch as its only
+    # +process_batch+ method which is called passing it a Batch as its only
     # argument.
+    # @see Seas.process_batch
     def add_batch_processor(klass)
+      logger.debug { "add_batch_processor(#{klass})" }
       batch_processors.push(klass)
     end
 
@@ -183,7 +185,7 @@ class Snapper
 
       snap_processors.each do |klass|
         logger.debug { "calling snap_processor for #{klass}"}
-        klass.create(snap)
+        klass.process_snap(snap)
       end
       snap
     end
@@ -192,9 +194,10 @@ class Snapper
   end
 
   def run_batch_processors
+    logger.debug { "run_batch_processors"}
     batch_processors.each do |klass|
       logger.debug { "calling batch_processor for #{klass}"}
-      klass.create(@batch)
+      klass.process_batch(@batch)
     end
   end
 

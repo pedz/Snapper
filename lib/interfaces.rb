@@ -18,7 +18,7 @@ class Interfaces < Item
   # underlying device after the name has been modified.  e.g. en0
   # points to the ent0 Device.
   # @param snap [Snap] The snap to process
-  def self.create(snap)
+  def self.process_snap(snap)
     db = snap.db
     interfaces = db.create_item("Interfaces")
     snap.db.netstat_in.each_pair do |key, item|

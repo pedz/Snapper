@@ -20,7 +20,7 @@ require_relative 'snap'
 # anyone uses this any more.
 class Hostname < Item
   # @param snap [Snap] The snap to process.
-  def self.create(snap)
+  def self.process_snap(snap)
     db = snap.db
     hostname = db.create_item("Hostname")
     hostname['hostname'] = db.devices.inet0.attributes.hostname.value

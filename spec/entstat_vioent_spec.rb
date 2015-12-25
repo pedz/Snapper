@@ -2,8 +2,9 @@ require "spec_helper"
 require "entstat_vioent"
 
 describe Entstat_vioent do 
-  before(:context) {
-    text = <<EOF
+  describe "#productions" do
+    before(:context) {
+      text = <<EOF
 ETHERNET STATISTICS (ent4) :
 Device Type: Virtual I/O Ethernet Adapter (l-lan)
 Hardware Address: 0a:94:38:bd:2b:0c
@@ -114,62 +115,63 @@ I/O Memory Information
   Total DMA Max Min (KB)    69760
 
 EOF
-    @result = Netstat_v.new(text, Hash.new).parse["ent4"]
-  }
+      @result = Netstat_v.new(text, Hash.new).parse["ent4"]
+    }
 
-  it "parses the hardware MAC address" do
-    expect(@result["Hardware Address"]).to eq("0a:94:38:bd:2b:0c")
-  end
+    it "parses the hardware MAC address" do
+      expect(@result["Hardware Address"]).to eq("0a:94:38:bd:2b:0c")
+    end
 
-  it "parses the transmit packets as an integer" do
-    expect(@result["Transmit Statistics"]["Packets"]).to eq(38487896717)
-  end
+    it "parses the transmit packets as an integer" do
+      expect(@result["Transmit Statistics"]["Packets"]).to eq(38487896717)
+    end
 
-  it "parses the receive bytes as an integer" do
-    expect(@result["Receive Statistics"]["Bytes"]).to eq(58363966969519)
-  end
+    it "parses the receive bytes as an integer" do
+      expect(@result["Receive Statistics"]["Bytes"]).to eq(58363966969519)
+    end
 
-  it "parses the Driver Flags as an array of strings" do
-    expect(@result["Driver Flags"]).to eq(["Up",
-                                         "Broadcast",
-                                         "Running",
-                                         "Simplex",
-                                         "Promiscuous",
-                                         "AllMulticast",
-                                         "64BitSupport", 
-                                         "ChecksumOffload",
-                                         "DataRateSet"])
-  end
-
-  it "parses 'Current HW Transmit Queue Length' under the Transmit Statistics" do
-    expect(@result["Transmit Statistics"]["Current HW Transmit Queue Length"]).to eq(0)
-  end
-
-  it "parses the Hypervisor Information correctly" do
-    expect(@result["Hypervisor Information"]["Virtual Memory"]["Total (KB)"]).to eq(79)
-  end
-
-  it "parses the Transmit Information correctly" do
-    expect(@result["Transmit Information"]["Transmit Buffers"]["Buffer Size"]).to eq(65536)
-  end
-
-  it "parses the Receive Information Receive Buffers correctly" do
-    expect(@result["Receive Information"]["Receive Buffers"]["Tiny"]["Min Buffers"]).to eq(512)
-  end
-
-  it "parses the Receive Information Receive Buffers History correctly" do
-    expect(@result["Receive Information"]["Receive Buffers"]["Huge"]["History"]["Max Allocated"]).to eq(24)
-  end
-
-  it "parses the Receive Information Virtual Memory correctly" do
-    expect(@result["Receive Information"]["Virtual Memory"]["Medium"]["Minimum (KB)"]).to eq(2048)
-  end
-
-  it "parses the Receive Information I/O Memory correctly" do
-    expect(@result["Receive Information"]["I/O Memory"]["Small"]["DMA Max Min (KB)"]).to eq(16384)
-  end
-
-  it "parses the I/O Memory Information correctly" do
-    expect(@result["I/O Memory Information"]["Total VRM Minimum (KB)"]).to eq(15524)
+    it "parses the Driver Flags as an array of strings" do
+      expect(@result["Driver Flags"]).to eq(["Up",
+                                             "Broadcast",
+                                             "Running",
+                                             "Simplex",
+                                             "Promiscuous",
+                                             "AllMulticast",
+                                             "64BitSupport", 
+                                             "ChecksumOffload",
+                                             "DataRateSet"])
+    end
+    
+    it "parses 'Current HW Transmit Queue Length' under the Transmit Statistics" do
+      expect(@result["Transmit Statistics"]["Current HW Transmit Queue Length"]).to eq(0)
+    end
+    
+    it "parses the Hypervisor Information correctly" do
+      expect(@result["Hypervisor Information"]["Virtual Memory"]["Total (KB)"]).to eq(79)
+    end
+    
+    it "parses the Transmit Information correctly" do
+      expect(@result["Transmit Information"]["Transmit Buffers"]["Buffer Size"]).to eq(65536)
+    end
+    
+    it "parses the Receive Information Receive Buffers correctly" do
+      expect(@result["Receive Information"]["Receive Buffers"]["Tiny"]["Min Buffers"]).to eq(512)
+    end
+    
+    it "parses the Receive Information Receive Buffers History correctly" do
+      expect(@result["Receive Information"]["Receive Buffers"]["Huge"]["History"]["Max Allocated"]).to eq(24)
+    end
+    
+    it "parses the Receive Information Virtual Memory correctly" do
+      expect(@result["Receive Information"]["Virtual Memory"]["Medium"]["Minimum (KB)"]).to eq(2048)
+    end
+    
+    it "parses the Receive Information I/O Memory correctly" do
+      expect(@result["Receive Information"]["I/O Memory"]["Small"]["DMA Max Min (KB)"]).to eq(16384)
+    end
+    
+    it "parses the I/O Memory Information correctly" do
+      expect(@result["I/O Memory Information"]["Total VRM Minimum (KB)"]).to eq(15524)
+    end
   end
 end

@@ -6,7 +6,7 @@ class TcpAlerts
   # Adds an alert if tcptr_enable is not zero and if tcp_tcp_secure
   # has bit 4 set.
   # @param snap [Snap] the snap to process
-  def self.create(snap)
+  def self.process_snap(snap)
     db = snap.db
     if db['no_a']
       snap.add_alert("tcptr_enable is not zero") if db.no_a.tcptr_enable != 0

@@ -745,3 +745,48 @@ Some ToDos that I can think of... I'm sure there are others.
 
 1.  The coloring output needs to automatically turn off if output is
     not a tty and couple this with options to force it on or off.
+
+1.  Map out the different levels and what each do.
+     0.  all off
+
+     1.  alerts only
+
+     2.  structural only -- what is now 0 but also include SEAs vlan
+         tag info
+
+     3.  what is now 1
+          * errpt collapsed to just counts
+          * errors, dma overruns shown.
+          * LACP issues
+          * Hypervisor errors
+
+     4.  errors with dups removed
+
+     5.  any changed attributes
+         all errors
+
+     6.  decroate output -- splats, etc?
+
+     7.  full list of ip addresses
+
+     8.  full list of entstat output
+
+     9.  full list of lsattr
+
+     10. blah blah
+
+     11. all keys hierarchically printed
+
+1.  Should be on level where we print out attributes which are not set
+    to their defaults.  This should be for device attributes, no
+    options, (anything else?).
+
+1.  Hook ifconfig output into netstat -in output.
+
+1.  Review files down caa and ctsupt path.
+
+1.  fix all specs to include method.
+
+1.  Camelcase classes.
+
+1.  add path to snap output somehow.

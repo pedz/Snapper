@@ -49,6 +49,11 @@ class CEC
     end
   end
 
+  # just syntatic sugar for lpars.each
+  def each_lpar(&proc)
+    lpars.each(&proc)
+  end
+
   # Add an alert to the CEC.
   # @param text [String] The alert text to add
   def add_alert(text)

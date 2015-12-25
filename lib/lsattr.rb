@@ -32,7 +32,7 @@ class Lsattr < Item
   # +:attr+, +:value+, +:desc+, and +:alter+.
   # @param snap [Snap] the snap to scan.
   # @raise [RuntimeError] if the parse failed.
-  def self.create(snap)
+  def self.process_snap(snap)
     db = snap.db
     lsattrs = db.create_item("lsattrs")
     devices = db.devices

@@ -17,7 +17,7 @@ class Devices < Item
   # Creates an Alert if +ipsec_v4+ or +ipsec_v6+ is configured.
   #
   # @param snap [Snap] The snap to process.
-  def self.create(snap)
+  def self.process_snap(snap)
     db = snap.db
     cudvs = db['Cudv']
 

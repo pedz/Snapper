@@ -65,7 +65,9 @@ Item.add_filter("Entstat_vioent", { level: 1 .. 5 })  do |context, item|
   text = "Port VLAN ID: #{item["Port VLAN ID"]}"
   text += " VLAN Tag IDs #{item["VLAN Tag IDs"]}" unless item["VLAN Tag IDs"] == "None"
   text += " on #{item["Switch ID"]}"
-  text += " Active:#{item["Active"]}" if item['Trunk Adapter'] == "True"
+  if item['Trunk Adapter'] == "True"
+    text += " Active:#{item["Active"]} Pri:#{item["Priority"]}"
+  end
   text = [ text ]
   unless item["Hypervisor Send Failures"] == 0
     text.push("Hypervisor Send Failures: #{item["Hypervisor Send Failures"]}")
@@ -269,13 +271,12 @@ end
 # Likewise, the backup adapter for ethchan also needs to be marked.
 Item.add_filter("Sea", { level: 0 .. 11 }) do |context, item|
   sea_ent = item[:super]
+  modifier = "ha_mode:#{sea_ent.attributes.ha_mode.value}"
   if (sea_ent.attributes.ha_mode.value != "disabled" &&
       entstat = item.super.entstat)
     bridge_mode = entstat['Bridge Mode']
     state = entstat['State']
-    modifier = "State:#{state} Bridge Mode:#{bridge_mode}"
-  else
-    modifier = "ha_mode: #{sea_ent.attributes.ha_mode.value}"
+    modifier += " State:#{state} Bridge Mode:#{bridge_mode}"
   end
   sea_ent.print(context.modifier(modifier))
   item[:real_adapter].print(context.nest)

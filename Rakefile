@@ -23,7 +23,6 @@ def exclude_list
   features
   lib/javascript
   lib/stylesheets
-  spec
   temp
   test\.snap
 }.join('|')
@@ -67,10 +66,14 @@ task :yard => [:make_filters] do
     "yard",
     "'--title=Snapper'",
     "'--main=README'",
+    "--plugin",
+    "rspec",
     "'--private'",
     "'--files=doc/Filters'",
     "'--exclude=\\./(#{exclude_list})'",
-    "'--output=doc/yard'"
+    "'--output=doc/yard'",
+    "lib/*.rb",
+    "spec/*.rb"
   ].join(' ')
 end
 
