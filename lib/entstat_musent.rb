@@ -3,7 +3,7 @@ require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is a musent
 # adapter.
-class Entstat_musent < Entstat
+class EntstatMusent < Entstat
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
@@ -56,4 +56,4 @@ class Entstat_musent < Entstat
   # @param  remove me
 end
 
-Netstat_v::Parsers.instance.add(Entstat_musent, "Gigabit Ethernet PCIe Adapter (e4145716e4142004)")
+NetstatV::Parsers.instance.add(EntstatMusent, "Gigabit Ethernet PCIe Adapter (e4145716e4142004)")

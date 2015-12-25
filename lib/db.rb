@@ -29,6 +29,7 @@ class Db < Hash
   def create_item(name, text = "", base = Item)
     logger.debug { "create_item(#{name}, #{text[0 .. 10]}, #{base.name})"}
     klass = get_class(name, base)
+    logger.debug { "klass = #{klass}"}
     item = klass.new(text, self)
     add(item)
     item

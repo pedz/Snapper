@@ -4,7 +4,7 @@ require_relative "filter"
 
 # Parsers the output from netstat -d entN where entN is a vioent
 # adapter.
-class Entstat_vioent < Entstat
+class EntstatVioent < Entstat
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
@@ -249,4 +249,4 @@ class Entstat_vioent < Entstat
   # @param  remove me
 end
 
-Netstat_v::Parsers.instance.add(Entstat_vioent, "Virtual I/O Ethernet Adapter (l-lan)")
+NetstatV::Parsers.instance.add(EntstatVioent, "Virtual I/O Ethernet Adapter (l-lan)")

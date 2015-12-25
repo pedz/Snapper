@@ -1,7 +1,7 @@
 require "spec_helper"
 require "entstat_shient"
 
-describe Entstat_shient do 
+describe EntstatShient do 
   before(:context) {
     text = <<EOF
 ETHERNET STATISTICS (ent1) :
@@ -238,7 +238,7 @@ Tx LPI entry count:	0
 	[q-3]: tx_bcast_packets:	0
 -------------------------------------------------------------
 EOF
-    @result = Netstat_v.new(text, Hash.new).parse["ent1"]
+    @result = NetstatV.new(text, Hash.new).parse["ent1"]
   }
   it "parses the hardware MAC address" do
     expect(@result["Hardware Address"]).to eq("40:f2:e9:d3:45:a1")

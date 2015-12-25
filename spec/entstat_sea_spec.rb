@@ -1,7 +1,7 @@
 require "spec_helper"
 require "entstat_sea"
 
-describe Entstat_sea do 
+describe EntstatSea do 
   before(:context) {
     text = <<EOF
 ETHERNET STATISTICS (ent22) :
@@ -160,7 +160,7 @@ Type of Packets Received:
 Real Adapter: ent2
 
 EOF
-    @result = Netstat_v.new(text, Hash.new).parse["ent22"]
+    @result = NetstatV.new(text, Hash.new).parse["ent22"]
   }
   it "parses the hardware MAC address" do
     expect(@result["Hardware Address"]).to eq("e4:1f:13:fd:29:75")

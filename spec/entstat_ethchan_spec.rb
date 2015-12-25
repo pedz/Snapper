@@ -1,7 +1,7 @@
 require "spec_helper"
 require "entstat_ethchan"
 
-describe Entstat_ethchan do 
+describe EntstatEthchan do 
   context "operating in normal mode" do
     before(:context) {
       text = <<EOF
@@ -58,7 +58,7 @@ Hash mode: Destination IP address
 -------------------------------------------------------------
 
 EOF
-      @result = Netstat_v.new(text, Hash.new).parse["ent20"]
+      @result = NetstatV.new(text, Hash.new).parse["ent20"]
     }
 
     it "parses the hardware MAC address" do
@@ -157,7 +157,7 @@ Hash mode: Destination IP address
 -------------------------------------------------------------
 
 EOF
-      @result = Netstat_v.new(text, Hash.new).parse["ent10"]
+      @result = NetstatV.new(text, Hash.new).parse["ent10"]
     }
 
     it "parses the hardware MAC address" do

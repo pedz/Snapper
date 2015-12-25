@@ -1,12 +1,10 @@
+require_relative 'string'
 
 class Object
   # Gets the class "name" and creates the class if necessary using
   # base as the super class
-  # @param name [String] The string is modified by removing all
-  #   spaces, changing any non-alphanumerics into an underscore, and
-  #   then capitalizing the result.  e.g. <tt>lsattr -El foo</tt>
-  #   becomes +Lsattr_elfoo+ where the +_+ is from the +-+ and not the
-  #   space.
+  # @param name [String] The string is modified {String#camelcase}ing
+  #   it.
   # @param base [Class] If the desired class does not exist, it is
   #   creating using +base+ as its superclass.
   def get_class(name, base)
@@ -14,7 +12,7 @@ class Object
     # base (usually Item) to be called with class that has a name.
     # Otherwise, the classname is something like
     # #<Class:0x1234567890abcdef>
-    name = name.gsub(/ /, '').gsub(%r{[^a-zA-Z0-9]},'_').capitalize
+    name = name.camelcase
     eval("class ::#{name} < #{base}; end") unless ::Object.const_defined?(name)
     ::Object.const_get(name)
   end

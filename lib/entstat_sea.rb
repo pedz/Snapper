@@ -3,7 +3,7 @@ require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is a sea
 # adapter.
-class Entstat_sea < Entstat
+class EntstatSea < Entstat
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
@@ -176,4 +176,4 @@ class Entstat_sea < Entstat
   # @param  remove me
 end
 
-Netstat_v::Parsers.instance.add(Entstat_sea, "Shared Ethernet Adapter")
+NetstatV::Parsers.instance.add(EntstatSea, "Shared Ethernet Adapter")

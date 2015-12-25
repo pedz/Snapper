@@ -48,7 +48,7 @@ class Seas < Item
       devices = db.devices
       seas = db.create_item("seas")
       devices.each_pair do |key, device|
-        if device.cudv.pddvln == "adapter/pseudo/sea"
+        if device.cu_dv.pd_dv_ln == "adapter/pseudo/sea"
           sea_attrs = device.attributes
           logger.debug { "Converting #{key} into a Sea"}
           new_device = device.subclass(Sea)
@@ -150,7 +150,6 @@ class Seas < Item
     # @param hash [Hash<String, Foo>] Keys are LPAR hostnames.  Values
     #   are Foo.
     def check_pvid(cec, pvid, hash)
-      qb "check_pvid #{pvid} #{hash.keys.length}"
       keys = hash.keys
 
       # If only one LPAR is using this PVID for a control channel,
@@ -196,7 +195,6 @@ class Seas < Item
     end
 
     def sea_to_blah(sea)
-      qb "sea_to_blah #{sea.name}"
       veas = {}
       sea.virt_adapters.each do |virt|
         next unless (entstat = virt.entstat)

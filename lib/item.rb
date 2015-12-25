@@ -1,5 +1,6 @@
 require_relative 'logging'
 require_relative 'filter'
+require_relative 'string'
 # See alternative coding below
 # require_relative 'empty_item'
 require 'json'
@@ -393,15 +394,11 @@ class Item
     end.lazy
   end
 
-  # converts key to lowercase and replaces all characters that are not
-  # letters, digits, or the underscore character with the underscore
-  # character.
-  # @param key [String, Symbol] The original key as passed in to the
-  #   public method.
-  # @return [Symbol] key, to_s, downcase, replace non-alphanumerics
-  #   with underscore, then convert to Symbol.
+  # @return [Symbol] Converts key into a usable method name by
+  #   converting it to a string, snakecasing it, and then converting
+  #   it to a Symbol.
   def fix_key(key)
-    key.to_s.downcase.gsub(/[^a-z0-9_]/, '_').to_sym
+    key.to_s.snakecase.to_sym
   end
 
   # @param method [Symbol] the method to find.

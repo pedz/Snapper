@@ -1,7 +1,7 @@
 require "spec_helper"
 require "entstat_elxent"
 
-describe Entstat_elxent do 
+describe EntstatElxent do 
   context "PCIe2 2-port 10GbE SR Adapter" do
     before(:context) {
       text = <<EOF
@@ -119,7 +119,7 @@ Transmit statistics for TXQ number: 1
 	TCP segmentation offload maximum packet size: 0
 	Maximum entries used on this transmit queue: 180
 EOF
-      @result = Netstat_v.new(text, Hash.new).parse["ent0"]
+      @result = NetstatV.new(text, Hash.new).parse["ent0"]
     }
     it "parses the hardware MAC address" do
       expect(@result["Hardware Address"]).to eq("00:00:c9:d9:d8:96")
@@ -251,7 +251,7 @@ Transmit statistics for TXQ number: 1
 	TCP segmentation offload maximum packet size: 0
 	Maximum entries used on this transmit queue: 0
 EOF
-      @result = Netstat_v.new(text, Hash.new).parse["ent0"]
+      @result = NetstatV.new(text, Hash.new).parse["ent0"]
     }
     it "parses the hardware MAC address" do
       expect(@result["Hardware Address"]).to eq("e4:1f:13:d7:28:14")
@@ -393,7 +393,7 @@ IEEE 802.3ad Port Statistics:
 -------------------------------------------------------------
 
 EOF
-      @result = Netstat_v.new(text, Hash.new).parse["ent2"]
+      @result = NetstatV.new(text, Hash.new).parse["ent2"]
     }
     it "parses the hardware MAC address" do
       expect(@result["Hardware Address"]).to eq("e4:1f:13:d7:28:15")

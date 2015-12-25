@@ -3,7 +3,7 @@ require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is a shient
 # adapter.
-class Entstat_shient < Entstat
+class EntstatShient < Entstat
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
@@ -104,5 +104,5 @@ class Entstat_shient < Entstat
   # @param  remove me
 end
 
-Netstat_v::Parsers.instance.add(Entstat_shient, "PCIe2 4-Port Adapter (10GbE SFP+) (e4148a1614109304)")
-Netstat_v::Parsers.instance.add(Entstat_shient, "PCIe2 4-Port Adapter (1GbE RJ45) (e4148a1614109404)")
+NetstatV::Parsers.instance.add(EntstatShient, "PCIe2 4-Port Adapter (10GbE SFP+) (e4148a1614109304)")
+NetstatV::Parsers.instance.add(EntstatShient, "PCIe2 4-Port Adapter (1GbE RJ45) (e4148a1614109404)")

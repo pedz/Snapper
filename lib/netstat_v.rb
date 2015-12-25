@@ -9,7 +9,7 @@ require "stringio"
 
 # Parses the output from <tt>netstat -v</tt> that is found within
 # +tcpip.snap+.
-class Netstat_v < Item
+class NetstatV < Item
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
@@ -18,7 +18,7 @@ class Netstat_v < Item
 
   # Each type of adapter has its own parser for the output the its
   # entstat.foo produces.  These parsers declare their existance by
-  # adding themselves via {Netstat_v::Parsers.add}.
+  # adding themselves via {NetstatV::Parsers.add}.
   class Parsers
     include Singleton
     
@@ -35,9 +35,9 @@ class Netstat_v < Item
     # passing the string after "Device type:" to this routine
     # @param string [String] the string after <tt>Device type:</tt>.
     # @return [Class] The class that registered for this specific
-    #   string or {Entstat_generic} if no registration is found.
+    #   string or {EntstatGeneric} if no registration is found.
     def find(string)
-      table[string] || Entstat_generic
+      table[string] || EntstatGeneric
     end
 
     private
@@ -75,13 +75,13 @@ class Netstat_v < Item
   # device name.  In the case of ethernet, the second line is a device
   # type like <tt>Device Type: PCIe2 2-port 10GbE SR Adapter</tt>.
   #
-  # The separate decice specific parsers suchs as {Entstat_goent}
-  # register with {Netstat_v::Parsers#add} which device types they can
-  # parse.  Thus at parse time, the {Netstat_v} parser tries to match
+  # The separate decice specific parsers suchs as {EntstatGoent}
+  # register with {NetstatV::Parsers#add} which device types they can
+  # parse.  Thus at parse time, the {NetstatV} parser tries to match
   # the second line with one of the registered device types.  If a
   # match is found, a parser of that specific class is created and the
   # parsing is handed off to that instance.  If no match is found, a
-  # new Entstat_generic instance is created and the parsing is handed
+  # new EntstatGeneric instance is created and the parsing is handed
   # off to it.
   # @raise [RuntimeError] if no device boundary is found.
   def parse
@@ -116,6 +116,6 @@ class Netstat_v < Item
   def find_parser(text)
     md = DEVICE_TYPE_REGEXP.match(text)
     fail "'Device Type:' string not found" unless md
-    Netstat_v::Parsers.instance.find(md[1])
+    NetstatV::Parsers.instance.find(md[1])
   end
 end

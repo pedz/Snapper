@@ -6,7 +6,7 @@ require_relative 'vlans'
 
 # Finds all the ethernet adapters.  This is done by looking at the
 # name of the device and selecting those that match ent[0-9]+
-class EthernetAdapters
+class EthernetAdapters < Item
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
@@ -21,7 +21,7 @@ class EthernetAdapters
   def self.process_snap(snap)
     logger.debug { "create called"}
     db = snap.db
-    adapters = db.create_item("Ethernet_adapters")
+    adapters = db.create_item("EthernetAdapters")
     db.devices.each_pair do |key, value|
       if ETHERNET_NAME_REGEXP.match(key)
         adapters[key] = value

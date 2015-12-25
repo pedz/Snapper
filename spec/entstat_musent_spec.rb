@@ -1,7 +1,7 @@
 require "spec_helper"
 require "entstat_musent"
 
-describe Entstat_musent do 
+describe EntstatMusent do 
   context "operating as stand alone" do
     before(:context) {
       text = <<EOF
@@ -66,7 +66,7 @@ Receive TCP Segment Aggregation: Disabled
 Virtual Adapter: ent0
 
 EOF
-      @result = Netstat_v.new(text, Hash.new).parse["ent6"]
+      @result = NetstatV.new(text, Hash.new).parse["ent6"]
     }
     it "parses the hardware MAC address" do
       expect(@result["Hardware Address"]).to eq("6c:ae:8b:02:d7:68")
@@ -205,7 +205,7 @@ Backup adapter - ent5:
 ======================
 
 EOF
-      @result = Netstat_v.new(text, Hash.new).parse["ent4"]
+      @result = NetstatV.new(text, Hash.new).parse["ent4"]
     }
 
     it "parses the hardware MAC address" do

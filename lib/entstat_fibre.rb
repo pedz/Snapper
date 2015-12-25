@@ -3,7 +3,7 @@ require_relative "entstat"
 
 # Parses the entstat output from the fibre channel adapters.  This is
 # for the "fcsdd" driver.
-class Entstat_fibre < Entstat
+class EntstatFibre < Entstat
   include Logging
   # The default log level is INFO
   LOG_LEVEL = Logger::INFO
@@ -237,5 +237,5 @@ adapter/pciex/df1060e21410520
 adapter/pciex/df1060e214105f0
 adapter/vdevice/IBM,vfc-client
 }.each do |s|
-  Netstat_v::Parsers.instance.add(Entstat_fibre, "FC Adapter (#{s})")
+  NetstatV::Parsers.instance.add(EntstatFibre, "FC Adapter (#{s})")
 end

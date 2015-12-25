@@ -2,7 +2,7 @@ require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is an adapter
 # type that is not currently known.
-class Entstat_generic < Entstat
+class EntstatGeneric < Entstat
   include Logging
   # The default log level is INFO
   LOG_LEVEL = Logger::INFO

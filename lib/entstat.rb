@@ -3,11 +3,11 @@ require_relative 'logging'
 require_relative "pda"
 require_relative "item"
 
-# @abstract Subclass and override {#productions}.
-# The _virtual_ base class for the other Entstat_foo classes.  This
-# defines three arrays of productions that the subclasses can leverage
-# as well as the needed parse method that the subclasses probably do
-# not need to replicate.
+# @abstract Subclass and override {#productions}.  The _virtual_ base
+# class for the other EntstatFoo classes.  This defines three arrays
+# of productions that the subclasses can leverage as well as the
+# needed parse method that the subclasses probably do not need to
+# replicate.
 class Entstat < Item
   include Logging
   # The default log level is INFO
@@ -68,7 +68,7 @@ class Entstat < Item
   
   # A set of productions to find and parse the LACP stanzas found at
   # the base of each real adapter's entstat output.  These also work
-  # from the Entstat_generic class so unknown adapters will still find
+  # from the EntstatGeneric class so unknown adapters will still find
   # and parse the LACP stanzas.
   LACP_PRODUCTIONS =
     [
@@ -289,7 +289,7 @@ class Entstat < Item
       end
     ]
 
-  # The parse method which is usually called from the Netstat_v#parse
+  # The parse method which is usually called from the NetstatV#parse
   # method.  subclasses generally do not need to override this.  It
   # creates a PDA and drives the parser passing it each line of text.
   # @raise [RuntimeError] If a line does not match any rules.

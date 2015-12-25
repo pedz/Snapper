@@ -1,7 +1,7 @@
 require "spec_helper"
 require "entstat_vlan"
 
-describe Entstat_vlan do 
+describe EntstatVlan do 
   before(:context) {
     text = <<EOF
 ETHERNET STATISTICS (ent13) :
@@ -46,7 +46,7 @@ Driver Flags: Up Broadcast Running
 	DataRateSet 
 
 EOF
-    @result = Netstat_v.new(text, Hash.new).parse["ent13"]
+    @result = NetstatV.new(text, Hash.new).parse["ent13"]
   }
 
   it "parses the hardware MAC address" do

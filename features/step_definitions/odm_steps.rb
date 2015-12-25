@@ -1,11 +1,11 @@
 require 'stringio'
 require 'odm'
 
-class CuDv
-  def initialize(hash)
-    @hash = hash
-  end
-end
+# class CuDv
+#   def initialize(text, hash)
+#     @hash = hash
+#   end
+# end
 
 Given(/^an CuDv file$/) do
   @file = StringIO.new <<'HERE'
@@ -41,5 +41,5 @@ When(/^fed to the parser$/) do
 end
 
 Then(/^its entries will be available\.$/) do
-  expect(@db.cudv.length).to eq(2)
+  expect(@db.cu_dv.length).to eq(2)
 end

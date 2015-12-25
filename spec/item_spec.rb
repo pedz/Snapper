@@ -13,29 +13,29 @@ describe Item do
     end
 
     it "should create a method for the key" do
-      expect(subject.respond_to?(:hi)).to eq(true)
+      expect(subject.respond_to?(:h_i)).to eq(true)
     end
 
     it "should create a method that returns the value" do
-      expect(subject.hi).to eq(12)
+      expect(subject.h_i).to eq(12)
     end
 
     it "should alter the key to be a valid method name" do
       subject["this IS -a test"] = 14
-      expect(subject.this_is__a_test).to eq(14)
+      expect(subject.this_is_a_test).to eq(14)
     end
 
     it "should fail when collisions on keys occurs" do
-      expect{ subject["HI"] = 14 }.to raise_error("Collision of new key \"HI\" with previous key \"hI\"")
+      expect{ subject["H-I"] = 14 }.to raise_error("Collision of new key \"H-I\" with previous key \"hI\"")
     end
 
     it "should remember the original key" do
-      expect(subject.orig_key[:hi]).to eq("hI")
+      expect(subject.orig_key[:h_i]).to eq("hI")
     end
 
     it "should allow multiple assignments with the same key" do
       expect{ subject["hI"] = 99 }.not_to raise_error
-      expect(subject.hi).to eq(99)
+      expect(subject.h_i).to eq(99)
     end
 
     it "should allow multiple assignments to any key" do

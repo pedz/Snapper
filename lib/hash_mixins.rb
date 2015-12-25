@@ -1,3 +1,4 @@
+require_relative 'string'
 
 # A mixin for Hash that causes the []= to fail if the key is already
 # defined.
@@ -75,42 +76,15 @@ module HashMakeMethods
   private
 
   # @return [Symbol] Converts key into a usable method name by
-  #   converting it to a string, downcasing it, substituting any
-  #   non-alphanumerics with an underscore, and then converting it to
-  #   a Symbol.
+  #   converting it to a string, snakecasing it, and then converting
+  #   it to a Symbol.
   def fix_key(key)
-    key.to_s.downcase.gsub(/[^a-z0-9_]/, '_').to_sym
+    key.to_s.snakecase.to_sym
   end
 
   # @param method [Symbol] The symbol to see check the hash for.
   # @return [Boolean] returns true if hash has the method
   def find_name(method)
     self.has_key?(method) && method
-  end
-end
-
-# Combines HashWriteOnce and HashMakeMethods...
-# Not used any more.  An older method of {HashMakeMethods} that also
-# fails if the key is already set.
-module HashWriteOnceMethods
-  def HashMakeMethods.included(mod)
-    mod.const_set(:PREDEFINED_METHODS, mod.instance_methods)
-  end
-
-  # Fails if key is already part of the hash.  Creates a method based
-  # on the key.
-  # @param key [String] The field or key to set.
-  # @param value [Object] The value to set the field to.
-  # @raise [RuntimeError] if an existing field is overwritten.
-  def []=(key, value)
-    fail "Overwriting value #{field}" if key?(field)
-    method = key.to_s.downcase.gsub(/[^a-z0-9_]/, '_').to_sym
-    predefined_methods = self.class.const_get(:PREDEFINED_METHODS)
-    if predefined_methods.include?(method)
-      method = ("_" + key.to_s.downcase.gsub(/[^a-z0-9_]/, '_')).to_sym
-    end
-    define_singleton_method(method) { self[key] }
-    logger.debug { "Adding field: '#{field}' = '#{value}'" }
-    super
   end
 end

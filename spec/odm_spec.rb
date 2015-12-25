@@ -29,7 +29,7 @@ HERE
       
       it "saves all the raw lines" do
         @odm.parse
-        expect(@db[:myclass].to_text).to eq(@text)
+        expect(@db[:my_class].to_text).to eq(@text)
       end
       
       it "adds the new object to the db" do
@@ -39,27 +39,27 @@ HERE
       
       it "creates a new object of the same class as the stanza type" do
         @odm.parse
-        expect(@db[:myclass].class).to eq(Myclass)
+        expect(@db[:my_class].class).to eq(MyClass)
       end
       
       it "parses integer attributes" do
         @odm.parse
-        expect(@db[:myclass]["attr1"]).to eq(15)
+        expect(@db[:my_class]["attr1"]).to eq(15)
       end
       
       it "parses string attributes" do
         @odm.parse
-        expect(@db[:myclass]["attr2"]).to eq("string")
+        expect(@db[:my_class]["attr2"]).to eq("string")
       end
       
       it "joins continuation lines" do
         @odm.parse
-        expect(@db[:myclass]["attr3"]).to eq("bananas foster")
+        expect(@db[:my_class]["attr3"]).to eq("bananas foster")
       end
       
       it "changes \\n into newlines" do
         @odm.parse
-        expect(@db[:myclass]["attr4"]).to eq("two\nlines")
+        expect(@db[:my_class]["attr4"]).to eq("two\nlines")
       end
     end
   end

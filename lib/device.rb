@@ -4,14 +4,14 @@ require_relative 'item'
 # Created run Devices.create runs.  The keys within a Device entry
 # include:
 #
-# [cudv]       The CuDv entry for this device
+# [cu_dv]      The CuDv entry for this device
 #
-# [cuat]       The list of CuAt entries (customized attributes) for
+# [cu_at]      The list of CuAt entries (customized attributes) for
 #              this device.
 #
-# [pddv]       The PdDv entry if the PdDv is in the snap.
+# [pd_dv]      The PdDv entry if the PdDv is in the snap.
 #
-# [pdat]       The list of PdAt entries of they are in the snap.
+# [pd_at]      The list of PdAt entries of they are in the snap.
 #
 # [lsattr]     The parsed output of lsattr -El foo usually found in
 #              general.snap

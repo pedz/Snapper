@@ -1,7 +1,7 @@
 require "spec_helper"
 require "entstat_fibre"
 
-describe Entstat_fibre do
+describe EntstatFibre do
   context "df1000f114108a0" do
     before(:context) {
       text = <<EOF
@@ -61,7 +61,7 @@ IP over FC Traffic Statistics
 
 Adapter Effective max transfer value:   0x100000
 EOF
-      @result = Netstat_v.new(text, Hash.new).parse["fcs3"]
+      @result = NetstatV.new(text, Hash.new).parse["fcs3"]
     }
 
     # Note, the sample used above is incorrect.  The 2nd section with
@@ -140,7 +140,7 @@ IP over FC Traffic Statistics
 
 Adapter Effective max transfer value:   0x100000
 EOF
-      @result = Netstat_v.new(text, Hash.new).parse["fcs0"]
+      @result = NetstatV.new(text, Hash.new).parse["fcs0"]
     }
     
     it "parses the serial number" do
@@ -218,7 +218,7 @@ IP over FC Traffic Statistics
 Adapter Effective max transfer value:   0x100000
 
 EOF
-      @result = Netstat_v.new(text, Hash.new).parse["fcs0"]
+      @result = NetstatV.new(text, Hash.new).parse["fcs0"]
     }
     
     it "parses the serial number" do

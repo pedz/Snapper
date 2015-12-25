@@ -20,7 +20,7 @@ class Ethchans < Item
   def self.process_snap(snap)
     db = snap.db
     db.devices.each_pair do |key, value|
-      if value.cudv.pddvln == "adapter/pseudo/ibm_ech"
+      if value.cu_dv.pd_dv_ln == "adapter/pseudo/ibm_ech"
         logger.debug { "Converting #{key} into a Ethchan"}
         new_value = value.subclass(Ethchan)
         new_value[:adapter_names] = List.new

@@ -1,7 +1,7 @@
 require "spec_helper"
 require "netstat_in"
 
-describe Netstat_in do
+describe NetstatIn do
   before(:context) {
     text = <<EOF
 
@@ -15,7 +15,7 @@ lo0   16896 127         127.0.0.1            5735     0     5735     0     0
 lo0   16896 ::1%1                            5735     0     5735     0     0
 
 EOF
-    @result = Netstat_in.new(text, Hash.new).parse
+    @result = NetstatIn.new(text, Hash.new).parse
   }
 
   it "has an entry for each interface plus one for :order" do

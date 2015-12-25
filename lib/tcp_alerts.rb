@@ -8,9 +8,9 @@ class TcpAlerts
   # @param snap [Snap] the snap to process
   def self.process_snap(snap)
     db = snap.db
-    if db['no_a']
-      snap.add_alert("tcptr_enable is not zero") if db.no_a.tcptr_enable != 0
-      snap.add_alert("tcp_tcpsecure has bit 4 set") if (db.no_a.tcp_tcpsecure & 4) == 4
+    if (no_a = db['no -a'])
+      snap.add_alert("tcptr_enable is not zero") if no_a.tcptr_enable != 0
+      snap.add_alert("tcp_tcpsecure has bit 4 set") if (no_a.tcp_tcpsecure & 4) == 4
     end
   end
 

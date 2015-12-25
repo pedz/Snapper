@@ -1,7 +1,7 @@
 require "spec_helper"
 require "entstat_vioent"
 
-describe Entstat_vioent do 
+describe EntstatVioent do 
   describe "#productions" do
     before(:context) {
       text = <<EOF
@@ -115,7 +115,7 @@ I/O Memory Information
   Total DMA Max Min (KB)    69760
 
 EOF
-      @result = Netstat_v.new(text, Hash.new).parse["ent4"]
+      @result = NetstatV.new(text, Hash.new).parse["ent4"]
     }
 
     it "parses the hardware MAC address" do

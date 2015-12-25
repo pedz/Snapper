@@ -2,7 +2,7 @@ require_relative "dot_file_parser"
 require_relative "interface"
 
 # Parses the output of <tt>netstat -in</tt>
-class Netstat_in < Item
+class NetstatIn < Item
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
@@ -17,7 +17,7 @@ class Netstat_in < Item
   # output as shown below
   #   1.  en9   1500  link#2      0.0.c9.d9.e8.bf         0     0       14     0     0
   #   2.  en9   1500  10.201.10   10.201.10.31            0     0       14     0     0
-  # Parses the lines and creates entries in the Netstat_in with keys
+  # Parses the lines and creates entries in the NetstatIn with keys
   # of the interface name (e.g. en9 or lo0).  Each entry is an
   # Interface whose keys are described there.
   def parse

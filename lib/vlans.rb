@@ -17,7 +17,7 @@ class Vlans < Item
   def self.process_snap(snap)
     db = snap.db
     db.devices.each_pair do |key, value|
-      if value.cudv.pddvln == "adapter/vlan/eth"
+      if value.cu_dv.pd_dv_ln == "adapter/vlan/eth"
         logger.debug { "Converting #{key} into a Vlan"}
         new_value = value.subclass(Vlan)
         new_value[:base_adapter] = db['Devices'][value.attributes.base_adapter.value]

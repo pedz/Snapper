@@ -3,7 +3,7 @@ require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is a elxent
 # adapter.
-class Entstat_elxent < Entstat
+class EntstatElxent < Entstat
   include Logging
   # The default log level is INFO
   LOG_LEVEL = Logger::INFO
@@ -55,6 +55,6 @@ class Entstat_elxent < Entstat
   # @param  remove me
 end
 
-Netstat_v::Parsers.instance.add(Entstat_elxent, "PCIe2 2-port 10GbE SR Adapter")
-Netstat_v::Parsers.instance.add(Entstat_elxent, "Int Multifunction Card w/ Copper SFP+ 10GbE Adapter")
-Netstat_v::Parsers.instance.add(Entstat_elxent, "Int Multifunction Card w/ Base-TX 10/100/1000 1GbE Adapter")
+NetstatV::Parsers.instance.add(EntstatElxent, "PCIe2 2-port 10GbE SR Adapter")
+NetstatV::Parsers.instance.add(EntstatElxent, "Int Multifunction Card w/ Copper SFP+ 10GbE Adapter")
+NetstatV::Parsers.instance.add(EntstatElxent, "Int Multifunction Card w/ Base-TX 10/100/1000 1GbE Adapter")

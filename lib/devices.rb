@@ -19,33 +19,33 @@ class Devices < Item
   # @param snap [Snap] The snap to process.
   def self.process_snap(snap)
     db = snap.db
-    cudvs = db['Cudv']
+    cu_dvs = db['CuDv']
 
-    # pddvs (which may be empty) is a hash by uniquetype
-    pddvs = Item.new(@db)
-    db['Pddv'] && db['Pddv'].each do |pddv|
-      pddv = pddv
-      pddvs[pddv['uniquetype']] = pddv
+    # pd_dvs (which may be empty) is a hash by uniquetype
+    pd_dvs = Item.new(@db)
+    db['PdDv'] && db['PdDv'].each do |pd_dv|
+      pd_dv = pd_dv
+      pd_dvs[pd_dv['uniquetype']] = pd_dv
     end
 
-    # pdats (which may be empty) is a hash by uniquetype of hashes by attribute name
-    pdats = Item.new(@db)
-    db['Pdat'] && db['Pdat'].each do |pdat|
-      pdat = pdat
-      uniquetype = pdat['uniquetype']
-      attribute = pdat['attribute']
-      pdats[uniquetype] ||= Item.new(@db)
-      pdats[uniquetype][attribute] = pdat
+    # pd_ats (which may be empty) is a hash by uniquetype of hashes by attribute name
+    pd_ats = Item.new(@db)
+    db['PdAt'] && db['PdAt'].each do |pd_at|
+      pd_at = pd_at
+      uniquetype = pd_at['uniquetype']
+      attribute = pd_at['attribute']
+      pd_ats[uniquetype] ||= Item.new(@db)
+      pd_ats[uniquetype][attribute] = pd_at
     end
 
-    # cuats is hash by device name of hashes by attribute name
-    cuats = Item.new(@db)
-    db['Cuat'].each do |cuat|
-      cuat = cuat
-      name = cuat['name']
-      attribute = cuat['attribute']
-      cuats[name] ||= Item.new(@db)
-      cuats[name][attribute] = cuat
+    # cu_ats is hash by device name of hashes by attribute name
+    cu_ats = Item.new(@db)
+    db['CuAt'].each do |cu_at|
+      cu_at = cu_at
+      name = cu_at['name']
+      attribute = cu_at['attribute']
+      cu_ats[name] ||= Item.new(@db)
+      cu_ats[name][attribute] = cu_at
     end
 
     errs = Item.new(@db)
@@ -54,36 +54,36 @@ class Devices < Item
       (errs[name] ||= List.new).push(err)
     end
 
-    netstat_in = (db['Netstat_in'] ||= {})
-    netstat_v = (db['Netstat_v'] ||= {})
+    netstat_in = (db['Netstat -in'] ||= {})
+    netstat_v = (db['Netstat -v'] ||= {})
 
     devices = db.create_item("Devices")
-    cudvs.each do |cudv|
-      cudv = cudv
-      name = cudv['name']
+    cu_dvs.each do |cu_dv|
+      cu_dv = cu_dv
+      name = cu_dv['name']
       device = Device.new("", db)
       devices[name] = device
       device[:name] = name
-      device['CuDv'] = cudv
-      device['CuAt'] = cuats[name]
-      pddvln = cudv['PdDvLn']
-      device['PdDv'] = pddvs[pddvln]
-      device['PdAt'] = pdats[pddvln]
+      device['CuDv'] = cu_dv
+      device['CuAt'] = cu_ats[name]
+      pd_dv_ln = cu_dv['PdDvLn']
+      device['PdDv'] = pd_dvs[pd_dv_ln]
+      device['PdAt'] = pd_ats[pd_dv_ln]
       attributes = Item.new(@db)
       (device['PdAt'] || device['CuAt'] || Item.new(@db)).keys.each do |key|
-        cuat = cuat[key] if cuat = device['CuAt']
-        pdat = pdat[key] if pdat = device['PdAt']
+        cu_at = cu_at[key] if cu_at = device['CuAt']
+        pd_at = pd_at[key] if pd_at = device['PdAt']
         hash = Item.new(@db)
-        unless pdat.nil?
+        unless pd_at.nil?
           %w{ attribute uniquetype deflt values width type generic rep nls_index }.each do |field|
-            hash[field] = pdat[field]
+            hash[field] = pd_at[field]
           end
           # Assume the default is set
-          hash['value'] = pdat['deflt']
+          hash['value'] = pd_at['deflt']
         end
-        unless cuat.nil?
+        unless cu_at.nil?
           %w{ name attribute value type generic rep nls_index }.each do |field|
-            hash[field] = cuat[field]
+            hash[field] = cu_at[field]
           end
         end
         attributes[key] = hash

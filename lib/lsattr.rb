@@ -44,8 +44,8 @@ class Lsattr < Item
 
       logical_name = md[1]
       if (device = devices[logical_name]) &&
-         (cudv = device['cudv']) &&
-         (driver = cudv.ddins.sub(/.*\//, ''))
+         (cu_dv = device['cu_dv']) &&
+         (driver = cu_dv.ddins.sub(/.*\//, ''))
         class_name = "lsattr_#{driver}"
       else
         class_name = "lsattr"

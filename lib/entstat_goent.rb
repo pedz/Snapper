@@ -3,10 +3,10 @@ require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is a goent
 # adapter.
-class Entstat_goent < Entstat
+class EntstatGoent < Entstat
   include Logging
   # The default log level is INFO
-  LOG_LEVEL = Logger::INFO      # The log level the Netstat_v uses.
+  LOG_LEVEL = Logger::INFO      # The log level the NetstatV uses.
 
   # @return [Array<PDA::Production>] {ENT_PRODUCTIONS},
   #   {LACP_PRODUCTIONS}, and {BASE_PRODUCTIONS}.
@@ -16,4 +16,4 @@ class Entstat_goent < Entstat
   # @param  remove me
 end
 
-Netstat_v::Parsers.instance.add(Entstat_goent, "4-Port 10/100/1000 Base-TX PCI-Express Adapter (14106803)")
+NetstatV::Parsers.instance.add(EntstatGoent, "4-Port 10/100/1000 Base-TX PCI-Express Adapter (14106803)")

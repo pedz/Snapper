@@ -15,7 +15,7 @@ end
 # from tcpip.snap, and the lsattr output from general.snap
 Item.add_filter("Device", { level: 0 .. 11 }) do |context, item|
   unless item.printed
-    context.output([ item.cudv.name, item.cudv.ddins, context.modifier ].join(' '))
+    context.output([ item.cu_dv.name, item.cu_dv.ddins, context.modifier ].join(' '))
     item['errpt'].print(context.nest) if item['errpt']
     item['entstat'].print(context.nest)    if item['entstat']
     item['lsattr'].print(context.nest)     if item['lsattr']
@@ -57,11 +57,11 @@ Item.add_filter("Entstat", { level: 6 .. 10 }) do |context, item|
   context.output(text)
 end
 
-# The filter for Entstat_vioent levels 1 through 5 print out the VLAN
+# The filter for EntstatVioent levels 1 through 5 print out the VLAN
 # Tag ID (PVID) as well as the allowed VLANs.  It also checks and
 # prints out any Hypervisor Send or Receive Failures that are
 # non-zero.
-Item.add_filter("Entstat_vioent", { level: 1 .. 5 })  do |context, item|
+Item.add_filter("EntstatVioent", { level: 1 .. 5 })  do |context, item|
   text = "Port VLAN ID: #{item["Port VLAN ID"]}"
   text += " VLAN Tag IDs #{item["VLAN Tag IDs"]}" unless item["VLAN Tag IDs"] == "None"
   text += " on #{item["Switch ID"]}"
@@ -152,12 +152,12 @@ Item.add_filter("Ethchan", { level: 0 .. 11 }) do |context, item|
   end
 end
 
-Item.add_filter("Ethernet_adapters", { level: 0 .. 11 }) do |context, item|
+Item.add_filter("EthernetAdapters", { level: 0 .. 11 }) do |context, item|
   first_item = true
   item.each_value.print(context) do |context, device|
     # @todo this probably should change at higher levels to print the
     #   name and then print the status beside it.
-    unless device.printed || (device.cudv.status == 0)
+    unless device.printed || (device.cu_dv.status == 0)
       if first_item
         context.output("Unused Adapters")
         first_item = false

@@ -1,7 +1,7 @@
 require "spec_helper"
 require "no_a"
 
-describe No_a do
+describe NoA do
   before(:context) {
     text = <<'EOF'
 
@@ -152,7 +152,7 @@ ie5_old_multicast_mapping = 0
            use_sndbufpool = 1
 
 EOF
-    @result = No_a.new(text, Hash.new).parse
+    @result = NoA.new(text, Hash.new).parse
   }
 
   it "parses and makes an entry for each value" do
