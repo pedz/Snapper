@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Parser::Ruby::Legacy::RubyLex - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../../";
+</script>
+
+<script src="../../../../js/jquery.js"></script>
+<script src="../../../../js/darkfish.js"></script>
+
+<link href="../../../../css/fonts.css" rel="stylesheet">
+<link href="../../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../../../../Object.html">Object</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="RubyToken.html">YARD::Parser::Ruby::Legacy::RubyToken</a>
+  
+  
+  
+    <li><span class="include">IRB</span>
+  
+  
+  </ul>
+</div>
+
+    <div id="extends-section" class="nav-section">
+  <h3>Extended With Modules</h3>
+
+  <ul class="link-list">
+    
+  
+    <li><span class="extend">Exception2MessageMapper</span>
+  
+  
+  </ul>
+</div>
+
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-debug-3F">::debug?</a>
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-char_no">#char_no</a>
+    
+    <li ><a href="#method-i-get_read">#get_read</a>
+    
+    <li ><a href="#method-i-getc">#getc</a>
+    
+    <li ><a href="#method-i-getc_of_rests">#getc_of_rests</a>
+    
+    <li ><a href="#method-i-gets">#gets</a>
+    
+    <li ><a href="#method-i-identify_comment">#identify_comment</a>
+    
+    <li ><a href="#method-i-identify_gvar">#identify_gvar</a>
+    
+    <li ><a href="#method-i-identify_here_document">#identify_here_document</a>
+    
+    <li ><a href="#method-i-identify_identifier">#identify_identifier</a>
+    
+    <li ><a href="#method-i-identify_number">#identify_number</a>
+    
+    <li ><a href="#method-i-identify_quotation">#identify_quotation</a>
+    
+    <li ><a href="#method-i-identify_string">#identify_string</a>
+    
+    <li ><a href="#method-i-lex">#lex</a>
+    
+    <li ><a href="#method-i-lex_init">#lex_init</a>
+    
+    <li ><a href="#method-i-lex_int2">#lex_int2</a>
+    
+    <li ><a href="#method-i-line_no">#line_no</a>
+    
+    <li ><a href="#method-i-peek">#peek</a>
+    
+    <li ><a href="#method-i-peek_equal-3F">#peek_equal?</a>
+    
+    <li ><a href="#method-i-read_escape">#read_escape</a>
+    
+    <li ><a href="#method-i-skip_inner_expression">#skip_inner_expression</a>
+    
+    <li ><a href="#method-i-token">#token</a>
+    
+    <li ><a href="#method-i-ungetc">#ungetc</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Parser::Ruby::Legacy::RubyLex">
+  <h1 id="class-YARD::Parser::Ruby::Legacy::RubyLex" class="class">
+    class YARD::Parser::Ruby::Legacy::RubyLex
+  </h1>
+
+  <section class="description">
+    
+<p>Lexical analyzer for <a href="../../Ruby.html">Ruby</a> source @private</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="ACCEPTS_COLON">ACCEPTS_COLON
+        
+        <dd>
+        
+      
+        <dt id="DEINDENT_CLAUSE">DEINDENT_CLAUSE
+        
+        <dd>
+        
+      
+        <dt id="DLtype2Token">DLtype2Token
+        
+        <dd>
+        
+      
+        <dt id="ENINDENT_CLAUSE">ENINDENT_CLAUSE
+        
+        <dd>
+        
+      
+        <dt id="Ltype2Token">Ltype2Token
+        
+        <dd>
+        
+      
+        <dt id="PERCENT_LTYPE">PERCENT_LTYPE
+        
+        <dd>
+        
+      
+        <dt id="PERCENT_PAREN">PERCENT_PAREN
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-continue" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">continue</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-exception_on_syntax_error" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">exception_on_syntax_error</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-indent" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">indent</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-lex_state" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">lex_state</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-read_auto_clean_up" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">read_auto_clean_up</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-skip_space" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">skip_space</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-debug-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">debug?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="debug-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 460</span>
+<span class="ruby-keyword">def</span> <span class="ruby-constant">RubyLex</span>.<span class="ruby-identifier">debug?</span>
+  <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(content)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 464</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">content</span>)
+  <span class="ruby-identifier">lex_init</span>
+
+  <span class="ruby-ivar">@reader</span> = <span class="ruby-constant">BufferedReader</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">content</span>)
+
+  <span class="ruby-ivar">@exp_line_no</span> = <span class="ruby-ivar">@line_no</span> = <span class="ruby-value">1</span>
+  <span class="ruby-ivar">@base_char_no</span> = <span class="ruby-value">0</span>
+  <span class="ruby-ivar">@indent</span> = <span class="ruby-value">0</span>
+
+  <span class="ruby-ivar">@ltype</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@quoted</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+  <span class="ruby-ivar">@space_seen</span> = <span class="ruby-keyword">false</span>
+
+  <span class="ruby-ivar">@continue</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-ivar">@line</span> = <span class="ruby-string">&quot;&quot;</span>
+
+  <span class="ruby-ivar">@skip_space</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-ivar">@read_auto_clean_up</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-ivar">@exception_on_syntax_error</span> = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-char_no" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">char_no</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="char_no-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 497</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">char_no</span>
+  <span class="ruby-ivar">@reader</span>.<span class="ruby-identifier">column</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_read" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_read</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="get_read-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 501</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_read</span>
+  <span class="ruby-ivar">@reader</span>.<span class="ruby-identifier">get_read</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-getc" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">getc</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="getc-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 505</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">getc</span>
+  <span class="ruby-ivar">@reader</span>.<span class="ruby-identifier">getc</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-getc_of_rests" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">getc_of_rests</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="getc_of_rests-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 509</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">getc_of_rests</span>
+  <span class="ruby-ivar">@reader</span>.<span class="ruby-identifier">getc_already_read</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-gets" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">gets</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="gets-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 513</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">gets</span>
+  <span class="ruby-identifier">c</span> = <span class="ruby-identifier">getc</span> <span class="ruby-keyword">or</span> <span class="ruby-keyword">return</span>
+  <span class="ruby-identifier">l</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-identifier">l</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">c</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\r&quot;</span>
+    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\n&quot;</span>
+  <span class="ruby-keyword">end</span> <span class="ruby-keyword">while</span> <span class="ruby-identifier">c</span> = <span class="ruby-identifier">getc</span>
+  <span class="ruby-identifier">l</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-identify_comment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">identify_comment</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="identify_comment-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 1289</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">identify_comment</span>
+  <span class="ruby-ivar">@ltype</span> = <span class="ruby-node">&quot;#&quot;</span>
+  <span class="ruby-identifier">comment</span> = <span class="ruby-node">&quot;#&quot;</span>
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\\&quot;</span>
+      <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\n&quot;</span>
+        <span class="ruby-identifier">ch</span> = <span class="ruby-string">&quot; &quot;</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">comment</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;\\&quot;</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\n&quot;</span>
+        <span class="ruby-ivar">@ltype</span> = <span class="ruby-keyword">nil</span>
+        <span class="ruby-identifier">ungetc</span>
+        <span class="ruby-keyword">break</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">comment</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkCOMMENT</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">comment</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-identify_gvar" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">identify_gvar</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="identify_gvar-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 977</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">identify_gvar</span>
+  <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_END</span>
+  <span class="ruby-identifier">str</span> = <span class="ruby-string">&quot;$&quot;</span>
+
+  <span class="ruby-identifier">tk</span> = <span class="ruby-keyword">case</span> <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+       <span class="ruby-keyword">when</span> <span class="ruby-regexp">/[~_*$?!@\/\;,=:&lt;&gt;&quot;.]/</span>   <span class="ruby-comment">#&quot;</span>
+         <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+         <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkGVAR</span>, <span class="ruby-identifier">str</span>)
+
+       <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;-&quot;</span>
+         <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;-&quot;</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">getc</span>
+         <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkGVAR</span>, <span class="ruby-identifier">str</span>)
+
+       <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;&amp;&quot;</span>, <span class="ruby-string">&quot;`&quot;</span>, <span class="ruby-string">&quot;&#39;&quot;</span>, <span class="ruby-string">&quot;+&quot;</span>
+         <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+         <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkBACK_REF</span>, <span class="ruby-identifier">str</span>)
+
+       <span class="ruby-keyword">when</span> <span class="ruby-regexp">/[1-9]/</span>
+         <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+         <span class="ruby-keyword">while</span> (<span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[0-9]/</span>
+           <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+         <span class="ruby-keyword">end</span>
+         <span class="ruby-identifier">ungetc</span>
+         <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkNTH_REF</span>)
+       <span class="ruby-keyword">when</span> <span class="ruby-regexp">/\w/</span>
+         <span class="ruby-identifier">ungetc</span>
+         <span class="ruby-identifier">ungetc</span>
+         <span class="ruby-keyword">return</span> <span class="ruby-identifier">identify_identifier</span>
+       <span class="ruby-keyword">else</span>
+         <span class="ruby-identifier">ungetc</span>
+         <span class="ruby-constant">Token</span>(<span class="ruby-string">&quot;$&quot;</span>)
+       <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">str</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-identify_here_document" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">identify_here_document</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="identify_here_document-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 1094</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">identify_here_document</span>
+  <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;-&quot;</span>
+    <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+    <span class="ruby-identifier">indent</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-regexp">/[&#39;&quot;`]/</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">ch</span>            <span class="ruby-comment"># &#39;</span>
+    <span class="ruby-identifier">lt</span> = <span class="ruby-identifier">ch</span>
+    <span class="ruby-identifier">quoted</span> = <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-keyword">while</span> (<span class="ruby-identifier">c</span> = <span class="ruby-identifier">getc</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">lt</span>
+      <span class="ruby-identifier">quoted</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">c</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">lt</span> = <span class="ruby-string">&#39;&quot;&#39;</span>
+    <span class="ruby-identifier">quoted</span> = <span class="ruby-identifier">ch</span>.<span class="ruby-identifier">dup</span>
+    <span class="ruby-keyword">while</span> (<span class="ruby-identifier">c</span> = <span class="ruby-identifier">getc</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\w/</span>
+      <span class="ruby-identifier">quoted</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">c</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">ungetc</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">ltback</span>, <span class="ruby-ivar">@ltype</span> = <span class="ruby-ivar">@ltype</span>, <span class="ruby-identifier">lt</span>
+  <span class="ruby-identifier">reserve</span> = <span class="ruby-string">&quot;&quot;</span>
+
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+    <span class="ruby-identifier">reserve</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\\&quot;</span>    <span class="ruby-comment">#&quot;</span>
+      <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+      <span class="ruby-identifier">reserve</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\n&quot;</span>
+      <span class="ruby-keyword">break</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">str</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">while</span> (<span class="ruby-identifier">l</span> = <span class="ruby-identifier">gets</span>)
+    <span class="ruby-identifier">l</span>.<span class="ruby-identifier">chomp!</span>
+    <span class="ruby-identifier">l</span>.<span class="ruby-identifier">strip!</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">indent</span>
+    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">l</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">quoted</span>
+    <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">l</span>.<span class="ruby-identifier">chomp</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;\n&quot;</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@reader</span>.<span class="ruby-identifier">divert_read_from</span>(<span class="ruby-identifier">reserve</span>)
+
+  <span class="ruby-ivar">@ltype</span> = <span class="ruby-identifier">ltback</span>
+  <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_END</span>
+  <span class="ruby-constant">Token</span>(<span class="ruby-constant">Ltype2Token</span>[<span class="ruby-identifier">lt</span>], <span class="ruby-identifier">str</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">str</span>.<span class="ruby-identifier">dump</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-identify_identifier" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">identify_identifier</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="identify_identifier-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 1012</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">identify_identifier</span>
+  <span class="ruby-identifier">token</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">token</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">getc</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[$@]/</span>
+  <span class="ruby-identifier">token</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">getc</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&quot;@&quot;</span>
+
+  <span class="ruby-keyword">while</span> (<span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\w|_/</span>
+    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;:&quot;</span>, <span class="ruby-identifier">ch</span>, <span class="ruby-string">&quot;:&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">RubyLex</span>.<span class="ruby-identifier">debug?</span>
+    <span class="ruby-identifier">token</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">ch</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">ungetc</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;!&quot;</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;?&quot;</span>
+    <span class="ruby-identifier">token</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">getc</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment"># fix token</span>
+
+  <span class="ruby-comment"># $stderr.puts &quot;identifier - #{token}, state = #@lex_state&quot;</span>
+
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">token</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-regexp">/^\$/</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkGVAR</span>, <span class="ruby-identifier">token</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">token</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-regexp">/^\@/</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_END</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkIVAR</span>, <span class="ruby-identifier">token</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">token</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">EXPR_DOT</span>
+    <span class="ruby-identifier">print</span> <span class="ruby-identifier">token</span>, <span class="ruby-string">&quot;\n&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">RubyLex</span>.<span class="ruby-identifier">debug?</span>
+
+    <span class="ruby-identifier">token_c</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">trans</span> = <span class="ruby-constant">TkReading2Token</span>[<span class="ruby-identifier">token</span>]
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">token_c</span>
+      <span class="ruby-comment"># reserved word?</span>
+
+      <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">EXPR_BEG</span> <span class="ruby-operator">&amp;&amp;</span>
+          <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">EXPR_FNAME</span> <span class="ruby-operator">&amp;&amp;</span>
+          <span class="ruby-identifier">trans</span>[<span class="ruby-value">1</span>])
+        <span class="ruby-comment"># modifiers</span>
+        <span class="ruby-identifier">token_c</span> = <span class="ruby-constant">TkSymbol2Token</span>[<span class="ruby-identifier">trans</span>[<span class="ruby-value">1</span>]]
+        <span class="ruby-ivar">@lex_state</span> = <span class="ruby-identifier">trans</span>[<span class="ruby-value">0</span>]
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">EXPR_FNAME</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-constant">ENINDENT_CLAUSE</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">token</span>)
+            <span class="ruby-ivar">@indent</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+
+            <span class="ruby-keyword">if</span> <span class="ruby-constant">ACCEPTS_COLON</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">token</span>)
+              <span class="ruby-ivar">@colonblock_seen</span> = <span class="ruby-keyword">true</span>
+            <span class="ruby-keyword">else</span>
+              <span class="ruby-ivar">@colonblock_seen</span> = <span class="ruby-keyword">false</span>
+            <span class="ruby-keyword">end</span>
+          <span class="ruby-keyword">elsif</span> <span class="ruby-constant">DEINDENT_CLAUSE</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">token</span>)
+            <span class="ruby-ivar">@indent</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+            <span class="ruby-ivar">@colonblock_seen</span> = <span class="ruby-keyword">false</span>
+          <span class="ruby-keyword">end</span>
+          <span class="ruby-ivar">@lex_state</span> = <span class="ruby-identifier">trans</span>[<span class="ruby-value">0</span>]
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_END</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-constant">Token</span>(<span class="ruby-identifier">token_c</span>, <span class="ruby-identifier">token</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">token</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_FNAME</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_END</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&#39;=&#39;</span>
+      <span class="ruby-identifier">token</span>.<span class="ruby-identifier">concat</span> <span class="ruby-identifier">getc</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_BEG</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_DOT</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_ARG</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_END</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">token</span>[<span class="ruby-value">0</span>, <span class="ruby-value">1</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[A-Z]/</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkCONSTANT</span>, <span class="ruby-identifier">token</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">token</span>)
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">token</span>[<span class="ruby-identifier">token</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>, <span class="ruby-value">1</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[!?]/</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkFID</span>, <span class="ruby-identifier">token</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">token</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkIDENTIFIER</span>, <span class="ruby-identifier">token</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">token</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-identify_number" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">identify_number</span><span
+            class="method-args">(start)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="identify_number-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 1162</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">identify_number</span>(<span class="ruby-identifier">start</span>)
+  <span class="ruby-identifier">str</span> = <span class="ruby-identifier">start</span>.<span class="ruby-identifier">dup</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">start</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;+&quot;</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">start</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;-&quot;</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">start</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-identifier">start</span> = <span class="ruby-identifier">getc</span>
+    <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">start</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_END</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">start</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;0&quot;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&quot;x&quot;</span>
+      <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+      <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+      <span class="ruby-identifier">match</span> = <span class="ruby-regexp">/[0-9a-f_]/</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">match</span> = <span class="ruby-regexp">/[0-7_]/</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">while</span> <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">!~</span> <span class="ruby-identifier">match</span>
+        <span class="ruby-identifier">ungetc</span>
+        <span class="ruby-keyword">break</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkINTEGER</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">str</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">type</span> = <span class="ruby-constant">TkINTEGER</span>
+  <span class="ruby-identifier">allow_point</span> = <span class="ruby-constant">TRUE</span>
+  <span class="ruby-identifier">allow_e</span> = <span class="ruby-constant">TRUE</span>
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">ch</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-regexp">/[0-9_]/</span>
+      <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+
+    <span class="ruby-keyword">when</span> <span class="ruby-identifier">allow_point</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-string">&quot;.&quot;</span>
+      <span class="ruby-identifier">type</span> = <span class="ruby-constant">TkFLOAT</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">!~</span> <span class="ruby-regexp">/[0-9]/</span>
+        <span class="ruby-identifier">ungetc</span>
+        <span class="ruby-keyword">break</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+      <span class="ruby-identifier">allow_point</span> = <span class="ruby-keyword">false</span>
+
+    <span class="ruby-keyword">when</span> <span class="ruby-identifier">allow_e</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-string">&quot;e&quot;</span>, <span class="ruby-identifier">allow_e</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-string">&quot;E&quot;</span>
+      <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+      <span class="ruby-identifier">type</span> = <span class="ruby-constant">TkFLOAT</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[+-]/</span>
+        <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">getc</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">allow_e</span> = <span class="ruby-keyword">false</span>
+      <span class="ruby-identifier">allow_point</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">ungetc</span>
+      <span class="ruby-keyword">break</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">Token</span>(<span class="ruby-identifier">type</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">str</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-identify_quotation" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">identify_quotation</span><span
+            class="method-args">(initial_char)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="identify_quotation-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 1143</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">identify_quotation</span>(<span class="ruby-identifier">initial_char</span>)
+  <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">lt</span> = <span class="ruby-constant">PERCENT_LTYPE</span>[<span class="ruby-identifier">ch</span>]
+    <span class="ruby-identifier">initial_char</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">ch</span>
+    <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\W/</span>
+    <span class="ruby-identifier">lt</span> = <span class="ruby-string">&quot;\&quot;&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-comment"># RubyLex.fail SyntaxError, &quot;unknown type of %string (&#39;#{ch}&#39;)&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment"># if ch !~ /\W/</span>
+  <span class="ruby-comment">#   ungetc</span>
+  <span class="ruby-comment">#   next</span>
+  <span class="ruby-comment"># end</span>
+  <span class="ruby-comment"># @ltype = lt</span>
+  <span class="ruby-ivar">@quoted</span> = <span class="ruby-identifier">ch</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@quoted</span> = <span class="ruby-constant">PERCENT_PAREN</span>[<span class="ruby-identifier">ch</span>]
+  <span class="ruby-identifier">identify_string</span>(<span class="ruby-identifier">lt</span>, <span class="ruby-ivar">@quoted</span>, <span class="ruby-identifier">ch</span>, <span class="ruby-identifier">initial_char</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">lt</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-identify_string" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">identify_string</span><span
+            class="method-args">(ltype, quoted = ltype, opener=nil, initial_char = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="identify_string-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 1224</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">identify_string</span>(<span class="ruby-identifier">ltype</span>, <span class="ruby-identifier">quoted</span> = <span class="ruby-identifier">ltype</span>, <span class="ruby-identifier">opener</span>=<span class="ruby-keyword">nil</span>, <span class="ruby-identifier">initial_char</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-ivar">@ltype</span> = <span class="ruby-identifier">ltype</span>
+  <span class="ruby-ivar">@quoted</span> = <span class="ruby-identifier">quoted</span>
+  <span class="ruby-identifier">subtype</span> = <span class="ruby-keyword">nil</span>
+
+  <span class="ruby-identifier">str</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">initial_char</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">initial_char</span>
+  <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> (<span class="ruby-identifier">opener</span><span class="ruby-operator">||</span><span class="ruby-identifier">quoted</span>)
+
+  <span class="ruby-identifier">nest</span> = <span class="ruby-value">0</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-keyword">while</span> <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+      <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@quoted</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">ch</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">nest</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+          <span class="ruby-keyword">break</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">nest</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">opener</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">ch</span>
+        <span class="ruby-identifier">nest</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@ltype</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;&#39;&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@ltype</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;]&quot;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-node">&quot;#&quot;</span>
+        <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;{&quot;</span>
+          <span class="ruby-identifier">subtype</span> = <span class="ruby-keyword">true</span>
+          <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">skip_inner_expression</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">ungetc</span>(<span class="ruby-identifier">ch</span>)
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;\&#39;</span> <span class="ruby-comment">#&#39;</span>
+        <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">read_escape</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@ltype</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;/&quot;</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/i|o|n|e|s/</span>
+        <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">getc</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">subtype</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-constant">DLtype2Token</span>[<span class="ruby-identifier">ltype</span>], <span class="ruby-identifier">str</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-constant">Ltype2Token</span>[<span class="ruby-identifier">ltype</span>], <span class="ruby-identifier">str</span>)
+    <span class="ruby-keyword">end</span>.<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">str</span>)
+  <span class="ruby-keyword">ensure</span>
+    <span class="ruby-ivar">@ltype</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-ivar">@quoted</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_END</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-lex" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">lex</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="lex-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 536</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">lex</span>
+  <span class="ruby-identifier">catch</span>(<span class="ruby-value">:eof</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">until</span> (((<span class="ruby-identifier">tk</span> = <span class="ruby-identifier">token</span>).<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">TkNL</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">TkEND_OF_SCRIPT</span>)) <span class="ruby-operator">&amp;&amp;</span>
+       <span class="ruby-operator">!</span><span class="ruby-ivar">@continue</span> <span class="ruby-keyword">or</span>
+       <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">nil?</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">line</span> = <span class="ruby-identifier">get_read</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">line</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;&quot;</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">TkEND_OF_SCRIPT</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">line</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-lex_init" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">lex_init</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="lex_init-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 613</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">lex_init</span>()
+  <span class="ruby-ivar">@OP</span> = <span class="ruby-constant">SLex</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot;\0&quot;</span>, <span class="ruby-string">&quot;\004&quot;</span>, <span class="ruby-string">&quot;\032&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chars</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkEND_OF_SCRIPT</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">chars</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot; &quot;</span>, <span class="ruby-string">&quot;\t&quot;</span>, <span class="ruby-string">&quot;\f&quot;</span>, <span class="ruby-string">&quot;\r&quot;</span>, <span class="ruby-string">&quot;\13&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">chars</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@space_seen</span> = <span class="ruby-constant">TRUE</span>
+    <span class="ruby-keyword">while</span> (<span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[ \t\f\r\13]/</span>
+      <span class="ruby-identifier">chars</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">ungetc</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkSPACE</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">chars</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-node">&quot;#&quot;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">identify_comment</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;=begin&quot;</span>, <span class="ruby-identifier">proc</span>{<span class="ruby-ivar">@prev_char_no</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\s/</span>}) <span class="ruby-keyword">do</span>
+    <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">str</span> = <span class="ruby-identifier">op</span>
+    <span class="ruby-ivar">@ltype</span> = <span class="ruby-string">&quot;=&quot;</span>
+
+
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-identifier">line</span> = <span class="ruby-string">&quot;&quot;</span>
+      <span class="ruby-keyword">begin</span>
+        <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+        <span class="ruby-identifier">line</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+      <span class="ruby-keyword">end</span> <span class="ruby-keyword">until</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\n&quot;</span>
+      <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">line</span>
+    <span class="ruby-keyword">end</span> <span class="ruby-keyword">until</span> <span class="ruby-identifier">line</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^=end/</span>
+
+    <span class="ruby-identifier">ungetc</span>
+
+    <span class="ruby-ivar">@ltype</span> = <span class="ruby-keyword">nil</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">str</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\A=begin\s+rdoc/i</span>
+      <span class="ruby-identifier">str</span>.<span class="ruby-identifier">sub!</span>(<span class="ruby-regexp">/\A=begin.*\n/</span>, <span class="ruby-string">&#39;&#39;</span>)
+      <span class="ruby-identifier">str</span>.<span class="ruby-identifier">sub!</span>(<span class="ruby-regexp">/^=end.*/m</span>, <span class="ruby-string">&#39;&#39;</span>)
+      <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkCOMMENT</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">str</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkCOMMENT</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">str</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;\n&quot;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;\\n\n&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">RubyLex</span>.<span class="ruby-identifier">debug?</span>
+    <span class="ruby-ivar">@colonblock_seen</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-ivar">@lex_state</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">EXPR_BEG</span>, <span class="ruby-constant">EXPR_FNAME</span>, <span class="ruby-constant">EXPR_DOT</span>
+      <span class="ruby-ivar">@continue</span> = <span class="ruby-constant">TRUE</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@continue</span> = <span class="ruby-constant">FALSE</span>
+      <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkNL</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;\n&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot;*&quot;</span>, <span class="ruby-string">&quot;**&quot;</span>,
+    <span class="ruby-string">&quot;!&quot;</span>, <span class="ruby-string">&quot;!=&quot;</span>, <span class="ruby-string">&quot;!~&quot;</span>,
+    <span class="ruby-string">&quot;=&quot;</span>, <span class="ruby-string">&quot;==&quot;</span>, <span class="ruby-string">&quot;===&quot;</span>,
+    <span class="ruby-string">&quot;=~&quot;</span>, <span class="ruby-string">&quot;&lt;=&gt;&quot;</span>,
+    <span class="ruby-string">&quot;&lt;&quot;</span>, <span class="ruby-string">&quot;&lt;=&quot;</span>,
+    <span class="ruby-string">&quot;&gt;&quot;</span>, <span class="ruby-string">&quot;&gt;=&quot;</span>, <span class="ruby-string">&quot;&gt;&gt;&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-identifier">op</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot;&lt;&lt;&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">tk</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">EXPR_END</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">EXPR_CLASS</span> <span class="ruby-operator">&amp;&amp;</span>
+       (<span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">EXPR_ARG</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@space_seen</span>)
+      <span class="ruby-identifier">c</span> = <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>)
+      <span class="ruby-identifier">tk</span> = <span class="ruby-identifier">identify_here_document</span> <span class="ruby-keyword">if</span> <span class="ruby-regexp">/[-\w_\&quot;\\`]/</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">c</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">tk</span>
+      <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+      <span class="ruby-identifier">tk</span> = <span class="ruby-constant">Token</span>(<span class="ruby-identifier">op</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">tk</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot;&#39;&quot;</span>, <span class="ruby-string">&#39;&quot;&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">identify_string</span>(<span class="ruby-identifier">op</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot;`&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_FNAME</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-identifier">op</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">identify_string</span>(<span class="ruby-identifier">op</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&#39;?&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_END</span>
+      <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkQUESTION</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_ARG</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">!~</span> <span class="ruby-regexp">/\s/</span>
+        <span class="ruby-identifier">ungetc</span>
+        <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+        <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkQUESTION</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">str</span> = <span class="ruby-identifier">op</span>
+        <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+        <span class="ruby-keyword">if</span> (<span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;\&#39;</span>) <span class="ruby-comment">#&#39;</span>
+          <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">read_escape</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_END</span>
+        <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkINTEGER</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">str</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot;&amp;&quot;</span>, <span class="ruby-string">&quot;&amp;&amp;&quot;</span>, <span class="ruby-string">&quot;|&quot;</span>, <span class="ruby-string">&quot;||&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-identifier">op</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot;+=&quot;</span>, <span class="ruby-string">&quot;-=&quot;</span>, <span class="ruby-string">&quot;*=&quot;</span>, <span class="ruby-string">&quot;**=&quot;</span>,
+    <span class="ruby-string">&quot;&amp;=&quot;</span>, <span class="ruby-string">&quot;|=&quot;</span>, <span class="ruby-string">&quot;^=&quot;</span>, <span class="ruby-string">&quot;&lt;&lt;=&quot;</span>, <span class="ruby-string">&quot;&gt;&gt;=&quot;</span>, <span class="ruby-string">&quot;||=&quot;</span>, <span class="ruby-string">&quot;&amp;&amp;=&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+    <span class="ruby-identifier">op</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^(.*)=$/</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkOPASGN</span>, <span class="ruby-node">$1</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;+@&quot;</span>, <span class="ruby-identifier">proc</span>{<span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_FNAME</span>}) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkUPLUS</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;-@&quot;</span>, <span class="ruby-identifier">proc</span>{<span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_FNAME</span>}) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkUMINUS</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot;+&quot;</span>, <span class="ruby-string">&quot;-&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">catch</span>(<span class="ruby-value">:RET</span>) <span class="ruby-keyword">do</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_ARG</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@space_seen</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[0-9]/</span>
+          <span class="ruby-identifier">throw</span> <span class="ruby-value">:RET</span>, <span class="ruby-identifier">identify_number</span>(<span class="ruby-identifier">op</span>)
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">EXPR_END</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[0-9]/</span>
+        <span class="ruby-identifier">throw</span> <span class="ruby-value">:RET</span>, <span class="ruby-identifier">identify_number</span>(<span class="ruby-identifier">op</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-identifier">op</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;.&quot;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[0-9]/</span>
+      <span class="ruby-identifier">ungetc</span>
+      <span class="ruby-identifier">identify_number</span>(<span class="ruby-string">&quot;&quot;</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-comment"># for obj.if</span>
+      <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_DOT</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkDOT</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;.&quot;</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot;..&quot;</span>, <span class="ruby-string">&quot;...&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-identifier">op</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">lex_int2</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-lex_int2" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">lex_int2</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="lex_int2-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 789</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">lex_int2</span>
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot;]&quot;</span>, <span class="ruby-string">&quot;}&quot;</span>, <span class="ruby-string">&quot;)&quot;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_END</span>
+    <span class="ruby-ivar">@indent</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-identifier">op</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;:&quot;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@colonblock_seen</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">EXPR_BEG</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\s/</span>
+      <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+      <span class="ruby-identifier">tk</span> = <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkCOLON</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_FNAME</span>
+      <span class="ruby-identifier">tk</span> = <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkSYMBEG</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;:&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;::&quot;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-comment"># p @lex_state.id2name, @space_seen</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_BEG</span> <span class="ruby-keyword">or</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_ARG</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@space_seen</span>
+      <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+      <span class="ruby-identifier">tk</span> = <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkCOLON3</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_DOT</span>
+      <span class="ruby-identifier">tk</span> = <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkCOLON2</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;::&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;/&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_BEG</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_MID</span>
+      <span class="ruby-identifier">identify_string</span>(<span class="ruby-identifier">op</span>)
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&#39;=&#39;</span>
+      <span class="ruby-identifier">getc</span>
+      <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkOPASGN</span>, <span class="ruby-value">:/</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;/=&quot;</span>) <span class="ruby-comment">#&quot;)</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_ARG</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@space_seen</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">!~</span> <span class="ruby-regexp">/\s/</span>
+      <span class="ruby-identifier">identify_string</span>(<span class="ruby-identifier">op</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-string">&quot;/&quot;</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot;^&quot;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-string">&quot;^&quot;</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;^&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># @OP.def_rules(&quot;^=&quot;) do</span>
+  <span class="ruby-comment">#   @lex_state = EXPR_BEG</span>
+  <span class="ruby-comment">#   Token(TkOPASGN, :^)</span>
+  <span class="ruby-comment"># end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rules</span>(<span class="ruby-string">&quot;,&quot;</span>, <span class="ruby-string">&quot;;&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@colonblock_seen</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-identifier">op</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">op</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;~&quot;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-string">&quot;~&quot;</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;~&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;~@&quot;</span>, <span class="ruby-identifier">proc</span>{<span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_FNAME</span>}) <span class="ruby-keyword">do</span>
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-string">&quot;~&quot;</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;~@&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;(&quot;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-ivar">@indent</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-comment"># if @lex_state == EXPR_BEG || @lex_state == EXPR_MID</span>
+    <span class="ruby-comment">#  @lex_state = EXPR_BEG</span>
+    <span class="ruby-comment">#  tk = Token(TkfLPAREN)</span>
+    <span class="ruby-comment"># else</span>
+      <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+      <span class="ruby-identifier">tk</span> = <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkLPAREN</span>)
+    <span class="ruby-comment"># end</span>
+    <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;(&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;[]&quot;</span>, <span class="ruby-identifier">proc</span>{<span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_FNAME</span>}) <span class="ruby-keyword">do</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-string">&quot;[]&quot;</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;[]&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;[]=&quot;</span>, <span class="ruby-identifier">proc</span>{<span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_FNAME</span>}) <span class="ruby-keyword">do</span>
+    <span class="ruby-constant">Token</span>(<span class="ruby-string">&quot;[]=&quot;</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;[]=&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;[&quot;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-ivar">@indent</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-comment"># if @lex_state == EXPR_FNAME</span>
+    <span class="ruby-comment">#   t = Token(TkfLBRACK)</span>
+    <span class="ruby-comment"># else</span>
+    <span class="ruby-comment">#   if @lex_state == EXPR_BEG || @lex_state == EXPR_MID</span>
+    <span class="ruby-comment">#     t = Token(TkLBRACK)</span>
+    <span class="ruby-comment">#   elsif @lex_state == EXPR_ARG &amp;&amp; @space_seen</span>
+    <span class="ruby-comment">#   else</span>
+    <span class="ruby-comment">#     t = Token(TkfLBRACK)</span>
+    <span class="ruby-comment">#   end</span>
+    <span class="ruby-comment"># end</span>
+    <span class="ruby-identifier">t</span> = <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkLBRACK</span>)
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+    <span class="ruby-identifier">t</span>.<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;[&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;{&quot;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-ivar">@indent</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-comment"># if @lex_state != EXPR_END &amp;&amp; @lex_state != EXPR_ARG</span>
+    <span class="ruby-comment">#   t = Token(TkLBRACE)</span>
+    <span class="ruby-comment"># else</span>
+    <span class="ruby-comment">#   t = Token(TkfLBRACE)</span>
+    <span class="ruby-comment"># end</span>
+    <span class="ruby-identifier">t</span> = <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkLBRACE</span>)
+    <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+    <span class="ruby-identifier">t</span>.<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;{&quot;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&#39;\&#39;</span>) <span class="ruby-keyword">do</span>   <span class="ruby-comment">#&#39;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">getc</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\n&quot;</span>
+      <span class="ruby-ivar">@space_seen</span> = <span class="ruby-keyword">true</span>
+      <span class="ruby-ivar">@continue</span> = <span class="ruby-keyword">true</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkSPACE</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;\\\n&quot;</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">ungetc</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-string">&quot;\\&quot;</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;\\&quot;</span>)  <span class="ruby-comment">#&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&#39;%&#39;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_BEG</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_MID</span>
+      <span class="ruby-identifier">identify_quotation</span>(<span class="ruby-string">&#39;%&#39;</span>)
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&#39;=&#39;</span>
+      <span class="ruby-identifier">getc</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-constant">TkOPASGN</span>, <span class="ruby-string">&quot;%&quot;</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;%=&quot;</span>)
+    <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@lex_state</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EXPR_ARG</span> <span class="ruby-keyword">and</span> <span class="ruby-ivar">@space_seen</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">!~</span> <span class="ruby-regexp">/\s/</span>
+      <span class="ruby-identifier">identify_quotation</span>(<span class="ruby-string">&#39;%&#39;</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@lex_state</span> = <span class="ruby-constant">EXPR_BEG</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-string">&quot;%&quot;</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;%&quot;</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&#39;$&#39;</span>) <span class="ruby-keyword">do</span>  <span class="ruby-comment">#&#39;</span>
+    <span class="ruby-identifier">identify_gvar</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&#39;@&#39;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[@\w_]/</span>
+      <span class="ruby-identifier">ungetc</span>
+      <span class="ruby-identifier">identify_identifier</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-constant">Token</span>(<span class="ruby-string">&quot;@&quot;</span>).<span class="ruby-identifier">set_text</span>(<span class="ruby-string">&quot;@&quot;</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># @OP.def_rule(&quot;def&quot;, proc{|op, io| /\s/ =~ io.peek(0)}) do</span>
+  <span class="ruby-comment">#   |op, io|</span>
+  <span class="ruby-comment">#   @indent += 1</span>
+  <span class="ruby-comment">#   @lex_state = EXPR_FNAME</span>
+  <span class="ruby-comment"># # @lex_state = EXPR_END</span>
+  <span class="ruby-comment"># # until @rests[0] == &quot;\n&quot; or @rests[0] == &quot;;&quot;</span>
+  <span class="ruby-comment"># #   rests.shift</span>
+  <span class="ruby-comment"># # end</span>
+  <span class="ruby-comment"># end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;__END__&quot;</span>, <span class="ruby-identifier">proc</span>{<span class="ruby-ivar">@prev_char_no</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[\r\n]/</span>}) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">throw</span> <span class="ruby-value">:eof</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">def_rule</span>(<span class="ruby-string">&quot;&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">printf</span> <span class="ruby-string">&quot;MATCH: start %s: %s\n&quot;</span>, <span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span>.<span class="ruby-identifier">inspect</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">RubyLex</span>.<span class="ruby-identifier">debug?</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[0-9]/</span>
+      <span class="ruby-identifier">t</span> = <span class="ruby-identifier">identify_number</span>(<span class="ruby-string">&quot;&quot;</span>)
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">peek</span>(<span class="ruby-value">0</span>) <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[\w_]/</span>
+      <span class="ruby-identifier">t</span> = <span class="ruby-identifier">identify_identifier</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">printf</span> <span class="ruby-string">&quot;MATCH: end %s: %s\n&quot;</span>, <span class="ruby-identifier">op</span>, <span class="ruby-identifier">io</span>.<span class="ruby-identifier">inspect</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">RubyLex</span>.<span class="ruby-identifier">debug?</span>
+    <span class="ruby-identifier">t</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">p</span> <span class="ruby-ivar">@OP</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">RubyLex</span>.<span class="ruby-identifier">debug?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-line_no" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">line_no</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>io functions</p>
+          
+          
+
+          
+          <div class="method-source-code" id="line_no-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 493</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">line_no</span>
+  <span class="ruby-ivar">@reader</span>.<span class="ruby-identifier">line_num</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-peek" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">peek</span><span
+            class="method-args">(i = 0)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="peek-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 532</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">peek</span>(<span class="ruby-identifier">i</span> = <span class="ruby-value">0</span>)
+  <span class="ruby-ivar">@reader</span>.<span class="ruby-identifier">peek</span>(<span class="ruby-identifier">i</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-peek_equal-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">peek_equal?</span><span
+            class="method-args">(str)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="peek_equal-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 528</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">peek_equal?</span>(<span class="ruby-identifier">str</span>)
+  <span class="ruby-ivar">@reader</span>.<span class="ruby-identifier">peek_equal</span>(<span class="ruby-identifier">str</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-read_escape" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">read_escape</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="read_escape-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 1312</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">read_escape</span>
+  <span class="ruby-identifier">res</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-regexp">/[0-7]/</span>
+    <span class="ruby-identifier">ungetc</span> <span class="ruby-identifier">ch</span>
+    <span class="ruby-value">3</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-regexp">/[0-7]/</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-keyword">nil</span>
+      <span class="ruby-keyword">break</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">ungetc</span>
+      <span class="ruby-keyword">break</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;x&quot;</span>
+    <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+    <span class="ruby-value">2</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-regexp">/[0-9a-fA-F]/</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-keyword">nil</span>
+      <span class="ruby-keyword">break</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">ungetc</span>
+      <span class="ruby-keyword">break</span>
+    <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;M&quot;</span>
+    <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+    <span class="ruby-keyword">if</span> (<span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>) <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;-&#39;</span>
+      <span class="ruby-identifier">ungetc</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+      <span class="ruby-keyword">if</span> (<span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\\&quot;</span> <span class="ruby-comment">#&quot;</span>
+        <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+        <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">read_escape</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;C&quot;</span>, <span class="ruby-string">&quot;c&quot;</span> <span class="ruby-comment">#, &quot;^&quot;</span>
+    <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;C&quot;</span> <span class="ruby-keyword">and</span> (<span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>) <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;-&quot;</span>
+      <span class="ruby-identifier">ungetc</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+      <span class="ruby-keyword">if</span> (<span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>) <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\\&quot;</span> <span class="ruby-comment">#&quot;</span>
+        <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+        <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">read_escape</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">res</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-skip_inner_expression" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">skip_inner_expression</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="skip_inner_expression-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 1274</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">skip_inner_expression</span>
+  <span class="ruby-identifier">res</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">nest</span> = <span class="ruby-value">0</span>
+  <span class="ruby-keyword">while</span> (<span class="ruby-identifier">ch</span> = <span class="ruby-identifier">getc</span>)
+    <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ch</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;}&#39;</span>
+      <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">nest</span>.<span class="ruby-identifier">zero?</span>
+      <span class="ruby-identifier">nest</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;{&#39;</span>
+      <span class="ruby-identifier">nest</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">res</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-token" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">token</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="token-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 552</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">token</span>
+  <span class="ruby-identifier">set_token_position</span>(<span class="ruby-identifier">line_no</span>, <span class="ruby-identifier">char_no</span>)
+  <span class="ruby-identifier">catch</span>(<span class="ruby-value">:eof</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-keyword">begin</span>
+        <span class="ruby-identifier">tk</span> = <span class="ruby-ivar">@OP</span>.<span class="ruby-identifier">match</span>(<span class="ruby-keyword">self</span>)
+        <span class="ruby-ivar">@space_seen</span> = <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">TkSPACE</span>)
+      <span class="ruby-keyword">rescue</span> <span class="ruby-constant">SyntaxError</span>
+        <span class="ruby-identifier">abort</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@exception_on_syntax_error</span>
+        <span class="ruby-identifier">tk</span> = <span class="ruby-constant">TkError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">line_no</span>, <span class="ruby-identifier">char_no</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span> <span class="ruby-keyword">while</span> <span class="ruby-ivar">@skip_space</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">TkSPACE</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@read_auto_clean_up</span>
+      <span class="ruby-identifier">get_read</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># throw :eof unless tk</span>
+    <span class="ruby-identifier">p</span> <span class="ruby-identifier">tk</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">$DEBUG</span>
+    <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">lex_state</span> = <span class="ruby-identifier">lex_state</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tk</span>
+    <span class="ruby-identifier">tk</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-ungetc" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ungetc</span><span
+            class="method-args">(c = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="ungetc-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/ruby_lex.rb, line 524</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ungetc</span>(<span class="ruby-identifier">c</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-ivar">@reader</span>.<span class="ruby-identifier">ungetc</span>(<span class="ruby-identifier">c</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Rake::YardocTask - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">Rake::TaskLib
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-define">#define</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Rake::YardocTask">
+  <h1 id="class-YARD::Rake::YardocTask" class="class">
+    class YARD::Rake::YardocTask
+  </h1>
+
+  <section class="description">
+    
+<p>The rake task to run {CLI::Yardoc} and generate documentation.</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-after" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">after</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Runs a <code>Proc</code> after the task @return [Proc] a proc to call after
+running the task</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-before" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">before</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Runs a <code>Proc</code> before the task @return [Proc] a proc to call
+before running the task</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-files" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">files</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The Ruby source files (and any extra documentation files separated by
+&#39;-&#39;) to process. @example Task files assignment</p>
+
+<pre class="ruby"><span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Rake</span><span class="ruby-operator">::</span><span class="ruby-constant">YardocTask</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+  <span class="ruby-identifier">t</span>.<span class="ruby-identifier">files</span>   = [<span class="ruby-string">&#39;app   /*.rb&#39;</span>, <span class="ruby-string">&#39;lib/   *.rb&#39;</span>, <span class="ruby-string">&#39;-&#39;</span>, <span class="ruby-string">&#39;doc/FAQ.md&#39;</span>, <span class="ruby-string">&#39;doc/Changes.md&#39;</span>]
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>@return [Array&lt;String&gt;] a list of files</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-name" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">name</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The name of the task @return [String] the task name</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-options" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">options</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p><a href="../Options.html">Options</a> to pass to {CLI::Yardoc} @return
+[Array&lt;String&gt;] the options passed to the commandline utility</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-stats_options" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">stats_options</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p><a href="../Options.html">Options</a> to pass to {CLI::Stats} @return
+[Array&lt;String&gt;] the options passed to the stats utility</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-verifier" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">verifier</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Verifier, Proc] an optional {Verifier} to run against all objects</p>
+
+<pre>being generated. Any object that the verifier returns false for will be
+excluded from documentation. This attribute can also be a lambda.</pre>
+
+<p>@see <a href="../Verifier.html">Verifier</a></p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(name = :yard) { |self| ... }</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new task with name <code>name</code>.</p>
+
+<p>@param [String, Symbol] name the name of the rake task @yield a block to
+allow any options to be modified on the task @yieldparam [YardocTask] _self
+the task object to allow any parameters</p>
+
+<pre>to be changed.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/rake/yardoc_task.rb, line 50</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">name</span> = <span class="ruby-value">:yard</span>)
+  <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">name</span>
+  <span class="ruby-ivar">@options</span> = []
+  <span class="ruby-ivar">@stats_options</span> = []
+  <span class="ruby-ivar">@files</span> = []
+
+  <span class="ruby-keyword">yield</span> <span class="ruby-keyword">self</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">options</span> <span class="ruby-operator">+=</span>  <span class="ruby-constant">ENV</span>[<span class="ruby-string">&#39;OPTS&#39;</span>].<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/[ ,]/</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">ENV</span>[<span class="ruby-string">&#39;OPTS&#39;</span>]
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">files</span>   <span class="ruby-operator">+=</span> <span class="ruby-constant">ENV</span>[<span class="ruby-string">&#39;FILES&#39;</span>].<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/[ ,]/</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">ENV</span>[<span class="ruby-string">&#39;FILES&#39;</span>]
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">options</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&#39;--no-stats&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">stats_options</span>.<span class="ruby-identifier">empty?</span>
+
+  <span class="ruby-identifier">define</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="protected-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Protected Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-define" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">define</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Defines the rake task @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="define-source">
+            <pre><span class="ruby-comment"># File lib/yard/rake/yardoc_task.rb, line 68</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">define</span>
+  <span class="ruby-identifier">desc</span> <span class="ruby-string">&quot;Generate YARD Documentation&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-operator">::</span><span class="ruby-constant">Rake</span>.<span class="ruby-identifier">application</span>.<span class="ruby-identifier">last_comment</span>
+  <span class="ruby-identifier">task</span>(<span class="ruby-identifier">name</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">before</span>.<span class="ruby-identifier">call</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">before</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proc</span>)
+    <span class="ruby-identifier">yardoc</span> = <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">CLI</span><span class="ruby-operator">::</span><span class="ruby-constant">Yardoc</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">yardoc</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:verifier</span>] = <span class="ruby-identifier">verifier</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">verifier</span>
+    <span class="ruby-identifier">yardoc</span>.<span class="ruby-identifier">run</span> <span class="ruby-operator">*</span>(<span class="ruby-identifier">options</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">files</span>)
+    <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">CLI</span><span class="ruby-operator">::</span><span class="ruby-constant">Stats</span>.<span class="ruby-identifier">run</span>(<span class="ruby-operator">*</span>(<span class="ruby-identifier">stats_options</span> <span class="ruby-operator">+</span> [<span class="ruby-string">&#39;--use-cache&#39;</span>])) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">stats_options</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">after</span>.<span class="ruby-identifier">call</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">after</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proc</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

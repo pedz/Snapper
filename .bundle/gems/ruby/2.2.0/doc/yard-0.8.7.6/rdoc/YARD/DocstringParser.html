@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::DocstringParser - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-after_parse">::after_parse</a>
+    
+    <li ><a href="#method-c-after_parse_callbacks">::after_parse_callbacks</a>
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-call_after_parse_callbacks">#call_after_parse_callbacks</a>
+    
+    <li ><a href="#method-i-call_directives_after_parse">#call_directives_after_parse</a>
+    
+    <li ><a href="#method-i-create_directive">#create_directive</a>
+    
+    <li ><a href="#method-i-create_ref_tag">#create_ref_tag</a>
+    
+    <li ><a href="#method-i-create_tag">#create_tag</a>
+    
+    <li ><a href="#method-i-detect_reference">#detect_reference</a>
+    
+    <li ><a href="#method-i-namespace">#namespace</a>
+    
+    <li ><a href="#method-i-parse">#parse</a>
+    
+    <li ><a href="#method-i-parse_content">#parse_content</a>
+    
+    <li ><a href="#method-i-tag_is_directive-3F">#tag_is_directive?</a>
+    
+    <li ><a href="#method-i-to_docstring">#to_docstring</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::DocstringParser">
+  <h1 id="class-YARD::DocstringParser" class="class">
+    class YARD::DocstringParser
+  </h1>
+
+  <section class="description">
+    
+<p>Parses text and creates a {Docstring} object to represent documentation for
+a {CodeObjects::Base}. To create a new docstring, you should initialize the
+parser and call {#parse} followed by {#to_docstring}.</p>
+
+<h2 id="class-YARD::DocstringParser-label-Subclassing+Notes">Subclassing Notes<span><a href="#class-YARD::DocstringParser-label-Subclassing+Notes">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>The <a href="DocstringParser.html">DocstringParser</a> can be subclassed
+and subtituted during parsing by setting the {Docstring.default_parser}
+attribute with the name of the subclass. This allows developers to change
+the way docstrings are parsed, allowing for completely different docstring
+syntaxes.</p>
+
+<p>@example Creating a <a href="Docstring.html">Docstring</a> with a <a
+href="DocstringParser.html">DocstringParser</a></p>
+
+<pre class="ruby"><span class="ruby-constant">DocstringParser</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-string">&quot;text here&quot;</span>).<span class="ruby-identifier">to_docstring</span>
+</pre>
+
+<p>@example Creating a Custom <a
+href="DocstringParser.html">DocstringParser</a></p>
+
+<pre class="ruby"><span class="ruby-comment"># Parses docstrings backwards!</span>
+<span class="ruby-keyword">class</span> <span class="ruby-constant">ReverseDocstringParser</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_content</span>(<span class="ruby-identifier">content</span>)
+    <span class="ruby-keyword">super</span>(<span class="ruby-identifier">content</span>.<span class="ruby-identifier">reverse</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+
+<span class="ruby-comment"># Set the parser as default when parsing</span>
+<span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Docstring</span>.<span class="ruby-identifier">default_parser</span> = <span class="ruby-constant">ReverseDocstringParser</span>
+</pre>
+
+<p>@see <a
+href="DocstringParser.html#method-i-parse_content">parse_content</a> @since
+0.8.0</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="META_MATCH">META_MATCH
+        
+        <dd><p>The regular expression to match the tag syntax</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-directives" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">directives</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Array&lt;Directive&gt;] a list of directives identified</p>
+
+<pre>by the parser. This list will not be passed on to the
+Docstring object.</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-handler" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">handler</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Handlers::Base, nil] the handler parsing this</p>
+
+<pre>docstring. May be nil if this docstring parser is not
+initialized through</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-library" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">library</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Tags::Library] the tag library being used to</p>
+
+<pre>identify registered tags in the docstring.</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-object" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">object</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [CodeObjects::Base, nil] the object associated with</p>
+
+<pre>the docstring being parsed. May be nil if the docstring is
+not attached to any object.</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-raw_text" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">raw_text</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [String] the complete input string to the parser.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-reference" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">reference</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [CodeObjects::Base, nil] the object referenced by</p>
+
+<pre>the docstring being parsed. May be nil if the docstring doesn&#39;t
+refer to any object.</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-state" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">state</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [OpenStruct] any arbitrary state to be passed between</p>
+
+<pre>tags during parsing. Mainly used by directives to coordinate
+behaviour (so that directives can be aware of other directives
+used in a docstring).</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-tags" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">tags</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Array&lt;Tag&gt;] the list of meta-data tags identified</p>
+
+<pre class="ruby"><span class="ruby-identifier">by</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">parser</span>
+</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-text" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">text</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [String] the parsed text portion of the docstring,</p>
+
+<pre>with tags removed.</pre>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-after_parse" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">after_parse</span><span
+            class="method-args">(&block)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a callback that is called after a docstring is successfully parsed.
+Use this method to perform sanity checks on a docstring&#39;s tag data, or
+add any extra tags automatically to a docstring.</p>
+
+<p>@yield [parser] a block to be called after a docstring is parsed
+@yieldparam [DocstringParser] parser the docstring parser object</p>
+
+<pre>with all directives and tags created.</pre>
+
+<p>@yieldreturn [void] @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="after_parse-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 286</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">after_parse</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">after_parse_callbacks</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">block</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-after_parse_callbacks" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">after_parse_callbacks</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Array&lt;Proc&gt;] the {after_parse} callback proc objects</p>
+          
+          
+
+          
+          <div class="method-source-code" id="after_parse_callbacks-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 291</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">after_parse_callbacks</span>
+  <span class="ruby-ivar">@after_parse_callbacks</span> <span class="ruby-operator">||=</span> []
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(library = Tags::Library.instance)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new parser to parse docstring data</p>
+
+<p>@param [Tags::Library] library a tag library for recognizing</p>
+
+<pre>tags.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 80</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">library</span> = <span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">Library</span>.<span class="ruby-identifier">instance</span>)
+  <span class="ruby-ivar">@text</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-ivar">@raw_text</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-ivar">@tags</span> = []
+  <span class="ruby-ivar">@directives</span> = []
+  <span class="ruby-ivar">@library</span> = <span class="ruby-identifier">library</span>
+  <span class="ruby-ivar">@object</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@reference</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@handler</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@state</span> = <span class="ruby-constant">OpenStruct</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-create_directive" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_directive</span><span
+            class="method-args">(tag_name, tag_buf)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new directive using the registered {#library} @return [Directive]
+the directive object that is created</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_directive-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 214</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_directive</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">tag_buf</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">library</span>.<span class="ruby-identifier">has_directive?</span>(<span class="ruby-identifier">tag_name</span>)
+    <span class="ruby-identifier">dir</span> = <span class="ruby-identifier">library</span>.<span class="ruby-identifier">directive_create</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">tag_buf</span>, <span class="ruby-keyword">self</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">dir</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">Directive</span>)
+      <span class="ruby-ivar">@directives</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">dir</span>
+      <span class="ruby-identifier">dir</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;Unknown directive @!#{tag_name}&quot;</span> <span class="ruby-operator">+</span>
+      (<span class="ruby-identifier">object</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot; in file `#{object.file}` near line #{object.line}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot;&quot;</span>)
+    <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">TagFormatError</span>
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;Invalid directive format for @!#{tag_name}&quot;</span> <span class="ruby-operator">+</span>
+    (<span class="ruby-identifier">object</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot; in file `#{object.file}` near line #{object.line}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot;&quot;</span>)
+  <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_ref_tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_ref_tag</span><span
+            class="method-args">(tag_name, name, object_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a {Tags::RefTag}</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_ref_tag-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 208</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_ref_tag</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">object_name</span>)
+  <span class="ruby-ivar">@tags</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">RefTagList</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-constant">P</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">object_name</span>), <span class="ruby-identifier">name</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_tag</span><span
+            class="method-args">(tag_name, tag_buf = '')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a tag from the {Tags::DefaultFactory tag factory}.</p>
+
+<p>To add an already created tag object, append it to {#tags}.</p>
+
+<p>@param [String] tag_name the tag name @param [String] tag_buf the text
+attached to the tag with newlines removed. @return [Tags::Tag,
+Tags::RefTag] a tag</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_tag-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 191</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_tag</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">tag_buf</span> = <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag_buf</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\A\s*(?:(\S+)\s+)?\(\s*see\s+(\S+)\s*\)\s*\Z/</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">create_ref_tag</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-node">$1</span>, <span class="ruby-node">$2</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">library</span>.<span class="ruby-identifier">has_tag?</span>(<span class="ruby-identifier">tag_name</span>)
+    <span class="ruby-ivar">@tags</span> <span class="ruby-operator">+=</span> [<span class="ruby-identifier">library</span>.<span class="ruby-identifier">tag_create</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">tag_buf</span>)].<span class="ruby-identifier">flatten</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;Unknown tag @#{tag_name}&quot;</span> <span class="ruby-operator">+</span>
+      (<span class="ruby-identifier">object</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot; in file `#{object.file}` near line #{object.line}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot;&quot;</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">TagFormatError</span>
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;Invalid tag format for @#{tag_name}&quot;</span> <span class="ruby-operator">+</span>
+    (<span class="ruby-identifier">object</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot; in file `#{object.file}` near line #{object.line}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot;&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse</span><span
+            class="method-args">(content, object = nil, handler = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses all content and returns itself.</p>
+
+<p>@param [String] content the docstring text to parse @param
+[CodeObjects::Base] object the object that the docstring</p>
+
+<pre>is attached to. Will be passed to directives to act on
+this object.</pre>
+
+<p>@param [Handlers::Base, nil] handler the handler object that is</p>
+
+<pre>parsing this object. May be nil if this parser is not being
+called from a {Parser::SourceParser} context.</pre>
+
+<p>@return [self] the parser object. To get the docstring,</p>
+
+<pre>call {#to_docstring}.</pre>
+
+<p>@see <a href="DocstringParser.html#method-i-to_docstring">to_docstring</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 112</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse</span>(<span class="ruby-identifier">content</span>, <span class="ruby-identifier">object</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">handler</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-ivar">@object</span> = <span class="ruby-identifier">object</span>
+  <span class="ruby-ivar">@handler</span> = <span class="ruby-identifier">handler</span>
+  <span class="ruby-ivar">@reference</span>, <span class="ruby-ivar">@raw_text</span> = <span class="ruby-identifier">detect_reference</span>(<span class="ruby-identifier">content</span>)
+  <span class="ruby-identifier">text</span> = <span class="ruby-identifier">parse_content</span>(<span class="ruby-ivar">@raw_text</span>)
+  <span class="ruby-comment"># Remove trailing/leading whitespace / newlines</span>
+  <span class="ruby-ivar">@text</span> = <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\A[\r\n\s]+|[\r\n\s]+\Z/</span>, <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-identifier">call_directives_after_parse</span>
+  <span class="ruby-identifier">call_after_parse_callbacks</span>
+  <span class="ruby-keyword">self</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_content" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_content</span><span
+            class="method-args">(content)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses a given block of text.</p>
+
+<p>@param [String] content the content to parse @note Subclasses can override
+this method to perform custom</p>
+
+<pre>parsing of content data.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_content-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 129</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_content</span>(<span class="ruby-identifier">content</span>)
+  <span class="ruby-identifier">content</span> = <span class="ruby-identifier">content</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/\r?\n/</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">content</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">content</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">content</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">docstring</span> = <span class="ruby-string">&quot;&quot;</span>
+
+  <span class="ruby-identifier">indent</span>, <span class="ruby-identifier">last_indent</span> = <span class="ruby-identifier">content</span>.<span class="ruby-identifier">first</span>[<span class="ruby-regexp">/^\s*/</span>].<span class="ruby-identifier">length</span>, <span class="ruby-value">0</span>
+  <span class="ruby-identifier">orig_indent</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">directive</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-identifier">last_line</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">tag_klass</span>, <span class="ruby-identifier">tag_buf</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-keyword">nil</span>, []
+
+  (<span class="ruby-identifier">content</span><span class="ruby-operator">+</span>[<span class="ruby-string">&#39;&#39;</span>]).<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">indent</span> = <span class="ruby-identifier">line</span>[<span class="ruby-regexp">/^\s*/</span>].<span class="ruby-identifier">length</span>
+    <span class="ruby-identifier">empty</span> = (<span class="ruby-identifier">line</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^\s*$/</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>)
+    <span class="ruby-identifier">done</span> = <span class="ruby-identifier">content</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">index</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag_name</span> <span class="ruby-operator">&amp;&amp;</span> (((<span class="ruby-identifier">indent</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">orig_indent</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">empty</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">done</span> <span class="ruby-operator">||</span>
+        (<span class="ruby-identifier">indent</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">empty</span>)) <span class="ruby-operator">||</span> (<span class="ruby-identifier">indent</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">last_indent</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">line</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">META_MATCH</span>))
+      <span class="ruby-identifier">buf</span> = <span class="ruby-identifier">tag_buf</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\n&quot;</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">directive</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">tag_is_directive?</span>(<span class="ruby-identifier">tag_name</span>)
+        <span class="ruby-identifier">directive</span> = <span class="ruby-identifier">create_directive</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">buf</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">directive</span>
+          <span class="ruby-identifier">docstring</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">parse_content</span>(<span class="ruby-identifier">directive</span>.<span class="ruby-identifier">expanded_text</span>).<span class="ruby-identifier">chomp</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">create_tag</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">buf</span>)
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">tag_buf</span>, <span class="ruby-identifier">directive</span> = <span class="ruby-keyword">nil</span>, [], <span class="ruby-keyword">false</span>
+      <span class="ruby-identifier">orig_indent</span> = <span class="ruby-value">0</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-comment"># Found a meta tag</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">line</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">META_MATCH</span>
+      <span class="ruby-identifier">directive</span>, <span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">tag_buf</span> = <span class="ruby-node">$1</span>, <span class="ruby-node">$2</span>, [(<span class="ruby-node">$3</span> <span class="ruby-operator">||</span> <span class="ruby-string">&#39;&#39;</span>)]
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">tag_name</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">indent</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">orig_indent</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">empty</span>
+      <span class="ruby-identifier">orig_indent</span> = <span class="ruby-identifier">indent</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">orig_indent</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+      <span class="ruby-comment"># Extra data added to the tag on the next line</span>
+      <span class="ruby-identifier">last_empty</span> = <span class="ruby-identifier">last_line</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^[ \t]*$/</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+
+      <span class="ruby-identifier">tag_buf</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&#39;&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">last_empty</span>
+      <span class="ruby-identifier">tag_buf</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">line</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">/^[ \t]{#{orig_indent}}/</span>, <span class="ruby-string">&#39;&#39;</span>)
+    <span class="ruby-keyword">elsif</span> <span class="ruby-operator">!</span><span class="ruby-identifier">tag_name</span>
+      <span class="ruby-comment"># Regular docstring text</span>
+      <span class="ruby-identifier">docstring</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">line</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;\n&quot;</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">last_indent</span> = <span class="ruby-identifier">indent</span>
+    <span class="ruby-identifier">last_line</span> = <span class="ruby-identifier">line</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">docstring</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tag_is_directive-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tag_is_directive?</span><span
+            class="method-args">(tag_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Backward compatibility to detect old tags that should be specified as
+directives in 0.8 and onward.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="tag_is_directive-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 234</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tag_is_directive?</span>(<span class="ruby-identifier">tag_name</span>)
+  <span class="ruby-identifier">list</span> = <span class="ruby-node">%w(attribute endgroup group macro method scope visibility)</span>
+  <span class="ruby-identifier">list</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tag_name</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_docstring" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_docstring</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Docstring] translates parsed text into</p>
+
+<pre>a Docstring object.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="to_docstring-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 94</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_docstring</span>
+  <span class="ruby-constant">Docstring</span>.<span class="ruby-identifier">new!</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">tags</span>, <span class="ruby-identifier">object</span>, <span class="ruby-identifier">raw_text</span>, <span class="ruby-identifier">reference</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-call_after_parse_callbacks" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">call_after_parse_callbacks</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Calls all {after_parse} callbacks</p>
+          
+          
+
+          
+          <div class="method-source-code" id="call_after_parse_callbacks-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 269</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">call_after_parse_callbacks</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">after_parse_callbacks</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">cb</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">cb</span>.<span class="ruby-identifier">call</span>(<span class="ruby-keyword">self</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-call_directives_after_parse" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">call_directives_after_parse</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Calls the {Directive#after_parse} callback on all the created directives.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="call_directives_after_parse-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 262</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">call_directives_after_parse</span>
+  <span class="ruby-identifier">directives</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dir</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">dir</span>.<span class="ruby-identifier">after_parse</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-detect_reference" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">detect_reference</span><span
+            class="method-args">(content)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="detect_reference-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 249</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">detect_reference</span>(<span class="ruby-identifier">content</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">content</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\A\s*\(see (\S+)\s*\)(?:\s|$)/</span>
+    <span class="ruby-identifier">path</span>, <span class="ruby-identifier">extra</span> = <span class="ruby-node">$1</span>, <span class="ruby-node">$&#39;</span>
+    [<span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">Proxy</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">path</span>), <span class="ruby-identifier">extra</span>]
+  <span class="ruby-keyword">else</span>
+    [<span class="ruby-keyword">nil</span>, <span class="ruby-identifier">content</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-namespace" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">namespace</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="namespace-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring_parser.rb, line 241</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">namespace</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>
+    <span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

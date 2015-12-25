@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>module YARD::Handlers::Ruby::StructHandlerMethods - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../";
+</script>
+
+<script src="../../../js/jquery.js"></script>
+<script src="../../../js/darkfish.js"></script>
+
+<link href="../../../css/fonts.css" rel="stylesheet">
+<link href="../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../../CodeObjects.html">YARD::CodeObjects</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-add_reader_tags">#add_reader_tags</a>
+    
+    <li ><a href="#method-i-add_writer_tags">#add_writer_tags</a>
+    
+    <li ><a href="#method-i-create_attributes">#create_attributes</a>
+    
+    <li ><a href="#method-i-create_class">#create_class</a>
+    
+    <li ><a href="#method-i-create_member_method-3F">#create_member_method?</a>
+    
+    <li ><a href="#method-i-create_reader">#create_reader</a>
+    
+    <li ><a href="#method-i-create_writer">#create_writer</a>
+    
+    <li ><a href="#method-i-member_tag_for_member">#member_tag_for_member</a>
+    
+    <li ><a href="#method-i-members_from_tags">#members_from_tags</a>
+    
+    <li ><a href="#method-i-return_type_from_tag">#return_type_from_tag</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-YARD::Handlers::Ruby::StructHandlerMethods">
+  <h1 id="module-YARD::Handlers::Ruby::StructHandlerMethods" class="module">
+    module YARD::Handlers::Ruby::StructHandlerMethods
+  </h1>
+
+  <section class="description">
+    
+<p>Helper methods to parse @attr_* tags on a class.</p>
+
+<p>@deprecated The use of +@attr+ tags are deprecated since 0.8.0 in favour of</p>
+
+<pre>the +@!attribute+ directive. This module should not be relied on.</pre>
+
+<p>@since 0.5.6</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-add_reader_tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_reader_tags</span><span
+            class="method-args">(klass, new_method, member)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates the auto-generated docstring for the getter method of a
+struct&#39;s member. This is used so the generated documentation will look
+just like that of an attribute defined using attr_accessor.</p>
+
+<p>@param [ClassObject] klass the class whose members we&#39;re working with
+@param [String] member the name of the member we&#39;re generating
+documentation for @return [String] a docstring to be attached to the getter
+method for this member</p>
+          
+          
+
+          
+          <div class="method-source-code" id="add_reader_tags-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/struct_handler_methods.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_reader_tags</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">new_method</span>, <span class="ruby-identifier">member</span>)
+  <span class="ruby-identifier">member_tag</span> = <span class="ruby-identifier">member_tag_for_member</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span>, <span class="ruby-value">:read</span>)
+  <span class="ruby-identifier">return_type</span> = <span class="ruby-identifier">return_type_from_tag</span>(<span class="ruby-identifier">member_tag</span>)
+  <span class="ruby-identifier">getter_doc_text</span> = <span class="ruby-identifier">member_tag</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">member_tag</span>.<span class="ruby-identifier">text</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;Returns the value of attribute #{member}&quot;</span>
+  <span class="ruby-identifier">new_method</span>.<span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">replace</span>(<span class="ruby-identifier">getter_doc_text</span>)
+  <span class="ruby-identifier">new_method</span>.<span class="ruby-identifier">add_tag</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:return</span>, <span class="ruby-node">&quot;the current value of #{member}&quot;</span>, <span class="ruby-identifier">return_type</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-add_writer_tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_writer_tags</span><span
+            class="method-args">(klass, new_method, member)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates the auto-generated docstring for the setter method of a
+struct&#39;s member. This is used so the generated documentation will look
+just like that of an attribute defined using attr_accessor.</p>
+
+<p>@param [ClassObject] klass the class whose members we&#39;re working with
+@param [String] member the name of the member we&#39;re generating
+documentation for @return [String] a docstring to be attached to the setter
+method for this member</p>
+          
+          
+
+          
+          <div class="method-source-code" id="add_writer_tags-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/struct_handler_methods.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_writer_tags</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">new_method</span>, <span class="ruby-identifier">member</span>)
+  <span class="ruby-identifier">member_tag</span> = <span class="ruby-identifier">member_tag_for_member</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span>, <span class="ruby-value">:write</span>)
+  <span class="ruby-identifier">return_type</span> = <span class="ruby-identifier">return_type_from_tag</span>(<span class="ruby-identifier">member_tag</span>)
+  <span class="ruby-identifier">setter_doc_text</span> = <span class="ruby-identifier">member_tag</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">member_tag</span>.<span class="ruby-identifier">text</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;Sets the attribute #{member}&quot;</span>
+  <span class="ruby-identifier">new_method</span>.<span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">replace</span>(<span class="ruby-identifier">setter_doc_text</span>)
+  <span class="ruby-identifier">new_method</span>.<span class="ruby-identifier">add_tag</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:param</span>, <span class="ruby-node">&quot;the value to set the attribute #{member} to.&quot;</span>, <span class="ruby-identifier">return_type</span>, <span class="ruby-string">&quot;value&quot;</span>)
+  <span class="ruby-identifier">new_method</span>.<span class="ruby-identifier">add_tag</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:return</span>, <span class="ruby-string">&quot;the newly set value&quot;</span>, <span class="ruby-identifier">return_type</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_attributes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_attributes</span><span
+            class="method-args">(klass, members)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates the given member methods and attaches them to the given
+ClassObject.</p>
+
+<p>@param [ClassObject] klass the class to generate attributes for @param
+[Array&lt;String&gt;] members a list of member names</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_attributes-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/struct_handler_methods.rb, line 133</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_attributes</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">members</span>)
+  <span class="ruby-comment"># For each parameter, add reader and writers</span>
+  <span class="ruby-identifier">members</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">member</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">attributes</span>[<span class="ruby-value">:instance</span>][<span class="ruby-identifier">member</span>] = <span class="ruby-constant">SymbolHash</span>[<span class="ruby-value">:read</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">:write</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>]
+    <span class="ruby-identifier">create_writer</span> <span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">create_member_method?</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span>, <span class="ruby-value">:write</span>)
+    <span class="ruby-identifier">create_reader</span> <span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">create_member_method?</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span>, <span class="ruby-value">:read</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_class" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_class</span><span
+            class="method-args">(classname, superclass)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates and registers a class object with the given name and superclass
+name. Returns it for further use.</p>
+
+<p>@param [String] classname the name of the class @param [String] superclass
+the name of the superclass @return [ClassObject] the class object for
+further processing/method attaching</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_class-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/struct_handler_methods.rb, line 91</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_class</span>(<span class="ruby-identifier">classname</span>, <span class="ruby-identifier">superclass</span>)
+  <span class="ruby-identifier">register</span> <span class="ruby-constant">ClassObject</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">classname</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">o</span>.<span class="ruby-identifier">superclass</span> = <span class="ruby-identifier">superclass</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">superclass</span>
+    <span class="ruby-identifier">o</span>.<span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">type</span> = <span class="ruby-value">:class</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proxy</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_member_method-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_member_method?</span><span
+            class="method-args">(klass, member, type = :read)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Determines whether to create an attribute method based on the class&#39;s
+tags.</p>
+
+<p>@param [ClassObject] klass the class whose tags we&#39;re searching @param
+[String] member the name of the struct member we need @param [Symbol] type
+(:read) reader method, or writer method? @return [Boolean] should the
+attribute be created?</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_member_method-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/struct_handler_methods.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_member_method?</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span>, <span class="ruby-identifier">type</span> = <span class="ruby-value">:read</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> (<span class="ruby-identifier">klass</span>.<span class="ruby-identifier">tags</span>(<span class="ruby-value">:attr</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">tags</span>(<span class="ruby-value">:attr_reader</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">tags</span>(<span class="ruby-value">:attr_writer</span>)).<span class="ruby-identifier">empty?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">member_tag_for_member</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span>, <span class="ruby-identifier">type</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-operator">!</span><span class="ruby-identifier">member_tag_for_member</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span>, <span class="ruby-value">:write</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:read</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-operator">!</span><span class="ruby-identifier">member_tag_for_member</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span>, <span class="ruby-value">:read</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_reader" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_reader</span><span
+            class="method-args">(klass, member)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates the getter (reader) method and attaches it to the class as an
+attribute. Also sets up the docstring to prettify the documentation output.</p>
+
+<p>@param [ClassObject] klass the class to attach the method to @param
+[String] member the name of the member we&#39;re generating a method for</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_reader-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/struct_handler_methods.rb, line 120</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_reader</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span>)
+  <span class="ruby-identifier">new_meth</span> = <span class="ruby-identifier">register</span> <span class="ruby-constant">MethodObject</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span>, <span class="ruby-value">:instance</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">o</span>.<span class="ruby-identifier">signature</span> <span class="ruby-operator">||=</span> <span class="ruby-node">&quot;def #{member}&quot;</span>
+    <span class="ruby-identifier">o</span>.<span class="ruby-identifier">source</span> <span class="ruby-operator">||=</span> <span class="ruby-node">&quot;#{o.signature}\n  @#{member}\nend&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">add_reader_tags</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">new_meth</span>, <span class="ruby-identifier">member</span>)
+  <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">attributes</span>[<span class="ruby-value">:instance</span>][<span class="ruby-identifier">member</span>][<span class="ruby-value">:read</span>] = <span class="ruby-identifier">new_meth</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_writer" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_writer</span><span
+            class="method-args">(klass, member)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates the setter (writer) method and attaches it to the class as an
+attribute. Also sets up the docstring to prettify the documentation output.</p>
+
+<p>@param [ClassObject] klass the class to attach the method to @param
+[String] member the name of the member we&#39;re generating a method for</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_writer-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/struct_handler_methods.rb, line 103</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_writer</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span>)
+  <span class="ruby-comment"># We want to convert these members into attributes just like</span>
+  <span class="ruby-comment"># as if they were declared using attr_accessor.</span>
+  <span class="ruby-identifier">new_meth</span> = <span class="ruby-identifier">register</span> <span class="ruby-constant">MethodObject</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-node">&quot;#{member}=&quot;</span>, <span class="ruby-value">:instance</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">o</span>.<span class="ruby-identifier">parameters</span> = [[<span class="ruby-string">&#39;value&#39;</span>, <span class="ruby-keyword">nil</span>]]
+    <span class="ruby-identifier">o</span>.<span class="ruby-identifier">signature</span> <span class="ruby-operator">||=</span> <span class="ruby-node">&quot;def #{member}=(value)&quot;</span>
+    <span class="ruby-identifier">o</span>.<span class="ruby-identifier">source</span> <span class="ruby-operator">||=</span> <span class="ruby-node">&quot;#{o.signature}\n  @#{member} = value\nend&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">add_writer_tags</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">new_meth</span>, <span class="ruby-identifier">member</span>)
+  <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">attributes</span>[<span class="ruby-value">:instance</span>][<span class="ruby-identifier">member</span>][<span class="ruby-value">:write</span>] = <span class="ruby-identifier">new_meth</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-member_tag_for_member" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">member_tag_for_member</span><span
+            class="method-args">(klass, member, type = :read)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extracts the user&#39;s defined @member tag for a given class and its
+member. Returns nil if the user did not define a @member tag for this
+struct entry.</p>
+
+<p>@param [ClassObject] klass the class whose tags we&#39;re searching @param
+[String] member the name of the struct member we need @param [Symbol] type
+reader method, or writer method? @return [Tags::Tag, nil] the tag matching
+the request, or nil if not found</p>
+          
+          
+
+          
+          <div class="method-source-code" id="member_tag_for_member-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/struct_handler_methods.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">member_tag_for_member</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">member</span>, <span class="ruby-identifier">type</span> = <span class="ruby-value">:read</span>)
+  <span class="ruby-identifier">specific_tag</span> = <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:read</span> <span class="ruby-operator">?</span> <span class="ruby-value">:attr_reader</span> <span class="ruby-operator">:</span> <span class="ruby-value">:attr_writer</span>
+  (<span class="ruby-identifier">klass</span>.<span class="ruby-identifier">tags</span>(<span class="ruby-identifier">specific_tag</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">tags</span>(<span class="ruby-value">:attr</span>)).<span class="ruby-identifier">find</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">member</span>}
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-members_from_tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">members_from_tags</span><span
+            class="method-args">(klass)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Retrieves all members defined in @attr* tags</p>
+
+<p>@param [ClassObject] klass the class with the attributes @return
+[Array&lt;String&gt;] the list of members defined as attributes on the
+class</p>
+          
+          
+
+          
+          <div class="method-source-code" id="members_from_tags-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/struct_handler_methods.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">members_from_tags</span>(<span class="ruby-identifier">klass</span>)
+  <span class="ruby-identifier">tags</span> = <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">tags</span>(<span class="ruby-value">:attr</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">tags</span>(<span class="ruby-value">:attr_reader</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">tags</span>(<span class="ruby-value">:attr_writer</span>)
+  <span class="ruby-identifier">tags</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">name</span> }.<span class="ruby-identifier">uniq</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-return_type_from_tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">return_type_from_tag</span><span
+            class="method-args">(member_tag)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Gets the return type for the member in a nicely formatted string. Used to
+be injected into auto-generated docstrings.</p>
+
+<p>@param [Tags::Tag] member_tag the tag object to check for types @return
+[String] the user-declared type of the struct member, or [Object] if</p>
+
+<pre>the user did not define a type for this member.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="return_type_from_tag-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/struct_handler_methods.rb, line 50</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">return_type_from_tag</span>(<span class="ruby-identifier">member_tag</span>)
+  (<span class="ruby-identifier">member_tag</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">member_tag</span>.<span class="ruby-identifier">types</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">member_tag</span>.<span class="ruby-identifier">types</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot;Object&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

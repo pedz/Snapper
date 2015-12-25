@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Tags::DefaultFactory - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../../Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-extract_name_from_text">#extract_name_from_text</a>
+    
+    <li ><a href="#method-i-extract_title_and_desc_from_text">#extract_title_and_desc_from_text</a>
+    
+    <li ><a href="#method-i-extract_types_and_name_from_text">#extract_types_and_name_from_text</a>
+    
+    <li ><a href="#method-i-extract_types_and_name_from_text_unstripped">#extract_types_and_name_from_text_unstripped</a>
+    
+    <li ><a href="#method-i-parse_tag">#parse_tag</a>
+    
+    <li ><a href="#method-i-parse_tag_with_name">#parse_tag_with_name</a>
+    
+    <li ><a href="#method-i-parse_tag_with_options">#parse_tag_with_options</a>
+    
+    <li ><a href="#method-i-parse_tag_with_title_and_text">#parse_tag_with_title_and_text</a>
+    
+    <li ><a href="#method-i-parse_tag_with_types">#parse_tag_with_types</a>
+    
+    <li ><a href="#method-i-parse_tag_with_types_and_name">#parse_tag_with_types_and_name</a>
+    
+    <li ><a href="#method-i-parse_tag_with_types_and_title">#parse_tag_with_types_and_title</a>
+    
+    <li ><a href="#method-i-parse_tag_with_types_name_and_default">#parse_tag_with_types_name_and_default</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Tags::DefaultFactory">
+  <h1 id="class-YARD::Tags::DefaultFactory" class="class">
+    class YARD::Tags::DefaultFactory
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="TYPELIST_CLOSING_CHARS">TYPELIST_CLOSING_CHARS
+        
+        <dd>
+        
+      
+        <dt id="TYPELIST_OPENING_CHARS">TYPELIST_OPENING_CHARS
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-parse_tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_tag</span><span
+            class="method-args">(tag_name, text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses tag text and creates a new tag with descriptive text</p>
+
+<p>@param tag_name        the name of the tag to parse @param [String] text  
+the raw tag text @return [Tag]          a tag object with the tag_name and
+text values filled</p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_tag-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/default_factory.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_tag</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>.<span class="ruby-identifier">strip</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_tag_with_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_tag_with_name</span><span
+            class="method-args">(tag_name, text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses tag text and creates a new tag with a key name and descriptive text</p>
+
+<p>@param tag_name        the name of the tag to parse @param [String] text  
+the raw tag text @return [Tag]          a tag object with the tag_name,
+name and text values filled</p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_tag_with_name-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/default_factory.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_tag_with_name</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">name</span>, <span class="ruby-identifier">text</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">extract_name_from_text</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">name</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_tag_with_options" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_tag_with_options</span><span
+            class="method-args">(tag_name, text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="parse_tag_with_options-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/default_factory.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_tag_with_options</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">name</span>, <span class="ruby-identifier">text</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">extract_name_from_text</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-constant">OptionTag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">parse_tag_with_types_name_and_default</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_tag_with_title_and_text" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_tag_with_title_and_text</span><span
+            class="method-args">(tag_name, text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="parse_tag_with_title_and_text-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/default_factory.rb, line 68</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_tag_with_title_and_text</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">title</span>, <span class="ruby-identifier">desc</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">extract_title_and_desc_from_text</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">desc</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">title</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_tag_with_types" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_tag_with_types</span><span
+            class="method-args">(tag_name, text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses tag text and creates a new tag with formally declared types and
+descriptive text</p>
+
+<p>@param tag_name        the name of the tag to parse @param [String] text  
+the raw tag text @return [Tag]          a tag object with the tag_name,
+types and text values filled</p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_tag_with_types-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/default_factory.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_tag_with_types</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">name</span>, <span class="ruby-identifier">types</span>, <span class="ruby-identifier">text</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">extract_types_and_name_from_text</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">TagFormatError</span>, <span class="ruby-node">&quot;cannot specify a name before type list for &#39;@#{tag_name}&#39;&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span>
+  <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>, <span class="ruby-identifier">types</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_tag_with_types_and_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_tag_with_types_and_name</span><span
+            class="method-args">(tag_name, text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses tag text and creates a new tag with formally declared types, a key
+name and descriptive text</p>
+
+<p>@param tag_name        the name of the tag to parse @param [String] text  
+the raw tag text @return [Tag]          a tag object with the tag_name,
+name, types and text values filled</p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_tag_with_types_and_name-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/default_factory.rb, line 44</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_tag_with_types_and_name</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">name</span>, <span class="ruby-identifier">types</span>, <span class="ruby-identifier">text</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">extract_types_and_name_from_text</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">name</span>, <span class="ruby-identifier">text</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">extract_name_from_text</span>(<span class="ruby-identifier">text</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">name</span>
+  <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>, <span class="ruby-identifier">types</span>, <span class="ruby-identifier">name</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_tag_with_types_and_title" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_tag_with_types_and_title</span><span
+            class="method-args">(tag_name, text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses tag text and creates a new tag with formally declared types, a title
+on the first line and descriptive text</p>
+
+<p>@param tag_name        the name of the tag to parse @param [String] text  
+the raw tag text @return [Tag]          a tag object with the tag_name,
+name, types and text values filled</p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_tag_with_types_and_title-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/default_factory.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_tag_with_types_and_title</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">name</span>, <span class="ruby-identifier">types</span>, <span class="ruby-identifier">text</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">extract_types_and_name_from_text_unstripped</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span>
+    <span class="ruby-identifier">title</span>, <span class="ruby-identifier">desc</span> = <span class="ruby-identifier">name</span>, <span class="ruby-identifier">text</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">title</span>, <span class="ruby-identifier">desc</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">extract_title_and_desc_from_text</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">desc</span>, <span class="ruby-identifier">types</span>, <span class="ruby-identifier">title</span>)
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">TagFormatError</span>
+  <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">types</span>, <span class="ruby-keyword">nil</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_tag_with_types_name_and_default" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_tag_with_types_name_and_default</span><span
+            class="method-args">(tag_name, text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="parse_tag_with_types_name_and_default-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/default_factory.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_tag_with_types_name_and_default</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-comment"># Can&#39;t allow () in a default tag, otherwise the grammar is too ambiguous when types is omitted.</span>
+  <span class="ruby-identifier">open</span>, <span class="ruby-identifier">close</span> = <span class="ruby-constant">TYPELIST_OPENING_CHARS</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;(&#39;</span>, <span class="ruby-string">&#39;&#39;</span>), <span class="ruby-constant">TYPELIST_CLOSING_CHARS</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;)&#39;</span>, <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-identifier">name</span>, <span class="ruby-identifier">types</span>, <span class="ruby-identifier">text</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">extract_types_and_name_from_text</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">open</span>, <span class="ruby-identifier">close</span>)
+  <span class="ruby-identifier">name</span>, <span class="ruby-identifier">text</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">extract_name_from_text</span>(<span class="ruby-identifier">text</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">name</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">text</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\A\(/</span>
+    <span class="ruby-identifier">_</span>, <span class="ruby-identifier">default</span>, <span class="ruby-identifier">text</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">extract_types_and_name_from_text</span>(<span class="ruby-identifier">text</span>, <span class="ruby-string">&#39;(&#39;</span>, <span class="ruby-string">&#39;)&#39;</span>)
+    <span class="ruby-constant">DefaultTag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>, <span class="ruby-identifier">types</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">default</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">DefaultTag</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>, <span class="ruby-identifier">types</span>, <span class="ruby-identifier">name</span>, <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-extract_name_from_text" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_name_from_text</span><span
+            class="method-args">(text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extracts the name from raw tag text returning the name and remaining value</p>
+
+<p>@param [String] text the raw tag text @return [Array] an array holding the
+name as the first element and the</p>
+
+<pre class="ruby"><span class="ruby-identifier">value</span> <span class="ruby-identifier">as</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">second</span> <span class="ruby-identifier">element</span>
+</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="extract_name_from_text-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/default_factory.rb, line 98</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_name_from_text</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">text</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/\s+/</span>, <span class="ruby-value">2</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-extract_title_and_desc_from_text" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_title_and_desc_from_text</span><span
+            class="method-args">(text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_title_and_desc_from_text-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/default_factory.rb, line 102</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_title_and_desc_from_text</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">TagFormatError</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">text</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">text</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">title</span>, <span class="ruby-identifier">desc</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">text</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\A[ \t]\n/</span>
+    <span class="ruby-identifier">desc</span> = <span class="ruby-identifier">text</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">text</span> = <span class="ruby-identifier">text</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/\r?\n/</span>)
+    <span class="ruby-identifier">title</span> = <span class="ruby-identifier">text</span>.<span class="ruby-identifier">shift</span>.<span class="ruby-identifier">squeeze</span>(<span class="ruby-string">&#39; &#39;</span>).<span class="ruby-identifier">strip</span>
+    <span class="ruby-identifier">desc</span> = <span class="ruby-identifier">text</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\n&quot;</span>)
+  <span class="ruby-keyword">end</span>
+  [<span class="ruby-identifier">title</span>, <span class="ruby-identifier">desc</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-extract_types_and_name_from_text" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_types_and_name_from_text</span><span
+            class="method-args">(text, opening_types = TYPELIST_OPENING_CHARS, closing_types = TYPELIST_CLOSING_CHARS)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses a [], &lt;&gt;, {} or () block at the beginning of a line of text
+into a list of comma delimited values.</p>
+
+<p>@example</p>
+
+<pre class="ruby"><span class="ruby-identifier">obj</span>.<span class="ruby-identifier">parse_types</span>(<span class="ruby-string">&#39;[String, Array&lt;Hash, String&gt;, nil]&#39;</span>) <span class="ruby-comment"># =&gt; [nil, [&#39;String&#39;, &#39;Array&lt;Hash, String&gt;&#39;, &#39;nil&#39;], &quot;&quot;]</span>
+<span class="ruby-identifier">obj</span>.<span class="ruby-identifier">parse_types</span>(<span class="ruby-string">&#39;b&lt;String&gt; A string&#39;</span>) <span class="ruby-comment"># =&gt; [&#39;b&#39;, [&#39;String&#39;], &#39;A string&#39;]</span>
+</pre>
+
+<p>@return [Array(String, <a href="../../Array.html">Array</a>&lt;String&gt;,
+<a href="../../String.html">String</a>)] the text before the type</p>
+
+<pre>list (or nil), followed by the type list parsed into an array of
+strings, followed by the text following the type list.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="extract_types_and_name_from_text-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/default_factory.rb, line 125</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_types_and_name_from_text</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">opening_types</span> = <span class="ruby-constant">TYPELIST_OPENING_CHARS</span>, <span class="ruby-identifier">closing_types</span> = <span class="ruby-constant">TYPELIST_CLOSING_CHARS</span>)
+  <span class="ruby-identifier">before</span>, <span class="ruby-identifier">list</span>, <span class="ruby-identifier">text</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">extract_types_and_name_from_text_unstripped</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">opening_types</span>, <span class="ruby-identifier">closing_types</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">list</span>.<span class="ruby-identifier">nil?</span>
+    [<span class="ruby-keyword">nil</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">text</span>.<span class="ruby-identifier">strip</span>]
+  <span class="ruby-keyword">else</span>
+    [<span class="ruby-identifier">before</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">before</span>.<span class="ruby-identifier">strip</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">list</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">strip</span> }, <span class="ruby-identifier">text</span>.<span class="ruby-identifier">strip</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-extract_types_and_name_from_text_unstripped" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_types_and_name_from_text_unstripped</span><span
+            class="method-args">(text, opening_types = TYPELIST_OPENING_CHARS, closing_types = TYPELIST_CLOSING_CHARS)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_types_and_name_from_text_unstripped-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/default_factory.rb, line 134</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_types_and_name_from_text_unstripped</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">opening_types</span> = <span class="ruby-constant">TYPELIST_OPENING_CHARS</span>, <span class="ruby-identifier">closing_types</span> = <span class="ruby-constant">TYPELIST_CLOSING_CHARS</span>)
+  <span class="ruby-identifier">s</span>, <span class="ruby-identifier">e</span> = <span class="ruby-value">0</span>, <span class="ruby-value">0</span>
+  <span class="ruby-identifier">before</span> = <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-identifier">list</span>, <span class="ruby-identifier">level</span>, <span class="ruby-identifier">seen_space</span>, <span class="ruby-identifier">i</span> = [<span class="ruby-string">&#39;&#39;</span>], <span class="ruby-value">0</span>, <span class="ruby-keyword">false</span>, <span class="ruby-value">0</span>
+  <span class="ruby-identifier">last_seen</span> = <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">text</span>.<span class="ruby-identifier">length</span>
+    <span class="ruby-identifier">c</span> = <span class="ruby-identifier">text</span>[<span class="ruby-identifier">i</span>, <span class="ruby-value">1</span>]
+
+    <span class="ruby-keyword">if</span> (<span class="ruby-identifier">c</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;&quot;&#39;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;&#39;&quot;</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">text</span>[<span class="ruby-identifier">i</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] <span class="ruby-operator">=~</span> <span class="ruby-node">/#{c}.+?#{c}/</span>
+      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">$&amp;</span>
+      <span class="ruby-identifier">i</span> <span class="ruby-operator">+=</span> <span class="ruby-node">$&amp;</span>.<span class="ruby-identifier">length</span>
+      <span class="ruby-keyword">next</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">level</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;#&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">text</span>[<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] <span class="ruby-operator">=~</span> <span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">METHODNAMEMATCH</span>
+      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">+</span> <span class="ruby-node">$&amp;</span>
+      <span class="ruby-identifier">i</span> <span class="ruby-operator">+=</span> <span class="ruby-node">$&amp;</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword">next</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">opening_types</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">c</span>)
+      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">c</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">level</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+      <span class="ruby-identifier">s</span> = <span class="ruby-identifier">i</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">level</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+      <span class="ruby-identifier">level</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">closing_types</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">c</span>)
+      <span class="ruby-identifier">level</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">last_seen</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;=&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;&gt;&#39;</span>
+      <span class="ruby-keyword">break</span> <span class="ruby-identifier">e</span> = <span class="ruby-identifier">i</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">level</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">c</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;,&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">level</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">push</span> <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\S/</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">level</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+      <span class="ruby-keyword">break</span> <span class="ruby-identifier">e</span> = <span class="ruby-identifier">i</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">seen_space</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">list</span> <span class="ruby-operator">==</span> [<span class="ruby-string">&#39;&#39;</span>]
+      <span class="ruby-identifier">before</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">c</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\s/</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">level</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">before</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-identifier">seen_space</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">level</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">c</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">last_seen</span> = <span class="ruby-identifier">c</span>
+    <span class="ruby-identifier">i</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">before</span> = <span class="ruby-identifier">before</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">before</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">list</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">list</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;&#39;</span>
+    [<span class="ruby-keyword">nil</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">text</span>]
+  <span class="ruby-keyword">else</span>
+    [<span class="ruby-identifier">before</span>, <span class="ruby-identifier">list</span>, <span class="ruby-identifier">text</span>[(<span class="ruby-identifier">e</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>)<span class="ruby-operator">..</span><span class="ruby-value">-1</span>]]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

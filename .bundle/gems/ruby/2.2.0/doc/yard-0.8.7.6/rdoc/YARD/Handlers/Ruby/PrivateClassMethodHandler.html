@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Handlers::Ruby::PrivateClassMethodHandler - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../";
+</script>
+
+<script src="../../../js/jquery.js"></script>
+<script src="../../../js/darkfish.js"></script>
+
+<link href="../../../css/fonts.css" rel="stylesheet">
+<link href="../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Base.html">YARD::Handlers::Ruby::Base</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-privatize_class_method">#privatize_class_method</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Handlers::Ruby::PrivateClassMethodHandler">
+  <h1 id="class-YARD::Handlers::Ruby::PrivateClassMethodHandler" class="class">
+    class YARD::Handlers::Ruby::PrivateClassMethodHandler
+  </h1>
+
+  <section class="description">
+    
+<p>Sets visibility of a class method</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-privatize_class_method" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">privatize_class_method</span><span
+            class="method-args">(node)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="privatize_class_method-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/private_class_method_handler.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">privatize_class_method</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">literal?</span>
+    <span class="ruby-identifier">method</span> = <span class="ruby-constant">Proxy</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">node</span>[<span class="ruby-value">0</span>][<span class="ruby-value">0</span>][<span class="ruby-value">0</span>], <span class="ruby-value">:method</span>)
+    
+    <span class="ruby-comment"># Proxy will not have a #visibility method when handling inherited class methods</span>
+    <span class="ruby-comment"># like :new, yet &quot;private_class_method :new&quot; is valid Ruby syntax. Therefore</span>
+    <span class="ruby-comment"># if Proxy doesn&#39;t respond to #visibility, the object should be skipped.</span>
+    <span class="ruby-comment"># </span>
+    <span class="ruby-comment"># However, it is important to note that classes can be reopened, and</span>
+    <span class="ruby-comment"># private_class_method can be called inside these reopened classes.</span>
+    <span class="ruby-comment"># Therefore when encountering private_class_method, all of the files need</span>
+    <span class="ruby-comment"># to be parsed before checking if Proxy responds to #visibility. If this</span>
+    <span class="ruby-comment"># is not done, it is possible that class methods may be incorrectly marked</span>
+    <span class="ruby-comment"># public/private.</span>
+    <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">parse_remaining_files</span>
+    <span class="ruby-identifier">method</span>.<span class="ruby-identifier">visibility</span> = <span class="ruby-value">:private</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">method</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-value">:visibility</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">UndocumentableError</span>, <span class="ruby-node">&quot;invalid argument to private_class_method: #{node.source}&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">NamespaceMissingError</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">UndocumentableError</span>, <span class="ruby-node">&quot;private visibility set on unrecognized method: #{node[0]}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Tags::Library - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#class-YARD::Tags::Library-label-Defining+Custom+Meta-Data+Tags">Defining Custom Meta-Data Tags</a>
+    <li><a href="#class-YARD::Tags::Library-label-Defining+Custom+Directives">Defining Custom Directives</a>
+    <li><a href="#class-YARD::Tags::Library-label-Namespaced+Tags">Namespaced Tags</a>
+    <li><a href="#class-YARD::Tags::Library-label-Adding-2FChanging+the+Tag+Syntax">Adding/Changing the Tag Syntax</a>
+  </ul>
+</div>
+
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../../Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-default_factory">::default_factory</a>
+    
+    <li ><a href="#method-c-default_factory-3D">::default_factory=</a>
+    
+    <li ><a href="#method-c-define_directive">::define_directive</a>
+    
+    <li ><a href="#method-c-define_tag">::define_tag</a>
+    
+    <li ><a href="#method-c-directive_method_name">::directive_method_name</a>
+    
+    <li ><a href="#method-c-factory_method_for">::factory_method_for</a>
+    
+    <li ><a href="#method-c-factory_method_for_directive">::factory_method_for_directive</a>
+    
+    <li ><a href="#method-c-instance">::instance</a>
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-c-sorted_labels">::sorted_labels</a>
+    
+    <li ><a href="#method-c-tag_method_name">::tag_method_name</a>
+    
+    <li ><a href="#method-c-tag_or_directive_method_name">::tag_or_directive_method_name</a>
+    
+    <li ><a href="#method-i-directive_call">#directive_call</a>
+    
+    <li ><a href="#method-i-directive_create">#directive_create</a>
+    
+    <li ><a href="#method-i-has_directive-3F">#has_directive?</a>
+    
+    <li ><a href="#method-i-has_tag-3F">#has_tag?</a>
+    
+    <li ><a href="#method-i-send_to_factory">#send_to_factory</a>
+    
+    <li ><a href="#method-i-tag_create">#tag_create</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Tags::Library">
+  <h1 id="class-YARD::Tags::Library" class="class">
+    class YARD::Tags::Library
+  </h1>
+
+  <section class="description">
+    
+<p>Keeps track of all the registered meta-data tags and directives. Also
+allows for defining of custom tags and customizing the tag parsing syntax.</p>
+
+<h2 id="class-YARD::Tags::Library-label-Defining+Custom+Meta-Data+Tags">Defining Custom Meta-Data <a href="../Tags.html">Tags</a><span><a href="#class-YARD::Tags::Library-label-Defining+Custom+Meta-Data+Tags">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>To define a custom tag, use {define_tag}. You should pass the tag name and
+the factory method to use when creating the tag. If you do not provide a
+factory method to use, it will default to {DefaultFactory#parse_tag}</p>
+
+<p>You can also define tag objects manually by simply implementing a
+“tagname_tag” method that returns a {Tag} object, but they will not take
+advantage of tag factory parsing:</p>
+
+<pre class="ruby"><span class="ruby-keyword">def</span> <span class="ruby-identifier">mytag_tag</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">mytag</span>, <span class="ruby-identifier">text</span>)
+<span class="ruby-keyword">end</span>
+</pre>
+
+<h2 id="class-YARD::Tags::Library-label-Defining+Custom+Directives">Defining Custom Directives<span><a href="#class-YARD::Tags::Library-label-Defining+Custom+Directives">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Directives can be defined by calling the {define_directive} method, taking
+the directive name, an optional tag factory parser method (to parse the
+data in the directive into a temporary {Tag} object) and a {Directive}
+subclass that performs the directive processing. For more information on
+creating a <a href="Directive.html">Directive</a> subclass, see the
+{Directive} class documentation.</p>
+
+<p>Similar to tags, Directives can also be defined manually, in this case
+using the method name “mydirective_directive” and returning a new
+{Directive} object:</p>
+
+<pre class="ruby"><span class="ruby-keyword">def</span> <span class="ruby-identifier">mydirective_directive</span>(<span class="ruby-identifier">tag</span>, <span class="ruby-identifier">parser</span>)
+  <span class="ruby-constant">MyDirective</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag</span>, <span class="ruby-identifier">parser</span>)
+<span class="ruby-keyword">end</span>
+</pre>
+
+<h2 id="class-YARD::Tags::Library-label-Namespaced+Tags">Namespaced <a href="../Tags.html">Tags</a><span><a href="#class-YARD::Tags::Library-label-Namespaced+Tags">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>In <a href="../../YARD.html">YARD</a> 0.8.0+, tags can be namespaced using
+the &#39;.&#39; character. It is recommended to namespace project specific
+tags, like +@yard.tag_name+, so that tags do not collide with other plugins
+or new built-in tags.</p>
+
+<h2 id="class-YARD::Tags::Library-label-Adding-2FChanging+the+Tag+Syntax">Adding/Changing the <a href="Tag.html">Tag</a> Syntax<span><a href="#class-YARD::Tags::Library-label-Adding-2FChanging+the+Tag+Syntax">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>If you have specialized tag parsing needs you can substitute the {#factory}
+object with your own by setting {Library.default_factory= <a
+href="Library.html#method-c-default_factory">::default_factory</a>} to a
+new class with its own parsing methods before running <a
+href="../../YARD.html">YARD</a>. This is useful if you want to change the
+syntax of existing tags (@see, @since, etc.)</p>
+
+<p>@example Defining a custom tag</p>
+
+<pre class="ruby"><span class="ruby-identifier">define_tag</span> <span class="ruby-string">&quot;Parameter&quot;</span>, :<span class="ruby-identifier">param</span>, :<span class="ruby-identifier">with_types_and_name</span>
+<span class="ruby-identifier">define_tag</span> <span class="ruby-string">&quot;Author&quot;</span>, :<span class="ruby-identifier">author</span>
+</pre>
+
+<p>@example Defining a custom directive</p>
+
+<pre class="ruby"><span class="ruby-identifier">define_directive</span> :<span class="ruby-identifier">method</span>, :<span class="ruby-identifier">with_title_and_text</span>, <span class="ruby-constant">MethodDirective</span>
+</pre>
+
+<p>@see <a href="DefaultFactory.html">DefaultFactory</a> @see <a
+href="Library.html#method-c-define_tag">::define_tag</a> @see <a
+href="Library.html#method-c-define_directive">::define_directive</a> @see
+<a href="Directive.html">Directive</a></p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-c-labels" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">labels</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [SymbolHash{Symbol=&gt;String}] the map of tag names and their</p>
+
+<pre>respective display labels.</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-c-transitive_tags" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">transitive_tags</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Sets the list of tags that should apply to any children inside the
+namespace they are defined in. For instance, a “@since” tag should apply to
+all methods inside a module it is defined in. Transitive tags can be
+overridden by directly defining a tag on the child object.</p>
+
+<p>@return [Array&lt;Symbol&gt;] a list of transitive tags @since 0.6.0</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-c-visible_tags" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">visible_tags</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Sets the list of tags to display when rendering templates. The order of
+tags in the list is also significant, as it represents the order that tags
+are displayed in templates.</p>
+
+<p>You can use the {Array#place} to insert new tags to be displayed in the
+templates at specific positions:</p>
+
+<pre class="ruby"><span class="ruby-constant">Library</span>.<span class="ruby-identifier">visible_tags</span>.<span class="ruby-identifier">place</span>(:<span class="ruby-identifier">mytag</span>).<span class="ruby-identifier">before</span>(:<span class="ruby-keyword">return</span>)
+</pre>
+
+<p>@return [Array&lt;Symbol&gt;] a list of ordered tags @since 0.6.0</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-factory" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">factory</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>A factory class to handle parsing of tags, defaults to {default_factory}</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-default_factory" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">default_factory</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@!attribute <a
+href="Library.html#method-c-default_factory">::default_factory</a> Replace
+the factory object responsible for parsing tags by setting this to an
+object (or class) that responds to <code>parse_TAGNAME</code> methods where
+<code>TAGNAME</code> is the name of the tag.</p>
+
+<p>You should set this value before performing any source parsing with <a
+href="../../YARD.html">YARD</a>, otherwise your factory class will not be
+used.</p>
+
+<p>@example</p>
+
+<pre class="ruby"><span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">Library</span>.<span class="ruby-identifier">default_factory</span> = <span class="ruby-constant">MyFactory</span>
+</pre>
+
+<p>@see <a href="DefaultFactory.html">DefaultFactory</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="default_factory-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 82</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">default_factory</span>
+  <span class="ruby-ivar">@default_factory</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">DefaultFactory</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-default_factory-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">default_factory=</span><span
+            class="method-args">(factory)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="default_factory-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">default_factory=</span>(<span class="ruby-identifier">factory</span>)
+  <span class="ruby-ivar">@default_factory</span> = <span class="ruby-identifier">factory</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Class</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">factory</span>.<span class="ruby-identifier">new</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">factory</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-define_directive" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">define_directive</span><span
+            class="method-args">(tag, tag_meth = nil, directive_class = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@macro [attach] yard.directive</p>
+
+<pre>@!method $1_directive
+@!visibility private
+@yard.directive $1 [$2] $-1</pre>
+
+<p>@overload <a
+href="Library.html#method-c-define_directive">::define_directive</a>(tag,
+tag_meth = nil, directive_class)</p>
+
+<pre>Convenience method to define a new directive using a {Tag} factory
+method and {Directive} subclass that implements the directive
+callbacks.
+
+@param [#to_s] tag the tag name of the directive
+@param [#to_s] tag_meth the tag factory method to use when
+  parsing tag information
+@param [Class&lt;Directive&gt;] the directive class that implements the
+  directive behaviour
+@see define_tag</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="define_directive-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 194</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">define_directive</span>(<span class="ruby-identifier">tag</span>, <span class="ruby-identifier">tag_meth</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">directive_class</span> = <span class="ruby-keyword">nil</span>)
+          <span class="ruby-identifier">directive_meth</span> = <span class="ruby-identifier">directive_method_name</span>(<span class="ruby-identifier">tag</span>)
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">directive_class</span>.<span class="ruby-identifier">nil?</span>
+            <span class="ruby-identifier">tag_meth</span>, <span class="ruby-identifier">directive_class</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">tag_meth</span>
+          <span class="ruby-keyword">end</span>
+          <span class="ruby-identifier">class_eval</span> <span class="ruby-string">&quot;            def #{directive_meth}(tag, parser)
+              directive_call(tag, parser)
+            end
+&quot;</span>, <span class="ruby-keyword">__FILE__</span>, <span class="ruby-keyword">__LINE__</span>
+
+          <span class="ruby-ivar">@factory_methods</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">SymbolHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">false</span>)
+          <span class="ruby-ivar">@factory_methods</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">tag</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tag_meth</span>)
+          <span class="ruby-ivar">@directive_factory_classes</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">SymbolHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">false</span>)
+          <span class="ruby-ivar">@directive_factory_classes</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">tag</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">directive_class</span>)
+
+          <span class="ruby-identifier">tag</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-define_tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">define_tag</span><span
+            class="method-args">(label, tag, meth = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Convenience method to define a new tag using one of {Tag}&#39;s factory
+methods, or the regular {DefaultFactory#parse_tag} factory method if none
+is supplied.</p>
+
+<p>@!macro [attach] yard.tag</p>
+
+<pre>@!method $2_tag
+@!visibility private
+@yard.tag $2 [$3] $1</pre>
+
+<p>@param [#to_s] label the label used when displaying the tag in templates
+@param [#to_s] tag the tag name to create @param [#to_s, Class&lt;Tag&gt;]
+meth the {Tag} factory method to call when</p>
+
+<pre>creating the tag or the name of the class to directly create a tag for</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="define_tag-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 156</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">define_tag</span>(<span class="ruby-identifier">label</span>, <span class="ruby-identifier">tag</span>, <span class="ruby-identifier">meth</span> = <span class="ruby-keyword">nil</span>)
+          <span class="ruby-identifier">tag_meth</span> = <span class="ruby-identifier">tag_method_name</span>(<span class="ruby-identifier">tag</span>)
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Class</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">Tag</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">meth</span>
+            <span class="ruby-identifier">class_eval</span> <span class="ruby-string">&quot;              def #{tag_meth}(text)
+                #{meth}.new(#{tag.inspect}, text)
+              end
+&quot;</span>, <span class="ruby-keyword">__FILE__</span>, <span class="ruby-keyword">__LINE__</span>
+          <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">class_eval</span> <span class="ruby-string">&quot;              def #{tag_meth}(text)
+                send_to_factory(#{tag.inspect}, #{meth.inspect}, text)
+              end
+&quot;</span>, <span class="ruby-keyword">__FILE__</span>, <span class="ruby-keyword">__LINE__</span>
+          <span class="ruby-keyword">end</span>
+
+          <span class="ruby-ivar">@labels</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">SymbolHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">false</span>)
+          <span class="ruby-ivar">@labels</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">tag</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">label</span>)
+          <span class="ruby-ivar">@factory_methods</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">SymbolHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">false</span>)
+          <span class="ruby-ivar">@factory_methods</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">tag</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">meth</span>)
+          <span class="ruby-identifier">tag</span>
+        <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-directive_method_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">directive_method_name</span><span
+            class="method-args">(tag_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="directive_method_name-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 217</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">directive_method_name</span>(<span class="ruby-identifier">tag_name</span>)
+  <span class="ruby-identifier">tag_or_directive_method_name</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-string">&#39;directive&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-factory_method_for" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">factory_method_for</span><span
+            class="method-args">(tag)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the factory method used to parse the tag text for a specific tag</p>
+
+<p>@param [Symbol] tag the tag name @return [Symbol] the factory method name
+for the tag @return [Class&lt;Tag&gt;,Symbol] the <a
+href="Tag.html">Tag</a> class to use to parse the tag</p>
+
+<pre>or the method to call on the factory class</pre>
+
+<p>@return [nil] if the tag is freeform text @since 0.6.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="factory_method_for-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 98</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">factory_method_for</span>(<span class="ruby-identifier">tag</span>)
+  <span class="ruby-ivar">@factory_methods</span>[<span class="ruby-identifier">tag</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-factory_method_for_directive" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">factory_method_for_directive</span><span
+            class="method-args">(directive)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the factory method used to parse the tag text for a specific
+directive</p>
+
+<p>@param [Symbol] directive the directive name @return [Symbol] the factory
+method name for the tag @return [Class&lt;Tag&gt;,Symbol] the <a
+href="Tag.html">Tag</a> class to use to parse the tag or</p>
+
+<pre>the methods to call on the factory class</pre>
+
+<p>@return [nil] if the tag is freeform text @since 0.8.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="factory_method_for_directive-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 111</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">factory_method_for_directive</span>(<span class="ruby-identifier">directive</span>)
+  <span class="ruby-ivar">@directive_factory_classes</span>[<span class="ruby-identifier">directive</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-instance" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">instance</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@!attribute instance @return [Library] the main <a
+href="Library.html">Library</a> instance object.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="instance-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 66</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">instance</span>
+  <span class="ruby-ivar">@instance</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(factory = Library.default_factory)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 258</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">factory</span> = <span class="ruby-constant">Library</span>.<span class="ruby-identifier">default_factory</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">factory</span> = <span class="ruby-identifier">factory</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-sorted_labels" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">sorted_labels</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Sorts the labels lexically by their label name, often used when displaying
+the tags.</p>
+
+<p>@return [Array&lt;Symbol&gt;, String] the sorted labels as an array of the
+tag name and label</p>
+          
+          
+
+          
+          <div class="method-source-code" id="sorted_labels-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 141</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sorted_labels</span>
+  <span class="ruby-identifier">labels</span>.<span class="ruby-identifier">sort_by</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">downcase</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-tag_method_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tag_method_name</span><span
+            class="method-args">(tag_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="tag_method_name-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 213</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tag_method_name</span>(<span class="ruby-identifier">tag_name</span>)
+  <span class="ruby-identifier">tag_or_directive_method_name</span>(<span class="ruby-identifier">tag_name</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-tag_or_directive_method_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tag_or_directive_method_name</span><span
+            class="method-args">(tag_name, type = 'tag')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="tag_or_directive_method_name-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 223</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tag_or_directive_method_name</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">type</span> = <span class="ruby-string">&#39;tag&#39;</span>)
+  <span class="ruby-node">&quot;#{tag_name.to_s.gsub(&#39;.&#39;, &#39;_&#39;)}_#{type}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-directive_create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">directive_create</span><span
+            class="method-args">(tag_name, tag_buf, parser)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new directive with tag information and a docstring parser object.
+@param [String] tag_name the name of the tag @param [String] tag_buf the
+tag data @param [DocstringParser] parser the parser object parsing the
+docstring @return [Directive] the newly created directive</p>
+          
+          
+
+          
+          <div class="method-source-code" id="directive_create-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 288</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">directive_create</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">tag_buf</span>, <span class="ruby-identifier">parser</span>)
+  <span class="ruby-identifier">meth</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">factory_method_for</span>(<span class="ruby-identifier">tag_name</span>)
+  <span class="ruby-identifier">tag</span> = <span class="ruby-identifier">send_to_factory</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">meth</span>, <span class="ruby-identifier">tag_buf</span>)
+  <span class="ruby-identifier">meth</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">directive_method_name</span>(<span class="ruby-identifier">tag_name</span>)
+  <span class="ruby-identifier">send</span>(<span class="ruby-identifier">meth</span>, <span class="ruby-identifier">tag</span>, <span class="ruby-identifier">parser</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-has_directive-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">has_directive?</span><span
+            class="method-args">(tag_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param [#to_s] tag_name the name of the tag to look for @return [Boolean]
+whether a directive by the given name is registered in</p>
+
+<pre>the library.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="has_directive-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 278</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">has_directive?</span>(<span class="ruby-identifier">tag_name</span>)
+  <span class="ruby-identifier">tag_name</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">respond_to?</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">directive_method_name</span>(<span class="ruby-identifier">tag_name</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-has_tag-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">has_tag?</span><span
+            class="method-args">(tag_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param [#to_s] tag_name the name of the tag to look for @return [Boolean]
+whether a tag by the given name is registered in</p>
+
+<pre>the library.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="has_tag-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 265</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">has_tag?</span>(<span class="ruby-identifier">tag_name</span>)
+  <span class="ruby-identifier">tag_name</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">respond_to?</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">tag_method_name</span>(<span class="ruby-identifier">tag_name</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tag_create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tag_create</span><span
+            class="method-args">(tag_name, tag_buf)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new {Tag} object with a given tag name and data @return [Tag] the
+newly created tag object</p>
+          
+          
+
+          
+          <div class="method-source-code" id="tag_create-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 271</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tag_create</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">tag_buf</span>)
+  <span class="ruby-identifier">send</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">tag_method_name</span>(<span class="ruby-identifier">tag_name</span>), <span class="ruby-identifier">tag_buf</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-directive_call" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">directive_call</span><span
+            class="method-args">(tag, parser)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Directive]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="directive_call-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 242</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">directive_call</span>(<span class="ruby-identifier">tag</span>, <span class="ruby-identifier">parser</span>)
+  <span class="ruby-identifier">meth</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">factory_method_for_directive</span>(<span class="ruby-identifier">tag</span>.<span class="ruby-identifier">tag_name</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">meth</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-constant">Directive</span>
+    <span class="ruby-identifier">meth</span> = <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tag</span>, <span class="ruby-identifier">parser</span>)
+    <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">call</span>
+    <span class="ruby-identifier">meth</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">tag</span>, <span class="ruby-identifier">parser</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-send_to_factory" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">send_to_factory</span><span
+            class="method-args">(tag_name, meth, text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="send_to_factory-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/library.rb, line 230</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">send_to_factory</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">meth</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">meth</span> = <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">send_name</span> = <span class="ruby-string">&quot;parse_tag&quot;</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">meth</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-string">&quot;&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">meth</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@factory</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">send_name</span>)
+    <span class="ruby-identifier">arity</span> = <span class="ruby-ivar">@factory</span>.<span class="ruby-identifier">method</span>(<span class="ruby-identifier">send_name</span>).<span class="ruby-identifier">arity</span>
+    <span class="ruby-ivar">@factory</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">send_name</span>, <span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">NoMethodError</span>, <span class="ruby-node">&quot;Factory #{@factory.class_name} does not implement factory method :#{meth}.&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

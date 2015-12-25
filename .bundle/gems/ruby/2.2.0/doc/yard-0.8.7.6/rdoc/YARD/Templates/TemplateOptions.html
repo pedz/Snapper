@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Templates::TemplateOptions - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../Options.html">YARD::Options</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-embed_mixins_match-3F">#embed_mixins_match?</a>
+    
+    <li ><a href="#method-i-no_highlight-3D">#no_highlight=</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Templates::TemplateOptions">
+  <h1 id="class-YARD::Templates::TemplateOptions" class="class">
+    class YARD::Templates::TemplateOptions
+  </h1>
+
+  <section class="description">
+    
+<p>An <a href="../Options.html">Options</a> class containing default options
+for base template rendering. For options specific to generation of HTML
+output, see {CLI::YardocOptions}.</p>
+
+<p>@see <a href="../CLI/YardocOptions.html">CLI::YardocOptions</a></p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-markup_provider" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">markup_provider</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Class] the markup provider class for the markup format</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-no_highlight" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">no_highlight</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@deprecated use {#highlight} instead. @return [Boolean] whether
+highlighting should be ignored</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-object" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">object</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [CodeObjects::Base] the main object being generated in the template</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-owner" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">owner</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [CodeObjects::Base] the owner of the generated object</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-page_title" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">page_title</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [String] the title of a given page</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-serializer" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">serializer</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Serializers::Base] the serializer used to generate links and
+serialize</p>
+
+<pre>output. Serialization output only occurs if {#serialize} is +true+.</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-type" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">type</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Symbol] the template type used to generate output</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-verifier" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">verifier</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Verifier] the verifier object</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-embed_mixins_match-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">embed_mixins_match?</span><span
+            class="method-args">(mixin)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param [CodeObjects::Base] mixin accepts any code object, but returns</p>
+
+<pre>nil unless the object is a module.</pre>
+
+<p>@return [Boolean] whether a mixin matches the embed_mixins list @return
+[nil] if the mixin is not a module object</p>
+          
+          
+
+          
+          <div class="method-source-code" id="embed_mixins_match-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/template_options.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">embed_mixins_match?</span>(<span class="ruby-identifier">mixin</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">mixin</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">ModuleObject</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">mixin</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">object</span> <span class="ruby-comment"># the method is not inherited</span>
+  <span class="ruby-identifier">embed_mixins</span>.<span class="ruby-identifier">any?</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">embed_mixin</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">re</span> = <span class="ruby-node">/\A#{Regexp.quote(embed_mixin).gsub(&#39;\*&#39;, &#39;.*&#39;)}\Z/</span>
+    <span class="ruby-identifier">matchstr</span> = <span class="ruby-identifier">embed_mixin</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&quot;::&quot;</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">mixin</span>.<span class="ruby-identifier">path</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">mixin</span>.<span class="ruby-identifier">name</span>
+    <span class="ruby-identifier">re</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">matchstr</span>.<span class="ruby-identifier">to_s</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-no_highlight-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">no_highlight=</span><span
+            class="method-args">(value)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="no_highlight-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/template_options.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">no_highlight=</span>(<span class="ruby-identifier">value</span>) <span class="ruby-keyword">self</span>.<span class="ruby-identifier">highlight</span> = <span class="ruby-operator">!</span><span class="ruby-identifier">value</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

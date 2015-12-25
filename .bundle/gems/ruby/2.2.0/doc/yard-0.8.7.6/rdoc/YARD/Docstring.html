@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Docstring - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../String.html">String</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-c-new-21">::new!</a>
+    
+    <li ><a href="#method-c-parser">::parser</a>
+    
+    <li class="calls-super" ><a href="#method-i-2B">#+</a>
+    
+    <li ><a href="#method-i-add_tag">#add_tag</a>
+    
+    <li ><a href="#method-i-all-3D">#all=</a>
+    
+    <li ><a href="#method-i-blank-3F">#blank?</a>
+    
+    <li ><a href="#method-i-convert_ref_tags">#convert_ref_tags</a>
+    
+    <li ><a href="#method-i-delete_tag_if">#delete_tag_if</a>
+    
+    <li ><a href="#method-i-delete_tags">#delete_tags</a>
+    
+    <li class="calls-super" ><a href="#method-i-dup">#dup</a>
+    
+    <li ><a href="#method-i-has_tag-3F">#has_tag?</a>
+    
+    <li ><a href="#method-i-hash_flag-3D">#hash_flag=</a>
+    
+    <li ><a href="#method-i-line">#line</a>
+    
+    <li ><a href="#method-i-parse_comments">#parse_comments</a>
+    
+    <li class="calls-super" ><a href="#method-i-replace">#replace</a>
+    
+    <li ><a href="#method-i-resolve_reference">#resolve_reference</a>
+    
+    <li ><a href="#method-i-summary">#summary</a>
+    
+    <li ><a href="#method-i-tag">#tag</a>
+    
+    <li ><a href="#method-i-tags">#tags</a>
+    
+    <li ><a href="#method-i-to_raw">#to_raw</a>
+    
+    <li class="calls-super" ><a href="#method-i-to_s">#to_s</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Docstring">
+  <h1 id="class-YARD::Docstring" class="class">
+    class YARD::Docstring
+  </h1>
+
+  <section class="description">
+    
+<p>A documentation string, or “docstring” for short, encapsulates the comments
+and metadata, or “tags”, of an object. Meta-data is expressed in the form
++@tag VALUE+, where VALUE can span over multiple lines as long as they are
+indented. The following +@example+ tag shows how tags can be indented:</p>
+
+<pre class="ruby"><span class="ruby-comment"># @example My example</span>
+<span class="ruby-comment">#   a = &quot;hello world&quot;</span>
+<span class="ruby-comment">#   a.reverse</span>
+<span class="ruby-comment"># @version 1.0</span>
+</pre>
+
+<p><a href="Tags.html">Tags</a> can be nested in a documentation string,
+though the {Tags::Tag} itself is responsible for parsing the inner tags.</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="META_MATCH">META_MATCH
+        
+        <dd><p>Matches a tag at the start of a comment line @deprecated Use
+{DocstringParser::META_MATCH}</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-c-default_parser" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">default_parser</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@note Plugin developers should make sure to reset this value</p>
+
+<pre>after parsing finishes. This can be done via the
+{Parser::SourceParser.after_parse_list} callback. This will
+ensure that YARD can properly parse multiple projects in
+the same process.</pre>
+
+<p>@return [Class&lt;DocstringParser&gt;] the parser class used to parse</p>
+
+<pre>text and optional meta-data from docstrings. Defaults to
+{DocstringParser}.</pre>
+
+<p>@see <a href="DocstringParser.html">DocstringParser</a> @see <a
+href="Parser/SourceParser.html#method-c-after_parse_list">YARD::Parser::SourceParser.after_parse_list</a></p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-all" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">all</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [String] the raw documentation (including raw tag text)</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-hash_flag" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">hash_flag</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Boolean] whether the docstring was started with “##”</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-line_range" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">line_range</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Range] line range in the {#object}&#39;s file where the docstring
+was parsed from</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-object" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">object</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [CodeObjects::Base] the object that owns the docstring.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-ref_tags" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">ref_tags</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Array&lt;Tags::RefTag&gt;] the list of reference tags</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(content = '', object = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new docstring with the raw contents attached to an optional
+object. Parsing will be done by the {DocstringParser} class.</p>
+
+<p>@note To properly parse directives with proper parser context within</p>
+
+<pre>handlers, you should not use this method to create a Docstring.
+Instead, use the {parser}, which takes a handler object that
+can pass parser state onto directives. If a Docstring is created
+with this method, directives do not have access to any parser
+state, and may not function as expected.</pre>
+
+<p>@example</p>
+
+<pre class="ruby"><span class="ruby-constant">Docstring</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;hello world\n@return Object return&quot;</span>, <span class="ruby-identifier">someobj</span>)
+</pre>
+
+<p>@param [String] content the raw comments to be parsed into a docstring</p>
+
+<pre>and associated meta-data.</pre>
+
+<p>@param [CodeObjects::Base] object an object to associate the docstring</p>
+
+<pre>with.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 102</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">content</span> = <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">object</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-ivar">@object</span> = <span class="ruby-identifier">object</span>
+  <span class="ruby-ivar">@summary</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@hash_flag</span> = <span class="ruby-keyword">false</span>
+
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">all</span> = <span class="ruby-identifier">content</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-new-21" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new!</span><span
+            class="method-args">(text, tags = [], object = nil, raw_data = nil, ref_object = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new docstring without performing any parsing through a
+{DocstringParser}. This method is called by <code>DocstringParser</code>
+when creating the new docstring object.</p>
+
+<p>@param [String] text the textual portion of the docstring @param
+[Array&lt;Tag&gt;] tags the list of tag objects in the docstring @param
+[CodeObjects::Base, nil] object the object associated with the</p>
+
+<pre>docstring. May be nil.</pre>
+
+<p>@param [String] raw_data the complete docstring, including all</p>
+
+<pre>original formatting and any unparsed tags/directives.</pre>
+
+<p>@param [CodeObjects::Base, nil] ref_object a reference object used for</p>
+
+<pre>the base set of documentation / tag information.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="new-21-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">new!</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">tags</span> = [], <span class="ruby-identifier">object</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">raw_data</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">ref_object</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">docstring</span> = <span class="ruby-identifier">allocate</span>
+  <span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">replace</span>(<span class="ruby-identifier">text</span>, <span class="ruby-keyword">false</span>)
+  <span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">object</span> = <span class="ruby-identifier">object</span>
+  <span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">tags</span>)
+  <span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-string">&quot;@unresolved_reference&quot;</span>, <span class="ruby-identifier">ref_object</span>)
+  <span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-string">&quot;@all&quot;</span>, <span class="ruby-identifier">raw_data</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">raw_data</span>
+  <span class="ruby-identifier">docstring</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-parser" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parser</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a parser object using the current {default_parser}. Equivalent to:</p>
+
+<pre class="ruby"><span class="ruby-constant">Docstring</span>.<span class="ruby-identifier">default_parser</span>.<span class="ruby-identifier">new</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+</pre>
+
+<p>@param args arguments are passed to the {DocstringParser}</p>
+
+<pre>class. See {DocstringParser#initialize} for details on
+arguments.</pre>
+
+<p>@return [DocstringParser] the parser object used to parse a</p>
+
+<pre>docstring.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="parser-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parser</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>) <span class="ruby-identifier">default_parser</span>.<span class="ruby-identifier">new</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>) <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-2B" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">+</span><span
+            class="method-args">(other)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Adds another {Docstring}, copying over tags.</p>
+
+<p>@param [Docstring, String] other the other docstring (or string) to</p>
+
+<pre>add.</pre>
+
+<p>@return [Docstring] a new docstring with both docstrings combines</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="2B-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 115</span>
+<span class="ruby-keyword">def</span> <span class="ruby-operator">+</span>(<span class="ruby-identifier">other</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">other</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Docstring</span>
+    <span class="ruby-constant">Docstring</span>.<span class="ruby-identifier">new</span>([<span class="ruby-identifier">all</span>, <span class="ruby-identifier">other</span>.<span class="ruby-identifier">all</span>].<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\n&quot;</span>), <span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">super</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-add_tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_tag</span><span
+            class="method-args">(*tags)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Adds a tag or reftag object to the tag list. If you want to parse tag data
+based on the {Tags::DefaultFactory} tag factory, use {DocstringParser}
+instead.</p>
+
+<p>@param [Tags::Tag, Tags::RefTag] tags list of tag objects to add @return
+[void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="add_tag-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 239</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_tag</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">tags</span>)
+  <span class="ruby-identifier">tags</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tag</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">tag</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">Tag</span>
+      <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">object</span> = <span class="ruby-identifier">object</span>
+      <span class="ruby-ivar">@tags</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tag</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">RefTag</span>, <span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">RefTagList</span>
+      <span class="ruby-ivar">@ref_tags</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tag</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;expected Tag or RefTag, got #{tag.class} (at index #{i})&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-all-3D" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">all=</span><span
+            class="method-args">(content, parse = true)</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="Docstring.html#method-i-replace">replace</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="method-i-blank-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">blank?</span><span
+            class="method-args">(only_visible_tags = true)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns true if the docstring has no content that is visible to a template.</p>
+
+<p>@param [Boolean] only_visible_tags whether only
+{Tags::Library.visible_tags}</p>
+
+<pre>should be checked, or if all tags should be considered.</pre>
+
+<p>@return [Boolean] whether or not the docstring has content</p>
+          
+          
+
+          
+          <div class="method-source-code" id="blank-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 307</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">blank?</span>(<span class="ruby-identifier">only_visible_tags</span> = <span class="ruby-keyword">true</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">only_visible_tags</span>
+    <span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">tags</span>.<span class="ruby-identifier">any?</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span> <span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">Library</span>.<span class="ruby-identifier">visible_tags</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tag</span>.<span class="ruby-identifier">tag_name</span>.<span class="ruby-identifier">to_sym</span>) }
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@tags</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@ref_tags</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-delete_tag_if" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delete_tag_if</span><span
+            class="method-args">(&block)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Deletes all tags where the block returns true @yieldparam [Tags::Tag] tag
+the tag that is being tested @yieldreturn [Boolean] true if the tag should
+be deleted @return [void] @since 0.7.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="delete_tag_if-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 297</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_tag_if</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-ivar">@tags</span>.<span class="ruby-identifier">delete_if</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-ivar">@ref_tags</span>.<span class="ruby-identifier">delete_if</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-delete_tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">delete_tags</span><span
+            class="method-args">(name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Delete all tags with <code>name</code> @param [String] name the tag name
+@return [void] @since 0.7.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="delete_tags-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 288</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_tags</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-identifier">delete_tag_if</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">tag_name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-dup" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">dup</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Deep-copies a docstring</p>
+
+<p>@note This method creates a new docstring with new tag lists, but does</p>
+
+<pre>not create new individual tags. Modifying the tag objects will still
+affect the original tags.</pre>
+
+<p>@return [Docstring] a new copied docstring @since 0.7.0</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="dup-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 151</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dup</span>
+  <span class="ruby-identifier">resolve_reference</span>
+  <span class="ruby-identifier">obj</span> = <span class="ruby-keyword">super</span>
+  <span class="ruby-node">%w(all summary tags ref_tags)</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">val</span> = <span class="ruby-identifier">instance_variable_get</span>(<span class="ruby-node">&quot;@#{name}&quot;</span>)
+    <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-node">&quot;@#{name}&quot;</span>, <span class="ruby-identifier">val</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">dup</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">obj</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-has_tag-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">has_tag?</span><span
+            class="method-args">(name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns true if at least one tag by the name <code>name</code> was declared</p>
+
+<p>@param [String] name the tag name to search for @return [Boolean] whether
+or not the tag <code>name</code> was declared</p>
+          
+          
+
+          
+          <div class="method-source-code" id="has_tag-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 280</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">has_tag?</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-identifier">tags</span>.<span class="ruby-identifier">any?</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">tag_name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-hash_flag-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">hash_flag=</span><span
+            class="method-args">(v)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="hash_flag-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">hash_flag=</span>(<span class="ruby-identifier">v</span>) <span class="ruby-ivar">@hash_flag</span> = <span class="ruby-identifier">v</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">false</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">v</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-line" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">line</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Fixnum] the first line of the {#line_range} @return [nil] if there
+is no associated {#line_range}</p>
+          
+          
+
+          
+          <div class="method-source-code" id="line-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 165</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">line</span>
+  <span class="ruby-identifier">line_range</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">line_range</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-replace" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">replace</span><span
+            class="method-args">(content, parse = true)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Replaces the docstring with new raw content. Called by {#all=}. @param
+[String] content the raw comments to be parsed</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="replace-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 131</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">replace</span>(<span class="ruby-identifier">content</span>, <span class="ruby-identifier">parse</span> = <span class="ruby-keyword">true</span>)
+  <span class="ruby-identifier">content</span> = <span class="ruby-identifier">content</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\n&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">content</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+  <span class="ruby-ivar">@tags</span>, <span class="ruby-ivar">@ref_tags</span> = [], []
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">parse</span>
+    <span class="ruby-keyword">super</span>(<span class="ruby-identifier">parse_comments</span>(<span class="ruby-identifier">content</span>))
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@all</span> = <span class="ruby-identifier">content</span>
+    <span class="ruby-ivar">@unresolved_reference</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">super</span>(<span class="ruby-identifier">content</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Docstring.html#method-i-all-3D">all=</a>
+        </div>
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-resolve_reference" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">resolve_reference</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Resolves unresolved other docstring reference if there is unresolved
+reference. Does nothing if there is no unresolved reference.</p>
+
+<p>Normally, you don&#39;t need to call this method explicitly. Resolving
+unresolved reference is done implicitly.</p>
+
+<p>@return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="resolve_reference-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 325</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">resolve_reference</span>
+  <span class="ruby-identifier">loop</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@unresolved_reference</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">Proxy</span> <span class="ruby-operator">===</span> <span class="ruby-ivar">@unresolved_reference</span>
+
+    <span class="ruby-identifier">reference</span>, <span class="ruby-ivar">@unresolved_reference</span> = <span class="ruby-ivar">@unresolved_reference</span>, <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">all</span> = [<span class="ruby-identifier">reference</span>.<span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">all</span>, <span class="ruby-ivar">@all</span>].<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\n&quot;</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-summary" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">summary</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Gets the first line of a docstring to the period or the first paragraph.
+@return [String] The first line or paragraph of the docstring; always ends
+with a period.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="summary-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 171</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">summary</span>
+  <span class="ruby-identifier">resolve_reference</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@summary</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@summary</span>
+  <span class="ruby-identifier">stripped</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/&lt;.+?&gt;/m</span>, <span class="ruby-string">&#39;&#39;</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[\r\n](?![\r\n])/</span>, <span class="ruby-string">&#39; &#39;</span>).<span class="ruby-identifier">strip</span>
+  <span class="ruby-identifier">open_parens</span> = [<span class="ruby-string">&#39;{&#39;</span>, <span class="ruby-string">&#39;(&#39;</span>, <span class="ruby-string">&#39;[&#39;</span>]
+  <span class="ruby-identifier">close_parens</span> = [<span class="ruby-string">&#39;}&#39;</span>, <span class="ruby-string">&#39;)&#39;</span>, <span class="ruby-string">&#39;]&#39;</span>]
+  <span class="ruby-identifier">num_parens</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">idx</span> = <span class="ruby-identifier">length</span>.<span class="ruby-identifier">times</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">stripped</span>[<span class="ruby-identifier">index</span>, <span class="ruby-value">1</span>]
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;.&quot;</span>, <span class="ruby-string">&quot;\r&quot;</span>, <span class="ruby-string">&quot;\n&quot;</span>
+      <span class="ruby-identifier">next_char</span> = <span class="ruby-identifier">stripped</span>[<span class="ruby-identifier">index</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>, <span class="ruby-value">1</span>].<span class="ruby-identifier">to_s</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">num_parens</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">next_char</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^\s*$/</span>
+        <span class="ruby-keyword">break</span> <span class="ruby-identifier">index</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;{&quot;</span>, <span class="ruby-string">&quot;(&quot;</span>, <span class="ruby-string">&quot;[&quot;</span>
+      <span class="ruby-identifier">num_parens</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;}&quot;</span>, <span class="ruby-string">&quot;)&quot;</span>, <span class="ruby-string">&quot;]&quot;</span>
+      <span class="ruby-identifier">num_parens</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@summary</span> = <span class="ruby-identifier">stripped</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">idx</span>]
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@summary</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@summary</span> <span class="ruby-operator">!~</span> <span class="ruby-regexp">/\A\s*\{include:.+\}\s*\Z/</span>
+    <span class="ruby-ivar">@summary</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;.&#39;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@summary</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tag" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tag</span><span
+            class="method-args">(name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Convenience method to return the first tag object in the list of tag
+objects of that name</p>
+
+<p>@example</p>
+
+<pre class="ruby"><span class="ruby-identifier">doc</span> = <span class="ruby-constant">Docstring</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;@return zero when nil&quot;</span>)
+<span class="ruby-identifier">doc</span>.<span class="ruby-identifier">tag</span>(:<span class="ruby-keyword">return</span>).<span class="ruby-identifier">text</span>  <span class="ruby-comment"># =&gt; &quot;zero when nil&quot;</span>
+</pre>
+
+<p>@param [#to_s] name the tag name to return data for @return [Tags::Tag] the
+first tag in the list of {#tags}</p>
+          
+          
+
+          
+          <div class="method-source-code" id="tag-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 262</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tag</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-identifier">tags</span>.<span class="ruby-identifier">find</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">tag_name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tags</span><span
+            class="method-args">(name = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns a list of tags specified by <code>name</code> or all tags if
+<code>name</code> is not specified.</p>
+
+<p>@param [#to_s] name the tag name to return data for, or nil for all tags
+@return [Array&lt;Tags::Tag&gt;] the list of tags by the specified tag name</p>
+          
+          
+
+          
+          <div class="method-source-code" id="tags-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 270</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tags</span>(<span class="ruby-identifier">name</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">list</span> = <span class="ruby-ivar">@tags</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">convert_ref_tags</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">list</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">name</span>
+  <span class="ruby-identifier">list</span>.<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">tag_name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_raw" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_raw</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Reformats and returns a raw representation of the tag data using the
+current tag and docstring data, not the original text.</p>
+
+<p>@return [String] the updated raw formatted docstring data @since 0.7.0
+@todo Add Tags::Tag#to_raw and refactor</p>
+          
+          
+
+          
+          <div class="method-source-code" id="to_raw-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 204</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_raw</span>
+  <span class="ruby-identifier">tag_data</span> = <span class="ruby-identifier">tags</span>.<span class="ruby-identifier">sort_by</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">tag_name</span> }.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">tag</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">OverloadTag</span>
+      <span class="ruby-identifier">tag_text</span> = <span class="ruby-node">&quot;@#{tag.tag_name} #{tag.signature}\n&quot;</span>
+      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">blank?</span>
+        <span class="ruby-identifier">tag_text</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\r?\n/</span>, <span class="ruby-string">&quot;\n  &quot;</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">OptionTag</span>
+      <span class="ruby-identifier">tag_text</span> = <span class="ruby-node">&quot;@#{tag.tag_name} #{tag.name}&quot;</span>
+      <span class="ruby-identifier">tag_text</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39; [&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">pair</span>.<span class="ruby-identifier">types</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;, &#39;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39;]&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">pair</span>.<span class="ruby-identifier">types</span>
+      <span class="ruby-identifier">tag_text</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39; &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">pair</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">pair</span>.<span class="ruby-identifier">name</span>
+      <span class="ruby-identifier">tag_text</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;\n &quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">text</span>
+      <span class="ruby-identifier">tag_text</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39; (&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">pair</span>.<span class="ruby-identifier">defaults</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;, &#39;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39;)&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">pair</span>.<span class="ruby-identifier">defaults</span>
+      <span class="ruby-identifier">tag_text</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot; &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">pair</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\n/</span>, <span class="ruby-string">&quot;\n  &quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">pair</span>.<span class="ruby-identifier">text</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">tag_text</span> = <span class="ruby-string">&#39;@&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">tag_name</span>
+      <span class="ruby-identifier">tag_text</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39; [&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">types</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;, &#39;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39;]&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">types</span>
+      <span class="ruby-identifier">tag_text</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39; &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">name</span>
+      <span class="ruby-identifier">tag_text</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;\n &quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">text</span>
+      <span class="ruby-identifier">tag_text</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39; &#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\n/</span>, <span class="ruby-string">&quot;\n  &quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">text</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">tag_text</span>
+  <span class="ruby-keyword">end</span>
+  [<span class="ruby-identifier">strip</span>, <span class="ruby-identifier">tag_data</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\n&quot;</span>)].<span class="ruby-identifier">reject</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-identifier">l</span>.<span class="ruby-identifier">empty?</span> }.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\n&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_s" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_s</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="to_s-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 124</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>
+  <span class="ruby-identifier">resolve_reference</span>
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-convert_ref_tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">convert_ref_tags</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Maps valid reference tags</p>
+
+<p>@return [Array&lt;Tags::RefTag&gt;] the list of valid reference tags</p>
+          
+          
+
+          
+          <div class="method-source-code" id="convert_ref_tags-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 340</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">convert_ref_tags</span>
+  <span class="ruby-identifier">list</span> = <span class="ruby-ivar">@ref_tags</span>.<span class="ruby-identifier">reject</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">Proxy</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">owner</span> }
+  <span class="ruby-identifier">list</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">tags</span> }.<span class="ruby-identifier">flatten</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_comments" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_comments</span><span
+            class="method-args">(comments)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses out comments split by newlines into a new code object</p>
+
+<p>@param [String] comments</p>
+
+<pre>the newline delimited array of comments. If the comments
+are passed as a String, they will be split by newlines.</pre>
+
+<p>@return [String] the non-metadata portion of the comments to</p>
+
+<pre class="ruby"><span class="ruby-identifier">be</span> <span class="ruby-identifier">used</span> <span class="ruby-identifier">as</span> <span class="ruby-identifier">a</span> <span class="ruby-identifier">docstring</span>
+</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_comments-source">
+            <pre><span class="ruby-comment"># File lib/yard/docstring.rb, line 353</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_comments</span>(<span class="ruby-identifier">comments</span>)
+  <span class="ruby-identifier">parser</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">parser</span>
+  <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">comments</span>, <span class="ruby-identifier">object</span>)
+  <span class="ruby-ivar">@all</span> = <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">raw_text</span>
+  <span class="ruby-ivar">@unresolved_reference</span> = <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">reference</span>
+  <span class="ruby-identifier">add_tag</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">parser</span>.<span class="ruby-identifier">tags</span>)
+  <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">text</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

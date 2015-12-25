@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Handlers::Ruby::Legacy::Base - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../../";
+</script>
+
+<script src="../../../../js/jquery.js"></script>
+<script src="../../../../js/darkfish.js"></script>
+
+<link href="../../../../css/fonts.css" rel="stylesheet">
+<link href="../../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../../Base.html">YARD::Handlers::Base</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../../../Parser/Ruby/Legacy/RubyToken.html">YARD::Parser::Ruby::Legacy::RubyToken</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-handles-3F">::handles?</a>
+    
+    <li ><a href="#method-i-call_params">#call_params</a>
+    
+    <li ><a href="#method-i-caller_method">#caller_method</a>
+    
+    <li ><a href="#method-i-extract_method_details">#extract_method_details</a>
+    
+    <li ><a href="#method-i-parse_block">#parse_block</a>
+    
+    <li ><a href="#method-i-tokval">#tokval</a>
+    
+    <li ><a href="#method-i-tokval_list">#tokval_list</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Handlers::Ruby::Legacy::Base">
+  <h1 id="class-YARD::Handlers::Ruby::Legacy::Base" class="class">
+    class YARD::Handlers::Ruby::Legacy::Base
+  </h1>
+
+  <section class="description">
+    
+<p>This is the base handler for the legacy parser. To implement a legacy
+handler, subclass this class.</p>
+
+<p>@abstract (see <a href="../Base.html">Ruby::Base</a>)</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-handles-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handles?</span><span
+            class="method-args">(stmt)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Boolean] whether or not a {Parser::Ruby::Legacy::Statement} object
+should be handled</p>
+
+<pre>by this handler.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="handles-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/legacy/base.rb, line 14</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">handles?</span>(<span class="ruby-identifier">stmt</span>)
+  <span class="ruby-identifier">handlers</span>.<span class="ruby-identifier">any?</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">a_handler</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">a_handler</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">String</span>
+      <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">text</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">a_handler</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Regexp</span>
+      <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">a_handler</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">a_handler</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">class</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-call_params" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">call_params</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="call_params-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/legacy/base.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">call_params</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">TkDEF</span>)
+    <span class="ruby-identifier">extract_method_details</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">param</span><span class="ruby-operator">|</span> <span class="ruby-identifier">param</span>.<span class="ruby-identifier">first</span> }
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">tokens</span> = <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">tokens</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]
+    <span class="ruby-identifier">tokval_list</span>(<span class="ruby-identifier">tokens</span>, <span class="ruby-value">:attr</span>, <span class="ruby-value">:identifier</span>, <span class="ruby-constant">TkId</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-caller_method" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">caller_method</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="caller_method-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/legacy/base.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">caller_method</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">TkIDENTIFIER</span>)
+    <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">text</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">TkDEF</span>)
+    <span class="ruby-identifier">extract_method_details</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_block" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_block</span><span
+            class="method-args">(opts = {})</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses a statement&#39;s block with a set of state values. If the statement
+has no block, nothing happens. A description of state values can be found
+at {Handlers::Base#push_state}</p>
+
+<p>@param [Hash] opts State options @option opts (see <a
+href="../../Base.html#method-i-push_state">YARD::Handlers::Base#push_state</a>)
+@see <a
+href="../../Base.html#method-i-push_state">YARD::Handlers::Base#push_state</a>
+<a href="../../Base.html#method-i-push_state">push_state</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_block-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/legacy/base.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_block</span>(<span class="ruby-identifier">opts</span> = {})
+  <span class="ruby-identifier">push_state</span>(<span class="ruby-identifier">opts</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">block</span>
+      <span class="ruby-identifier">blk</span> = <span class="ruby-constant">Parser</span><span class="ruby-operator">::</span><span class="ruby-constant">Ruby</span><span class="ruby-operator">::</span><span class="ruby-constant">Legacy</span><span class="ruby-operator">::</span><span class="ruby-constant">StatementList</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">statement</span>.<span class="ruby-identifier">block</span>)
+      <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">process</span>(<span class="ruby-identifier">blk</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-extract_method_details" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_method_details</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extracts method information for macro expansion only</p>
+
+<p>@todo This is a duplicate implementation of {MethodHandler}. Refactor.
+@return [Array&lt;String,Array&lt;Array&lt;String&gt;&gt;&gt;] the method
+name followed by method</p>
+
+<pre class="ruby"><span class="ruby-identifier">arguments</span> (<span class="ruby-identifier">name</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">optional</span> <span class="ruby-identifier">value</span>)
+</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="extract_method_details-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/legacy/base.rb, line 71</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_method_details</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/^def\s+(#{METHODMATCH})(?:(?:\s+|\s*\()(.*)(?:\)\s*$)?)?/m</span>
+    <span class="ruby-identifier">meth</span>, <span class="ruby-identifier">args</span> = <span class="ruby-node">$1</span>, <span class="ruby-node">$2</span>
+    <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/\s+/</span>,<span class="ruby-string">&#39;&#39;</span>)
+    <span class="ruby-identifier">args</span> = <span class="ruby-identifier">tokval_list</span>(<span class="ruby-constant">Parser</span><span class="ruby-operator">::</span><span class="ruby-constant">Ruby</span><span class="ruby-operator">::</span><span class="ruby-constant">Legacy</span><span class="ruby-operator">::</span><span class="ruby-constant">TokenList</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">args</span>), <span class="ruby-value">:all</span>)
+    <span class="ruby-identifier">args</span>.<span class="ruby-identifier">map!</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">a</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&#39;=&#39;</span>, <span class="ruby-value">2</span>); [<span class="ruby-identifier">k</span>.<span class="ruby-identifier">strip</span>, (<span class="ruby-identifier">v</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">strip</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)] } <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">meth</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/(?:#{NSEPQ}|#{CSEPQ})([^#{NSEP}#{CSEPQ}]+)$/</span>
+      <span class="ruby-identifier">meth</span> = <span class="ruby-node">$`</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">meth</span>, <span class="ruby-identifier">args</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tokval" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tokval</span><span
+            class="method-args">(token, *accepted_types)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>The string value of a token. For example, the return value for the symbol
+:sym would be :sym. The return value for a string +“foo #{ bar}”+ would be
+the literal +“foo #{ bar}”+ without any interpolation. The return value of
+the identifier &#39;test&#39; would be the same value: &#39;test&#39;. Here
+is a list of common types and their return values:</p>
+
+<p>@example</p>
+
+<pre>tokval(TokenList.new(&#39;&quot;foo&quot;&#39;).first) =&gt; &quot;foo&quot;
+tokval(TokenList.new(&#39;:foo&#39;).first) =&gt; :foo
+tokval(TokenList.new(&#39;CONSTANT&#39;).first, RubyToken::TkId) =&gt; &quot;CONSTANT&quot;
+tokval(TokenList.new(&#39;identifier&#39;).first, RubyToken::TkId) =&gt; &quot;identifier&quot;
+tokval(TokenList.new(&#39;3.25&#39;).first) =&gt; 3.25
+tokval(TokenList.new(&#39;/xyz/i&#39;).first) =&gt; /xyz/i</pre>
+
+<p>@param [Token] token The token of the class</p>
+
+<p>@param [Array&lt;Class&lt;Token&gt;&gt;, Symbol] accepted_types</p>
+
+<pre>The allowed token types that this token can be. Defaults to [{TkVal}].
+A list of types would be, for example, [+TkSTRING+, +TkSYMBOL+], to return
+the token&#39;s value if it is either of those types. If +TkVal+ is accepted,
++TkNode+ is also accepted.
+
+Certain symbol keys are allowed to specify multiple types in one fell swoop.
+These symbols are:
+  :string       =&gt; +TkSTRING+, +TkDSTRING+, +TkDXSTRING+ and +TkXSTRING+
+  :attr         =&gt; +TkSYMBOL+ and +TkSTRING+
+  :identifier   =&gt; +TkIDENTIFIER, +TkFID+ and +TkGVAR+.
+  :number       =&gt; +TkFLOAT+, +TkINTEGER+</pre>
+
+<p>@return [Object] if the token is one of the accepted types, in its real
+value form.</p>
+
+<pre>It should be noted that identifiers and constants are kept in String form.</pre>
+
+<p>@return [nil] if the token is not any of the specified accepted types</p>
+          
+          
+
+          
+          <div class="method-source-code" id="tokval-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/legacy/base.rb, line 116</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tokval</span>(<span class="ruby-identifier">token</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">accepted_types</span>)
+  <span class="ruby-identifier">accepted_types</span> = [<span class="ruby-constant">TkVal</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">accepted_types</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">accepted_types</span>.<span class="ruby-identifier">push</span>(<span class="ruby-constant">TkNode</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">accepted_types</span>.<span class="ruby-identifier">include?</span> <span class="ruby-constant">TkVal</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">accepted_types</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value">:attr</span>)
+    <span class="ruby-identifier">accepted_types</span>.<span class="ruby-identifier">push</span>(<span class="ruby-constant">TkSTRING</span>, <span class="ruby-constant">TkSYMBOL</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">accepted_types</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value">:string</span>)
+    <span class="ruby-identifier">accepted_types</span>.<span class="ruby-identifier">push</span>(<span class="ruby-constant">TkSTRING</span>, <span class="ruby-constant">TkDSTRING</span>, <span class="ruby-constant">TkXSTRING</span>, <span class="ruby-constant">TkDXSTRING</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">accepted_types</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value">:identifier</span>)
+    <span class="ruby-identifier">accepted_types</span>.<span class="ruby-identifier">push</span>(<span class="ruby-constant">TkIDENTIFIER</span>, <span class="ruby-constant">TkFID</span>, <span class="ruby-constant">TkGVAR</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">accepted_types</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value">:number</span>)
+    <span class="ruby-identifier">accepted_types</span>.<span class="ruby-identifier">push</span>(<span class="ruby-constant">TkFLOAT</span>, <span class="ruby-constant">TkINTEGER</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">accepted_types</span>.<span class="ruby-identifier">any?</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">token</span> }
+
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">token</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">TkSTRING</span>, <span class="ruby-constant">TkDSTRING</span>, <span class="ruby-constant">TkXSTRING</span>, <span class="ruby-constant">TkDXSTRING</span>
+    <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-2</span>]
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">TkSYMBOL</span>
+    <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">to_sym</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">TkFLOAT</span>
+    <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">to_f</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">TkINTEGER</span>
+    <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">to_i</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">TkREGEXP</span>
+    <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\A\/(.+)\/([^\/])\Z/</span>
+    <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">$1</span>, <span class="ruby-node">$2</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">TkTRUE</span>
+    <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">TkFALSE</span>
+    <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">TkNIL</span>
+    <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-tokval_list" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">tokval_list</span><span
+            class="method-args">(tokenlist, *accepted_types)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns a list of symbols or string values from a statement. The list must
+be a valid comma delimited list, and values will only be returned to the
+end of the list only.</p>
+
+<p>Example:</p>
+
+<pre class="ruby"><span class="ruby-identifier">attr_accessor</span> :<span class="ruby-identifier">a</span>, <span class="ruby-string">&#39;b&#39;</span>, :<span class="ruby-identifier">c</span>, :<span class="ruby-identifier">d</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-string">&#39;a&#39;</span>, <span class="ruby-string">&#39;b&#39;</span>, <span class="ruby-string">&#39;c&#39;</span>, <span class="ruby-string">&#39;d&#39;</span>]
+<span class="ruby-identifier">attr_accessor</span> <span class="ruby-string">&#39;a&#39;</span>, <span class="ruby-constant">UNACCEPTED_TYPE</span>, <span class="ruby-string">&#39;c&#39;</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-string">&#39;a&#39;</span>, <span class="ruby-string">&#39;c&#39;</span>]
+</pre>
+
+<p>The tokval list of a {Parser::Ruby::Legacy::TokenList} of the above code
+would be the {#tokval} value of :a, &#39;b&#39;, :c and :d.</p>
+
+<p>It should also be noted that this function stops immediately at any ruby
+keyword encountered:</p>
+
+<pre>&quot;attr_accessor :a, :b, :c if x == 5&quot;  =&gt; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</pre>
+
+<p>@param [TokenList] tokenlist The list of tokens to process. @param
+[Array&lt;Class&lt;Token&gt;&gt;] accepted_types passed to {#tokval}
+@return [Array&lt;String&gt;] the list of tokvalues in the list. @return
+[Array&lt;EMPTY&gt;] if there are no symbols or Strings in the list @see <a
+href="Base.html#method-i-tokval">tokval</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="tokval_list-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/legacy/base.rb, line 182</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">tokval_list</span>(<span class="ruby-identifier">tokenlist</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">accepted_types</span>)
+  <span class="ruby-keyword">return</span> [] <span class="ruby-keyword">unless</span> <span class="ruby-identifier">tokenlist</span>
+  <span class="ruby-identifier">out</span> = [[]]
+  <span class="ruby-identifier">parencount</span>, <span class="ruby-identifier">beforeparen</span> = <span class="ruby-value">0</span>, <span class="ruby-value">0</span>
+  <span class="ruby-identifier">needcomma</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-identifier">seen_comma</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-identifier">tokenlist</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">token</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">tokval</span> = <span class="ruby-identifier">accepted_types</span> <span class="ruby-operator">==</span> [<span class="ruby-value">:all</span>] <span class="ruby-operator">?</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">tokval</span>(<span class="ruby-identifier">token</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">accepted_types</span>)
+    <span class="ruby-identifier">parencond</span> = <span class="ruby-operator">!</span><span class="ruby-identifier">out</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">tokval</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-comment">#puts &quot;#{seen_comma.inspect} #{parencount} #{token.class.class_name} #{out.inspect}&quot;</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">token</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">TkCOMMA</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">parencount</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+        <span class="ruby-identifier">out</span> <span class="ruby-operator">&lt;&lt;</span> [] <span class="ruby-keyword">unless</span> <span class="ruby-identifier">out</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">empty?</span>
+        <span class="ruby-identifier">needcomma</span> = <span class="ruby-keyword">false</span>
+        <span class="ruby-identifier">seen_comma</span> = <span class="ruby-keyword">true</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">out</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">parencond</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">TkLPAREN</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">seen_comma</span>
+        <span class="ruby-identifier">beforeparen</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">parencount</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+        <span class="ruby-identifier">out</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">parencond</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">TkRPAREN</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">beforeparen</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+        <span class="ruby-identifier">beforeparen</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">out</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">parencount</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">tokval</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+        <span class="ruby-identifier">parencount</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">TkLBRACE</span>, <span class="ruby-constant">TkLBRACK</span>, <span class="ruby-constant">TkDO</span>
+      <span class="ruby-identifier">parencount</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+      <span class="ruby-identifier">out</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tokval</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">TkRBRACE</span>, <span class="ruby-constant">TkRBRACK</span>, <span class="ruby-constant">TkEND</span>
+      <span class="ruby-identifier">out</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tokval</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+      <span class="ruby-identifier">parencount</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">TkKW</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">token</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span>[<span class="ruby-constant">TkTRUE</span>, <span class="ruby-constant">TkFALSE</span>, <span class="ruby-constant">TkSUPER</span>, <span class="ruby-constant">TkSELF</span>, <span class="ruby-constant">TkNIL</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">token</span>.<span class="ruby-identifier">class</span>)
+
+      <span class="ruby-identifier">seen_comma</span> = <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">TkWhitespace</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">token</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">parencount</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">needcomma</span>
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">TkWhitespace</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">token</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">tokval</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+          <span class="ruby-identifier">out</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tokval</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">out</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">clear</span>
+          <span class="ruby-identifier">needcomma</span> = <span class="ruby-keyword">true</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">parencond</span>
+        <span class="ruby-identifier">needcomma</span> = <span class="ruby-keyword">true</span>
+        <span class="ruby-identifier">out</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">beforeparen</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">parencount</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span>
+      <span class="ruby-keyword">break</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-comment"># Flatten any single element lists</span>
+  <span class="ruby-identifier">out</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">:</span> (<span class="ruby-identifier">e</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">pop</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">join</span>) }.<span class="ruby-identifier">compact</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

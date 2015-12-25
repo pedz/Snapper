@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Logger - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">Logger
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-instance">::instance</a>
+    
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-3C-3C">#&lt;&lt;</a>
+    
+    <li class="calls-super" ><a href="#method-i-add">#add</a>
+    
+    <li ><a href="#method-i-backtrace">#backtrace</a>
+    
+    <li ><a href="#method-i-capture">#capture</a>
+    
+    <li ><a href="#method-i-clear_line">#clear_line</a>
+    
+    <li ><a href="#method-i-clear_progress">#clear_progress</a>
+    
+    <li class="calls-super" ><a href="#method-i-debug">#debug</a>
+    
+    <li ><a href="#method-i-enter_level">#enter_level</a>
+    
+    <li ><a href="#method-i-format_log">#format_log</a>
+    
+    <li ><a href="#method-i-io">#io</a>
+    
+    <li ><a href="#method-i-io-3D">#io=</a>
+    
+    <li ><a href="#method-i-print">#print</a>
+    
+    <li ><a href="#method-i-print_no_newline">#print_no_newline</a>
+    
+    <li ><a href="#method-i-progress">#progress</a>
+    
+    <li ><a href="#method-i-puts">#puts</a>
+    
+    <li ><a href="#method-i-show_backtraces">#show_backtraces</a>
+    
+    <li ><a href="#method-i-show_progress">#show_progress</a>
+    
+    <li ><a href="#method-i-warn_no_continuations">#warn_no_continuations</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Logger">
+  <h1 id="class-YARD::Logger" class="class">
+    class YARD::Logger
+  </h1>
+
+  <section class="description">
+    
+<p>Handles console logging for info, warnings and errors. Uses the stdlib <a
+href="Logger.html">Logger</a> class in Ruby for all the backend logic.</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="PROGRESS_INDICATORS">PROGRESS_INDICATORS
+        
+        <dd><p>The list of characters displayed beside the progress bar to indicate
+“movement”. @since 0.8.2</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-show_backtraces" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">show_backtraces</span><span
+            class="attribute-access-type">[W]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-show_progress" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">show_progress</span><span
+            class="attribute-access-type">[W]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-instance" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">instance</span><span
+            class="method-args">(pipe = STDOUT)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>The logger instance @return [Logger] the logger instance</p>
+          
+          
+
+          
+          <div class="method-source-code" id="instance-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">instance</span>(<span class="ruby-identifier">pipe</span> = <span class="ruby-constant">STDOUT</span>)
+  <span class="ruby-ivar">@logger</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">new</span>(<span class="ruby-identifier">pipe</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(pipe, *args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new logger</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">pipe</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">pipe</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">io</span> = <span class="ruby-identifier">pipe</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">show_backtraces</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">show_progress</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">level</span> = <span class="ruby-constant">WARN</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">formatter</span> = <span class="ruby-identifier">method</span>(<span class="ruby-value">:format_log</span>)
+  <span class="ruby-ivar">@progress_indicator</span> = <span class="ruby-value">0</span>
+  <span class="ruby-ivar">@mutex</span> = <span class="ruby-constant">Mutex</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-3C-3C" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">&lt;&lt;</span><span
+            class="method-args">(msg = '')</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Logger.html#method-i-print_no_newline">print_no_newline</a>
+        </div>
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="Logger.html#method-i-print">print</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="method-i-backtrace" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">backtrace</span><span
+            class="method-args">(exc, level_meth = :error)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Prints the backtrace <code>exc</code> to the logger as error data.</p>
+
+<p>@param [Array&lt;String&gt;] exc the backtrace list @param [Symbol]
+level_meth the level to log backtrace at @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="backtrace-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 139</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">backtrace</span>(<span class="ruby-identifier">exc</span>, <span class="ruby-identifier">level_meth</span> = <span class="ruby-value">:error</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">show_backtraces</span>
+  <span class="ruby-identifier">send</span>(<span class="ruby-identifier">level_meth</span>, <span class="ruby-node">&quot;#{exc.class.class_name}: #{exc.message}&quot;</span>)
+  <span class="ruby-identifier">send</span>(<span class="ruby-identifier">level_meth</span>, <span class="ruby-string">&quot;Stack trace:&quot;</span> <span class="ruby-operator">+</span>
+    <span class="ruby-identifier">exc</span>.<span class="ruby-identifier">backtrace</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">5</span>].<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;\n\t#{x}&quot;</span> }.<span class="ruby-identifier">join</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\n&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-capture" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">capture</span><span
+            class="method-args">(msg, nontty_log = :debug) { || ... }</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Captures the duration of a block of code for benchmark analysis. Also calls
+{#progress} on the message to display it to the user.</p>
+
+<p>@todo Implement capture storage for reporting of benchmarks @param [String]
+msg the message to display @param [Symbol, nil] nontty_log the level to log
+as if the output</p>
+
+<pre>stream is not a TTY. Use +nil+ for no alternate logging.</pre>
+
+<p>@yield a block of arbitrary code to benchmark @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="capture-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 68</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">capture</span>(<span class="ruby-identifier">msg</span>, <span class="ruby-identifier">nontty_log</span> = <span class="ruby-value">:debug</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">progress</span>(<span class="ruby-identifier">msg</span>, <span class="ruby-identifier">nontty_log</span>)
+  <span class="ruby-keyword">yield</span>
+<span class="ruby-keyword">ensure</span>
+  <span class="ruby-identifier">clear_progress</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-clear_progress" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">clear_progress</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Clears the progress indicator in the TTY display. @return [void] @since
+0.8.2</p>
+          
+          
+
+          
+          <div class="method-source-code" id="clear_progress-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 106</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">clear_progress</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">show_progress</span>
+  <span class="ruby-identifier">print_no_newline</span>(<span class="ruby-string">&quot;\e[?25h\e[2K&quot;</span>)
+  <span class="ruby-ivar">@progress_msg</span> = <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-debug" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">debug</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Changes the debug level to DEBUG if $DEBUG is set and writes a debugging
+message.</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="debug-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">debug</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">level</span> = <span class="ruby-constant">DEBUG</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">$DEBUG</span>
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-enter_level" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">enter_level</span><span
+            class="method-args">(new_level = level) { || ... }</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Sets the logger level for the duration of the block</p>
+
+<p>@example</p>
+
+<pre class="ruby"><span class="ruby-identifier">log</span>.<span class="ruby-identifier">enter_level</span>(<span class="ruby-constant">Logger</span><span class="ruby-operator">::</span><span class="ruby-constant">ERROR</span>) <span class="ruby-keyword">do</span>
+  <span class="ruby-constant">YARD</span>.<span class="ruby-identifier">parse_string</span> <span class="ruby-string">&quot;def x; end&quot;</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>@param [Fixnum] new_level the logger level for the duration of the block.</p>
+
+<pre>values can be found in Ruby&#39;s Logger class.</pre>
+
+<p>@yield the block with the logger temporarily set to <code>new_level</code></p>
+          
+          
+
+          
+          <div class="method-source-code" id="enter_level-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 164</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">enter_level</span>(<span class="ruby-identifier">new_level</span> = <span class="ruby-identifier">level</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">old_level</span>, <span class="ruby-keyword">self</span>.<span class="ruby-identifier">level</span> = <span class="ruby-identifier">level</span>, <span class="ruby-identifier">new_level</span>
+  <span class="ruby-keyword">yield</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">level</span> = <span class="ruby-identifier">old_level</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-io" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">io</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [IO] the IO object being logged to @since 0.8.2</p>
+          
+          
+
+          
+          <div class="method-source-code" id="io-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 15</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">io</span>; <span class="ruby-ivar">@logdev</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-io-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">io=</span><span
+            class="method-args">(pipe)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="io-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">io=</span>(<span class="ruby-identifier">pipe</span>) <span class="ruby-ivar">@logdev</span> = <span class="ruby-identifier">pipe</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-print" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">print</span><span
+            class="method-args">(msg = '')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Displays an unformatted line to the logger output stream. @param [String]
+msg the message to display @return [void] @since 0.8.2</p>
+          
+          
+
+          
+          <div class="method-source-code" id="print-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 128</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">print</span>(<span class="ruby-identifier">msg</span> = <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-identifier">clear_line</span>
+  <span class="ruby-identifier">print_no_newline</span>(<span class="ruby-identifier">msg</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="Logger.html#method-i-3C-3C">&lt;&lt;</a>
+        </div>
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-print_no_newline" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">print_no_newline</span><span
+            class="method-args">(msg = '')</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="Logger.html#method-i-3C-3C">&lt;&lt;</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="method-i-progress" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">progress</span><span
+            class="method-args">(msg, nontty_log = :debug)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Displays a progress indicator for a given message. This progress report is
+only displayed on TTY displays, otherwise the message is passed to the
+<code>nontty_log</code> level.</p>
+
+<p>@param [String] msg the message to log @param [Symbol, nil] nontty_log the
+level to log as if the output</p>
+
+<pre>stream is not a TTY. Use +nil+ for no alternate logging.</pre>
+
+<p>@return [void] @since 0.8.2</p>
+          
+          
+
+          
+          <div class="method-source-code" id="progress-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 84</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">progress</span>(<span class="ruby-identifier">msg</span>, <span class="ruby-identifier">nontty_log</span> = <span class="ruby-value">:debug</span>)
+  <span class="ruby-identifier">send</span>(<span class="ruby-identifier">nontty_log</span>, <span class="ruby-identifier">msg</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">nontty_log</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">show_progress</span>
+  <span class="ruby-identifier">icon</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-keyword">defined?</span>(<span class="ruby-operator">::</span><span class="ruby-constant">Encoding</span>)
+    <span class="ruby-identifier">icon</span> = <span class="ruby-constant">PROGRESS_INDICATORS</span>[<span class="ruby-ivar">@progress_indicator</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot; &quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@mutex</span>.<span class="ruby-identifier">synchronize</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">print</span>(<span class="ruby-node">&quot;\e[2K\e[?25l\e[1m#{icon}#{msg}\e[0m\r&quot;</span>)
+    <span class="ruby-ivar">@progress_msg</span> = <span class="ruby-identifier">msg</span>
+    <span class="ruby-ivar">@progress_indicator</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-ivar">@progress_indicator</span> <span class="ruby-operator">=</span> <span class="ruby-constant">PROGRESS_INDICATORS</span>.<span class="ruby-identifier">size</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">sleep</span>(<span class="ruby-value">0.05</span>)
+    <span class="ruby-identifier">progress</span>(<span class="ruby-identifier">msg</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;.&quot;</span>, <span class="ruby-keyword">nil</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@progress_msg</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">msg</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-puts" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">puts</span><span
+            class="method-args">(msg = '')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Displays an unformatted line to the logger output stream, adding a newline.
+@param [String] msg the message to display @return [void] @since 0.8.2</p>
+          
+          
+
+          
+          <div class="method-source-code" id="puts-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 117</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">puts</span>(<span class="ruby-identifier">msg</span> = <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-identifier">print</span>(<span class="ruby-node">&quot;#{msg}\n&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show_backtraces" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show_backtraces</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Boolean] whether backtraces should be shown (by default</p>
+
+<pre>this is on).</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="show_backtraces-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show_backtraces</span>; <span class="ruby-ivar">@show_backtraces</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">level</span> <span class="ruby-operator">==</span> <span class="ruby-constant">DEBUG</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show_progress" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show_progress</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Boolean] whether progress indicators should be shown when</p>
+
+<pre>logging CLIs (by default this is off).</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="show_progress-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show_progress</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">YARD</span>.<span class="ruby-identifier">ruby18?</span> <span class="ruby-comment"># threading is too ineffective for progress support</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">YARD</span>.<span class="ruby-identifier">windows?</span> <span class="ruby-comment"># windows has poor ANSI support</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">io</span>.<span class="ruby-identifier">tty?</span> <span class="ruby-comment"># no TTY support on IO</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">level</span> <span class="ruby-operator">&gt;</span> <span class="ruby-constant">INFO</span> <span class="ruby-comment"># no progress in verbose/debug modes</span>
+  <span class="ruby-ivar">@show_progress</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-warn_no_continuations" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">warn_no_continuations</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Warns that the Ruby environment does not support continuations. Applies to
+JRuby, Rubinius and MacRuby. This warning will only display once per Ruby
+process.</p>
+
+<p>@deprecated Continuations are no longer needed by <a
+href="../YARD.html">YARD</a> 0.8.0+. @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="warn_no_continuations-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">warn_no_continuations</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-add" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Override this internal <a href="Logger.html">Logger</a> method to clear
+line</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="add-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 173</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">clear_line</span>
+  <span class="ruby-keyword">super</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-clear_line" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">clear_line</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="clear_line-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 178</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">clear_line</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@progress_msg</span>
+  <span class="ruby-identifier">print_no_newline</span>(<span class="ruby-string">&quot;\e[2K\r&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-format_log" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">format_log</span><span
+            class="method-args">(sev, time, prog, msg)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Log format (from <a href="Logger.html">Logger</a> implementation). Used by
+<a href="Logger.html">Logger</a> internally</p>
+          
+          
+
+          
+          <div class="method-source-code" id="format_log-source">
+            <pre><span class="ruby-comment"># File lib/yard/logging.rb, line 184</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">format_log</span>(<span class="ruby-identifier">sev</span>, <span class="ruby-identifier">time</span>, <span class="ruby-identifier">prog</span>, <span class="ruby-identifier">msg</span>)
+  <span class="ruby-node">&quot;[#{sev.downcase}]: #{msg}\n&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

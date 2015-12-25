@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>module YARD::Server::DocServerHelper - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-base_path">#base_path</a>
+    
+    <li ><a href="#method-i-router">#router</a>
+    
+    <li class="calls-super" ><a href="#method-i-url_for">#url_for</a>
+    
+    <li ><a href="#method-i-url_for_file">#url_for_file</a>
+    
+    <li ><a href="#method-i-url_for_frameset">#url_for_frameset</a>
+    
+    <li ><a href="#method-i-url_for_index">#url_for_index</a>
+    
+    <li ><a href="#method-i-url_for_list">#url_for_list</a>
+    
+    <li ><a href="#method-i-url_for_main">#url_for_main</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-YARD::Server::DocServerHelper">
+  <h1 id="module-YARD::Server::DocServerHelper" class="module">
+    module YARD::Server::DocServerHelper
+  </h1>
+
+  <section class="description">
+    
+<p>A module that is mixed into {Templates::Template} in order to customize
+certain template methods.</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-base_path" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">base_path</span><span
+            class="method-args">(path)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@example The base path for a library &#39;foo&#39;</p>
+
+<pre class="ruby"><span class="ruby-identifier">base_path</span>(<span class="ruby-string">&#39;docs&#39;</span>) <span class="ruby-comment"># =&gt; &#39;docs/foo&#39;</span>
+</pre>
+
+<p>@param [String] path the path prefix for a base path URI @return [String]
+the base URI for a library with an extra <code>path</code> prefix</p>
+          
+          
+
+          
+          <div class="method-source-code" id="base_path-source">
+            <pre><span class="ruby-comment"># File lib/yard/server/doc_server_helper.rb, line 67</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">base_path</span>(<span class="ruby-identifier">path</span>)
+  <span class="ruby-identifier">libname</span> = <span class="ruby-identifier">router</span>.<span class="ruby-identifier">request</span>.<span class="ruby-identifier">version_supplied</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@library</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@library</span>.<span class="ruby-identifier">name</span>
+  <span class="ruby-identifier">path</span> <span class="ruby-operator">+</span> (<span class="ruby-ivar">@single_library</span> <span class="ruby-operator">?</span> <span class="ruby-string">&#39;&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;/#{libname}&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-router" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">router</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Router] convenience method for accessing the router</p>
+          
+          
+
+          
+          <div class="method-source-code" id="router-source">
+            <pre><span class="ruby-comment"># File lib/yard/server/doc_server_helper.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">router</span>; <span class="ruby-ivar">@adapter</span>.<span class="ruby-identifier">router</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-url_for" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">url_for</span><span
+            class="method-args">(obj, anchor = nil, relative = false)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Modifies {Templates::Helpers::HtmlHelper#url_for} to return a URL instead
+of a disk location. @param (see <a
+href="../Templates/Helpers/HtmlHelper.html#method-i-url_for">YARD::Templates::Helpers::HtmlHelper#url_for</a>)
+@return (see <a
+href="../Templates/Helpers/HtmlHelper.html#method-i-url_for">YARD::Templates::Helpers::HtmlHelper#url_for</a>)</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="url_for-source">
+            <pre><span class="ruby-comment"># File lib/yard/server/doc_server_helper.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">url_for</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">anchor</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">relative</span> = <span class="ruby-keyword">false</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">url_for_index</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">obj</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;_index.html&#39;</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;/#{obj}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">String</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">obj</span>
+  <span class="ruby-identifier">url</span> = <span class="ruby-keyword">super</span>(<span class="ruby-identifier">obj</span>, <span class="ruby-identifier">anchor</span>, <span class="ruby-keyword">false</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">url</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">base_path</span>(<span class="ruby-identifier">router</span>.<span class="ruby-identifier">docs_prefix</span>), <span class="ruby-identifier">url</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-url_for_file" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">url_for_file</span><span
+            class="method-args">(filename, anchor = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Modifies {Templates::Helpers::HtmlHelper#url_for_file} to return a URL
+instead of a disk location. @param (see <a
+href="../Templates/Helpers/HtmlHelper.html#method-i-url_for_file">YARD::Templates::Helpers::HtmlHelper#url_for_file</a>)
+@return (see <a
+href="../Templates/Helpers/HtmlHelper.html#method-i-url_for_file">YARD::Templates::Helpers::HtmlHelper#url_for_file</a>)</p>
+          
+          
+
+          
+          <div class="method-source-code" id="url_for_file-source">
+            <pre><span class="ruby-comment"># File lib/yard/server/doc_server_helper.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">url_for_file</span>(<span class="ruby-identifier">filename</span>, <span class="ruby-identifier">anchor</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">filename</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">ExtraFileObject</span>)
+    <span class="ruby-identifier">filename</span> = <span class="ruby-identifier">filename</span>.<span class="ruby-identifier">filename</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-node">&quot;/#{base_path(router.docs_prefix)}/file/&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">filename</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-node">%r{^#{@library.source_path.to_s}/}</span>, <span class="ruby-string">&#39;&#39;</span>) <span class="ruby-operator">+</span>
+    (<span class="ruby-identifier">anchor</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot;##{anchor}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot;&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-url_for_frameset" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">url_for_frameset</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the frames URL for the page @return (see <a
+href="../Templates/Helpers/HtmlHelper.html#method-i-url_for_frameset">YARD::Templates::Helpers::HtmlHelper#url_for_frameset</a>)</p>
+          
+          
+
+          
+          <div class="method-source-code" id="url_for_frameset-source">
+            <pre><span class="ruby-comment"># File lib/yard/server/doc_server_helper.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">url_for_frameset</span>
+  <span class="ruby-identifier">url</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">file</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">url_for_file</span>(<span class="ruby-identifier">options</span>.<span class="ruby-identifier">file</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">url_for</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-identifier">url</span> = <span class="ruby-identifier">url</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">%r{^/#{base_path(router.docs_prefix)}/}</span>, <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">base_path</span>(<span class="ruby-identifier">router</span>.<span class="ruby-identifier">docs_prefix</span>), <span class="ruby-string">&quot;frames&quot;</span>, <span class="ruby-identifier">url</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-url_for_index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">url_for_index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the URL for the alphabetic index page @return (see <a
+href="../Templates/Helpers/HtmlHelper.html#method-i-url_for_index">YARD::Templates::Helpers::HtmlHelper#url_for_index</a>)</p>
+          
+          
+
+          
+          <div class="method-source-code" id="url_for_index-source">
+            <pre><span class="ruby-comment"># File lib/yard/server/doc_server_helper.rb, line 59</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">url_for_index</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">base_path</span>(<span class="ruby-identifier">router</span>.<span class="ruby-identifier">docs_prefix</span>), <span class="ruby-string">&#39;index&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-url_for_list" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">url_for_list</span><span
+            class="method-args">(type)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Modifies {Templates::Helpers::HtmlHelper#url_for_list} to return a URL
+based on the list prefix instead of a HTML filename. @param (see <a
+href="../Templates/Helpers/HtmlHelper.html#method-i-url_for_list">YARD::Templates::Helpers::HtmlHelper#url_for_list</a>)
+@return (see <a
+href="../Templates/Helpers/HtmlHelper.html#method-i-url_for_list">YARD::Templates::Helpers::HtmlHelper#url_for_list</a>)</p>
+          
+          
+
+          
+          <div class="method-source-code" id="url_for_list-source">
+            <pre><span class="ruby-comment"># File lib/yard/server/doc_server_helper.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">url_for_list</span>(<span class="ruby-identifier">type</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">base_path</span>(<span class="ruby-identifier">router</span>.<span class="ruby-identifier">list_prefix</span>), <span class="ruby-identifier">type</span>.<span class="ruby-identifier">to_s</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-url_for_main" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">url_for_main</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the main URL, first checking a readme and then linking to the index
+@return (see <a
+href="../Templates/Helpers/HtmlHelper.html#method-i-url_for_main">YARD::Templates::Helpers::HtmlHelper#url_for_main</a>)</p>
+          
+          
+
+          
+          <div class="method-source-code" id="url_for_main-source">
+            <pre><span class="ruby-comment"># File lib/yard/server/doc_server_helper.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">url_for_main</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>.<span class="ruby-identifier">frames</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">options</span>.<span class="ruby-identifier">command</span>.<span class="ruby-identifier">path</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">base_path</span>(<span class="ruby-identifier">router</span>.<span class="ruby-identifier">docs_prefix</span>), <span class="ruby-identifier">options</span>.<span class="ruby-identifier">command</span>.<span class="ruby-identifier">path</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">options</span>.<span class="ruby-identifier">readme</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">url_for_file</span>(<span class="ruby-identifier">options</span>.<span class="ruby-identifier">readme</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">url_for_index</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

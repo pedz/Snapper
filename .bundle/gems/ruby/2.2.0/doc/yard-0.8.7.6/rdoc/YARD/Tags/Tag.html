@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Tags::Tag - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../../Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-type">#type</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Tags::Tag">
+  <h1 id="class-YARD::Tags::Tag" class="class">
+    class YARD::Tags::Tag
+  </h1>
+
+  <section class="description">
+    
+<p>Represents a metadata tag value (+@tag+). <a href="../Tags.html">Tags</a>
+can have any combination of {#types}, {#name} and {#text}, or none of the
+above.</p>
+
+<p>@example Programmatic tag creation</p>
+
+<pre class="ruby"><span class="ruby-comment"># The following docstring syntax:</span>
+<span class="ruby-comment">#   @param [String, nil] arg an argument</span>
+<span class="ruby-comment">#</span>
+<span class="ruby-comment"># is equivalent to:</span>
+<span class="ruby-constant">Tag</span>.<span class="ruby-identifier">new</span>(:<span class="ruby-identifier">param</span>, <span class="ruby-string">&#39;an argument&#39;</span>, [<span class="ruby-string">&#39;String&#39;</span>, <span class="ruby-string">&#39;nil&#39;</span>], <span class="ruby-string">&#39;arg&#39;</span>)
+</pre>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-name" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">name</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [String] a name associated with the tag</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-object" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">object</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [CodeObjects::Base] the associated object</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-tag_name" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">tag_name</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [String] the name of the tag</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-text" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">text</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [String] the tag text associated with the tag @return [nil] if no
+tag text is supplied</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-types" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">types</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Array&lt;String&gt;] a list of types associated with the tag
+@return [nil] if no types are associated with the tag</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(tag_name, text, types = nil, name = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new tag object with a tag name and text. Optionally, formally
+declared types and a key name can be specified.</p>
+
+<p>Types are mainly for meta tags that rely on type information, such as
+<code>param</code>, <code>return</code>, etc.</p>
+
+<p>Key names are for tags that declare meta data for a specific key or name,
+such as <code>param</code>, <code>raise</code>, etc.</p>
+
+<p>@param [#to_s] <a href="Tag.html#attribute-i-tag_name">#tag_name</a>       
+the tag name to create the tag for @param [String] text           the
+descriptive text for this tag @param [Array&lt;String&gt;] types   optional
+type list of formally declared types</p>
+
+<pre>for the tag</pre>
+
+<p>@param [String] name           optional key name which the tag refers to</p>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/tag.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">tag_name</span>, <span class="ruby-identifier">text</span>, <span class="ruby-identifier">types</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">name</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-ivar">@tag_name</span>, <span class="ruby-ivar">@text</span>, <span class="ruby-ivar">@name</span>, <span class="ruby-ivar">@types</span> = <span class="ruby-identifier">tag_name</span>.<span class="ruby-identifier">to_s</span>, <span class="ruby-identifier">text</span>, <span class="ruby-identifier">name</span>, (<span class="ruby-identifier">types</span> <span class="ruby-operator">?</span> [<span class="ruby-identifier">types</span>].<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">compact</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-type" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">type</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Convenience method to access the first type specified. This should mainly
+be used for tags that only specify one type.</p>
+
+<p>@return [String] the first of the list of specified types @see <a
+href="Tag.html#attribute-i-types">types</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="type-source">
+            <pre><span class="ruby-comment"># File lib/yard/tags/tag.rb, line 52</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">type</span>
+  <span class="ruby-identifier">types</span>.<span class="ruby-identifier">first</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::CodeObjects::MethodObject - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Base.html">YARD::CodeObjects::Base</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-aliases">#aliases</a>
+    
+    <li ><a href="#method-i-attr_info">#attr_info</a>
+    
+    <li ><a href="#method-i-constructor-3F">#constructor?</a>
+    
+    <li class="calls-super" ><a href="#method-i-copyable_attributes">#copyable_attributes</a>
+    
+    <li ><a href="#method-i-is_alias-3F">#is_alias?</a>
+    
+    <li ><a href="#method-i-is_attribute-3F">#is_attribute?</a>
+    
+    <li ><a href="#method-i-is_explicit-3F">#is_explicit?</a>
+    
+    <li ><a href="#method-i-module_function-3F">#module_function?</a>
+    
+    <li class="calls-super" ><a href="#method-i-name">#name</a>
+    
+    <li ><a href="#method-i-overridden_method">#overridden_method</a>
+    
+    <li class="calls-super" ><a href="#method-i-path">#path</a>
+    
+    <li ><a href="#method-i-reader-3F">#reader?</a>
+    
+    <li ><a href="#method-i-scope-3D">#scope=</a>
+    
+    <li ><a href="#method-i-sep">#sep</a>
+    
+    <li ><a href="#method-i-writer-3F">#writer?</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::CodeObjects::MethodObject">
+  <h1 id="class-YARD::CodeObjects::MethodObject" class="class">
+    class YARD::CodeObjects::MethodObject
+  </h1>
+
+  <section class="description">
+    
+<p>Represents a Ruby method in source</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-explicit" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">explicit</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Whether the object is explicitly defined in source or whether it was
+inferred by a handler. For instance, attribute methods are generally
+inferred and therefore not explicitly defined in source.</p>
+
+<p>@return [Boolean] whether the object is explicitly defined in source.</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-parameters" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">parameters</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Returns the list of parameters parsed out of the method signature with
+their default values.</p>
+
+<p>@return [Array&lt;Array(String, <a
+href="../../String.html">String</a>)&gt;] a list of parameter names
+followed</p>
+
+<pre>by their default values (or nil)</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-scope" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">scope</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The scope of the method (<code>:class</code> or <code>:instance</code>)</p>
+
+<p>@return [Symbol] the scope</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(namespace, name, scope = :instance, &block)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new method object in <code>namespace</code> with
+<code>name</code> and an instance or class <code>scope</code></p>
+
+<p>If scope is <code>:module</code>, this object is instantiated as a public
+method in <code>:class</code> scope, but also creates a new (empty) method
+as a private <code>:instance</code> method on the same class or module.</p>
+
+<p>@param [NamespaceObject] namespace the namespace @param [String, Symbol]
+name the method name @param [Symbol] scope <code>:instance</code>,
+<code>:class</code>, or <code>:module</code></p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Base.html#method-c-new">YARD::CodeObjects::Base.new</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">scope</span> = <span class="ruby-value">:instance</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-ivar">@module_function</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-ivar">@scope</span> = <span class="ruby-keyword">nil</span>
+
+  <span class="ruby-comment"># handle module function</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span> <span class="ruby-operator">==</span> <span class="ruby-value">:module</span>
+    <span class="ruby-identifier">other</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">name</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+    <span class="ruby-identifier">other</span>.<span class="ruby-identifier">visibility</span> = <span class="ruby-value">:private</span>
+    <span class="ruby-identifier">scope</span> = <span class="ruby-value">:class</span>
+    <span class="ruby-ivar">@module_function</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@visibility</span> = <span class="ruby-value">:public</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">scope</span> = <span class="ruby-identifier">scope</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">parameters</span> = []
+
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-aliases" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">aliases</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns all alias names of the object @return [Array&lt;Symbol&gt;] the
+alias names</p>
+          
+          
+
+          
+          <div class="method-source-code" id="aliases-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 140</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">aliases</span>
+  <span class="ruby-identifier">list</span> = []
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">list</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">NamespaceObject</span>)
+  <span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">aliases</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">o</span>, <span class="ruby-identifier">aname</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">list</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">o</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">aname</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">scope</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">scope</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">list</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-attr_info" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">attr_info</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the read/writer info for the attribute if it is one @return
+[SymbolHash] if there is information about the attribute @return [nil] if
+the method is not an attribute @since 0.5.3</p>
+          
+          
+
+          
+          <div class="method-source-code" id="attr_info-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 91</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">attr_info</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">NamespaceObject</span>)
+  <span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">attributes</span>[<span class="ruby-identifier">scope</span>][<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/=$/</span>, <span class="ruby-string">&#39;&#39;</span>)]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-constructor-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">constructor?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return whether or not the method is the initialize constructor method</p>
+          
+          
+
+          
+          <div class="method-source-code" id="constructor-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">constructor?</span>
+  <span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value">:initialize</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">scope</span> <span class="ruby-operator">==</span> <span class="ruby-value">:instance</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">ClassObject</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-is_alias-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">is_alias?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Tests if the object is defined as an alias of another method @return
+[Boolean] whether the object is an alias</p>
+          
+          
+
+          
+          <div class="method-source-code" id="is_alias-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 117</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">is_alias?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">NamespaceObject</span>)
+  <span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">aliases</span>.<span class="ruby-identifier">has_key?</span> <span class="ruby-keyword">self</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-is_attribute-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">is_attribute?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Tests if the object is defined as an attribute in the namespace @return
+[Boolean] whether the object is an attribute</p>
+          
+          
+
+          
+          <div class="method-source-code" id="is_attribute-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 110</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">is_attribute?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">info</span> = <span class="ruby-identifier">attr_info</span>
+  <span class="ruby-identifier">info</span>[<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/=$/</span> <span class="ruby-operator">?</span> <span class="ruby-value">:write</span> <span class="ruby-operator">:</span> <span class="ruby-value">:read</span>] <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-is_explicit-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">is_explicit?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Tests boolean {#explicit} value.</p>
+
+<p>@return [Boolean] whether the method is explicitly defined in source</p>
+          
+          
+
+          
+          <div class="method-source-code" id="is_explicit-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 125</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">is_explicit?</span>
+  <span class="ruby-identifier">explicit</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-module_function-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">module_function?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Boolean] whether or not this method was created as a module</p>
+
+<pre class="ruby"><span class="ruby-identifier">function</span>
+</pre>
+
+<p>@since 0.8.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="module_function-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">module_function?</span>
+  <span class="ruby-ivar">@module_function</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">name</span><span
+            class="method-args">(prefix = false)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the name of the object.</p>
+
+<p>@example The name of an instance method (with prefix)</p>
+
+<pre class="ruby"><span class="ruby-identifier">an_instance_method</span>.<span class="ruby-identifier">name</span>(<span class="ruby-keyword">true</span>) <span class="ruby-comment"># =&gt; &quot;#mymethod&quot;</span>
+</pre>
+
+<p>@example The name of a class method (with prefix)</p>
+
+<pre class="ruby"><span class="ruby-identifier">a_class_method</span>.<span class="ruby-identifier">name</span>(<span class="ruby-keyword">true</span>) <span class="ruby-comment"># =&gt; &quot;mymethod&quot;</span>
+</pre>
+
+<p>@param [Boolean] prefix whether or not to show the prefix @return [String]
+returns {#sep} + <code>name</code> for an instance method if</p>
+
+<pre class="ruby"><span class="ruby-identifier">prefix</span> <span class="ruby-identifier">is</span> <span class="ruby-keyword">true</span>
+</pre>
+
+<p>@return [Symbol] the name without {#sep} if prefix is set to false</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Base.html#method-i-name">YARD::CodeObjects::Base#name</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="name-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 170</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>(<span class="ruby-identifier">prefix</span> = <span class="ruby-keyword">false</span>)
+  <span class="ruby-identifier">prefix</span> <span class="ruby-operator">?</span> (<span class="ruby-identifier">sep</span> <span class="ruby-operator">==</span> <span class="ruby-constant">ISEP</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot;#{sep}#{super}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">super</span>.<span class="ruby-identifier">to_s</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-overridden_method" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">overridden_method</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [MethodObject] the object that this method overrides @return [nil]
+if it does not override a method @since 0.6.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="overridden_method-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 132</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">overridden_method</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proxy</span>)
+  <span class="ruby-identifier">meths</span> = <span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">meths</span>(<span class="ruby-value">:all</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
+  <span class="ruby-identifier">meths</span>.<span class="ruby-identifier">find</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-identifier">m</span>.<span class="ruby-identifier">path</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">path</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">m</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">m</span>.<span class="ruby-identifier">scope</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">scope</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-path" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">path</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Override path handling for instance methods in the root namespace (they
+should still have a separator as a prefix). @return [String] the path of a
+method</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Base.html#method-i-path">YARD::CodeObjects::Base#path</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="path-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">path</span>
+  <span class="ruby-ivar">@path</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">namespace</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">path</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-identifier">sep</span> <span class="ruby-operator">+</span> <span class="ruby-keyword">super</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">super</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-reader-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reader?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Boolean] whether the method is a reader attribute @since 0.5.3</p>
+          
+          
+
+          
+          <div class="method-source-code" id="reader-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 104</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reader?</span>
+  <span class="ruby-operator">!</span><span class="ruby-operator">!</span>((<span class="ruby-identifier">info</span> = <span class="ruby-identifier">attr_info</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">info</span>[<span class="ruby-value">:read</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-scope-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">scope=</span><span
+            class="method-args">(v)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Changes the scope of an object from :instance or :class @param [Symbol] v
+the new scope</p>
+          
+          
+
+          
+          <div class="method-source-code" id="scope-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">scope=</span>(<span class="ruby-identifier">v</span>)
+  <span class="ruby-identifier">reregister</span> = <span class="ruby-ivar">@scope</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+
+  <span class="ruby-comment"># handle module function</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">v</span> <span class="ruby-operator">==</span> <span class="ruby-value">:module</span>
+    <span class="ruby-identifier">other</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">name</span>)
+    <span class="ruby-identifier">other</span>.<span class="ruby-identifier">visibility</span> = <span class="ruby-value">:private</span>
+    <span class="ruby-ivar">@visibility</span> = <span class="ruby-value">:public</span>
+    <span class="ruby-ivar">@module_function</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-ivar">@path</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Registry</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-keyword">self</span>)
+  <span class="ruby-ivar">@path</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@scope</span> = <span class="ruby-identifier">v</span>.<span class="ruby-identifier">to_sym</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@scope</span> <span class="ruby-operator">==</span> <span class="ruby-value">:module</span>
+    <span class="ruby-ivar">@scope</span> = <span class="ruby-value">:class</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Registry</span>.<span class="ruby-identifier">register</span>(<span class="ruby-keyword">self</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">reregister</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-sep" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">sep</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Override separator to differentiate between class and instance methods.
+@return [String] “#” for an instance method, “.” for class</p>
+          
+          
+
+          
+          <div class="method-source-code" id="sep-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 177</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sep</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">scope</span> <span class="ruby-operator">==</span> <span class="ruby-value">:class</span>
+    <span class="ruby-identifier">namespace</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">namespace</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Registry</span>.<span class="ruby-identifier">root</span> <span class="ruby-operator">?</span> <span class="ruby-constant">CSEP</span> <span class="ruby-operator">:</span> <span class="ruby-constant">NSEP</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">ISEP</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-writer-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">writer?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Boolean] whether the method is a writer attribute @since 0.5.3</p>
+          
+          
+
+          
+          <div class="method-source-code" id="writer-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 98</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">writer?</span>
+  <span class="ruby-operator">!</span><span class="ruby-operator">!</span>((<span class="ruby-identifier">info</span> = <span class="ruby-identifier">attr_info</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">info</span>[<span class="ruby-value">:write</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="protected-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Protected Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-copyable_attributes" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">copyable_attributes</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Base.html#method-i-copyable_attributes">YARD::CodeObjects::Base#copyable_attributes</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="copyable_attributes-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/method_object.rb, line 187</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">copyable_attributes</span>
+  <span class="ruby-keyword">super</span> <span class="ruby-operator">-</span> <span class="ruby-node">%w(scope module_function)</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

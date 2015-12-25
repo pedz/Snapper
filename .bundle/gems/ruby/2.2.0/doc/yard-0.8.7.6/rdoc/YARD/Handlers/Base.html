@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Handlers::Base - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#class-YARD::Handlers::Base-label-Overview+of+a+Typical+Handler+Scenario">Overview of a Typical Handler Scenario</a>
+    <li><a href="#class-YARD::Handlers::Base-label-Setting+up+a+Handler+for+Use">Setting up a Handler for Use</a>
+    <li><a href="#class-YARD::Handlers::Base-label-Processing+Handler+Data">Processing Handler Data</a>
+    <li><a href="#class-YARD::Handlers::Base-label-statement+Attribute"><code>statement</code> Attribute</a>
+    <li><a href="#class-YARD::Handlers::Base-label-namespace+Attribute"><code>namespace</code> Attribute</a>
+    <li><a href="#class-YARD::Handlers::Base-label-owner+Attribute"><code>owner</code> Attribute</a>
+    <li><a href="#class-YARD::Handlers::Base-label-visibility+and+scope+Attributes"><code>visibility</code> and <code>scope</code> Attributes</a>
+    <li><a href="#class-YARD::Handlers::Base-label-Parsing+Blocks+in+Statements">Parsing Blocks in Statements</a>
+  </ul>
+</div>
+
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../../Object.html">Object</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../CodeObjects.html">YARD::CodeObjects</a>
+  
+  
+  
+    <li><a class="include" href="../Parser.html">YARD::Parser</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-clear_subclasses">::clear_subclasses</a>
+    
+    <li ><a href="#method-c-handlers">::handlers</a>
+    
+    <li ><a href="#method-c-handles">::handles</a>
+    
+    <li ><a href="#method-c-handles-3F">::handles?</a>
+    
+    <li ><a href="#method-c-in_file">::in_file</a>
+    
+    <li ><a href="#method-c-inherited">::inherited</a>
+    
+    <li ><a href="#method-c-matches_file-3F">::matches_file?</a>
+    
+    <li ><a href="#method-c-namespace_only">::namespace_only</a>
+    
+    <li ><a href="#method-c-namespace_only-3F">::namespace_only?</a>
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-c-process">::process</a>
+    
+    <li ><a href="#method-c-subclasses">::subclasses</a>
+    
+    <li ><a href="#method-i-abort-21">#abort!</a>
+    
+    <li ><a href="#method-i-call_params">#call_params</a>
+    
+    <li ><a href="#method-i-caller_method">#caller_method</a>
+    
+    <li ><a href="#method-i-ensure_loaded-21">#ensure_loaded!</a>
+    
+    <li ><a href="#method-i-namespace-3D">#namespace=</a>
+    
+    <li ><a href="#method-i-owner-3D">#owner=</a>
+    
+    <li ><a href="#method-i-parse_block">#parse_block</a>
+    
+    <li ><a href="#method-i-process">#process</a>
+    
+    <li ><a href="#method-i-push_state">#push_state</a>
+    
+    <li ><a href="#method-i-register">#register</a>
+    
+    <li ><a href="#method-i-register_docstring">#register_docstring</a>
+    
+    <li ><a href="#method-i-register_dynamic">#register_dynamic</a>
+    
+    <li ><a href="#method-i-register_ensure_loaded">#register_ensure_loaded</a>
+    
+    <li ><a href="#method-i-register_file_info">#register_file_info</a>
+    
+    <li ><a href="#method-i-register_group">#register_group</a>
+    
+    <li ><a href="#method-i-register_module_function">#register_module_function</a>
+    
+    <li ><a href="#method-i-register_source">#register_source</a>
+    
+    <li ><a href="#method-i-register_transitive_tags">#register_transitive_tags</a>
+    
+    <li ><a href="#method-i-register_visibility">#register_visibility</a>
+    
+    <li ><a href="#method-i-scope-3D">#scope=</a>
+    
+    <li ><a href="#method-i-visibility-3D">#visibility=</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Handlers::Base">
+  <h1 id="class-YARD::Handlers::Base" class="class">
+    class YARD::Handlers::Base
+  </h1>
+
+  <section class="description">
+    
+<p><a href="../Handlers.html">Handlers</a> are pluggable semantic parsers for
+YARD&#39;s code generation phase. They allow developers to control what
+information gets generated by <a href="../../YARD.html">YARD</a>, giving
+them the ability to, for instance, document any <a
+href="Ruby.html">Ruby</a> DSLs that a customized framework may use. A good
+example of this would be the ability to document and generate meta data for
+the &#39;describe&#39; declaration of the RSpec testing framework by simply
+adding a handler for such a keyword. Similarly, any <a
+href="Ruby.html">Ruby</a> API that takes advantage of class level
+declarations could add these to the documentation in a very explicit format
+by treating them as first- class objects in any outputted documentation.</p>
+
+<h2 id="class-YARD::Handlers::Base-label-Overview+of+a+Typical+Handler+Scenario">Overview of a Typical Handler Scenario<span><a href="#class-YARD::Handlers::Base-label-Overview+of+a+Typical+Handler+Scenario">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Generally, a handler class will declare a set of statements which it will
+handle using the {handles} class declaration. It will then implement the
+{#process} method to do the work. The processing would usually involve the
+manipulation of the {#namespace}, {#owner} {CodeObjects::Base code objects}
+or the creation of new ones, in which case they should be registered by
+{#register}, a method that sets some basic attributes for the new objects.</p>
+
+<p><a href="../Handlers.html">Handlers</a> are usually simple and take up to a
+page of code to process and register a new object or add new attributes to
+the current <code>namespace</code>.</p>
+
+<h2 id="class-YARD::Handlers::Base-label-Setting+up+a+Handler+for+Use">Setting up a Handler for Use<span><a href="#class-YARD::Handlers::Base-label-Setting+up+a+Handler+for+Use">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>A Handler is automatically registered when it is subclassed from the base
+class. The only other thing that needs to be done is to specify which
+statement the handler will process. This is done with the
+<code>handles</code> declaration, taking either a
+{Parser::Ruby::Legacy::RubyToken}, {String} or `Regexp`. Here is a simple
+example which processes module statements.</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">MyModuleHandler</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Handlers</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>
+  <span class="ruby-identifier">handles</span> <span class="ruby-constant">TkMODULE</span>
+
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">process</span>
+    <span class="ruby-comment"># do something</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<h2 id="class-YARD::Handlers::Base-label-Processing+Handler+Data">Processing Handler Data<span><a href="#class-YARD::Handlers::Base-label-Processing+Handler+Data">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>The goal of a specific handler is really up to the developer, and as such
+there is no real guideline on how to process the data. However, it is
+important to know where the data is coming from to be able to use it.</p>
+
+<h3 id="class-YARD::Handlers::Base-label-statement+Attribute"><code>statement</code> Attribute<span><a href="#class-YARD::Handlers::Base-label-statement+Attribute">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The <code>statement</code> attribute pertains to the
+{Parser::Ruby::Legacy::Statement} object containing a set of tokens parsed
+in by the parser. This is the main set of data to be analyzed and
+processed. The comments attached to the statement can be accessed by the
+{Parser::Ruby::Legacy::Statement#comments} method, but generally the data
+to be processed will live in the <code>tokens</code> attribute. This list
+can be converted to a <code>String</code> using <code>#to_s</code> to parse
+the data with regular expressions (or other text processing mechanisms), if
+needed.</p>
+
+<h3 id="class-YARD::Handlers::Base-label-namespace+Attribute"><code>namespace</code> Attribute<span><a href="#class-YARD::Handlers::Base-label-namespace+Attribute">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The <code>namespace</code> attribute is a {CodeObjects::NamespaceObject
+namespace object} which represents the current namespace that the parser is
+in. For instance:</p>
+
+<pre class="ruby"><span class="ruby-keyword">module</span> <span class="ruby-constant">SomeModule</span>
+  <span class="ruby-keyword">class</span> <span class="ruby-constant">MyClass</span>
+    <span class="ruby-keyword">def</span> <span class="ruby-identifier">mymethod</span>; <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>If a handler was to parse the &#39;class MyClass&#39; statement, it would
+be necessary to know that it belonged inside the SomeModule module. This is
+the value that <code>namespace</code> would return when processing such a
+statement. If the class was then entered and another handler was called on
+the method, the <code>namespace</code> would be set to the
+&#39;MyClass&#39; code object.</p>
+
+<h3 id="class-YARD::Handlers::Base-label-owner+Attribute"><code>owner</code> Attribute<span><a href="#class-YARD::Handlers::Base-label-owner+Attribute">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The <code>owner</code> attribute is similar to the <code>namespace</code>
+attribute in that it also follows the scope of the code during parsing.
+However, a namespace object is loosely defined as a module or class and <a
+href="../../YARD.html">YARD</a> has the ability to parse beyond module and
+class blocks (inside methods, for instance), so the <code>owner</code>
+attribute would not be limited to modules and classes.</p>
+
+<p>To put this into context, the example from above will be used. If a method
+handler was added to the mix and decided to parse inside the method body,
+the <code>owner</code> would be set to the method object but the namespace
+would remain set to the class. This would allow the developer to process
+any method definitions set inside a method (def x; def y; 2 end end) by
+adding them to the correct namespace (the class, not the method).</p>
+
+<p>In summary, the distinction between <code>namespace</code> and
+<code>owner</code> can be thought of as the difference between first-class
+<a href="Ruby.html">Ruby</a> objects (namespaces) and second-class <a
+href="Ruby.html">Ruby</a> objects (methods).</p>
+
+<h3 id="class-YARD::Handlers::Base-label-visibility+and+scope+Attributes"><code>visibility</code> and <code>scope</code> Attributes<span><a href="#class-YARD::Handlers::Base-label-visibility+and+scope+Attributes">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>Mainly needed for parsing methods, the <code>visibility</code> and
+<code>scope</code> attributes refer to the public/protected/private and
+class/instance values (respectively) of the current parsing position.</p>
+
+<h2 id="class-YARD::Handlers::Base-label-Parsing+Blocks+in+Statements">Parsing Blocks in Statements<span><a href="#class-YARD::Handlers::Base-label-Parsing+Blocks+in+Statements">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>In addition to parsing a statement and creating new objects, some handlers
+may wish to continue parsing the code inside the statement&#39;s block (if
+there is one). In this context, a block means the inside of any statement,
+be it class definition, module definition, if statement or classic
+&#39;Ruby block&#39;.</p>
+
+<p>For example, a class statement would be “class MyClass” and the block would
+be a list of statements including the method definitions inside the class.
+For a class handler, the programmer would execute the {#parse_block} method
+to continue parsing code inside the block, with the <code>namespace</code>
+now pointing to the class object the handler created.</p>
+
+<p><a href="../../YARD.html">YARD</a> has the ability to continue into any
+block: class, module, method, even if statements. For this reason, the
+block parsing method must be invoked explicitly out of efficiency sake.</p>
+
+<p>@abstract Subclass this class to provide a handler for <a
+href="../../YARD.html">YARD</a> to use</p>
+
+<pre>during the processing phase.</pre>
+
+<p>@see <a href="../CodeObjects/Base.html">CodeObjects::Base</a> @see <a
+href="../CodeObjects/NamespaceObject.html">CodeObjects::NamespaceObject</a>
+@see handles @see <a href="Base.html#attribute-i-namespace">namespace</a>
+@see <a href="Base.html#attribute-i-owner">owner</a> @see <a
+href="Base.html#method-i-register">register</a> @see <a
+href="Base.html#method-i-parse_block">parse_block</a></p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-extra_state" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">extra_state</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>(see <a
+href="Processor.html#attribute-i-extra_state">YARD::Handlers::Processor#extra_state</a>)</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-globals" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">globals</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>(see <a
+href="Processor.html#attribute-i-globals">YARD::Handlers::Processor#globals</a>)</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-namespace" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">namespace</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>(see <a
+href="Processor.html#attribute-i-namespace">YARD::Handlers::Processor#namespace</a>)</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-owner" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">owner</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>(see <a
+href="Processor.html#attribute-i-owner">YARD::Handlers::Processor#owner</a>)</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-parser" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">parser</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Processor] the processor object that manages all global state</p>
+
+<pre>during handling.</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-scope" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">scope</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>(see <a
+href="Processor.html#attribute-i-scope">YARD::Handlers::Processor#scope</a>)</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-statement" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">statement</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Object] the statement object currently being processed. Usually</p>
+
+<pre>refers to one semantic language statement, though the strict definition
+depends on the parser used.</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-visibility" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">visibility</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>(see <a
+href="Processor.html#attribute-i-visibility">YARD::Handlers::Processor#visibility</a>)</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-clear_subclasses" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">clear_subclasses</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Clear all registered subclasses. Testing purposes only @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="clear_subclasses-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 158</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">clear_subclasses</span>
+  <span class="ruby-identifier">@@subclasses</span> = []
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-handlers" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handlers</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Array] a list of matchers for the handler object. @see handles?</p>
+          
+          
+
+          
+          <div class="method-source-code" id="handlers-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 210</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">handlers</span>
+  <span class="ruby-ivar">@handlers</span> <span class="ruby-operator">||=</span> []
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-handles" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handles</span><span
+            class="method-args">(*matches)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Declares the statement type which will be processed by this handler.</p>
+
+<p>A match need not be unique to a handler. Multiple handlers can process the
+same statement. However, in this case, care should be taken to make sure
+that {#parse_block} would only be executed by one of the handlers,
+otherwise the same code will be parsed multiple times and slow <a
+href="../../YARD.html">YARD</a> down.</p>
+
+<p>@param [Parser::RubyToken, Symbol, <a href="../../String.html">String</a>,
+Regexp] matches</p>
+
+<pre>statements that match the declaration will be
+processed by this handler. A {String} match is
+equivalent to a +/\Astring/+ regular expression
+(match from the beginning of the line), and all
+token matches match only the first token of the
+statement.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="handles-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 191</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">handles</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">matches</span>)
+  (<span class="ruby-ivar">@handlers</span> <span class="ruby-operator">||=</span> []).<span class="ruby-identifier">push</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">matches</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-handles-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handles?</span><span
+            class="method-args">(statement)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>This class is implemented by {Ruby::Base} and {Ruby::Legacy::Base}. To
+implement a base handler class for another language, implement this method
+to return true if the handler should process the given statement object.
+Use {handlers} to enumerate the matchers declared for the handler class.</p>
+
+<p>@param statement a statement object or node (depends on language type)
+@return [Boolean] whether or not this handler object should process</p>
+
+<pre class="ruby"><span class="ruby-identifier">the</span> <span class="ruby-identifier">given</span> <span class="ruby-identifier">statement</span>
+</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="handles-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 204</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">handles?</span>(<span class="ruby-identifier">statement</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-node">&quot;override #handles? in a subclass&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-in_file" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">in_file</span><span
+            class="method-args">(filename)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Declares that a handler should only be called when inside a filename by its
+basename or a regex match for the full path.</p>
+
+<p>@param [String, Regexp] filename a matching filename or regex @return
+[void] @since 0.6.2</p>
+          
+          
+
+          
+          <div class="method-source-code" id="in_file-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 234</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">in_file</span>(<span class="ruby-identifier">filename</span>)
+  (<span class="ruby-ivar">@in_files</span> <span class="ruby-operator">||=</span> []) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">filename</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-inherited" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">inherited</span><span
+            class="method-args">(subclass)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="inherited-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 168</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">inherited</span>(<span class="ruby-identifier">subclass</span>)
+  <span class="ruby-identifier">@@subclasses</span> <span class="ruby-operator">||=</span> []
+  <span class="ruby-identifier">@@subclasses</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">subclass</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-matches_file-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">matches_file?</span><span
+            class="method-args">(filename)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Boolean] whether the filename matches the declared file</p>
+
+<pre>match for a handler. If no file match is specified, returns true.</pre>
+
+<p>@since 0.6.2</p>
+          
+          
+
+          
+          <div class="method-source-code" id="matches_file-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 241</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">matches_file?</span>(<span class="ruby-identifier">filename</span>)
+  <span class="ruby-ivar">@in_files</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword">nil</span> <span class="ruby-comment"># avoid ruby warnings</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@in_files</span>
+  <span class="ruby-ivar">@in_files</span>.<span class="ruby-identifier">any?</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">in_file</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">in_file</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">String</span>
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-identifier">filename</span>) <span class="ruby-operator">==</span> <span class="ruby-identifier">in_file</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Regexp</span>
+      <span class="ruby-identifier">filename</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">in_file</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-namespace_only" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">namespace_only</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Declares that the handler should only be called when inside a
+{CodeObjects::NamespaceObject}, not a method body.</p>
+
+<p>@return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="namespace_only-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 218</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">namespace_only</span>
+  <span class="ruby-ivar">@namespace_only</span> = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-namespace_only-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">namespace_only?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Boolean] whether the handler should only be processed inside</p>
+
+<pre>a namespace.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="namespace_only-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 224</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">namespace_only?</span>
+  (<span class="ruby-ivar">@namespace_only</span> <span class="ruby-operator">||=</span> <span class="ruby-keyword">false</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(source_parser, stmt)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 275</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">source_parser</span>, <span class="ruby-identifier">stmt</span>)
+  <span class="ruby-ivar">@parser</span> = <span class="ruby-identifier">source_parser</span>
+  <span class="ruby-ivar">@statement</span> = <span class="ruby-identifier">stmt</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-process" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process</span><span
+            class="method-args">(&block)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Generates a <code>process</code> method, equivalent to +def process; …
+end+. Blocks defined with this syntax will be wrapped inside an anonymous
+module so that the handler class can be extended with mixins that override
+the <code>process</code> method without alias chaining.</p>
+
+<p>@!macro yard.handlers.process</p>
+
+<pre>@!method process
+Main processing callback
+@return [void]</pre>
+
+<p>@see <a href="Base.html#method-i-process">process</a> @return [void] @since
+0.5.4</p>
+          
+          
+
+          
+          <div class="method-source-code" id="process-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 268</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">mod</span> = <span class="ruby-constant">Module</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">mod</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:define_method</span>, <span class="ruby-value">:process</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">include</span> <span class="ruby-identifier">mod</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-subclasses" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">subclasses</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns all registered handler subclasses. @return [Array&lt;Base&gt;] a
+list of handlers</p>
+          
+          
+
+          
+          <div class="method-source-code" id="subclasses-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 164</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">subclasses</span>
+  <span class="ruby-identifier">@@subclasses</span> <span class="ruby-operator">||=</span> []
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-abort-21" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">abort!</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Aborts a handler by raising {Handlers::HandlerAborted}. An exception will
+only be logged in debugging mode for this kind of handler exit.</p>
+
+<p>@since 0.8.4</p>
+          
+          
+
+          
+          <div class="method-source-code" id="abort-21-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 354</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">abort!</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">Handlers</span><span class="ruby-operator">::</span><span class="ruby-constant">HandlerAborted</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-call_params" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">call_params</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@abstract Implement this method to return the parameters in a method call</p>
+
+<pre>statement. It should return an empty list if the statement is not a
+method call.</pre>
+
+<p>@return [Array&lt;String&gt;] a list of argument names</p>
+          
+          
+
+          
+          <div class="method-source-code" id="call_params-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 583</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">call_params</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-caller_method" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">caller_method</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@abstract Implement this method to return the method being called in</p>
+
+<pre>a method call. It should return nil if the statement is not a method
+call.</pre>
+
+<p>@return [String] the method name being called @return [nil] if the
+statement is not a method call</p>
+          
+          
+
+          
+          <div class="method-source-code" id="caller_method-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 592</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">caller_method</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-ensure_loaded-21" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ensure_loaded!</span><span
+            class="method-args">(object, max_retries = 1)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Ensures that a specific <code>object</code> has been parsed and loaded into
+the registry. This is necessary when adding data to a namespace, for
+instance, since the namespace may not have been processed yet (it can be
+located in a file that has not been handled).</p>
+
+<p>Calling this method defers the handler until all other files have been
+processed. If the object gets resolved, the rest of the handler continues,
+otherwise an exception is raised.</p>
+
+<p>@example Adding a mixin to the <a href="../../String.html">String</a> class
+programmatically</p>
+
+<pre class="ruby"><span class="ruby-identifier">ensure_loaded!</span> <span class="ruby-constant">P</span>(<span class="ruby-string">&#39;String&#39;</span>)
+<span class="ruby-comment"># &quot;String&quot; is now guaranteed to be loaded</span>
+<span class="ruby-constant">P</span>(<span class="ruby-string">&#39;String&#39;</span>).<span class="ruby-identifier">mixins</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">P</span>(<span class="ruby-string">&#39;MyMixin&#39;</span>)
+</pre>
+
+<p>@param [Proxy, CodeObjects::Base] object the object to resolve. @param
+[Integer] max_retries the number of times to defer the handler</p>
+
+<pre>before raising a +NamespaceMissingError+.</pre>
+
+<p>@raise [NamespaceMissingError] if the object is not resolved within</p>
+
+<pre>+max_retries+ attempts, this exception is raised and the handler
+finishes processing.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="ensure_loaded-21-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 560</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ensure_loaded!</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">max_retries</span> = <span class="ruby-value">1</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">root?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">object</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proxy</span>)
+
+  <span class="ruby-identifier">retries</span> = <span class="ruby-value">0</span>
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proxy</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">retries</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">max_retries</span>
+      <span class="ruby-identifier">log</span>.<span class="ruby-identifier">debug</span> <span class="ruby-node">&quot;Missing object #{object} in file `#{parser.file}&#39;, moving it to the back of the line.&quot;</span>
+      <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">parse_remaining_files</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">NamespaceMissingError</span>, <span class="ruby-identifier">object</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">retries</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">object</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-namespace-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">namespace=</span><span
+            class="method-args">(v)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="namespace-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 341</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">namespace=</span>(<span class="ruby-identifier">v</span>); <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">namespace</span>=(<span class="ruby-identifier">v</span>) <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-owner-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">owner=</span><span
+            class="method-args">(v)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="owner-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 339</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">owner=</span>(<span class="ruby-identifier">v</span>) <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">owner</span>=(<span class="ruby-identifier">v</span>) <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_block" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_block</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses the semantic “block” contained in the statement node.</p>
+
+<p>@abstract Subclasses should call {Processor#process parser.process}</p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_block-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 303</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_block</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-node">&quot;#{self} did not implement a #parse_block method for handling&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-process" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>The main handler method called by the parser on a statement that matches
+the {handles} declaration.</p>
+
+<p>Subclasses should override this method to provide the handling
+functionality for the class.</p>
+
+<p>@return [Array&lt;CodeObjects::Base&gt;, <a
+href="../CodeObjects/Base.html">CodeObjects::Base</a>, Object]</p>
+
+<pre>If this method returns a code object (or a list of them),
+they are passed to the +#register+ method which adds basic
+attributes. It is not necessary to return any objects and in
+some cases you may want to explicitly avoid the returning of
+any objects for post-processing by the register method.</pre>
+
+<p>@see handles @see <a href="Base.html#method-i-register">register</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="process-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 296</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-node">&quot;#{self} did not implement a #process method for handling.&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-push_state" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">push_state</span><span
+            class="method-args">(opts = {}) { || ... }</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Executes a given block with specific state values for {#owner},
+{#namespace} and {#scope}.</p>
+
+<p>@param [Proc] block the block to execute with specific state @option opts
+[CodeObjects::NamespaceObject] :namespace (value of <a
+href="Base.html#attribute-i-namespace">namespace</a>)</p>
+
+<pre>the namespace object that {#namespace} will be equal to for the
+duration of the block.</pre>
+
+<p>@option opts [Symbol] :scope (:instance)</p>
+
+<pre>the scope for the duration of the block.</pre>
+
+<p>@option opts [CodeObjects::Base] :owner (value of <a
+href="Base.html#attribute-i-owner">owner</a>)</p>
+
+<pre>the owner object (method) for the duration of the block</pre>
+
+<p>@yield a block to execute with the given state values.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="push_state-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 370</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">push_state</span>(<span class="ruby-identifier">opts</span> = {}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">opts</span> = {
+    <span class="ruby-value">:namespace</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">namespace</span>,
+    <span class="ruby-value">:scope</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">:instance</span>,
+    <span class="ruby-value">:owner</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">owner</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">namespace</span>,
+    <span class="ruby-value">:visibility</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>
+  }.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">opts</span>)
+
+  <span class="ruby-identifier">ns</span>, <span class="ruby-identifier">vis</span>, <span class="ruby-identifier">sc</span>, <span class="ruby-identifier">oo</span> = <span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">visibility</span>, <span class="ruby-identifier">scope</span>, <span class="ruby-identifier">owner</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">namespace</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:namespace</span>]
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">visibility</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:visibility</span>] <span class="ruby-operator">||</span> <span class="ruby-value">:public</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">scope</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:scope</span>]
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">owner</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:owner</span>]
+
+  <span class="ruby-keyword">yield</span>
+
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">namespace</span> = <span class="ruby-identifier">ns</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">visibility</span> = <span class="ruby-identifier">vis</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">scope</span> = <span class="ruby-identifier">sc</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">owner</span> = <span class="ruby-identifier">oo</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register</span><span
+            class="method-args">(*objects) { |object| ... }</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Do some post processing on a list of code objects. Adds basic attributes to
+the list of objects like the filename, line number,
+{CodeObjects::Base#dynamic}, source code and {CodeObjects::Base#docstring},
+but only if they don&#39;t exist.</p>
+
+<p>@param [Array&lt;CodeObjects::Base&gt;] objects</p>
+
+<pre>the list of objects to post-process.</pre>
+
+<p>@return [CodeObjects::Base, <a
+href="../../Array.html">Array</a>&lt;CodeObjects::Base&gt;]</p>
+
+<pre>returns whatever is passed in, for chainability.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="register-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 404</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">objects</span>)
+  <span class="ruby-identifier">objects</span>.<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">object</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>)
+    <span class="ruby-identifier">register_ensure_loaded</span>(<span class="ruby-identifier">object</span>)
+    <span class="ruby-keyword">yield</span>(<span class="ruby-identifier">object</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
+    <span class="ruby-identifier">register_file_info</span>(<span class="ruby-identifier">object</span>)
+    <span class="ruby-identifier">register_source</span>(<span class="ruby-identifier">object</span>)
+    <span class="ruby-identifier">register_visibility</span>(<span class="ruby-identifier">object</span>)
+    <span class="ruby-identifier">register_docstring</span>(<span class="ruby-identifier">object</span>)
+    <span class="ruby-identifier">register_group</span>(<span class="ruby-identifier">object</span>)
+    <span class="ruby-identifier">register_dynamic</span>(<span class="ruby-identifier">object</span>)
+    <span class="ruby-identifier">register_module_function</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">objects</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">objects</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">objects</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register_docstring" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_docstring</span><span
+            class="method-args">(object, docstring = statement.comments, stmt = statement)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Registers any docstring found for the object and expands macros</p>
+
+<p>@param [CodeObjects::Base] object the object to register @return [void]
+@since 0.8.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="register_docstring-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 448</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_docstring</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">docstring</span> = <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">comments</span>, <span class="ruby-identifier">stmt</span> = <span class="ruby-identifier">statement</span>)
+  <span class="ruby-identifier">docstring</span> = <span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\n&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">Array</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">docstring</span>
+  <span class="ruby-identifier">parser</span> = <span class="ruby-constant">Docstring</span>.<span class="ruby-identifier">parser</span>
+  <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">docstring</span> <span class="ruby-operator">||</span> <span class="ruby-string">&quot;&quot;</span>, <span class="ruby-identifier">object</span>, <span class="ruby-keyword">self</span>)
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">docstring</span>
+    <span class="ruby-identifier">object</span>.<span class="ruby-identifier">docstring</span> = <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">to_docstring</span>
+
+    <span class="ruby-comment"># Add hash_flag/line_range</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">stmt</span>
+      <span class="ruby-identifier">object</span>.<span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">hash_flag</span> = <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">comments_hash_flag</span>
+      <span class="ruby-identifier">object</span>.<span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">line_range</span> = <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">comments_range</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">register_transitive_tags</span>(<span class="ruby-identifier">object</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register_dynamic" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_dynamic</span><span
+            class="method-args">(object)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Registers the object as dynamic if the object is defined inside a method or
+block (owner != namespace)</p>
+
+<p>@param [CodeObjects::Base] object the object to register @return [void]
+@since 0.8.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="register_dynamic-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 536</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_dynamic</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-identifier">object</span>.<span class="ruby-identifier">dynamic</span> = <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">owner</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">namespace</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register_ensure_loaded" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_ensure_loaded</span><span
+            class="method-args">(object)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Ensures that the object&#39;s namespace is loaded before attaching it to
+the namespace.</p>
+
+<p>@param [CodeObjects::Base] object the object to register @return [void]
+@since 0.8.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="register_ensure_loaded-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 426</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_ensure_loaded</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-identifier">ensure_loaded!</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>)
+    <span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">children</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">object</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">NamespaceMissingError</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register_file_info" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_file_info</span><span
+            class="method-args">(object, file = parser.file, line = statement.line, comments = statement.comments)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Registers the file/line of the declaration with the object</p>
+
+<p>@param [CodeObjects::Base] object the object to register @return [void]
+@since 0.8.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="register_file_info-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 439</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_file_info</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">file</span> = <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">file</span>, <span class="ruby-identifier">line</span> = <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">line</span>, <span class="ruby-identifier">comments</span> = <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">comments</span>)
+  <span class="ruby-identifier">object</span>.<span class="ruby-identifier">add_file</span>(<span class="ruby-identifier">file</span>, <span class="ruby-identifier">line</span>, <span class="ruby-identifier">comments</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register_group" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_group</span><span
+            class="method-args">(object, group = extra_state.group)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Registers the object as being inside a specific group</p>
+
+<p>@param [CodeObjects::Base] object the object to register @return [void]
+@since 0.8.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="register_group-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 471</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_group</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">group</span> = <span class="ruby-identifier">extra_state</span>.<span class="ruby-identifier">group</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">group</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proxy</span>)
+      <span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">groups</span> <span class="ruby-operator">|=</span> [<span class="ruby-identifier">group</span>]
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">object</span>.<span class="ruby-identifier">group</span> = <span class="ruby-identifier">group</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register_module_function" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_module_function</span><span
+            class="method-args">(object)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Registers the same method information on the module function, if the object
+was defined as a module function.</p>
+
+<p>@param [CodeObjects::Base] object the possible module function object</p>
+
+<pre>to copy data for</pre>
+
+<p>@since 0.8.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="register_module_function-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 522</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_module_function</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">MethodObject</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">module_function?</span>
+  <span class="ruby-identifier">modobj</span> = <span class="ruby-constant">MethodObject</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">object</span>.<span class="ruby-identifier">name</span>)
+  <span class="ruby-identifier">object</span>.<span class="ruby-identifier">copy_to</span>(<span class="ruby-identifier">modobj</span>)
+  <span class="ruby-identifier">modobj</span>.<span class="ruby-identifier">visibility</span> = <span class="ruby-value">:private</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register_source" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_source</span><span
+            class="method-args">(object, source = statement, type = parser.parser_type)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param [CodeObjects::Base] object the object to register @return [void]
+@since 0.8.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="register_source-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 498</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_source</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">source</span> = <span class="ruby-identifier">statement</span>, <span class="ruby-identifier">type</span> = <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">parser_type</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">MethodObject</span>)
+  <span class="ruby-identifier">object</span>.<span class="ruby-identifier">source</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">source</span>
+  <span class="ruby-identifier">object</span>.<span class="ruby-identifier">source_type</span> = <span class="ruby-identifier">type</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register_transitive_tags" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_transitive_tags</span><span
+            class="method-args">(object)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Registers any transitive tags from the namespace on the object</p>
+
+<p>@param [CodeObjects::Base, nil] object the object to register @return
+[void] @since 0.8.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="register_transitive_tags-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 485</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_transitive_tags</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">object</span>
+  <span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">Library</span>.<span class="ruby-identifier">transitive_tags</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proxy</span>)
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">has_tag?</span>(<span class="ruby-identifier">tag</span>)
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">has_tag?</span>(<span class="ruby-identifier">tag</span>)
+    <span class="ruby-identifier">object</span>.<span class="ruby-identifier">add_tag</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">tags</span>(<span class="ruby-identifier">tag</span>))
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register_visibility" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_visibility</span><span
+            class="method-args">(object, visibility = self.visibility)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Registers visibility on a method object. If the object does not respond to
+setting visibility, nothing is done.</p>
+
+<p>@param [#visibility=] object the object to register @param [Symbol]
+visibility the visibility to set on the object @since 0.8.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="register_visibility-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 510</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_visibility</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">visibility</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">visibility</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:visibility=</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">NamespaceObject</span>)
+  <span class="ruby-identifier">object</span>.<span class="ruby-identifier">visibility</span> = <span class="ruby-identifier">visibility</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-scope-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">scope=</span><span
+            class="method-args">(v)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="scope-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 345</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">scope=</span>(<span class="ruby-identifier">v</span>); <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">scope</span>=(<span class="ruby-identifier">v</span>) <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-visibility-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visibility=</span><span
+            class="method-args">(v)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visibility-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/base.rb, line 343</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visibility=</span>(<span class="ruby-identifier">v</span>); <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">visibility</span>=(<span class="ruby-identifier">v</span>) <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

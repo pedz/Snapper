@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Verifier - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-add_expressions">#add_expressions</a>
+    
+    <li ><a href="#method-i-call">#call</a>
+    
+    <li ><a href="#method-i-create_method_from_expressions">#create_method_from_expressions</a>
+    
+    <li ><a href="#method-i-expressions-3D">#expressions=</a>
+    
+    <li class="calls-super" ><a href="#method-i-method_missing">#method_missing</a>
+    
+    <li ><a href="#method-i-modify_nilclass">#modify_nilclass</a>
+    
+    <li ><a href="#method-i-parse_expression">#parse_expression</a>
+    
+    <li ><a href="#method-i-run">#run</a>
+    
+    <li ><a href="#method-i-unmodify_nilclass">#unmodify_nilclass</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Verifier">
+  <h1 id="class-YARD::Verifier" class="class">
+    class YARD::Verifier
+  </h1>
+
+  <section class="description">
+    
+<p>Similar to a Proc, but runs a set of Ruby expressions using a small DSL to
+make tag lookups easier.</p>
+
+<p>The syntax is as follows:</p>
+<ul><li>
+<p>All syntax is Ruby compatible</p>
+</li><li>
+<p><code>object</code> (<code>o</code> for short) exist to access the object
+being verified</p>
+</li><li>
+<p>+@TAGNAME+ is translated into +object.tag(&#39;TAGNAME&#39;)+</p>
+</li><li>
+<p>+@@TAGNAME+ is translated into +object.tags(&#39;TAGNAME&#39;)+</p>
+</li><li>
+<p><code>object</code> can be omitted as target for method calls (it is
+implied)</p>
+</li></ul>
+
+<p>@example Create a verifier to check for objects that don&#39;t have
+@private tags</p>
+
+<pre class="ruby"><span class="ruby-identifier">verifier</span> = <span class="ruby-constant">Verifier</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;!@private&#39;</span>)
+<span class="ruby-identifier">verifier</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">object</span>) <span class="ruby-comment"># =&gt; true (no @private tag)</span>
+</pre>
+
+<p>@example Create a verifier to find any return tag with an empty description</p>
+
+<pre class="ruby"><span class="ruby-constant">Verifier</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;@return.text.empty?&#39;</span>)
+<span class="ruby-comment"># Equivalent to:</span>
+<span class="ruby-constant">Verifier</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;object.tag(:return).text.empty?&#39;</span>)
+</pre>
+
+<p>@example Check if there are any @param tags</p>
+
+<pre class="ruby"><span class="ruby-constant">Verifier</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;@@param.empty?&#39;</span>)
+<span class="ruby-comment"># Equivalent to:</span>
+<span class="ruby-constant">Verifier</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;object.tags(:param).empty?&#39;</span>)
+</pre>
+
+<p>@example Using <code>object</code> or <code>o</code> to look up object
+attributes directly</p>
+
+<pre class="ruby"><span class="ruby-constant">Verifier</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;object.docstring == &quot;hello world&quot;&#39;</span>)
+<span class="ruby-comment"># Equivalent to:</span>
+<span class="ruby-constant">Verifier</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;o.docstring == &quot;hello world&quot;&#39;</span>)
+</pre>
+
+<p>@example Without using <code>object</code> or <code>o</code></p>
+
+<pre class="ruby"><span class="ruby-constant">Verifier</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;tag(:return).size == 1 || has_tag?(:author)&#39;</span>)
+</pre>
+
+<p>@example Specifying multiple expressions</p>
+
+<pre class="ruby"><span class="ruby-constant">Verifier</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;@return&#39;</span>, <span class="ruby-string">&#39;@param&#39;</span>, <span class="ruby-string">&#39;@yield&#39;</span>)
+<span class="ruby-comment"># Equivalent to:</span>
+<span class="ruby-constant">Verifier</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;@return &amp;&amp; @param &amp;&amp; @yield&#39;</span>)
+</pre>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="NILCLASS_METHODS">NILCLASS_METHODS
+        
+        <dd><p>@private</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-expressions" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">expressions</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Array&lt;String&gt;] a list of all expressions the verifier checks
+for @since 0.5.6</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-o" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">o</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [CodeObjects::Base] the current object being tested</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-object" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">object</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [CodeObjects::Base] the current object being tested</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(*expressions)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a verifier from a set of expressions</p>
+
+<p>@param [Array&lt;String&gt;] expressions a list of Ruby expressions to</p>
+
+<pre>parse.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/verifier.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">expressions</span>)
+  <span class="ruby-ivar">@expressions</span> = []
+  <span class="ruby-identifier">add_expressions</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">expressions</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-add_expressions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_expressions</span><span
+            class="method-args">(*expressions)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Adds a set of expressions and recompiles the verifier</p>
+
+<p>@param [Array&lt;String&gt;] expressions a list of expressions @return
+[void] @since 0.5.6</p>
+          
+          
+
+          
+          <div class="method-source-code" id="add_expressions-source">
+            <pre><span class="ruby-comment"># File lib/yard/verifier.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_expressions</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">expressions</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">expressions</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">expressions</span>.<span class="ruby-identifier">flatten</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-call" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">call</span><span
+            class="method-args">(object)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Tests the expressions on the object.</p>
+
+<p>@note If the object is a {CodeObjects::Proxy} the result will always be
+true. @param [CodeObjects::Base] object the object to verify @return
+[Boolean] the result of the expressions</p>
+          
+          
+
+          
+          <div class="method-source-code" id="call-source">
+            <pre><span class="ruby-comment"># File lib/yard/verifier.rb, line 75</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">call</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">Proxy</span>)
+  <span class="ruby-identifier">modify_nilclass</span>
+  <span class="ruby-ivar">@object</span> = <span class="ruby-identifier">object</span>
+  <span class="ruby-identifier">retval</span> = <span class="ruby-identifier">__execute</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+  <span class="ruby-identifier">unmodify_nilclass</span>
+  <span class="ruby-identifier">retval</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-expressions-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">expressions=</span><span
+            class="method-args">(value)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="expressions-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/verifier.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">expressions=</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-ivar">@expressions</span> = <span class="ruby-identifier">value</span>
+  <span class="ruby-identifier">create_method_from_expressions</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-method_missing" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">method_missing</span><span
+            class="method-args">(sym, *args, &block)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Passes any method calls to the object from the {#call}</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="method_missing-source">
+            <pre><span class="ruby-comment"># File lib/yard/verifier.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">method_missing</span>(<span class="ruby-identifier">sym</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">sym</span>)
+    <span class="ruby-identifier">object</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">sym</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">super</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">run</span><span
+            class="method-args">(list)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Runs a list of objects against the verifier and returns the subset of
+verified objects.</p>
+
+<p>@param [Array&lt;CodeObjects::Base&gt;] list a list of code objects @return
+[Array&lt;CodeObjects::Base&gt;] a list of code objects that match</p>
+
+<pre>the verifier.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="run-source">
+            <pre><span class="ruby-comment"># File lib/yard/verifier.rb, line 90</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>(<span class="ruby-identifier">list</span>)
+  <span class="ruby-identifier">list</span>.<span class="ruby-identifier">reject</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">item</span><span class="ruby-operator">|</span> <span class="ruby-identifier">call</span>(<span class="ruby-identifier">item</span>).<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">FalseClass</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-create_method_from_expressions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_method_from_expressions</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates the <code>__execute</code> method by evaluating the expressions as
+Ruby code @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_method_from_expressions-source">
+            <pre><span class="ruby-comment"># File lib/yard/verifier.rb, line 129</span>
+    <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_method_from_expressions</span>
+      <span class="ruby-identifier">expr</span> = <span class="ruby-identifier">expressions</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;(#{parse_expression(e)})&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot; &amp;&amp; &quot;</span>)
+
+      <span class="ruby-identifier">instance_eval</span>(<span class="ruby-string">&quot;        def __execute; #{expr}; end
+&quot;</span>, <span class="ruby-keyword">__FILE__</span>, <span class="ruby-keyword">__LINE__</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>)
+    <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-modify_nilclass" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">modify_nilclass</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Modifies nil to not throw NoMethodErrors. This allows syntax like
+object.tag(:return).text to work if the tag call returns nil, which means
+users don&#39;t need to perform stringent nil checking</p>
+
+<p>@return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="modify_nilclass-source">
+            <pre><span class="ruby-comment"># File lib/yard/verifier.rb, line 111</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">modify_nilclass</span>
+  <span class="ruby-constant">NILCLASS_METHODS</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">meth</span><span class="ruby-operator">|</span>
+    <span class="ruby-constant">NilClass</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:define_method</span>, <span class="ruby-identifier">meth</span>) {<span class="ruby-operator">|</span><span class="ruby-operator">*</span><span class="ruby-identifier">args</span><span class="ruby-operator">|</span> }
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_expression" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_expression</span><span
+            class="method-args">(expr)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses a single expression, handling some of the DSL syntax.</p>
+
+<p>The syntax “@tag” should be turned into object.tag(:tag), and “@@tag”
+should be turned into object.tags(:tag)</p>
+
+<p>@return [String] the parsed expression</p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_expression-source">
+            <pre><span class="ruby-comment"># File lib/yard/verifier.rb, line 143</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_expression</span>(<span class="ruby-identifier">expr</span>)
+  <span class="ruby-identifier">expr</span> = <span class="ruby-identifier">expr</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/@@(?:(\w+)|\{([\w\.]+)\})/</span>, <span class="ruby-string">&#39;object.tags(&quot;\1\2&quot;)&#39;</span>)
+  <span class="ruby-identifier">expr</span> = <span class="ruby-identifier">expr</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/@(?:(\w+)|\{([\w\.]+)\})/</span>, <span class="ruby-string">&#39;object.tag(&quot;\1\2&quot;)&#39;</span>)
+  <span class="ruby-identifier">expr</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-unmodify_nilclass" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">unmodify_nilclass</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the state of NilClass back to normal @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="unmodify_nilclass-source">
+            <pre><span class="ruby-comment"># File lib/yard/verifier.rb, line 119</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">unmodify_nilclass</span>
+  <span class="ruby-constant">NILCLASS_METHODS</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">meth</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">nil</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">meth</span>)
+    <span class="ruby-constant">NilClass</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:remove_method</span>, <span class="ruby-identifier">meth</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

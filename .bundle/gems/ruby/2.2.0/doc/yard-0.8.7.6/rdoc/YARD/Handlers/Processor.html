@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Handlers::Processor - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../../Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-c-register_handler_namespace">::register_handler_namespace</a>
+    
+    <li ><a href="#method-i-find_handlers">#find_handlers</a>
+    
+    <li ><a href="#method-i-handler_base_class">#handler_base_class</a>
+    
+    <li ><a href="#method-i-handler_base_namespace">#handler_base_namespace</a>
+    
+    <li ><a href="#method-i-handles-3F">#handles?</a>
+    
+    <li ><a href="#method-i-load_handlers">#load_handlers</a>
+    
+    <li ><a href="#method-i-parse_remaining_files">#parse_remaining_files</a>
+    
+    <li ><a href="#method-i-process">#process</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Handlers::Processor">
+  <h1 id="class-YARD::Handlers::Processor" class="class">
+    class YARD::Handlers::Processor
+  </h1>
+
+  <section class="description">
+    
+<p>Iterates over all statements in a file and delegates them to the
+{Handlers::Base} objects that are registered to handle the statement.</p>
+
+<p>This class is passed to each handler and keeps overall processing state.
+For example, if the {#visibility} is set in a handler, all following
+statements will have access to this state. This allows “public”,
+“protected” and “private” statements to be handled in classes and modules.
+In addition, the {#namespace} can be set during parsing to control where
+objects are being created from. You can also access extra stateful
+properties that any handler can set during the duration of the post
+processing of a file from {#extra_state}. If you need to access state
+across different files, look at {#globals}.</p>
+
+<p>@see <a href="Base.html">Handlers::Base</a></p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-c-namespace_for_handler" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">namespace_for_handler</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Hash] a list of registered parser type extensions @private @since
+0.6.0</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-extra_state" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">extra_state</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Share state across different handlers inside of a file. This attribute is
+similar to {#visibility}, {#scope}, {#namespace} and {#owner}, in that they
+all maintain state across all handlers for the entire source file. Use this
+attribute to store any data your handler might need to save during the
+parsing of a file. If you need to save state across files, see {#globals}.</p>
+
+<p>@return [OpenStruct] an open structure that can store arbitrary data @see
+<a href="Processor.html#attribute-i-globals">globals</a></p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-file" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">file</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [String] the filename</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-globals" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">globals</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p><a href="../Handlers.html">Handlers</a> can share state for the entire post
+processing stage through this attribute. Note that post processing stage
+spans multiple files. To share state only within a single file, use
+{#extra_state}</p>
+
+<p>@example Sharing state among two handlers</p>
+
+<pre class="ruby"><span class="ruby-keyword">class</span> <span class="ruby-constant">Handler1</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Handlers</span><span class="ruby-operator">::</span><span class="ruby-constant">Ruby</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>
+  <span class="ruby-identifier">handles</span> :<span class="ruby-keyword">class</span>
+  <span class="ruby-identifier">process</span> { <span class="ruby-identifier">globals</span>.<span class="ruby-identifier">foo</span> = :<span class="ruby-identifier">bar</span> }
+<span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">class</span> <span class="ruby-constant">Handler2</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Handlers</span><span class="ruby-operator">::</span><span class="ruby-constant">Ruby</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>
+  <span class="ruby-identifier">handles</span> :<span class="ruby-identifier">method</span>
+  <span class="ruby-identifier">process</span> { <span class="ruby-identifier">puts</span> <span class="ruby-identifier">globals</span>.<span class="ruby-identifier">foo</span> }
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>@return [OpenStruct] global shared state for post-processing stage @see <a
+href="Processor.html#attribute-i-extra_state">extra_state</a></p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-namespace" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">namespace</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [CodeObjects::NamespaceObject] the current namespace</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-owner" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">owner</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [CodeObjects::Base, nil] unlike the namespace, the owner</p>
+
+<pre>is a non-namespace object that should be stored between statements.
+For instance, when parsing a method body, the {CodeObjects::MethodObject}
+is set as the owner, in case any extra method information is processed.</pre>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-parser_type" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">parser_type</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Symbol] the parser type (:ruby, :ruby18, :c)</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-scope" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">scope</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Symbol] the current scope (class, instance)</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-visibility" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">visibility</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Symbol] the current visibility (public, private, protected)</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(parser)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new <a href="Processor.html">Processor</a> for a
+<code>file</code>. @param [SourceParser] parser the parser used to
+initialize the processor</p>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/processor.rb, line 92</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">parser</span>)
+  <span class="ruby-ivar">@file</span> = <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">file</span> <span class="ruby-operator">||</span> <span class="ruby-string">&quot;(stdin)&quot;</span>
+  <span class="ruby-ivar">@namespace</span> = <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Registry</span>.<span class="ruby-identifier">root</span>
+  <span class="ruby-ivar">@visibility</span> = <span class="ruby-value">:public</span>
+  <span class="ruby-ivar">@scope</span> = <span class="ruby-value">:instance</span>
+  <span class="ruby-ivar">@owner</span> = <span class="ruby-ivar">@namespace</span>
+  <span class="ruby-ivar">@parser_type</span> = <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">parser_type</span>
+  <span class="ruby-ivar">@handlers_loaded</span> = {}
+  <span class="ruby-ivar">@globals</span> = <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">globals</span> <span class="ruby-operator">||</span> <span class="ruby-constant">OpenStruct</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@extra_state</span> = <span class="ruby-constant">OpenStruct</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">load_handlers</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-register_handler_namespace" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_handler_namespace</span><span
+            class="method-args">(type, ns)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Registers a new namespace for handlers of the given type. @since 0.6.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="register_handler_namespace-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/processor.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_handler_namespace</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">ns</span>)
+  <span class="ruby-identifier">namespace_for_handler</span>[<span class="ruby-identifier">type</span>] = <span class="ruby-identifier">ns</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-find_handlers" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_handlers</span><span
+            class="method-args">(statement)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Searches for all handlers in {Base.subclasses} that match the
+<code>statement</code></p>
+
+<p>@param statement the statement object to match. @return [Array&lt;Base&gt;]
+a list of handlers to process the statement with.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="find_handlers-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/processor.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_handlers</span>(<span class="ruby-identifier">statement</span>)
+  <span class="ruby-constant">Base</span>.<span class="ruby-identifier">subclasses</span>.<span class="ruby-identifier">find_all</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">handler</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">handler_base_class</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">handler</span> <span class="ruby-operator">&amp;&amp;</span>
+    (<span class="ruby-identifier">handler</span>.<span class="ruby-identifier">namespace_only?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">owner</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">NamespaceObject</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>) <span class="ruby-operator">&amp;&amp;</span>
+    <span class="ruby-identifier">handles?</span>(<span class="ruby-identifier">handler</span>, <span class="ruby-identifier">statement</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_remaining_files" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_remaining_files</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Continue parsing the remainder of the files in the
+<code>globals.ordered_parser</code> object. After the remainder of files
+are parsed, processing will continue on the current file.</p>
+
+<p>@return [void] @see <a
+href="../Parser/OrderedParser.html">Parser::OrderedParser</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_remaining_files-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/processor.rb, line 141</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_remaining_files</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">globals</span>.<span class="ruby-identifier">ordered_parser</span>
+    <span class="ruby-identifier">globals</span>.<span class="ruby-identifier">ordered_parser</span>.<span class="ruby-identifier">parse</span>
+    <span class="ruby-identifier">log</span>.<span class="ruby-identifier">debug</span>(<span class="ruby-node">&quot;Re-processing #{@file}...&quot;</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-process" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process</span><span
+            class="method-args">(statements)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Processes a list of statements by finding handlers to process each one.</p>
+
+<p>@param [Array] statements a list of statements @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="process-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/processor.rb, line 110</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process</span>(<span class="ruby-identifier">statements</span>)
+  <span class="ruby-identifier">statements</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">stmt</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">find_handlers</span>(<span class="ruby-identifier">stmt</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">handler</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">begin</span>
+        <span class="ruby-identifier">handler</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">stmt</span>).<span class="ruby-identifier">process</span>
+      <span class="ruby-keyword">rescue</span> <span class="ruby-constant">HandlerAborted</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">abort</span>
+        <span class="ruby-identifier">log</span>.<span class="ruby-identifier">debug</span> <span class="ruby-node">&quot;#{handler.to_s} cancelled from #{caller.last}&quot;</span>
+        <span class="ruby-identifier">log</span>.<span class="ruby-identifier">debug</span> <span class="ruby-node">&quot;\tin file &#39;#{file}&#39;:#{stmt.line}:\n\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">show</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\n&quot;</span>
+      <span class="ruby-keyword">rescue</span> <span class="ruby-constant">NamespaceMissingError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">missingerr</span>
+        <span class="ruby-identifier">log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;The #{missingerr.object.type} #{missingerr.object.path} has not yet been recognized.&quot;</span>
+        <span class="ruby-identifier">log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-string">&quot;If this class/method is part of your source tree, this will affect your documentation results.&quot;</span>
+        <span class="ruby-identifier">log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;You can correct this issue by loading the source file for this object before `#{file}&#39;&quot;</span>
+        <span class="ruby-identifier">log</span>.<span class="ruby-identifier">warn</span>
+      <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Parser</span><span class="ruby-operator">::</span><span class="ruby-constant">UndocumentableError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">undocerr</span>
+        <span class="ruby-identifier">log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;in #{handler.to_s}: Undocumentable #{undocerr.message}&quot;</span>
+        <span class="ruby-identifier">log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;\tin file &#39;#{file}&#39;:#{stmt.line}:\n\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">show</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\n&quot;</span>
+      <span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+        <span class="ruby-identifier">log</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;Unhandled exception in #{handler.to_s}:&quot;</span>
+        <span class="ruby-identifier">log</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;  in `#{file}`:#{stmt.line}:\n\n#{stmt.show}\n&quot;</span>
+        <span class="ruby-identifier">log</span>.<span class="ruby-identifier">backtrace</span>(<span class="ruby-identifier">e</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-handler_base_class" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handler_base_class</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the handler base class @return [Base] the base class</p>
+          
+          
+
+          
+          <div class="method-source-code" id="handler_base_class-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/processor.rb, line 173</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">handler_base_class</span>
+  <span class="ruby-identifier">handler_base_namespace</span>.<span class="ruby-identifier">const_get</span>(<span class="ruby-value">:Base</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-handler_base_namespace" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handler_base_namespace</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>The module holding the handlers to be loaded</p>
+
+<p>@return [Module] the module containing the handlers depending on</p>
+
+<pre>{#parser_type}.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="handler_base_namespace-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/processor.rb, line 181</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">handler_base_namespace</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">namespace_for_handler</span>[<span class="ruby-identifier">parser_type</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-handles-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handles?</span><span
+            class="method-args">(handler, statement)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="handles-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/processor.rb, line 162</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">handles?</span>(<span class="ruby-identifier">handler</span>, <span class="ruby-identifier">statement</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">handler</span>.<span class="ruby-identifier">matches_file?</span>(<span class="ruby-identifier">file</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">handler</span>.<span class="ruby-identifier">method</span>(<span class="ruby-value">:handles?</span>).<span class="ruby-identifier">arity</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+    <span class="ruby-identifier">handler</span>.<span class="ruby-identifier">handles?</span>(<span class="ruby-identifier">statement</span>)
+  <span class="ruby-keyword">elsif</span> [<span class="ruby-value">-1</span>, <span class="ruby-value">2</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">handler</span>.<span class="ruby-identifier">method</span>(<span class="ruby-value">:handles?</span>).<span class="ruby-identifier">arity</span>)
+    <span class="ruby-identifier">handler</span>.<span class="ruby-identifier">handles?</span>(<span class="ruby-identifier">statement</span>, <span class="ruby-keyword">self</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-load_handlers" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_handlers</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Loads handlers from {#handler_base_namespace}. This ensures that Ruby1.9
+handlers are never loaded into 1.8; also lowers the amount of modules that
+are loaded @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="load_handlers-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/processor.rb, line 189</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">load_handlers</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@handlers_loaded</span>[<span class="ruby-identifier">parser_type</span>]
+  <span class="ruby-identifier">handler_base_namespace</span>.<span class="ruby-identifier">constants</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">const</span> = <span class="ruby-identifier">handler_base_namespace</span>.<span class="ruby-identifier">const_get</span>(<span class="ruby-identifier">c</span>)
+    <span class="ruby-keyword">unless</span> <span class="ruby-constant">Handlers</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">subclasses</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">const</span>)
+      <span class="ruby-constant">Handlers</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">subclasses</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">const</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@handlers_loaded</span>[<span class="ruby-identifier">parser_type</span>] = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

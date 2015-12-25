@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Parser::Ruby::Legacy::TokenList - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../../";
+</script>
+
+<script src="../../../../js/jquery.js"></script>
+<script src="../../../../js/darkfish.js"></script>
+
+<link href="../../../../css/fonts.css" rel="stylesheet">
+<link href="../../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../../../../Array.html">Array</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="RubyToken.html">YARD::Parser::Ruby::Legacy::RubyToken</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-3C-3C">#&lt;&lt;</a>
+    
+    <li ><a href="#method-i-convert_token">#convert_token</a>
+    
+    <li ><a href="#method-i-parse_content">#parse_content</a>
+    
+    <li class="calls-super" ><a href="#method-i-push">#push</a>
+    
+    <li ><a href="#method-i-squeeze">#squeeze</a>
+    
+    <li ><a href="#method-i-to_s">#to_s</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Parser::Ruby::Legacy::TokenList">
+  <h1 id="class-YARD::Parser::Ruby::Legacy::TokenList" class="class">
+    class YARD::Parser::Ruby::Legacy::TokenList
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(content = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/token_list.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">content</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">self</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">content</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">content</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-3C-3C" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">&lt;&lt;</span><span
+            class="method-args">(*tokens)</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="TokenList.html#method-i-push">push</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="method-i-push" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">push</span><span
+            class="method-args">(*tokens)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param [TokenList, Token, String] tokens</p>
+
+<pre>A list of tokens. If the token is a string, it
+is parsed with {RubyLex}.</pre>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="push-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/token_list.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">push</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">tokens</span>)
+  <span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tok</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">tok</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">TokenList</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">tok</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+      <span class="ruby-identifier">concat</span> <span class="ruby-identifier">tok</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">tok</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Token</span>)
+      <span class="ruby-keyword">super</span> <span class="ruby-identifier">tok</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">tok</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
+      <span class="ruby-identifier">parse_content</span>(<span class="ruby-identifier">tok</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;Expecting token, list of tokens or string of code to be tokenized. Got #{tok.class}&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">self</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="TokenList.html#method-i-3C-3C">&lt;&lt;</a>
+        </div>
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-squeeze" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">squeeze</span><span
+            class="method-args">(type = TkSPACE)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="squeeze-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/token_list.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">squeeze</span>(<span class="ruby-identifier">type</span> = <span class="ruby-constant">TkSPACE</span>)
+  <span class="ruby-identifier">last</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-constant">TokenList</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-identifier">type</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">last</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-identifier">type</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">t</span>; <span class="ruby-identifier">last</span> = <span class="ruby-identifier">t</span>; <span class="ruby-identifier">x</span> })
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_s" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_s</span><span
+            class="method-args">(full_statement = false, show_block = true)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_s-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/token_list.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_s</span>(<span class="ruby-identifier">full_statement</span> = <span class="ruby-keyword">false</span>, <span class="ruby-identifier">show_block</span> = <span class="ruby-keyword">true</span>)
+  <span class="ruby-identifier">inject</span>([]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">acc</span>, <span class="ruby-identifier">token</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">break</span> <span class="ruby-identifier">acc</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">full_statement</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">TkStatementEnd</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">token</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">show_block</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">TkBlockContents</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">token</span>
+      <span class="ruby-identifier">acc</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">acc</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">token</span>.<span class="ruby-identifier">text</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">acc</span>
+  <span class="ruby-keyword">end</span>.<span class="ruby-identifier">join</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-convert_token" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">convert_token</span><span
+            class="method-args">(lex, tk)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="convert_token-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/token_list.rb, line 55</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">convert_token</span>(<span class="ruby-identifier">lex</span>, <span class="ruby-identifier">tk</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">TkIDENTIFIER</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">tk</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">lex</span>.<span class="ruby-identifier">peek</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;:&#39;</span>
+    <span class="ruby-identifier">next_tk</span> = <span class="ruby-identifier">lex</span>.<span class="ruby-identifier">token</span>
+    <span class="ruby-identifier">sym</span> = <span class="ruby-constant">TkLABEL</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span>, <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">char_no</span>, <span class="ruby-keyword">nil</span>)
+    <span class="ruby-identifier">sym</span>.<span class="ruby-identifier">lex_state</span> = <span class="ruby-identifier">lex</span>.<span class="ruby-identifier">lex_state</span>
+    <span class="ruby-identifier">sym</span>.<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">text</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">next_tk</span>.<span class="ruby-identifier">text</span>)
+  <span class="ruby-keyword">elsif</span> <span class="ruby-constant">TkSYMBEG</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">tk</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">next_tk</span> = <span class="ruby-identifier">lex</span>.<span class="ruby-identifier">token</span>
+    <span class="ruby-identifier">sym</span> = <span class="ruby-constant">TkSYMBOL</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span>, <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">char_no</span>, <span class="ruby-keyword">nil</span>)
+    <span class="ruby-identifier">sym</span>.<span class="ruby-identifier">lex_state</span> = <span class="ruby-identifier">lex</span>.<span class="ruby-identifier">lex_state</span>
+    <span class="ruby-identifier">sym</span>.<span class="ruby-identifier">set_text</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">text</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">next_tk</span>.<span class="ruby-identifier">text</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">tk</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_content" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_content</span><span
+            class="method-args">(content)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="parse_content-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/token_list.rb, line 48</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_content</span>(<span class="ruby-identifier">content</span>)
+  <span class="ruby-identifier">lex</span> = <span class="ruby-constant">RubyLex</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">content</span>)
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">tk</span> = <span class="ruby-identifier">lex</span>.<span class="ruby-identifier">token</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-keyword">self</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">convert_token</span>(<span class="ruby-identifier">lex</span>, <span class="ruby-identifier">tk</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

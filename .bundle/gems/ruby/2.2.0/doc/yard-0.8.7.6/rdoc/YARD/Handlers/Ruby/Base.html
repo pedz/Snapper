@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Handlers::Ruby::Base - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../";
+</script>
+
+<script src="../../../js/jquery.js"></script>
+<script src="../../../js/darkfish.js"></script>
+
+<link href="../../../css/fonts.css" rel="stylesheet">
+<link href="../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../Base.html">YARD::Handlers::Base</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../../Parser/Ruby.html">YARD::Parser::Ruby</a>
+  
+  
+  
+    <li><a class="include" href="../../Parser/Ruby.html">YARD::Parser::Ruby</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-handles-3F">::handles?</a>
+    
+    <li ><a href="#method-c-meta_type">::meta_type</a>
+    
+    <li ><a href="#method-c-method_call">::method_call</a>
+    
+    <li ><a href="#method-i-call_params">#call_params</a>
+    
+    <li ><a href="#method-i-caller_method">#caller_method</a>
+    
+    <li ><a href="#method-i-parse_block">#parse_block</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Handlers::Ruby::Base">
+  <h1 id="class-YARD::Handlers::Ruby::Base" class="class">
+    class YARD::Handlers::Ruby::Base
+  </h1>
+
+  <section class="description">
+    
+<p>This is the base handler class for the new-style (1.9) <a
+href="../Ruby.html">Ruby</a> parser. All handlers that subclass this base
+class will be used when the new-style parser is used. For implementing
+legacy handlers, see {Legacy::Base}.</p>
+
+<p>@abstract See {Handlers::Base} for subclassing information. @see <a
+href="../Base.html">Handlers::Base</a> @see <a
+href="Legacy/Base.html">Legacy::Base</a></p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-handles-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handles?</span><span
+            class="method-args">(node)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Boolean] whether or not an {AstNode} object should be</p>
+
+<pre class="ruby"><span class="ruby-identifier">handled</span> <span class="ruby-identifier">by</span> <span class="ruby-identifier">this</span> <span class="ruby-identifier">handler</span>
+</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="handles-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/base.rb, line 110</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">handles?</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-identifier">handlers</span>.<span class="ruby-identifier">any?</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">a_handler</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">a_handler</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Symbol</span>
+      <span class="ruby-identifier">a_handler</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">type</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">String</span>
+      <span class="ruby-identifier">node</span>.<span class="ruby-identifier">source</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">a_handler</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Regexp</span>
+      <span class="ruby-identifier">node</span>.<span class="ruby-identifier">source</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">a_handler</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Parser</span><span class="ruby-operator">::</span><span class="ruby-constant">Ruby</span><span class="ruby-operator">::</span><span class="ruby-constant">AstNode</span>
+      <span class="ruby-identifier">a_handler</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">node</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">HandlesExtension</span>
+      <span class="ruby-identifier">a_handler</span>.<span class="ruby-identifier">matches?</span>(<span class="ruby-identifier">node</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-meta_type" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">meta_type</span><span
+            class="method-args">(type)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Matcher for handling a node with a specific meta-type. An {AstNode} has a
+{AstNode#type} to define its type but can also be associated with a set of
+types. For instance, <code>:if</code> and <code>:unless</code> are both of
+the meta-type <code>:condition</code>.</p>
+
+<p>A meta-type is any method on the {AstNode} class ending in “?”, though you
+should not include the “?” suffix in your declaration. Some examples are:
+“condition”, “call”, “literal”, “kw”, “token”, “ref”.</p>
+
+<p>@example Handling any conditional statement (if, unless)</p>
+
+<pre class="ruby"><span class="ruby-identifier">handles</span> <span class="ruby-identifier">meta_type</span>(:<span class="ruby-identifier">condition</span>)
+</pre>
+
+<p>@param [Symbol] type the meta-type to match. A meta-type can be</p>
+
+<pre>any method name + &quot;?&quot; that {AstNode} responds to.</pre>
+
+<p>@return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="meta_type-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/base.rb, line 102</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">meta_type</span>(<span class="ruby-identifier">type</span>)
+  <span class="ruby-constant">TestNodeWrapper</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">type</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;?&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-method_call" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">method_call</span><span
+            class="method-args">(name = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Matcher for handling any type of method call. Method calls can be expressed
+by many {AstNode} types depending on the syntax with which it is called, so
+<a href="../../../YARD.html">YARD</a> allows you to use this matcher to
+simplify matching a method call.</p>
+
+<p>@example Match the “describe” method call</p>
+
+<pre class="ruby"><span class="ruby-identifier">handles</span> <span class="ruby-identifier">method_call</span>(:<span class="ruby-identifier">describe</span>)
+
+<span class="ruby-comment"># The following will be matched:</span>
+<span class="ruby-comment"># describe(...)</span>
+<span class="ruby-comment"># object.describe(...)</span>
+<span class="ruby-comment"># describe &quot;argument&quot; do ... end</span>
+</pre>
+
+<p>@param [#to_s] name matches the method call of this name @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="method_call-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/base.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">method_call</span>(<span class="ruby-identifier">name</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-constant">MethodCallWrapper</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-call_params" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">call_params</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@group Macro Handling</p>
+          
+          
+
+          
+          <div class="method-source-code" id="call_params-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/base.rb, line 141</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">call_params</span>
+  <span class="ruby-keyword">return</span> [] <span class="ruby-keyword">unless</span> <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:parameters</span>)
+  <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">parameters</span>(<span class="ruby-keyword">false</span>).<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">param</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">param</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:list</span>
+      <span class="ruby-identifier">param</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-identifier">n</span>.<span class="ruby-identifier">jump</span>(<span class="ruby-value">:ident</span>, <span class="ruby-value">:kw</span>, <span class="ruby-value">:tstring_content</span>).<span class="ruby-identifier">source</span> }
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">param</span>.<span class="ruby-identifier">jump</span>(<span class="ruby-value">:ident</span>, <span class="ruby-value">:kw</span>, <span class="ruby-value">:tstring_content</span>).<span class="ruby-identifier">source</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>.<span class="ruby-identifier">flatten</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-caller_method" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">caller_method</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="caller_method-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/base.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">caller_method</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">call?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">def?</span>
+    <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">method_name</span>(<span class="ruby-keyword">true</span>).<span class="ruby-identifier">to_s</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:var_ref</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:vcall</span>
+    <span class="ruby-identifier">statement</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">jump</span>(<span class="ruby-value">:ident</span>, <span class="ruby-value">:kw</span>).<span class="ruby-identifier">source</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_block" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_block</span><span
+            class="method-args">(inner_node, opts = {})</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@group Parsing an Inner Block</p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_block-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/base.rb, line 132</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_block</span>(<span class="ruby-identifier">inner_node</span>, <span class="ruby-identifier">opts</span> = {})
+  <span class="ruby-identifier">push_state</span>(<span class="ruby-identifier">opts</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">nodes</span> = <span class="ruby-identifier">inner_node</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:list</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">inner_node</span>.<span class="ruby-identifier">children</span> <span class="ruby-operator">:</span> [<span class="ruby-identifier">inner_node</span>]
+    <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">process</span>(<span class="ruby-identifier">nodes</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

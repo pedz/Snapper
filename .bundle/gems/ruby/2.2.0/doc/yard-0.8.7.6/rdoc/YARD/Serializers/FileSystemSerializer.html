@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Serializers::FileSystemSerializer - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Base.html">YARD::Serializers::Base</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-basepath-3D">#basepath=</a>
+    
+    <li ><a href="#method-i-encode_path_components">#encode_path_components</a>
+    
+    <li ><a href="#method-i-exists-3F">#exists?</a>
+    
+    <li ><a href="#method-i-extension-3D">#extension=</a>
+    
+    <li ><a href="#method-i-serialize">#serialize</a>
+    
+    <li ><a href="#method-i-serialized_path">#serialized_path</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Serializers::FileSystemSerializer">
+  <h1 id="class-YARD::Serializers::FileSystemSerializer" class="class">
+    class YARD::Serializers::FileSystemSerializer
+  </h1>
+
+  <section class="description">
+    
+<p>Implements a serializer that reads from and writes to the filesystem.</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-basepath" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">basepath</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The base path to write data to. @return [String] a base path</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-extension" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">extension</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The extension of the filename (defaults to <code>html</code>)</p>
+
+<p>@return [String] the extension of the file. Empty string for no extension.</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(opts = {})</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new <a href="FileSystemSerializer.html">FileSystemSerializer</a>
+with options</p>
+
+<p>@option opts [String] :basepath (&#39;doc&#39;) the base path to write data
+to @option opts [String] :extension (&#39;html&#39;) the extension of the
+serialized</p>
+
+<pre>path filename. If this is set to the empty string, no extension is used.</pre>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              <a href="Base.html#method-c-new">YARD::Serializers::Base.new</a>
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/serializers/file_system_serializer.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">opts</span> = {})
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@basepath</span> = (<span class="ruby-identifier">options</span>[<span class="ruby-value">:basepath</span>] <span class="ruby-operator">||</span> <span class="ruby-string">&#39;doc&#39;</span>).<span class="ruby-identifier">to_s</span>
+  <span class="ruby-ivar">@extension</span> = (<span class="ruby-identifier">options</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-value">:extension</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:extension</span>] <span class="ruby-operator">:</span> <span class="ruby-string">&#39;html&#39;</span>).<span class="ruby-identifier">to_s</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-basepath-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">basepath=</span><span
+            class="method-args">(value)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="basepath-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/serializers/file_system_serializer.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">basepath=</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-ivar">@basepath</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:basepath</span>] = <span class="ruby-identifier">value</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-exists-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">exists?</span><span
+            class="method-args">(object)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Checks the disk for an object and returns whether it was serialized.</p>
+
+<p>@param [CodeObjects::Base] object the object to check @return [Boolean]
+whether an object has been serialized to disk</p>
+          
+          
+
+          
+          <div class="method-source-code" id="exists-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/serializers/file_system_serializer.rb, line 69</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">basepath</span>, <span class="ruby-identifier">serialized_path</span>(<span class="ruby-identifier">object</span>)))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-extension-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extension=</span><span
+            class="method-args">(value)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extension-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/serializers/file_system_serializer.rb, line 18</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extension=</span>(<span class="ruby-identifier">value</span>)
+  <span class="ruby-ivar">@extension</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:extension</span>] = <span class="ruby-identifier">value</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-serialize" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">serialize</span><span
+            class="method-args">(object, data)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Serializes object with data to its serialized path (prefixed by the
+<code>#basepath</code>).</p>
+
+<p>@return [String] the written data (for chaining)</p>
+          
+          
+
+          
+          <div class="method-source-code" id="serialize-source">
+            <pre><span class="ruby-comment"># File lib/yard/serializers/file_system_serializer.rb, line 36</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">serialize</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">path</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">basepath</span>, <span class="ruby-identifier">serialized_path</span>(<span class="ruby-identifier">object</span>))
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">debug</span> <span class="ruby-node">&quot;Serializing to #{path}&quot;</span>
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open!</span>(<span class="ruby-identifier">path</span>, <span class="ruby-string">&quot;wb&quot;</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span> <span class="ruby-identifier">data</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-serialized_path" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">serialized_path</span><span
+            class="method-args">(object)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Implements the serialized path of a code object.</p>
+
+<p>@param [CodeObjects::Base, <a
+href="../CodeObjects/ExtraFileObject.html">CodeObjects::ExtraFileObject</a>,
+String] object</p>
+
+<pre>the object to get a path for. The path of a string is the string itself.</pre>
+
+<p>@return [String] if object is a <a href="../../String.html">String</a>,
+returns</p>
+
+<pre>object, otherwise the path on disk (without the basepath).</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="serialized_path-source">
+            <pre><span class="ruby-comment"># File lib/yard/serializers/file_system_serializer.rb, line 48</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">serialized_path</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-identifier">object</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">ExtraFileObject</span>)
+    <span class="ruby-identifier">fspath</span> = [<span class="ruby-string">&#39;file.&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">extension</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-string">&#39;&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;.#{extension}&quot;</span>)]
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">objname</span> = <span class="ruby-identifier">object</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Registry</span>.<span class="ruby-identifier">root</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot;top-level-namespace&quot;</span>
+    <span class="ruby-identifier">objname</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&#39;_&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">scope</span>.<span class="ruby-identifier">to_s</span>[<span class="ruby-value">0</span>,<span class="ruby-value">1</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">MethodObject</span>)
+    <span class="ruby-identifier">fspath</span> = [<span class="ruby-identifier">objname</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">extension</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-string">&#39;&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;.#{extension}&quot;</span>)]
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">path</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;&quot;</span>
+      <span class="ruby-identifier">fspath</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">path</span>.<span class="ruby-identifier">split</span>(<span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">NSEP</span>))
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">encode_path_components</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">fspath</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-encode_path_components" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">encode_path_components</span><span
+            class="method-args">(*components)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Remove special chars from filenames. Windows disallows \ / : * ? “ &lt;
+&gt; | but we will just remove any non alphanumeric (plus period,
+underscore and dash).</p>
+          
+          
+
+          
+          <div class="method-source-code" id="encode_path_components-source">
+            <pre><span class="ruby-comment"># File lib/yard/serializers/file_system_serializer.rb, line 78</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">encode_path_components</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">components</span>)
+  <span class="ruby-identifier">components</span>.<span class="ruby-identifier">map!</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">p</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/[^\w\.-]/</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">encoded</span> = <span class="ruby-string">&#39;_&#39;</span>
+
+      <span class="ruby-identifier">x</span>.<span class="ruby-identifier">each_byte</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">b</span><span class="ruby-operator">|</span> <span class="ruby-identifier">encoded</span> <span class="ruby-operator">&lt;&lt;</span> (<span class="ruby-string">&quot;%X&quot;</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">b</span>) }
+      <span class="ruby-identifier">encoded</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

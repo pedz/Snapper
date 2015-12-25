@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::CodeObjects::MacroObject - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Base.html">YARD::CodeObjects::Base</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-apply">::apply</a>
+    
+    <li ><a href="#method-c-apply_macro">::apply_macro</a>
+    
+    <li ><a href="#method-c-create">::create</a>
+    
+    <li ><a href="#method-c-create_docstring">::create_docstring</a>
+    
+    <li ><a href="#method-c-expand">::expand</a>
+    
+    <li ><a href="#method-c-find">::find</a>
+    
+    <li ><a href="#method-c-find_or_create">::find_or_create</a>
+    
+    <li ><a href="#method-i-attached-3F">#attached?</a>
+    
+    <li ><a href="#method-i-expand">#expand</a>
+    
+    <li ><a href="#method-i-path">#path</a>
+    
+    <li ><a href="#method-i-sep">#sep</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::CodeObjects::MacroObject">
+  <h1 id="class-YARD::CodeObjects::MacroObject" class="class">
+    class YARD::CodeObjects::MacroObject
+  </h1>
+
+  <section class="description">
+    
+<p>A <a href="MacroObject.html">MacroObject</a> represents a docstring defined
+through +@!macro NAME+ and can be reused by specifying the tag +@!macro
+NAME+. You can also provide the <code>attached</code> type flag to the
+macro definition to have it attached to the specific DSL method so it will
+be implicitly reused.</p>
+
+<p>Macros are fully described in the {file:docs/Tags.md#macro <a
+href="../Tags.html">Tags</a> Overview} document.</p>
+
+<p>@example Creating a basic named macro</p>
+
+<pre class="ruby"><span class="ruby-comment"># @!macro prop</span>
+<span class="ruby-comment">#   @!method $1(${3-})</span>
+<span class="ruby-comment">#   @return [$2] the value of the $0</span>
+<span class="ruby-identifier">property</span> :<span class="ruby-identifier">foo</span>, <span class="ruby-constant">String</span>, :<span class="ruby-identifier">a</span>, :<span class="ruby-identifier">b</span>
+
+<span class="ruby-comment"># @!macro prop</span>
+<span class="ruby-identifier">property</span> :<span class="ruby-identifier">bar</span>, <span class="ruby-constant">Numeric</span>, :<span class="ruby-identifier">value</span>
+</pre>
+
+<p>@example Creating a macro that is attached to the method call</p>
+
+<pre class="ruby"><span class="ruby-comment"># @!macro [attach] prop2</span>
+<span class="ruby-comment">#   @!method $1(value)</span>
+<span class="ruby-identifier">property</span> :<span class="ruby-identifier">foo</span>
+
+<span class="ruby-comment"># Extra data added to docstring</span>
+<span class="ruby-identifier">property</span> :<span class="ruby-identifier">bar</span>
+</pre>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="MACRO_MATCH">MACRO_MATCH
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-macro_data" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">macro_data</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [String] the macro data stored on the object</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-method_object" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">method_object</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [CodeObjects::Base] the method object that this macro is</p>
+
+<pre>attached to.</pre>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-apply" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">apply</span><span
+            class="method-args">(docstring, call_params = [], full_source = '', block_source = '', method_object = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Applies a macro on a docstring by creating any macro data inside of the
+docstring first. Equivalent to calling {find_or_create} and {apply_macro}
+on the new macro object.</p>
+
+<p>@param [Docstring] docstring the docstring to create a macro out of @!macro
+macro.expand @see <a
+href="MacroObject.html#method-c-find_or_create">::find_or_create</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="apply-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/macro_object.rb, line 120</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">apply</span>(<span class="ruby-identifier">docstring</span>, <span class="ruby-identifier">call_params</span> = [], <span class="ruby-identifier">full_source</span> = <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">block_source</span> = <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">method_object</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">docstring</span> = <span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">all</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">Docstring</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">docstring</span>
+  <span class="ruby-identifier">parser</span> = <span class="ruby-constant">Docstring</span>.<span class="ruby-identifier">parser</span>
+  <span class="ruby-identifier">handler</span> = <span class="ruby-constant">OpenStruct</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">handler</span>.<span class="ruby-identifier">call_params</span> = <span class="ruby-identifier">call_params</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]
+  <span class="ruby-identifier">handler</span>.<span class="ruby-identifier">caller_method</span> = <span class="ruby-identifier">call_params</span>.<span class="ruby-identifier">first</span>
+  <span class="ruby-identifier">handler</span>.<span class="ruby-identifier">statement</span> = <span class="ruby-constant">OpenStruct</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:source</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">full_source</span>)
+  <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">docstring</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">handler</span>).<span class="ruby-identifier">to_docstring</span>.<span class="ruby-identifier">to_raw</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-apply_macro" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">apply_macro</span><span
+            class="method-args">(macro, docstring, call_params = [], full_source = '', block_source = '')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Applies a macro to a docstring, interpolating the macro&#39;s data on the
+docstring and appending any extra local docstring data that was in the
+original <code>docstring</code> object.</p>
+
+<p>@param [MacroObject] macro the macro object @!macro macro.expand</p>
+          
+          
+
+          
+          <div class="method-source-code" id="apply_macro-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/macro_object.rb, line 136</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">apply_macro</span>(<span class="ruby-identifier">macro</span>, <span class="ruby-identifier">docstring</span>, <span class="ruby-identifier">call_params</span> = [], <span class="ruby-identifier">full_source</span> = <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">block_source</span> = <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-identifier">apply</span>(<span class="ruby-identifier">docstring</span>, <span class="ruby-identifier">call_params</span>, <span class="ruby-identifier">full_source</span>, <span class="ruby-identifier">block_source</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">(macro_name, data, method_object = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new macro and fills in the relevant properties. @param [String]
+macro_name the name of the macro, must be unique. @param [String] data the
+data the macro should expand when re-used @param [CodeObjects::Base] <a
+href="MacroObject.html#attribute-i-method_object">#method_object</a> an
+object to attach this</p>
+
+<pre>macro to. If supplied, {#attached?} will be true</pre>
+
+<p>@return [MacroObject] the newly created object</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/macro_object.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">macro_name</span>, <span class="ruby-identifier">data</span>, <span class="ruby-identifier">method_object</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">obj</span> = <span class="ruby-identifier">new</span>(<span class="ruby-value">:root</span>, <span class="ruby-identifier">macro_name</span>)
+  <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">macro_data</span> = <span class="ruby-identifier">data</span>
+  <span class="ruby-identifier">obj</span>.<span class="ruby-identifier">method_object</span> = <span class="ruby-identifier">method_object</span>
+  <span class="ruby-identifier">obj</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-create_docstring" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">create_docstring</span><span
+            class="method-args">(macro_name, data, method_object = nil)</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="MacroObject.html#method-c-find_or_create">find_or_create</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="method-c-expand" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">expand</span><span
+            class="method-args">(macro_data, call_params = [], full_source = '', block_source = '')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Expands <code>macro_data</code> using the interpolation parameters.</p>
+
+<p>Interpolation rules:</p>
+<ul><li>
+<p>$0, $1, $2, … = the Nth parameter in <code>call_params</code></p>
+</li><li>
+<p>$* = the full statement source (excluding block)</p>
+</li><li>
+<p>Also supports $!{N-M} ranges, as well as negative indexes on N or M</p>
+</li><li>
+<p>Use $ to escape the variable name in a macro.</p>
+</li></ul>
+
+<p>@!macro [new] macro.expand</p>
+
+<pre>@param [Array&lt;String&gt;] call_params the method name and parameters
+  to the method call. These arguments will fill \$0-N
+@param [String] full_source the full source line (excluding block)
+  interpolated as \$*
+@param [String] block_source Currently unused. Will support
+  interpolating the block data as a variable.
+@return [String] the expanded macro data</pre>
+
+<p>@param [String] <a
+href="MacroObject.html#attribute-i-macro_data">#macro_data</a> the macro
+data to expand (taken from {#macro_data})</p>
+          
+          
+
+          
+          <div class="method-source-code" id="expand-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/macro_object.rb, line 96</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">expand</span>(<span class="ruby-identifier">macro_data</span>, <span class="ruby-identifier">call_params</span> = [], <span class="ruby-identifier">full_source</span> = <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">block_source</span> = <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-identifier">macro_data</span> = <span class="ruby-identifier">macro_data</span>.<span class="ruby-identifier">all</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">macro_data</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Docstring</span>)
+  <span class="ruby-identifier">macro_data</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-constant">MACRO_MATCH</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">escape</span>, <span class="ruby-identifier">first</span>, <span class="ruby-identifier">last</span>, <span class="ruby-identifier">rng</span> = <span class="ruby-node">$1</span>, <span class="ruby-node">$2</span> <span class="ruby-operator">||</span> <span class="ruby-node">$5</span>, <span class="ruby-node">$4</span>, <span class="ruby-node">$3</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-node">$&amp;</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">escape</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">first</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;*&#39;</span>
+      <span class="ruby-identifier">last</span> <span class="ruby-operator">?</span> <span class="ruby-node">$&amp;</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">full_source</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">first_i</span> = <span class="ruby-identifier">first</span>.<span class="ruby-identifier">to_i</span>
+      <span class="ruby-identifier">last_i</span> = (<span class="ruby-identifier">last</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">last</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">call_params</span>.<span class="ruby-identifier">size</span>)
+      <span class="ruby-identifier">last_i</span> = <span class="ruby-identifier">first_i</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">rng</span>
+      <span class="ruby-identifier">params</span> = <span class="ruby-identifier">call_params</span>[<span class="ruby-identifier">first_i</span><span class="ruby-operator">..</span><span class="ruby-identifier">last_i</span>]
+      <span class="ruby-identifier">params</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">params</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;, &quot;</span>) <span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-find" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find</span><span
+            class="method-args">(macro_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Finds a macro using <code>macro_name</code> @param [#to_s] macro_name the
+name of the macro @return [MacroObject] if a macro is found @return [nil]
+if there is no registered macro by that name</p>
+          
+          
+
+          
+          <div class="method-source-code" id="find-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/macro_object.rb, line 50</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find</span>(<span class="ruby-identifier">macro_name</span>)
+  <span class="ruby-constant">Registry</span>.<span class="ruby-identifier">at</span>(<span class="ruby-string">&#39;.macro.&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">macro_name</span>.<span class="ruby-identifier">to_s</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-find_or_create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_or_create</span><span
+            class="method-args">(macro_name, data, method_object = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses a given docstring and determines if the macro is “new” or not. If
+the macro has $variable names or if it has a @!macro tag with the [new] or
+[attached] flag, it is considered new.</p>
+
+<p>If a new macro is found, the macro is created and registered. Otherwise the
+macro name is searched and returned. If a macro is not found, nil is
+returned.</p>
+
+<p>@param [#to_s] macro_name the name of the macro @param [CodeObjects::Base]
+<a href="MacroObject.html#attribute-i-method_object">#method_object</a> an
+optional method to attach</p>
+
+<pre>the macro to. Only used if the macro is being created, otherwise
+this argument is ignored.</pre>
+
+<p>@return [MacroObject] the newly created or existing macro, depending</p>
+
+<pre>on whether the @!macro tag was a new tag or not.</pre>
+
+<p>@return [nil] if the <code>data</code> has no macro tag or if the macro is</p>
+
+<pre>not new and no macro by the macro name is found.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="find_or_create-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/macro_object.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_or_create</span>(<span class="ruby-identifier">macro_name</span>, <span class="ruby-identifier">data</span>, <span class="ruby-identifier">method_object</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">macro</span> = <span class="ruby-identifier">find</span>(<span class="ruby-identifier">name</span>)
+    <span class="ruby-identifier">macro</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">create</span>(<span class="ruby-identifier">macro_name</span>, <span class="ruby-identifier">data</span>, <span class="ruby-identifier">method_object</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="MacroObject.html#method-c-create_docstring">create_docstring</a>
+        </div>
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-attached-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">attached?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Boolean] whether this macro is attached to a method</p>
+          
+          
+
+          
+          <div class="method-source-code" id="attached-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/macro_object.rb, line 149</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">attached?</span>; <span class="ruby-identifier">method_object</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-expand" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">expand</span><span
+            class="method-args">(call_params = [], full_source = '', block_source = '')</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Expands the macro using @param [Array&lt;String&gt;] call_params a list of
+tokens that are passed</p>
+
+<pre class="ruby"><span class="ruby-identifier">to</span> <span class="ruby-identifier">the</span> <span class="ruby-identifier">method</span> <span class="ruby-identifier">call</span>
+</pre>
+
+<p>@param [String] full_source the full method call (not including the block)
+@param [String] block_source the source passed in the block of the method</p>
+
+<pre>call, if there is a block.</pre>
+
+<p>@example Expanding a Macro</p>
+
+<pre class="ruby"><span class="ruby-identifier">macro</span>.<span class="ruby-identifier">expand</span>(<span class="ruby-node">%w(property foo bar)</span>, <span class="ruby-string">&#39;property :foo, :bar&#39;</span>, <span class="ruby-string">&#39;&#39;</span>) <span class="ruby-comment">#=&gt;</span>
+  <span class="ruby-string">&quot;...macro data interpolating this line of code...&quot;</span>
+</pre>
+
+<p>@see expand</p>
+          
+          
+
+          
+          <div class="method-source-code" id="expand-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/macro_object.rb, line 167</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">expand</span>(<span class="ruby-identifier">call_params</span> = [], <span class="ruby-identifier">full_source</span> = <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">block_source</span> = <span class="ruby-string">&#39;&#39;</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">expand</span>(<span class="ruby-identifier">macro_data</span>, <span class="ruby-identifier">call_params</span>, <span class="ruby-identifier">full_source</span>, <span class="ruby-identifier">block_source</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-path" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">path</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Overrides {Base#path} so the macro path is “.macro.MACRONAME”</p>
+          
+          
+
+          
+          <div class="method-source-code" id="path-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/macro_object.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">path</span>; <span class="ruby-string">&#39;.macro.&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-sep" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">sep</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Overrides the separator to be &#39;.&#39;</p>
+          
+          
+
+          
+          <div class="method-source-code" id="sep-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/macro_object.rb, line 155</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sep</span>; <span class="ruby-string">&#39;.&#39;</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

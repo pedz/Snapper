@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::I18n::PotGenerator - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#class-YARD::I18n::PotGenerator-label-POT+and+PO">POT and PO</a>
+    <li><a href="#class-YARD::I18n::PotGenerator-label-How+to+extract+msgids">How to extract msgids</a>
+    <li><a href="#class-YARD::I18n::PotGenerator-label-Usage">Usage</a>
+  </ul>
+</div>
+
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../../Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-current_time">#current_time</a>
+    
+    <li ><a href="#method-i-escape_message_id">#escape_message_id</a>
+    
+    <li ><a href="#method-i-extract_documents">#extract_documents</a>
+    
+    <li ><a href="#method-i-extract_paragraphs">#extract_paragraphs</a>
+    
+    <li ><a href="#method-i-extract_tag_documents">#extract_tag_documents</a>
+    
+    <li ><a href="#method-i-extract_tag_name">#extract_tag_name</a>
+    
+    <li ><a href="#method-i-extract_tag_text">#extract_tag_text</a>
+    
+    <li ><a href="#method-i-generate">#generate</a>
+    
+    <li ><a href="#method-i-generate_message">#generate_message</a>
+    
+    <li ><a href="#method-i-generate_pot_creation_date_value">#generate_pot_creation_date_value</a>
+    
+    <li ><a href="#method-i-header">#header</a>
+    
+    <li ><a href="#method-i-parse_files">#parse_files</a>
+    
+    <li ><a href="#method-i-parse_objects">#parse_objects</a>
+    
+    <li ><a href="#method-i-register_message">#register_message</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::I18n::PotGenerator">
+  <h1 id="class-YARD::I18n::PotGenerator" class="class">
+    class YARD::I18n::PotGenerator
+  </h1>
+
+  <section class="description">
+    
+<p>The <code>PotGenerator</code> generates POT format string from
+{CodeObjects::Base} and {CodeObjects::ExtraFileObject}.</p>
+
+<h2 id="class-YARD::I18n::PotGenerator-label-POT+and+PO">POT and PO<span><a href="#class-YARD::I18n::PotGenerator-label-POT+and+PO">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>POT is an acronym for “Portable <a href="../../Object.html">Object</a>
+Template”. POT is a template file to create PO file. The extension for POT
+is “.pot”. PO file is an acronym for “Portable Object”. PO file has many
+parts of message ID (msgid) that is translation target message and message
+string (msgstr) that is translated message of message ID. If you want to
+tranlsate “Hello” in English into “Bonjour” in French, “Hello” is the msgid
+ID and “Bonjour” is msgstr. The extension for PO is “.po”.</p>
+
+<h2 id="class-YARD::I18n::PotGenerator-label-How+to+extract+msgids">How to extract msgids<span><a href="#class-YARD::I18n::PotGenerator-label-How+to+extract+msgids">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>The <code>PotGenerator</code> has two parse methods:</p>
+<ul><li>
+<p>{#parse_objects} for {CodeObjects::Base}</p>
+</li><li>
+<p>{#parse_files} for {CodeObjects::ExtraFileObject}</p>
+</li></ul>
+
+<p>{#parse_objects} extracts msgids from docstring and tags of
+{CodeObjects::Base} objects. The docstring of {CodeObjects::Base} object is
+parsed and a paragraph is extracted as a msgid. Tag name and tag text are
+extracted as msgids from a tag.</p>
+
+<p>{#parse_files} extracts msgids from {CodeObjects::ExtraFileObject} objects.
+The file content of {CodeObjects::ExtraFileObject} object is parsed and a
+paragraph is extracted as a msgid.</p>
+
+<h2 id="class-YARD::I18n::PotGenerator-label-Usage">Usage<span><a href="#class-YARD::I18n::PotGenerator-label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>To create a .pot file by <code>PotGenerator</code>, instantiate a
+<code>PotGenerator</code> with a relative working directory path from a
+directory path that has created .pot file, parse {CodeObjects::Base}
+objects and {CodeObjects::ExtraFileObject} objects, generate a POT and
+write the generated POT to a .pot file. The relative working directory path
+is “..” when the working directory path is “.”  and the POT is wrote into
+“po/yard.pot”.</p>
+
+<p>@example Generate a .pot file</p>
+
+<pre>po_file_path = &quot;po/yard.pot&quot;
+po_file_directory_pathname = Pathname.new(po_file_path).directory)
+working_directory_pathname = Pathname.new(&quot;.&quot;)
+relative_base_path = working_directory_pathname.relative_path_from(po_file_directory_pathname).to_s
+# relative_base_path -&gt; &quot;..&quot;
+generator = YARD::I18n::PotGenerator.new(relative_base_path)
+generator.parse_objects(objects)
+generator.parse_files(files)
+pot = generator.generate
+po_file_directory_pathname.mkpath
+File.open(po_file_path, &quot;w&quot;) do |pot_file|
+  pot_file.print(pot)
+end</pre>
+
+<p>@see <a
+href="http://www.gnu.org/software/gettext/manual/html_node/PO-Files.html">www.gnu.org/software/gettext/manual/html_node/PO-Files.html</a></p>
+
+<pre class="ruby"><span class="ruby-constant">GNU</span> <span class="ruby-identifier">gettext</span> <span class="ruby-identifier">manual</span> <span class="ruby-identifier">about</span> <span class="ruby-identifier">details</span> <span class="ruby-identifier">of</span> <span class="ruby-constant">PO</span> <span class="ruby-identifier">file</span>
+</pre>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-messages" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">messages</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Extracted messages.</p>
+
+<p>@return [Messages] @since 0.8.1</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(relative_base_path)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a POT generator that uses <code>relative_base_path</code> to
+generate locations for a msgid. <code>relative_base_path</code> is
+prepended to all locations.</p>
+
+<p>@param [String] relative_base_path a relative working</p>
+
+<pre>directory path from a directory path that has created .pot
+file.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 78</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">relative_base_path</span>)
+  <span class="ruby-ivar">@relative_base_path</span> = <span class="ruby-identifier">relative_base_path</span>
+  <span class="ruby-ivar">@extracted_objects</span> = {}
+  <span class="ruby-ivar">@messages</span> = <span class="ruby-constant">Messages</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-generate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">generate</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Generates POT from +@messages+.</p>
+
+<p>One PO file entry is generated from a <code>Message</code> in +@messages+.</p>
+
+<p>Locations of the <code>Message</code> are used to generate the reference
+line that is started with “#: ”. <code>relative_base_path</code> passed
+when the generater is created is prepended to each path in location.</p>
+
+<p>Comments of the <code>Message</code> are used to generate the
+translater-comment line that is started with “# ”.</p>
+
+<p>@return [String] POT format string</p>
+          
+          
+
+          
+          <div class="method-source-code" id="generate-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 121</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">generate</span>
+  <span class="ruby-identifier">pot</span> = <span class="ruby-identifier">header</span>
+  <span class="ruby-identifier">sorted_messages</span> = <span class="ruby-ivar">@messages</span>.<span class="ruby-identifier">sort_by</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">message</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">sorted_locations</span> = <span class="ruby-identifier">message</span>.<span class="ruby-identifier">locations</span>.<span class="ruby-identifier">sort_by</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">location</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">location</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">sorted_locations</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">||</span> []
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">sorted_messages</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">message</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">generate_message</span>(<span class="ruby-identifier">pot</span>, <span class="ruby-identifier">message</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">pot</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_files" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_files</span><span
+            class="method-args">(files)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses {CodeObjects::ExtraFileObject} objects and stores extracted msgids
+into {#messages}.</p>
+
+<p>@param [Array&lt;CodeObjects::ExtraFileObject&gt;] files a list</p>
+
+<pre>of {CodeObjects::ExtraFileObject} objects to be parsed.</pre>
+
+<p>@return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_files-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 102</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_files</span>(<span class="ruby-identifier">files</span>)
+  <span class="ruby-identifier">files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">extract_paragraphs</span>(<span class="ruby-identifier">file</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_objects" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_objects</span><span
+            class="method-args">(objects)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses {CodeObjects::Base} objects and stores extracted msgids into
+{#messages}</p>
+
+<p>@param [Array&lt;CodeObjects::Base&gt;] objects a list of</p>
+
+<pre>{CodeObjects::Base} to be parsed.</pre>
+
+<p>@return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_objects-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 90</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_objects</span>(<span class="ruby-identifier">objects</span>)
+  <span class="ruby-identifier">objects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">object</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">extract_documents</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-current_time" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">current_time</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="current_time-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 160</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">current_time</span>
+  <span class="ruby-ivar">@current_time</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-escape_message_id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">escape_message_id</span><span
+            class="method-args">(message_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="escape_message_id-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 183</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">escape_message_id</span>(<span class="ruby-identifier">message_id</span>)
+  <span class="ruby-identifier">message_id</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/(\|&quot;)/</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">special_character</span> = <span class="ruby-node">$1</span>
+    <span class="ruby-node">&quot;\\#{special_character}&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-extract_documents" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_documents</span><span
+            class="method-args">(object)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_documents-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 194</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_documents</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@extracted_objects</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">object</span>)
+
+  <span class="ruby-ivar">@extracted_objects</span>[<span class="ruby-identifier">object</span>] = <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">object</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">NamespaceObject</span>
+    <span class="ruby-identifier">object</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">child</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">extract_documents</span>(<span class="ruby-identifier">child</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">group</span>
+    <span class="ruby-identifier">message</span> = <span class="ruby-identifier">register_message</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">group</span>)
+    <span class="ruby-identifier">object</span>.<span class="ruby-identifier">files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">path</span>, <span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">message</span>.<span class="ruby-identifier">add_location</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">line</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">message</span>.<span class="ruby-identifier">add_comment</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">path</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">path</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">docstring</span> = <span class="ruby-identifier">object</span>.<span class="ruby-identifier">docstring</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">text</span> = <span class="ruby-constant">Text</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">StringIO</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">docstring</span>))
+    <span class="ruby-identifier">text</span>.<span class="ruby-identifier">extract_messages</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">type</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-value">:paragraph</span>
+        <span class="ruby-identifier">paragraph</span>, <span class="ruby-identifier">line_no</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
+        <span class="ruby-identifier">message</span> = <span class="ruby-identifier">register_message</span>(<span class="ruby-identifier">paragraph</span>.<span class="ruby-identifier">rstrip</span>)
+        <span class="ruby-identifier">object</span>.<span class="ruby-identifier">files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">path</span>, <span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">message</span>.<span class="ruby-identifier">add_location</span>(<span class="ruby-identifier">path</span>, (<span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">line</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">line</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">line_no</span>)
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">message</span>.<span class="ruby-identifier">add_comment</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">path</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">path</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;should not reach here: unexpected type: #{type}&quot;</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">docstring</span>.<span class="ruby-identifier">tags</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">extract_tag_documents</span>(<span class="ruby-identifier">tag</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-extract_paragraphs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_paragraphs</span><span
+            class="method-args">(file)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_paragraphs-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 268</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_paragraphs</span>(<span class="ruby-identifier">file</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">file</span>.<span class="ruby-identifier">filename</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">input</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">text</span> = <span class="ruby-constant">Text</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">input</span>, <span class="ruby-value">:have_header</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
+    <span class="ruby-identifier">text</span>.<span class="ruby-identifier">extract_messages</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">type</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-value">:attribute</span>
+        <span class="ruby-identifier">name</span>, <span class="ruby-identifier">value</span>, <span class="ruby-identifier">line_no</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
+        <span class="ruby-identifier">message</span> = <span class="ruby-identifier">register_message</span>(<span class="ruby-identifier">value</span>)
+        <span class="ruby-identifier">message</span>.<span class="ruby-identifier">add_location</span>(<span class="ruby-identifier">file</span>.<span class="ruby-identifier">filename</span>, <span class="ruby-identifier">line_no</span>)
+        <span class="ruby-identifier">message</span>.<span class="ruby-identifier">add_comment</span>(<span class="ruby-identifier">name</span>)
+      <span class="ruby-keyword">when</span> <span class="ruby-value">:paragraph</span>
+        <span class="ruby-identifier">paragraph</span>, <span class="ruby-identifier">line_no</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
+        <span class="ruby-identifier">message</span> = <span class="ruby-identifier">register_message</span>(<span class="ruby-identifier">paragraph</span>.<span class="ruby-identifier">rstrip</span>)
+        <span class="ruby-identifier">message</span>.<span class="ruby-identifier">add_location</span>(<span class="ruby-identifier">file</span>.<span class="ruby-identifier">filename</span>, <span class="ruby-identifier">line_no</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;should not reach here: unexpected type: #{type}&quot;</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-extract_tag_documents" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_tag_documents</span><span
+            class="method-args">(tag)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_tag_documents-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 235</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_tag_documents</span>(<span class="ruby-identifier">tag</span>)
+  <span class="ruby-identifier">extract_tag_name</span>(<span class="ruby-identifier">tag</span>)
+  <span class="ruby-identifier">extract_tag_text</span>(<span class="ruby-identifier">tag</span>)
+
+  <span class="ruby-identifier">extract_documents</span>(<span class="ruby-identifier">tag</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">Tags</span><span class="ruby-operator">::</span><span class="ruby-constant">OverloadTag</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">tag</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-extract_tag_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_tag_name</span><span
+            class="method-args">(tag)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_tag_name-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 242</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_tag_name</span>(<span class="ruby-identifier">tag</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-keyword">and</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">key</span> = <span class="ruby-node">&quot;tag|#{tag.tag_name}|#{tag.name}&quot;</span>
+  <span class="ruby-identifier">message</span> = <span class="ruby-identifier">register_message</span>(<span class="ruby-identifier">key</span>)
+  <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">object</span>.<span class="ruby-identifier">files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">path</span>, <span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">message</span>.<span class="ruby-identifier">add_location</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">line</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">tag_label</span> = <span class="ruby-node">&quot;@#{tag.tag_name}&quot;</span>
+  <span class="ruby-identifier">tag_label</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; [#{tag.types.join(&#39;, &#39;)}]&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">types</span>
+  <span class="ruby-identifier">message</span>.<span class="ruby-identifier">add_comment</span>(<span class="ruby-identifier">tag_label</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-extract_tag_text" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_tag_text</span><span
+            class="method-args">(tag)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_tag_text-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 255</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_tag_text</span>(<span class="ruby-identifier">tag</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">message</span> = <span class="ruby-identifier">register_message</span>(<span class="ruby-identifier">tag</span>.<span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">object</span>.<span class="ruby-identifier">files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">path</span>, <span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">message</span>.<span class="ruby-identifier">add_location</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">line</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">tag_label</span> = <span class="ruby-node">&quot;@#{tag.tag_name}&quot;</span>
+  <span class="ruby-identifier">tag_label</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; [#{tag.types.join(&#39;, &#39;)}]&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">types</span>
+  <span class="ruby-identifier">tag_label</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; #{tag.name}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tag</span>.<span class="ruby-identifier">name</span>
+  <span class="ruby-identifier">message</span>.<span class="ruby-identifier">add_comment</span>(<span class="ruby-identifier">tag_label</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-generate_message" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">generate_message</span><span
+            class="method-args">(pot, message)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="generate_message-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 168</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_message</span>(<span class="ruby-identifier">pot</span>, <span class="ruby-identifier">message</span>)
+  <span class="ruby-identifier">message</span>.<span class="ruby-identifier">comments</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">comment</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">pot</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;# #{comment}\n&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">comment</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">message</span>.<span class="ruby-identifier">locations</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">path</span>, <span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">pot</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#: #{@relative_base_path}/#{path}:#{line}\n&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">escaped_message_id</span> = <span class="ruby-identifier">escape_message_id</span>(<span class="ruby-identifier">message</span>.<span class="ruby-identifier">id</span>)
+  <span class="ruby-identifier">escaped_message_id</span> = <span class="ruby-identifier">escaped_message_id</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\n/</span>, <span class="ruby-string">&quot;\\\\n\&quot;\n\&quot;&quot;</span>)
+  <span class="ruby-identifier">pot</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;msgid \&quot;#{escaped_message_id}\&quot;\n&quot;</span>
+  <span class="ruby-identifier">pot</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;msgstr \&quot;\&quot;\n&quot;</span>
+  <span class="ruby-identifier">pot</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;\n&quot;</span>
+  <span class="ruby-identifier">pot</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-generate_pot_creation_date_value" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">generate_pot_creation_date_value</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="generate_pot_creation_date_value-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 164</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">generate_pot_creation_date_value</span>
+  <span class="ruby-identifier">current_time</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%Y-%m-%d %H:%M%z&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-header" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">header</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="header-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 136</span>
+      <span class="ruby-keyword">def</span> <span class="ruby-identifier">header</span>
+        <span class="ruby-value">&lt;&lt;-EOH
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE&#39;S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR &lt;EMAIL@ADDRESS&gt;, YEAR.
+#
+#, fuzzy
+msgid &quot;&quot;
+msgstr &quot;&quot;
+&quot;Project-Id-Version: PACKAGE VERSION\\n&quot;
+&quot;Report-Msgid-Bugs-To: \\n&quot;
+&quot;POT-Creation-Date: #{generate_pot_creation_date_value}\\n&quot;
+&quot;PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n&quot;
+&quot;Last-Translator: FULL NAME &lt;EMAIL@ADDRESS&gt;\\n&quot;
+&quot;Language-Team: LANGUAGE &lt;LL@li.org&gt;\\n&quot;
+&quot;Language: \\n&quot;
+&quot;MIME-Version: 1.0\\n&quot;
+&quot;Content-Type: text/plain; charset=UTF-8\\n&quot;
+&quot;Content-Transfer-Encoding: 8bit\\n&quot;
+
+EOH</span>
+      <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register_message" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_message</span><span
+            class="method-args">(id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="register_message-source">
+            <pre><span class="ruby-comment"># File lib/yard/i18n/pot_generator.rb, line 190</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_message</span>(<span class="ruby-identifier">id</span>)
+  <span class="ruby-ivar">@messages</span>.<span class="ruby-identifier">register</span>(<span class="ruby-identifier">id</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

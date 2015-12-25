@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Handlers::Ruby::Legacy::ClassHandler - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../../";
+</script>
+
+<script src="../../../../js/jquery.js"></script>
+<script src="../../../../js/darkfish.js"></script>
+
+<link href="../../../../css/fonts.css" rel="stylesheet">
+<link href="../../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Base.html">YARD::Handlers::Ruby::Legacy::Base</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../StructHandlerMethods.html">YARD::Handlers::Ruby::StructHandlerMethods</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-create_struct_superclass">#create_struct_superclass</a>
+    
+    <li ><a href="#method-i-extract_parameters">#extract_parameters</a>
+    
+    <li ><a href="#method-i-parse_struct_subclass">#parse_struct_subclass</a>
+    
+    <li ><a href="#method-i-parse_superclass">#parse_superclass</a>
+    
+    <li ><a href="#method-i-struct_superclass_name">#struct_superclass_name</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Handlers::Ruby::Legacy::ClassHandler">
+  <h1 id="class-YARD::Handlers::Ruby::Legacy::ClassHandler" class="class">
+    class YARD::Handlers::Ruby::Legacy::ClassHandler
+  </h1>
+
+  <section class="description">
+    
+<p>(see Ruby::ClassHandler)</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-create_struct_superclass" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_struct_superclass</span><span
+            class="method-args">(superclass, superclass_def)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="create_struct_superclass-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/legacy/class_handler.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_struct_superclass</span>(<span class="ruby-identifier">superclass</span>, <span class="ruby-identifier">superclass_def</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">superclass</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;Struct&quot;</span>
+  <span class="ruby-identifier">the_super</span> = <span class="ruby-identifier">register</span> <span class="ruby-constant">ClassObject</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">P</span>(<span class="ruby-string">&quot;Struct&quot;</span>), <span class="ruby-identifier">superclass</span>[<span class="ruby-value">8</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">o</span>.<span class="ruby-identifier">superclass</span> = <span class="ruby-string">&quot;Struct&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">parse_struct_subclass</span>(<span class="ruby-identifier">the_super</span>, <span class="ruby-identifier">superclass_def</span>)
+  <span class="ruby-identifier">the_super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-extract_parameters" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_parameters</span><span
+            class="method-args">(superstring)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Extracts the parameter list from the Struct.new declaration and returns it
+formatted as a list of member names. Expects the user will have used
+symbols to define the struct member names</p>
+
+<p>@param [String] superstring the string declaring the superclass @return
+[Array&lt;String&gt;] a list of member names</p>
+          
+          
+
+          
+          <div class="method-source-code" id="extract_parameters-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/legacy/class_handler.rb, line 68</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">extract_parameters</span>(<span class="ruby-identifier">superstring</span>)
+  <span class="ruby-identifier">paramstring</span> = <span class="ruby-identifier">superstring</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/\A(O?Struct)\.new\((.*?)\)/</span>)[<span class="ruby-value">2</span>]
+  <span class="ruby-identifier">paramstring</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;,&quot;</span>).<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">strip</span>[<span class="ruby-value">0</span>,<span class="ruby-value">1</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;:&quot;</span>}.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">strip</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] } <span class="ruby-comment"># the 1..-1 chops the leading :</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_struct_subclass" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_struct_subclass</span><span
+            class="method-args">(klass, superclass_def)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="parse_struct_subclass-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/legacy/class_handler.rb, line 93</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_struct_subclass</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">superclass_def</span>)
+  <span class="ruby-comment"># Bounce if there&#39;s no parens</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">superclass_def</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/O?Struct\.new\((.*?)\)/</span>
+  <span class="ruby-identifier">members</span> = <span class="ruby-identifier">extract_parameters</span>(<span class="ruby-identifier">superclass_def</span>)
+  <span class="ruby-identifier">create_attributes</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">members</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_superclass" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_superclass</span><span
+            class="method-args">(superclass)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="parse_superclass-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/legacy/class_handler.rb, line 100</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_superclass</span>(<span class="ruby-identifier">superclass</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">superclass</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-node">/\A(#{NAMESPACEMATCH})(?:\s|\Z)/</span>,
+       <span class="ruby-regexp">/\A(Struct|OStruct)\.new/</span>,
+       <span class="ruby-regexp">/\ADelegateClass\((.+?)\)\s*\Z/</span>,
+       <span class="ruby-node">/\A(#{NAMESPACEMATCH})\(/</span>
+    <span class="ruby-node">$1</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;self&quot;</span>
+    <span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">path</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-struct_superclass_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">struct_superclass_name</span><span
+            class="method-args">(superclass)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="struct_superclass_name-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/legacy/class_handler.rb, line 82</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">struct_superclass_name</span>(<span class="ruby-identifier">superclass</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">match</span> = <span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp">/\A(Struct)\.new\((.*?)\)/</span>)
+    <span class="ruby-identifier">paramstring</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">2</span>].<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;,&quot;</span>)
+    <span class="ruby-identifier">first</span> = <span class="ruby-identifier">paramstring</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">strip</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">first</span>[<span class="ruby-value">0</span>,<span class="ruby-value">1</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[&#39;&quot;]/</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">first</span>[<span class="ruby-value">-1</span>,<span class="ruby-value">1</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp">/[&#39;&quot;]/</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">first</span> <span class="ruby-operator">!~</span> <span class="ruby-node">/\#\{/</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;Struct::#{first[1..-2]}&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-string">&quot;Struct&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>module YARD::Templates::Helpers::TextHelper - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../";
+</script>
+
+<script src="../../../js/jquery.js"></script>
+<script src="../../../js/darkfish.js"></script>
+
+<link href="../../../css/fonts.css" rel="stylesheet">
+<link href="../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-align_right">#align_right</a>
+    
+    <li ><a href="#method-i-h">#h</a>
+    
+    <li ><a href="#method-i-hr">#hr</a>
+    
+    <li ><a href="#method-i-indent">#indent</a>
+    
+    <li ><a href="#method-i-signature">#signature</a>
+    
+    <li ><a href="#method-i-title_align_right">#title_align_right</a>
+    
+    <li ><a href="#method-i-wrap">#wrap</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-YARD::Templates::Helpers::TextHelper">
+  <h1 id="module-YARD::Templates::Helpers::TextHelper" class="module">
+    module YARD::Templates::Helpers::TextHelper
+  </h1>
+
+  <section class="description">
+    
+<p>Helper methods for text template formats.</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-align_right" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">align_right</span><span
+            class="method-args">(text, spacer = ' ', col = 72)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] aligns text to the right</p>
+          
+          
+
+          
+          <div class="method-source-code" id="align_right-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/text_helper.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">align_right</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">spacer</span> = <span class="ruby-string">&#39; &#39;</span>, <span class="ruby-identifier">col</span> = <span class="ruby-value">72</span>)
+  <span class="ruby-identifier">text</span> = <span class="ruby-identifier">text</span>[<span class="ruby-value">0</span>, <span class="ruby-identifier">col</span> <span class="ruby-operator">-</span> <span class="ruby-value">4</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&#39;...&#39;</span> <span class="ruby-keyword">if</span> (<span class="ruby-identifier">col</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">text</span>.<span class="ruby-identifier">length</span>) <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span>
+  <span class="ruby-identifier">spacer</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">col</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">text</span>.<span class="ruby-identifier">length</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot; &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">text</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-h" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">h</span><span
+            class="method-args">(text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] escapes text</p>
+          
+          
+
+          
+          <div class="method-source-code" id="h-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/text_helper.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">h</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">out</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">text</span> = <span class="ruby-identifier">text</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/\n/</span>)
+  <span class="ruby-identifier">text</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">out</span> <span class="ruby-operator">&lt;&lt;</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">line</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-regexp">/^\s*$/</span>; <span class="ruby-string">&quot;\n\n&quot;</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-regexp">/^\s+\S/</span>, <span class="ruby-regexp">/^=/</span>; <span class="ruby-identifier">line</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\n&quot;</span>
+    <span class="ruby-keyword">else</span>; <span class="ruby-identifier">line</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">text</span>[<span class="ruby-identifier">i</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^\s+\S/</span> <span class="ruby-operator">?</span> <span class="ruby-string">&quot;\n&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot; &quot;</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">out</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-hr" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">hr</span><span
+            class="method-args">(col = 72, sep = "-")</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] returns a horizontal rule for output</p>
+          
+          
+
+          
+          <div class="method-source-code" id="hr-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/text_helper.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">hr</span>(<span class="ruby-identifier">col</span> = <span class="ruby-value">72</span>, <span class="ruby-identifier">sep</span> = <span class="ruby-string">&quot;-&quot;</span>)
+  <span class="ruby-identifier">sep</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">col</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-indent" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">indent</span><span
+            class="method-args">(text, len = 4)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] indents <code>text</code> by <code>len</code> characters.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="indent-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/text_helper.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">indent</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">len</span> = <span class="ruby-value">4</span>)
+  <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/^/</span>, <span class="ruby-string">&#39; &#39;</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">len</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-signature" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">signature</span><span
+            class="method-args">(meth)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] the formatted signature for a method</p>
+          
+          
+
+          
+          <div class="method-source-code" id="signature-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/text_helper.rb, line 48</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">signature</span>(<span class="ruby-identifier">meth</span>)
+  <span class="ruby-comment"># use first overload tag if it has a return type and method itself does not</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">meth</span>.<span class="ruby-identifier">tag</span>(<span class="ruby-value">:return</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">tag</span>(<span class="ruby-value">:overload</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">tag</span>(<span class="ruby-value">:overload</span>).<span class="ruby-identifier">tag</span>(<span class="ruby-value">:return</span>)
+    <span class="ruby-identifier">meth</span> = <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">tag</span>(<span class="ruby-value">:overload</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">type</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">default_return</span> <span class="ruby-operator">||</span> <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">rmeth</span> = <span class="ruby-identifier">meth</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">rmeth</span>.<span class="ruby-identifier">has_tag?</span>(<span class="ruby-value">:return</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">rmeth</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:object</span>)
+    <span class="ruby-identifier">rmeth</span> = <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">object</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">rmeth</span>.<span class="ruby-identifier">tag</span>(<span class="ruby-value">:return</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">rmeth</span>.<span class="ruby-identifier">tag</span>(<span class="ruby-value">:return</span>).<span class="ruby-identifier">types</span>
+    <span class="ruby-identifier">types</span> = <span class="ruby-identifier">rmeth</span>.<span class="ruby-identifier">tags</span>(<span class="ruby-value">:return</span>).<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">types</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">types</span> <span class="ruby-operator">:</span> [] }.<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span>
+    <span class="ruby-identifier">first</span> = <span class="ruby-identifier">types</span>.<span class="ruby-identifier">first</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">types</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">types</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;nil&#39;</span>
+      <span class="ruby-identifier">type</span> = <span class="ruby-identifier">first</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;?&#39;</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">types</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">types</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/^(Array)?&lt;#{Regexp.quote types.first}&gt;$/</span>
+      <span class="ruby-identifier">type</span> = <span class="ruby-identifier">first</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;+&#39;</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">types</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span>
+      <span class="ruby-identifier">type</span> = [<span class="ruby-identifier">first</span>, <span class="ruby-string">&#39;...&#39;</span>].<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;, &#39;</span>)
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">types</span> <span class="ruby-operator">==</span> [<span class="ruby-string">&#39;void&#39;</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">options</span>.<span class="ruby-identifier">hide_void_return</span>
+      <span class="ruby-identifier">type</span> = <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">type</span> = <span class="ruby-identifier">types</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;, &quot;</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">type</span> = <span class="ruby-node">&quot;(#{type})&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-string">&#39;,&#39;</span>)
+  <span class="ruby-identifier">type</span> = <span class="ruby-node">&quot; -&gt; #{type} &quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">type</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">scope</span> = <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">scope</span> <span class="ruby-operator">==</span> <span class="ruby-value">:class</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot;#{meth.namespace.name}.&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{meth.namespace.name.to_s.downcase}.&quot;</span>
+  <span class="ruby-identifier">name</span> = <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">name</span>
+  <span class="ruby-identifier">blk</span> = <span class="ruby-identifier">format_block</span>(<span class="ruby-identifier">meth</span>)
+  <span class="ruby-identifier">args</span> = <span class="ruby-identifier">format_args</span>(<span class="ruby-identifier">meth</span>)
+  <span class="ruby-identifier">extras</span> = []
+  <span class="ruby-identifier">extras_text</span> = <span class="ruby-string">&#39;&#39;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">rw</span> = <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">attributes</span>[<span class="ruby-identifier">meth</span>.<span class="ruby-identifier">scope</span>][<span class="ruby-identifier">meth</span>.<span class="ruby-identifier">name</span>]
+    <span class="ruby-identifier">attname</span> = [<span class="ruby-identifier">rw</span>[<span class="ruby-value">:read</span>] <span class="ruby-operator">?</span> <span class="ruby-string">&#39;read&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">rw</span>[<span class="ruby-value">:write</span>] <span class="ruby-operator">?</span> <span class="ruby-string">&#39;write&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>].<span class="ruby-identifier">compact</span>
+    <span class="ruby-identifier">attname</span> = <span class="ruby-identifier">attname</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">attname</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&#39;&#39;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39;only&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-identifier">extras</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">attname</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">attname</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">extras</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">visibility</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">meth</span>.<span class="ruby-identifier">visibility</span> <span class="ruby-operator">!=</span> <span class="ruby-value">:public</span>
+  <span class="ruby-identifier">extras_text</span> = <span class="ruby-string">&#39;(&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">extras</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;, &quot;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&#39;)&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">extras</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-identifier">title</span> = <span class="ruby-string">&quot;%s%s%s %s%s%s&quot;</span> <span class="ruby-operator">%</span> [<span class="ruby-identifier">scope</span>, <span class="ruby-identifier">name</span>, <span class="ruby-identifier">args</span>, <span class="ruby-identifier">blk</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">extras_text</span>]
+  <span class="ruby-identifier">title</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\s+/</span>, <span class="ruby-string">&#39; &#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-title_align_right" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">title_align_right</span><span
+            class="method-args">(text, col = 72)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] aligns a title to the right</p>
+          
+          
+
+          
+          <div class="method-source-code" id="title_align_right-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/text_helper.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">title_align_right</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">col</span> = <span class="ruby-value">72</span>)
+  <span class="ruby-identifier">align_right</span>(<span class="ruby-identifier">text</span>, <span class="ruby-string">&#39;-&#39;</span>, <span class="ruby-identifier">col</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-wrap" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">wrap</span><span
+            class="method-args">(text, col = 72)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [String] wraps text at <code>col</code> columns.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="wrap-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/text_helper.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">wrap</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">col</span> = <span class="ruby-value">72</span>)
+  <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">/(.{1,#{col}})( +|$\n?)|(.{1,#{col}})/</span>, <span class="ruby-string">&quot;\\1\\3\n&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

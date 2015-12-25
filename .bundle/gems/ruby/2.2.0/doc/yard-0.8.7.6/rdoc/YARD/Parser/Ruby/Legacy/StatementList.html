@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Parser::Ruby::Legacy::StatementList - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../../";
+</script>
+
+<script src="../../../../js/jquery.js"></script>
+<script src="../../../../js/darkfish.js"></script>
+
+<link href="../../../../css/fonts.css" rel="stylesheet">
+<link href="../../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../../../../Array.html">Array</a>
+  
+</div>
+
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="RubyToken.html">YARD::Parser::Ruby::Legacy::RubyToken</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-balances-3F">#balances?</a>
+    
+    <li ><a href="#method-i-next_statement">#next_statement</a>
+    
+    <li ><a href="#method-i-parse_statements">#parse_statements</a>
+    
+    <li ><a href="#method-i-peek_no_space">#peek_no_space</a>
+    
+    <li ><a href="#method-i-process_block_token">#process_block_token</a>
+    
+    <li ><a href="#method-i-process_complex_block_opener">#process_complex_block_opener</a>
+    
+    <li ><a href="#method-i-process_initial_comment">#process_initial_comment</a>
+    
+    <li ><a href="#method-i-process_simple_block_opener">#process_simple_block_opener</a>
+    
+    <li ><a href="#method-i-process_statement_end">#process_statement_end</a>
+    
+    <li ><a href="#method-i-process_token">#process_token</a>
+    
+    <li ><a href="#method-i-push_token">#push_token</a>
+    
+    <li ><a href="#method-i-sanitize_block">#sanitize_block</a>
+    
+    <li ><a href="#method-i-sanitize_statement_end">#sanitize_statement_end</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Parser::Ruby::Legacy::StatementList">
+  <h1 id="class-YARD::Parser::Ruby::Legacy::StatementList" class="class">
+    class YARD::Parser::Ruby::Legacy::StatementList
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="OPEN_BLOCK_TOKENS">OPEN_BLOCK_TOKENS
+        
+        <dd><p>The following list of tokens will require a block to be opened if used at
+the beginning of a statement.</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-encoding_line" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">encoding_line</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-shebang_line" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">shebang_line</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(content)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new statement list</p>
+
+<p>@param [TokenList, String] content the tokens to create the list from</p>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">content</span>)
+  <span class="ruby-ivar">@shebang_line</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@encoding_line</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">content</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">TokenList</span>
+    <span class="ruby-ivar">@tokens</span> = <span class="ruby-identifier">content</span>.<span class="ruby-identifier">dup</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">content</span>.<span class="ruby-identifier">is_a?</span> <span class="ruby-constant">String</span>
+    <span class="ruby-ivar">@tokens</span> = <span class="ruby-constant">TokenList</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">content</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;\r&quot;</span>, <span class="ruby-string">&quot;&quot;</span>))
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-node">&quot;Invalid content for StatementList: #{content.inspect}:#{content.class}&quot;</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">parse_statements</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-balances-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">balances?</span><span
+            class="method-args">(tk)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Handles the balancing of parentheses and blocks</p>
+
+<p>@param [RubyToken::Token] tk the token to process @return [Boolean] whether
+or not the current statement&#39;s parentheses and blocks</p>
+
+<pre>are balanced after +tk+</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="balances-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 352</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">balances?</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-keyword">unless</span> [<span class="ruby-constant">TkALIAS</span>, <span class="ruby-constant">TkDEF</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@last_ns_tk</span>.<span class="ruby-identifier">class</span>) <span class="ruby-operator">||</span> <span class="ruby-ivar">@before_last_ns_tk</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkALIAS</span>
+    <span class="ruby-keyword">if</span> [<span class="ruby-constant">TkLPAREN</span>, <span class="ruby-constant">TkLBRACK</span>, <span class="ruby-constant">TkLBRACE</span>, <span class="ruby-constant">TkDO</span>, <span class="ruby-constant">TkBEGIN</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>)
+      <span class="ruby-ivar">@level</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-constant">OPEN_BLOCK_TOKENS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>)
+      <span class="ruby-ivar">@level</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkELSIF</span>
+    <span class="ruby-keyword">elsif</span> [<span class="ruby-constant">TkRPAREN</span>, <span class="ruby-constant">TkRBRACK</span>, <span class="ruby-constant">TkRBRACE</span>, <span class="ruby-constant">TkEND</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@level</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+      <span class="ruby-ivar">@level</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@level</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-next_statement" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">next_statement</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the next statement in the token stream</p>
+
+<p>@return [Statement] the next statement</p>
+          
+          
+
+          
+          <div class="method-source-code" id="next_statement-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">next_statement</span>
+  <span class="ruby-ivar">@state</span> = <span class="ruby-value">:first_statement</span>
+  <span class="ruby-ivar">@statement_stack</span> = []
+  <span class="ruby-ivar">@level</span> = <span class="ruby-value">0</span>
+  <span class="ruby-ivar">@block_num</span> = <span class="ruby-value">0</span>
+  <span class="ruby-ivar">@done</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-ivar">@current_block</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@comments_line</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@comments_hash_flag</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@statement</span>, <span class="ruby-ivar">@block</span>, <span class="ruby-ivar">@comments</span> = <span class="ruby-constant">TokenList</span>.<span class="ruby-identifier">new</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@last_tk</span>, <span class="ruby-ivar">@last_ns_tk</span>, <span class="ruby-ivar">@before_last_tk</span>, <span class="ruby-ivar">@before_last_ns_tk</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@first_line</span> = <span class="ruby-keyword">nil</span>
+
+  <span class="ruby-keyword">while</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@done</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">tk</span> = <span class="ruby-ivar">@tokens</span>.<span class="ruby-identifier">shift</span>
+    <span class="ruby-identifier">process_token</span>(<span class="ruby-identifier">tk</span>)
+
+    <span class="ruby-ivar">@before_last_tk</span> = <span class="ruby-ivar">@last_tk</span>
+    <span class="ruby-ivar">@last_tk</span> = <span class="ruby-identifier">tk</span> <span class="ruby-comment"># Save last token</span>
+    <span class="ruby-keyword">unless</span> [<span class="ruby-constant">TkSPACE</span>, <span class="ruby-constant">TkNL</span>, <span class="ruby-constant">TkEND_OF_SCRIPT</span>].<span class="ruby-identifier">include?</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>
+      <span class="ruby-ivar">@before_last_ns_tk</span> = <span class="ruby-ivar">@last_ns_tk</span>
+      <span class="ruby-ivar">@last_ns_tk</span> = <span class="ruby-identifier">tk</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># Return the code block with starting token and initial comments</span>
+  <span class="ruby-comment"># If there is no code in the block, return nil</span>
+  <span class="ruby-ivar">@comments</span> = <span class="ruby-ivar">@comments</span>.<span class="ruby-identifier">compact</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@comments</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@block</span> <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">sanitize_statement_end</span>
+    <span class="ruby-identifier">sanitize_block</span>
+    <span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">pop</span> <span class="ruby-keyword">if</span> [<span class="ruby-constant">TkNL</span>, <span class="ruby-constant">TkSPACE</span>, <span class="ruby-constant">TkSEMICOLON</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">class</span>)
+    <span class="ruby-identifier">stmt</span> = <span class="ruby-constant">Statement</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@statement</span>, <span class="ruby-ivar">@block</span>, <span class="ruby-ivar">@comments</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@comments</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@comments_line</span>
+      <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">comments_range</span> = (<span class="ruby-ivar">@comments_line</span><span class="ruby-operator">..</span>(<span class="ruby-ivar">@comments_line</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@comments</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>))
+      <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">comments_hash_flag</span> = <span class="ruby-ivar">@comments_hash_flag</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">stmt</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@comments</span>
+    <span class="ruby-ivar">@statement</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">TkCOMMENT</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@comments_line</span>, <span class="ruby-value">0</span>)
+    <span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">set_text</span>(<span class="ruby-node">&quot;# &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@comments</span>.<span class="ruby-identifier">join</span>(<span class="ruby-node">&quot;\n# &quot;</span>))
+    <span class="ruby-constant">Statement</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@statement</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-ivar">@comments</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_statements" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_statements</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="parse_statements-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_statements</span>
+  <span class="ruby-keyword">while</span> <span class="ruby-identifier">stmt</span> = <span class="ruby-identifier">next_statement</span> <span class="ruby-keyword">do</span> <span class="ruby-keyword">self</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">stmt</span> <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-peek_no_space" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">peek_no_space</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the next token in the stream that&#39;s not a space</p>
+
+<p>@return [RubyToken::Token] the next non-space token</p>
+          
+          
+
+          
+          <div class="method-source-code" id="peek_no_space-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 378</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">peek_no_space</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@tokens</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@tokens</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkSPACE</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@tokens</span>[<span class="ruby-value">1</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-process_block_token" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process_block_token</span><span
+            class="method-args">(tk)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Processes a token in a block</p>
+
+<p>@param [RubyToken::Token] tk the token to process</p>
+          
+          
+
+          
+          <div class="method-source-code" id="process_block_token-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 183</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process_block_token</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">balances?</span>(<span class="ruby-identifier">tk</span>)
+    <span class="ruby-ivar">@statement</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tk</span>
+    <span class="ruby-ivar">@state</span> = <span class="ruby-value">:first_statement</span>
+    <span class="ruby-identifier">process_statement_end</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@block_num</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> <span class="ruby-operator">||</span> (<span class="ruby-ivar">@block</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> [<span class="ruby-constant">TkSPACE</span>, <span class="ruby-constant">TkNL</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>))
+    <span class="ruby-ivar">@statement</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tk</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@block</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-ivar">@statement</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">TkBlockContents</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span>, <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">char_no</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@block</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tk</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-process_complex_block_opener" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process_complex_block_opener</span><span
+            class="method-args">(tk)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Processes a complex block-opening token; that is, a block opener such as
+<code>while</code> or <code>for</code> that is followed by an expression</p>
+
+<p>@param [RubyToken::Token] tk the token to process</p>
+          
+          
+
+          
+          <div class="method-source-code" id="process_complex_block_opener-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 282</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process_complex_block_opener</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">OPEN_BLOCK_TOKENS</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>)
+
+  <span class="ruby-ivar">@current_block</span> = <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>
+  <span class="ruby-ivar">@state</span> = <span class="ruby-value">:block_statement</span>
+
+  <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-process_initial_comment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process_initial_comment</span><span
+            class="method-args">(tk)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Processes a comment token that comes before a statement</p>
+
+<p>@param [RubyToken::Token] tk the token to process @return [Boolean] whether
+or not <code>tk</code> was processed as an initial comment</p>
+          
+          
+
+          
+          <div class="method-source-code" id="process_initial_comment-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 202</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process_initial_comment</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-ivar">@comments_last_line</span> <span class="ruby-operator">||</span> <span class="ruby-value">0</span>) <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span>
+    <span class="ruby-ivar">@comments</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkCOMMENT</span>
+
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">text</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Parser</span><span class="ruby-operator">::</span><span class="ruby-constant">SourceParser</span><span class="ruby-operator">::</span><span class="ruby-constant">SHEBANG_LINE</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@last_ns_tk</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@encoding_line</span>
+      <span class="ruby-ivar">@shebang_line</span> = <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">text</span>
+      <span class="ruby-keyword">return</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Parser</span><span class="ruby-operator">::</span><span class="ruby-constant">SourceParser</span><span class="ruby-operator">::</span><span class="ruby-constant">ENCODING_LINE</span>
+    <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@last_ns_tk</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkCOMMENT</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@last_ns_tk</span>.<span class="ruby-identifier">text</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@shebang_line</span>) <span class="ruby-operator">||</span>
+        <span class="ruby-operator">!</span><span class="ruby-ivar">@last_ns_tk</span>
+      <span class="ruby-ivar">@encoding_line</span> = <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">text</span>
+      <span class="ruby-keyword">return</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@comments</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@first_line</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@first_line</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@comments_last_line</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@comments_last_line</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@comments</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-ivar">@tokens</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-identifier">tk</span>)
+      <span class="ruby-keyword">return</span> <span class="ruby-ivar">@done</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@comments</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@comments_line</span> = <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@comments</span>
+
+  <span class="ruby-comment"># Remove the &quot;#&quot; and up to 1 space before the text</span>
+  <span class="ruby-comment"># Since, of course, the convention is to have &quot;# text&quot;</span>
+  <span class="ruby-comment"># and not &quot;#text&quot;, which I deem ugly (you heard it here first)</span>
+  <span class="ruby-ivar">@comments</span> <span class="ruby-operator">||=</span> []
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">text</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/\A=begin/</span>
+    <span class="ruby-identifier">lines</span> = <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">count</span>(<span class="ruby-string">&quot;\n&quot;</span>)
+    <span class="ruby-ivar">@comments</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/\A=begin.*\r?\n|\r?\n=end.*\r?\n?\Z/</span>, <span class="ruby-string">&#39;&#39;</span>).<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/\r?\n/</span>)
+    <span class="ruby-ivar">@comments_last_line</span> = <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">lines</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@comments</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">/^(#+)\s{0,1}/</span>, <span class="ruby-string">&#39;&#39;</span>)
+    <span class="ruby-ivar">@comments_hash_flag</span> = <span class="ruby-node">$1</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;##&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@comments_hash_flag</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-ivar">@comments_last_line</span> = <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@comments</span>.<span class="ruby-identifier">pop</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@comments</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@comments</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^\s*$/</span>
+  <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-process_simple_block_opener" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process_simple_block_opener</span><span
+            class="method-args">(tk)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Processes a simple block-opening token; that is, a block opener such as
+<code>begin</code> or <code>do</code> that isn&#39;t followed by an
+expression</p>
+
+<p>@param [RubyToken::Token] tk the token to process</p>
+          
+          
+
+          
+          <div class="method-source-code" id="process_simple_block_opener-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 257</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process_simple_block_opener</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> [<span class="ruby-constant">TkLBRACE</span>, <span class="ruby-constant">TkDO</span>, <span class="ruby-constant">TkBEGIN</span>, <span class="ruby-constant">TkELSE</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>) <span class="ruby-operator">&amp;&amp;</span>
+    <span class="ruby-comment"># Make sure hashes are parsed as hashes, not as blocks</span>
+    (<span class="ruby-ivar">@last_ns_tk</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@last_ns_tk</span>.<span class="ruby-identifier">lex_state</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">EXPR_BEG</span>)
+
+  <span class="ruby-ivar">@level</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+  <span class="ruby-ivar">@state</span> = <span class="ruby-value">:block</span>
+  <span class="ruby-ivar">@block_num</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@block</span>
+    <span class="ruby-ivar">@block</span> = <span class="ruby-constant">TokenList</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">tokens</span> = [<span class="ruby-identifier">tk</span>, <span class="ruby-constant">TkStatementEnd</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span>, <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">char_no</span>)]
+    <span class="ruby-identifier">tokens</span> = <span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">reverse</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">TkBEGIN</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>
+    <span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">push</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">tokens</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@statement</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tk</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-process_statement_end" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process_statement_end</span><span
+            class="method-args">(tk)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Processes a token that closes a statement</p>
+
+<p>@param [RubyToken::Token] tk the token to process</p>
+          
+          
+
+          
+          <div class="method-source-code" id="process_statement_end-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 294</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process_statement_end</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-comment"># Whitespace means that we keep the same value of @new_statement as last token</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkSPACE</span>
+
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span>
+    <span class="ruby-comment"># We might be coming after a statement-ending token...</span>
+    ((<span class="ruby-ivar">@last_tk</span> <span class="ruby-operator">&amp;&amp;</span> [<span class="ruby-constant">TkSEMICOLON</span>, <span class="ruby-constant">TkNL</span>, <span class="ruby-constant">TkEND_OF_SCRIPT</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>)) <span class="ruby-operator">||</span>
+     <span class="ruby-comment"># Or we might be at the beginning of an argument list</span>
+     (<span class="ruby-ivar">@current_block</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkDEF</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkRPAREN</span>))
+
+  <span class="ruby-comment"># Continue line ending on . or ::</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@last_tk</span> <span class="ruby-operator">&amp;&amp;</span> [<span class="ruby-constant">EXPR_DOT</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@last_tk</span>.<span class="ruby-identifier">lex_state</span>)
+
+  <span class="ruby-comment"># Continue a possible existing new statement unless we just finished an expression...</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> (<span class="ruby-ivar">@last_tk</span> <span class="ruby-operator">&amp;&amp;</span> [<span class="ruby-constant">EXPR_END</span>, <span class="ruby-constant">EXPR_ARG</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@last_tk</span>.<span class="ruby-identifier">lex_state</span>)) <span class="ruby-operator">||</span>
+    <span class="ruby-comment"># Or we&#39;ve opened a block and are ready to move into the body</span>
+    (<span class="ruby-ivar">@current_block</span> <span class="ruby-operator">&amp;&amp;</span> [<span class="ruby-constant">TkNL</span>, <span class="ruby-constant">TkSEMICOLON</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>) <span class="ruby-operator">&amp;&amp;</span>
+     <span class="ruby-comment"># Handle the case where the block statement&#39;s expression is on the next line</span>
+     <span class="ruby-comment">#</span>
+     <span class="ruby-comment"># while</span>
+     <span class="ruby-comment">#     foo</span>
+     <span class="ruby-comment"># end</span>
+     <span class="ruby-ivar">@last_ns_tk</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@current_block</span> <span class="ruby-operator">&amp;&amp;</span>
+     <span class="ruby-comment"># And the case where part of the expression is on the next line</span>
+     <span class="ruby-comment">#</span>
+     <span class="ruby-comment"># while foo ||</span>
+     <span class="ruby-comment">#     bar</span>
+     <span class="ruby-comment"># end</span>
+     <span class="ruby-ivar">@last_tk</span>.<span class="ruby-identifier">lex_state</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">EXPR_BEG</span>)
+
+  <span class="ruby-comment"># Continue with the statement if we&#39;ve hit a comma in a def</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@current_block</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkDEF</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">peek_no_space</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkCOMMA</span>
+
+
+  <span class="ruby-keyword">if</span> [<span class="ruby-constant">TkEND_OF_SCRIPT</span>, <span class="ruby-constant">TkNL</span>, <span class="ruby-constant">TkSEMICOLON</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@state</span> <span class="ruby-operator">==</span> <span class="ruby-value">:block_statement</span> <span class="ruby-operator">&amp;&amp;</span>
+      [<span class="ruby-constant">TkRBRACE</span>, <span class="ruby-constant">TkEND</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@last_ns_tk</span>.<span class="ruby-identifier">class</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@level</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-ivar">@current_block</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@current_block</span>
+    <span class="ruby-ivar">@done</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@state</span> = <span class="ruby-value">:pre_block</span>
+  <span class="ruby-ivar">@level</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+  <span class="ruby-ivar">@block_num</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@block</span>
+    <span class="ruby-ivar">@block</span> = <span class="ruby-constant">TokenList</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-ivar">@statement</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">TkStatementEnd</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span>, <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">char_no</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-process_token" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">process_token</span><span
+            class="method-args">(tk)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Processes a single token</p>
+
+<p>@param [RubyToken::Token] tk the token to process</p>
+          
+          
+
+          
+          <div class="method-source-code" id="process_token-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 119</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process_token</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-comment"># p tk.class, tk.text, @state, @level, @current_block, &quot;&lt;br/&gt;&quot;</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-ivar">@state</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:first_statement</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">process_initial_comment</span>(<span class="ruby-identifier">tk</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> [<span class="ruby-constant">TkSPACE</span>, <span class="ruby-constant">TkNL</span>, <span class="ruby-constant">TkCOMMENT</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>)
+    <span class="ruby-ivar">@comments_last_line</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkALIAS</span>
+      <span class="ruby-ivar">@state</span> = <span class="ruby-value">:alias_statement</span>
+      <span class="ruby-ivar">@alias_values</span> = []
+      <span class="ruby-identifier">push_token</span>(<span class="ruby-identifier">tk</span>)
+      <span class="ruby-keyword">return</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">process_simple_block_opener</span>(<span class="ruby-identifier">tk</span>)
+    <span class="ruby-identifier">push_token</span>(<span class="ruby-identifier">tk</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">process_complex_block_opener</span>(<span class="ruby-identifier">tk</span>)
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">balances?</span>(<span class="ruby-identifier">tk</span>)
+      <span class="ruby-identifier">process_statement_end</span>(<span class="ruby-identifier">tk</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@state</span> = <span class="ruby-value">:balance</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:alias_statement</span>
+    <span class="ruby-identifier">push_token</span>(<span class="ruby-identifier">tk</span>)
+    <span class="ruby-ivar">@alias_values</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tk</span> <span class="ruby-keyword">unless</span> [<span class="ruby-constant">TkSPACE</span>, <span class="ruby-constant">TkNL</span>, <span class="ruby-constant">TkCOMMENT</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@alias_values</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span>
+      <span class="ruby-ivar">@state</span> = <span class="ruby-value">:first_statement</span>
+      <span class="ruby-keyword">if</span> [<span class="ruby-constant">NilClass</span>, <span class="ruby-constant">TkNL</span>, <span class="ruby-constant">TkEND_OF_SCRIPT</span>, <span class="ruby-constant">TkSEMICOLON</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">peek_no_space</span>.<span class="ruby-identifier">class</span>)
+        <span class="ruby-ivar">@done</span> = <span class="ruby-keyword">true</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:balance</span>
+    <span class="ruby-ivar">@statement</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tk</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">balances?</span>(<span class="ruby-identifier">tk</span>)
+    <span class="ruby-ivar">@state</span> = <span class="ruby-value">:first_statement</span>
+    <span class="ruby-identifier">process_statement_end</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:block_statement</span>
+    <span class="ruby-identifier">push_token</span>(<span class="ruby-identifier">tk</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">balances?</span>(<span class="ruby-identifier">tk</span>)
+    <span class="ruby-identifier">process_statement_end</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:pre_block</span>
+    <span class="ruby-ivar">@current_block</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-identifier">process_block_token</span>(<span class="ruby-identifier">tk</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkSEMICOLON</span>
+    <span class="ruby-ivar">@state</span> = <span class="ruby-value">:block</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:block</span>
+    <span class="ruby-identifier">process_block_token</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-keyword">when</span> <span class="ruby-value">:post_block</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TkSPACE</span>
+      <span class="ruby-ivar">@statement</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tk</span>
+      <span class="ruby-keyword">return</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">process_statement_end</span>(<span class="ruby-identifier">tk</span>)
+    <span class="ruby-ivar">@state</span> = <span class="ruby-value">:block</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@first_line</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">TkCOMMENT</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">tk</span>
+    <span class="ruby-identifier">process_initial_comment</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-push_token" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">push_token</span><span
+            class="method-args">(tk)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Adds a token to the current statement, unless it&#39;s a newline,
+semicolon, or comment</p>
+
+<p>@param [RubyToken::Token] tk the token to process</p>
+          
+          
+
+          
+          <div class="method-source-code" id="push_token-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 370</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">push_token</span>(<span class="ruby-identifier">tk</span>)
+  <span class="ruby-ivar">@first_line</span> = <span class="ruby-identifier">tk</span>.<span class="ruby-identifier">line_no</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-ivar">@statement</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">tk</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@level</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> [<span class="ruby-constant">TkCOMMENT</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">tk</span>.<span class="ruby-identifier">class</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-sanitize_block" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">sanitize_block</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="sanitize_block-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 100</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sanitize_block</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@block</span>
+  <span class="ruby-identifier">extra</span> = []
+  <span class="ruby-keyword">while</span> [<span class="ruby-constant">TkSPACE</span>, <span class="ruby-constant">TkNL</span>, <span class="ruby-constant">TkSEMICOLON</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@block</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">class</span>)
+    <span class="ruby-keyword">next</span>(<span class="ruby-ivar">@block</span>.<span class="ruby-identifier">pop</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">TkSEMICOLON</span> <span class="ruby-operator">===</span> <span class="ruby-ivar">@block</span>.<span class="ruby-identifier">last</span>
+    <span class="ruby-identifier">extra</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-ivar">@block</span>.<span class="ruby-identifier">pop</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">token</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">TkBlockContents</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">token</span>
+      <span class="ruby-ivar">@statement</span>[<span class="ruby-identifier">index</span>, <span class="ruby-value">1</span>] = [<span class="ruby-identifier">token</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">extra</span>]
+      <span class="ruby-keyword">return</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-sanitize_statement_end" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">sanitize_statement_end</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="sanitize_statement_end-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/legacy/statement_list.rb, line 85</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sanitize_statement_end</span>
+  <span class="ruby-identifier">extra</span> = []
+  (<span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">downto</span>(<span class="ruby-value">0</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">token</span> = <span class="ruby-ivar">@statement</span>[<span class="ruby-identifier">index</span>]
+    <span class="ruby-keyword">if</span> <span class="ruby-constant">TkStatementEnd</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">token</span>
+      <span class="ruby-keyword">while</span> [<span class="ruby-constant">TkNL</span>, <span class="ruby-constant">TkSPACE</span>, <span class="ruby-constant">TkSEMICOLON</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@statement</span>[<span class="ruby-identifier">index</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>].<span class="ruby-identifier">class</span>)
+        <span class="ruby-identifier">extra</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">delete_at</span>(<span class="ruby-identifier">index</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>))
+        <span class="ruby-identifier">index</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-ivar">@statement</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-identifier">index</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">extra</span>)
+      <span class="ruby-keyword">return</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

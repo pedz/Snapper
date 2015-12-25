@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>custom.css - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../../../../../../";
+</script>
+
+<script src="../../../../../../../../js/jquery.js"></script>
+<script src="../../../../../../../../js/darkfish.js"></script>
+
+<link href="../../../../../../../../css/fonts.css" rel="stylesheet">
+<link href="../../../../../../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="file">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../../../../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../../../../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../../../../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../../../../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="project-metadata">
+    <div id="fileindex-section" class="nav-section">
+  <h3>Pages</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="../../../../../../../../lib/yard/rubygems/backports/LICENSE_txt.html">LICENSE</a>
+  
+    <li><a href="../../../../../../../../lib/yard/rubygems/backports/MIT_txt.html">MIT</a>
+  
+    <li><a href="../../../../../../../../lib/yard/server/templates/default/fulldoc/html/css/custom_css.html">custom.css</a>
+  
+    <li><a href="../../../../../../../../lib/yard/server/templates/default/fulldoc/html/js/autocomplete_js.html">autocomplete.js</a>
+  
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-label="Page lib/yard/server/templates/default/fulldoc/html/css/custom.css">
+
+<p>search_results h1 { margin-bottom: 0; } search_results p { margin-top: 0;
+margin-bottom: 25px; } search_results ul { list-style-position: inside;
+padding-left: 0; list-style: none; } search_results ul li { padding: 7px
+15px; font-size: 1.1em; }</p>
+
+<p>search_frame { z-index: 9999; }</p>
+
+<p>form.search {</p>
+
+<pre>position: relative;
+color: #fff;
+margin-top: 3px; padding: 7px; border: 1px solid #99f; width: 315px; background: #05a;
+-moz-border-radius: 4px; -webkit-border-radius: 4px;
+margin-bottom: 10px;</pre>
+
+<p>} form.search input { margin-left: 5px; width: 250px; border: 1px solid
+#99f; -moz-border-radius: 3px; font-family: monospace; }</p>
+
+<p>menu { padding-top: 5px; } content h1 { margin-top: 0; border-top: 0; }</p>
+
+<p>content.error { font-size: 1.2em; } content.error p tt { font-size: 1.2em;
+} content.error .note { padding: 12px; }</p>
+
+<p>.signature .permalink { float: right; font-size: 0.9em; }</p>
+
+<pre class="ruby"><span class="ruby-identifier">autocomplete</span>
+</pre>
+
+<p>.ac_results {</p>
+
+<pre>padding: 0px;
+border: 1px solid black;
+width: 500px;
+overflow: hidden;
+z-index: 99999;</pre>
+
+<p>}</p>
+
+<p>.ac_results ul {</p>
+
+<pre>width: 100%;
+list-style-position: outside;
+list-style: none;
+padding: 0;
+margin: 0;</pre>
+
+<p>}</p>
+
+<p>.ac_results li {</p>
+
+<pre>cursor: pointer;
+      margin: 0px;
+      padding: 3px;
+      display: block;
+      font-family: sans-serif;
+      font-size: 12px;
+      line-height: 16px;
+      overflow: hidden;</pre>
+
+<p>}</p>
+
+<p>.ac_loading {</p>
+
+<pre>background: white url(&#39;/images/processing.gif&#39;) right center no-repeat;</pre>
+
+<p>}</p>
+
+<p>.ac_even {</p>
+
+<pre>background: #fafafa; border: 1px dotted #fafafa; border-left-width: 0; border-right-width: 0;</pre>
+
+<p>}</p>
+
+<p>.ac_odd {</p>
+
+<pre>background: #f0f0f0; border: 1px dotted #f0f0f0; border-left-width: 0; border-right-width: 0;</pre>
+
+<p>}</p>
+
+<p>.ac_over {</p>
+
+<pre>background: #ddd; cursor: pointer; border: 1px dotted #fff; border-left-width: 0; border-right-width: 0;</pre>
+
+<p>}</p>
+
+<p>fade { display: none; position: absolute; top: 0px; left: 0; background:
+eee; z-index: -1; width: 100%; height: 100%; border-top: 1px solid e0e0e0;
+} processing {</p>
+
+<pre>position: absolute; width: 400px; height: 200px; margin: auto; background: #fff; padding: 10px 30px; z-index: 20;
+-webkit-box-shadow: 0px 0px 20px #444; -moz-box-shadow: 0px 0px 20px #444;
+-webkit-border-radius: 4px;
+display: none;</pre>
+
+<p>} processing img { display: block; position: absolute; bottom: 30px; left:
+44%; }</p>
+</main>
+
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

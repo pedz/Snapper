@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="file">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  <div id="project-metadata">
+    <div id="fileindex-section" class="nav-section">
+  <h3>Pages</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./lib/yard/rubygems/backports/LICENSE_txt.html">LICENSE</a>
+  
+    <li><a href="./lib/yard/rubygems/backports/MIT_txt.html">MIT</a>
+  
+    <li><a href="./lib/yard/server/templates/default/fulldoc/html/css/custom_css.html">custom.css</a>
+  
+    <li><a href="./lib/yard/server/templates/default/fulldoc/html/js/autocomplete_js.html">autocomplete.js</a>
+  
+  </ul>
+</div>
+
+    <div id="classindex-section" class="nav-section">
+  <h3>Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./Array.html">Array</a>
+  
+    <li><a href="./File.html">File</a>
+  
+    <li><a href="./Gem/DocManager.html">Gem::DocManager</a>
+  
+    <li><a href="./Gem/SourceIndex.html">Gem::SourceIndex</a>
+  
+    <li><a href="./Gem/Specification.html">Gem::Specification</a>
+  
+    <li><a href="./Hash.html">Hash</a>
+  
+    <li><a href="./Insertion.html">Insertion</a>
+  
+    <li><a href="./Module.html">Module</a>
+  
+    <li><a href="./Object.html">Object</a>
+  
+    <li><a href="./Rack.html">Rack</a>
+  
+    <li><a href="./Rack/Request.html">Rack::Request</a>
+  
+    <li><a href="./String.html">String</a>
+  
+    <li><a href="./SymbolHash.html">SymbolHash</a>
+  
+    <li><a href="./WEBrick.html">WEBrick</a>
+  
+    <li><a href="./WEBrick/HTTPRequest.html">WEBrick::HTTPRequest</a>
+  
+    <li><a href="./YARD.html">YARD</a>
+  
+    <li><a href="./YARD/CLI.html">YARD::CLI</a>
+  
+    <li><a href="./YARD/CLI/Command.html">YARD::CLI::Command</a>
+  
+    <li><a href="./YARD/CLI/CommandParser.html">YARD::CLI::CommandParser</a>
+  
+    <li><a href="./YARD/CLI/Config.html">YARD::CLI::Config</a>
+  
+    <li><a href="./YARD/CLI/Diff.html">YARD::CLI::Diff</a>
+  
+    <li><a href="./YARD/CLI/Display.html">YARD::CLI::Display</a>
+  
+    <li><a href="./YARD/CLI/Gems.html">YARD::CLI::Gems</a>
+  
+    <li><a href="./YARD/CLI/Graph.html">YARD::CLI::Graph</a>
+  
+    <li><a href="./YARD/CLI/GraphOptions.html">YARD::CLI::GraphOptions</a>
+  
+    <li><a href="./YARD/CLI/Help.html">YARD::CLI::Help</a>
+  
+    <li><a href="./YARD/CLI/I18n.html">YARD::CLI::I18n</a>
+  
+    <li><a href="./YARD/CLI/List.html">YARD::CLI::List</a>
+  
+    <li><a href="./YARD/CLI/MarkupTypes.html">YARD::CLI::MarkupTypes</a>
+  
+    <li><a href="./YARD/CLI/Server.html">YARD::CLI::Server</a>
+  
+    <li><a href="./YARD/CLI/Stats.html">YARD::CLI::Stats</a>
+  
+    <li><a href="./YARD/CLI/YRI.html">YARD::CLI::YRI</a>
+  
+    <li><a href="./YARD/CLI/Yardoc.html">YARD::CLI::Yardoc</a>
+  
+    <li><a href="./YARD/CLI/YardocOptions.html">YARD::CLI::YardocOptions</a>
+  
+    <li><a href="./YARD/CLI/YardoptsCommand.html">YARD::CLI::YardoptsCommand</a>
+  
+    <li><a href="./YARD/CodeObjects.html">YARD::CodeObjects</a>
+  
+    <li><a href="./YARD/CodeObjects/Base.html">YARD::CodeObjects::Base</a>
+  
+    <li><a href="./YARD/CodeObjects/ClassObject.html">YARD::CodeObjects::ClassObject</a>
+  
+    <li><a href="./YARD/CodeObjects/ClassVariableObject.html">YARD::CodeObjects::ClassVariableObject</a>
+  
+    <li><a href="./YARD/CodeObjects/CodeObjectList.html">YARD::CodeObjects::CodeObjectList</a>
+  
+    <li><a href="./YARD/CodeObjects/ConstantObject.html">YARD::CodeObjects::ConstantObject</a>
+  
+    <li><a href="./YARD/CodeObjects/ExtendedMethodObject.html">YARD::CodeObjects::ExtendedMethodObject</a>
+  
+    <li><a href="./YARD/CodeObjects/ExtraFileObject.html">YARD::CodeObjects::ExtraFileObject</a>
+  
+    <li><a href="./YARD/CodeObjects/MacroObject.html">YARD::CodeObjects::MacroObject</a>
+  
+    <li><a href="./YARD/CodeObjects/MethodObject.html">YARD::CodeObjects::MethodObject</a>
+  
+    <li><a href="./YARD/CodeObjects/ModuleObject.html">YARD::CodeObjects::ModuleObject</a>
+  
+    <li><a href="./YARD/CodeObjects/NamespaceObject.html">YARD::CodeObjects::NamespaceObject</a>
+  
+    <li><a href="./YARD/CodeObjects/Proxy.html">YARD::CodeObjects::Proxy</a>
+  
+    <li><a href="./YARD/CodeObjects/ProxyMethodError.html">YARD::CodeObjects::ProxyMethodError</a>
+  
+    <li><a href="./YARD/CodeObjects/RootObject.html">YARD::CodeObjects::RootObject</a>
+  
+    <li><a href="./YARD/Config.html">YARD::Config</a>
+  
+    <li><a href="./YARD/Docstring.html">YARD::Docstring</a>
+  
+    <li><a href="./YARD/DocstringParser.html">YARD::DocstringParser</a>
+  
+    <li><a href="./YARD/Handlers.html">YARD::Handlers</a>
+  
+    <li><a href="./YARD/Handlers/Base.html">YARD::Handlers::Base</a>
+  
+    <li><a href="./YARD/Handlers/C.html">YARD::Handlers::C</a>
+  
+    <li><a href="./YARD/Handlers/C/AliasHandler.html">YARD::Handlers::C::AliasHandler</a>
+  
+    <li><a href="./YARD/Handlers/C/AttributeHandler.html">YARD::Handlers::C::AttributeHandler</a>
+  
+    <li><a href="./YARD/Handlers/C/Base.html">YARD::Handlers::C::Base</a>
+  
+    <li><a href="./YARD/Handlers/C/ClassHandler.html">YARD::Handlers::C::ClassHandler</a>
+  
+    <li><a href="./YARD/Handlers/C/ConstantHandler.html">YARD::Handlers::C::ConstantHandler</a>
+  
+    <li><a href="./YARD/Handlers/C/HandlerMethods.html">YARD::Handlers::C::HandlerMethods</a>
+  
+    <li><a href="./YARD/Handlers/C/InitHandler.html">YARD::Handlers::C::InitHandler</a>
+  
+    <li><a href="./YARD/Handlers/C/MethodHandler.html">YARD::Handlers::C::MethodHandler</a>
+  
+    <li><a href="./YARD/Handlers/C/MixinHandler.html">YARD::Handlers::C::MixinHandler</a>
+  
+    <li><a href="./YARD/Handlers/C/ModuleHandler.html">YARD::Handlers::C::ModuleHandler</a>
+  
+    <li><a href="./YARD/Handlers/C/OverrideCommentHandler.html">YARD::Handlers::C::OverrideCommentHandler</a>
+  
+    <li><a href="./YARD/Handlers/C/PathHandler.html">YARD::Handlers::C::PathHandler</a>
+  
+    <li><a href="./YARD/Handlers/C/StructHandler.html">YARD::Handlers::C::StructHandler</a>
+  
+    <li><a href="./YARD/Handlers/C/SymbolHandler.html">YARD::Handlers::C::SymbolHandler</a>
+  
+    <li><a href="./YARD/Handlers/HandlerAborted.html">YARD::Handlers::HandlerAborted</a>
+  
+    <li><a href="./YARD/Handlers/NamespaceMissingError.html">YARD::Handlers::NamespaceMissingError</a>
+  
+    <li><a href="./YARD/Handlers/Processor.html">YARD::Handlers::Processor</a>
+  
+    <li><a href="./YARD/Handlers/Ruby.html">YARD::Handlers::Ruby</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/AliasHandler.html">YARD::Handlers::Ruby::AliasHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/AttributeHandler.html">YARD::Handlers::Ruby::AttributeHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Base.html">YARD::Handlers::Ruby::Base</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/ClassConditionHandler.html">YARD::Handlers::Ruby::ClassConditionHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/ClassHandler.html">YARD::Handlers::Ruby::ClassHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/ClassVariableHandler.html">YARD::Handlers::Ruby::ClassVariableHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/CommentHandler.html">YARD::Handlers::Ruby::CommentHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/ConstantHandler.html">YARD::Handlers::Ruby::ConstantHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/DSLHandler.html">YARD::Handlers::Ruby::DSLHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/DSLHandlerMethods.html">YARD::Handlers::Ruby::DSLHandlerMethods</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/ExceptionHandler.html">YARD::Handlers::Ruby::ExceptionHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/ExtendHandler.html">YARD::Handlers::Ruby::ExtendHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/HandlesExtension.html">YARD::Handlers::Ruby::HandlesExtension</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy.html">YARD::Handlers::Ruby::Legacy</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/AliasHandler.html">YARD::Handlers::Ruby::Legacy::AliasHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/AttributeHandler.html">YARD::Handlers::Ruby::Legacy::AttributeHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/Base.html">YARD::Handlers::Ruby::Legacy::Base</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/ClassConditionHandler.html">YARD::Handlers::Ruby::Legacy::ClassConditionHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/ClassHandler.html">YARD::Handlers::Ruby::Legacy::ClassHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/ClassVariableHandler.html">YARD::Handlers::Ruby::Legacy::ClassVariableHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/CommentHandler.html">YARD::Handlers::Ruby::Legacy::CommentHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/ConstantHandler.html">YARD::Handlers::Ruby::Legacy::ConstantHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/DSLHandler.html">YARD::Handlers::Ruby::Legacy::DSLHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/ExceptionHandler.html">YARD::Handlers::Ruby::Legacy::ExceptionHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/ExtendHandler.html">YARD::Handlers::Ruby::Legacy::ExtendHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/MethodHandler.html">YARD::Handlers::Ruby::Legacy::MethodHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/MixinHandler.html">YARD::Handlers::Ruby::Legacy::MixinHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/ModuleFunctionHandler.html">YARD::Handlers::Ruby::Legacy::ModuleFunctionHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/ModuleHandler.html">YARD::Handlers::Ruby::Legacy::ModuleHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/PrivateClassMethodHandler.html">YARD::Handlers::Ruby::Legacy::PrivateClassMethodHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/PrivateConstantHandler.html">YARD::Handlers::Ruby::Legacy::PrivateConstantHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/VisibilityHandler.html">YARD::Handlers::Ruby::Legacy::VisibilityHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/Legacy/YieldHandler.html">YARD::Handlers::Ruby::Legacy::YieldHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/MethodCallWrapper.html">YARD::Handlers::Ruby::MethodCallWrapper</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/MethodConditionHandler.html">YARD::Handlers::Ruby::MethodConditionHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/MethodHandler.html">YARD::Handlers::Ruby::MethodHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/MixinHandler.html">YARD::Handlers::Ruby::MixinHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/ModuleFunctionHandler.html">YARD::Handlers::Ruby::ModuleFunctionHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/ModuleHandler.html">YARD::Handlers::Ruby::ModuleHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/PrivateClassMethodHandler.html">YARD::Handlers::Ruby::PrivateClassMethodHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/PrivateConstantHandler.html">YARD::Handlers::Ruby::PrivateConstantHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/StructHandlerMethods.html">YARD::Handlers::Ruby::StructHandlerMethods</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/TestNodeWrapper.html">YARD::Handlers::Ruby::TestNodeWrapper</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/VisibilityHandler.html">YARD::Handlers::Ruby::VisibilityHandler</a>
+  
+    <li><a href="./YARD/Handlers/Ruby/YieldHandler.html">YARD::Handlers::Ruby::YieldHandler</a>
+  
+    <li><a href="./YARD/I18n.html">YARD::I18n</a>
+  
+    <li><a href="./YARD/I18n/Locale.html">YARD::I18n::Locale</a>
+  
+    <li><a href="./YARD/I18n/Message.html">YARD::I18n::Message</a>
+  
+    <li><a href="./YARD/I18n/Messages.html">YARD::I18n::Messages</a>
+  
+    <li><a href="./YARD/I18n/POParser.html">YARD::I18n::POParser</a>
+  
+    <li><a href="./YARD/I18n/PotGenerator.html">YARD::I18n::PotGenerator</a>
+  
+    <li><a href="./YARD/I18n/Text.html">YARD::I18n::Text</a>
+  
+    <li><a href="./YARD/Logger.html">YARD::Logger</a>
+  
+    <li><a href="./YARD/Options.html">YARD::Options</a>
+  
+    <li><a href="./YARD/Parser.html">YARD::Parser</a>
+  
+    <li><a href="./YARD/Parser/Base.html">YARD::Parser::Base</a>
+  
+    <li><a href="./YARD/Parser/C.html">YARD::Parser::C</a>
+  
+    <li><a href="./YARD/Parser/C/BodyStatement.html">YARD::Parser::C::BodyStatement</a>
+  
+    <li><a href="./YARD/Parser/C/CParser.html">YARD::Parser::C::CParser</a>
+  
+    <li><a href="./YARD/Parser/C/Comment.html">YARD::Parser::C::Comment</a>
+  
+    <li><a href="./YARD/Parser/C/CommentParser.html">YARD::Parser::C::CommentParser</a>
+  
+    <li><a href="./YARD/Parser/C/Statement.html">YARD::Parser::C::Statement</a>
+  
+    <li><a href="./YARD/Parser/C/ToplevelStatement.html">YARD::Parser::C::ToplevelStatement</a>
+  
+    <li><a href="./YARD/Parser/OrderedParser.html">YARD::Parser::OrderedParser</a>
+  
+    <li><a href="./YARD/Parser/ParserSyntaxError.html">YARD::Parser::ParserSyntaxError</a>
+  
+    <li><a href="./YARD/Parser/Ruby.html">YARD::Parser::Ruby</a>
+  
+    <li><a href="./YARD/Parser/Ruby/AstNode.html">YARD::Parser::Ruby::AstNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/ClassNode.html">YARD::Parser::Ruby::ClassNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/CommentNode.html">YARD::Parser::Ruby::CommentNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/ConditionalNode.html">YARD::Parser::Ruby::ConditionalNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/KeywordNode.html">YARD::Parser::Ruby::KeywordNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy.html">YARD::Parser::Ruby::Legacy</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyLex.html">YARD::Parser::Ruby::Legacy::RubyLex</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyLex/BufferedReader.html">YARD::Parser::Ruby::Legacy::RubyLex::BufferedReader</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyParser.html">YARD::Parser::Ruby::Legacy::RubyParser</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken.html">YARD::Parser::Ruby::Legacy::RubyToken</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken/TkBlockContents.html">YARD::Parser::Ruby::Legacy::RubyToken::TkBlockContents</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken/TkError.html">YARD::Parser::Ruby::Legacy::RubyToken::TkError</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken/TkId.html">YARD::Parser::Ruby::Legacy::RubyToken::TkId</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken/TkKW.html">YARD::Parser::Ruby::Legacy::RubyToken::TkKW</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken/TkNode.html">YARD::Parser::Ruby::Legacy::RubyToken::TkNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken/TkOPASGN.html">YARD::Parser::Ruby::Legacy::RubyToken::TkOPASGN</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken/TkOp.html">YARD::Parser::Ruby::Legacy::RubyToken::TkOp</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken/TkStatementEnd.html">YARD::Parser::Ruby::Legacy::RubyToken::TkStatementEnd</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken/TkUnknownChar.html">YARD::Parser::Ruby::Legacy::RubyToken::TkUnknownChar</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken/TkVal.html">YARD::Parser::Ruby::Legacy::RubyToken::TkVal</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken/TkWhitespace.html">YARD::Parser::Ruby::Legacy::RubyToken::TkWhitespace</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/RubyToken/Token.html">YARD::Parser::Ruby::Legacy::RubyToken::Token</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/Statement.html">YARD::Parser::Ruby::Legacy::Statement</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/StatementList.html">YARD::Parser::Ruby::Legacy::StatementList</a>
+  
+    <li><a href="./YARD/Parser/Ruby/Legacy/TokenList.html">YARD::Parser::Ruby::Legacy::TokenList</a>
+  
+    <li><a href="./YARD/Parser/Ruby/LiteralNode.html">YARD::Parser::Ruby::LiteralNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/LoopNode.html">YARD::Parser::Ruby::LoopNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/MethodCallNode.html">YARD::Parser::Ruby::MethodCallNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/MethodDefinitionNode.html">YARD::Parser::Ruby::MethodDefinitionNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/ModuleNode.html">YARD::Parser::Ruby::ModuleNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/ParameterNode.html">YARD::Parser::Ruby::ParameterNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/ReferenceNode.html">YARD::Parser::Ruby::ReferenceNode</a>
+  
+    <li><a href="./YARD/Parser/Ruby/RipperParser.html">YARD::Parser::Ruby::RipperParser</a>
+  
+    <li><a href="./YARD/Parser/Ruby/RubyParser.html">YARD::Parser::Ruby::RubyParser</a>
+  
+    <li><a href="./YARD/Parser/SourceParser.html">YARD::Parser::SourceParser</a>
+  
+    <li><a href="./YARD/Parser/UndocumentableError.html">YARD::Parser::UndocumentableError</a>
+  
+    <li><a href="./YARD/Rake.html">YARD::Rake</a>
+  
+    <li><a href="./YARD/Rake/YardocTask.html">YARD::Rake::YardocTask</a>
+  
+    <li><a href="./YARD/Registry.html">YARD::Registry</a>
+  
+    <li><a href="./YARD/RegistryStore.html">YARD::RegistryStore</a>
+  
+    <li><a href="./YARD/Serializers.html">YARD::Serializers</a>
+  
+    <li><a href="./YARD/Serializers/Base.html">YARD::Serializers::Base</a>
+  
+    <li><a href="./YARD/Serializers/FileSystemSerializer.html">YARD::Serializers::FileSystemSerializer</a>
+  
+    <li><a href="./YARD/Serializers/ProcessSerializer.html">YARD::Serializers::ProcessSerializer</a>
+  
+    <li><a href="./YARD/Serializers/StdoutSerializer.html">YARD::Serializers::StdoutSerializer</a>
+  
+    <li><a href="./YARD/Serializers/YardocSerializer.html">YARD::Serializers::YardocSerializer</a>
+  
+    <li><a href="./YARD/Server.html">YARD::Server</a>
+  
+    <li><a href="./YARD/Server/Adapter.html">YARD::Server::Adapter</a>
+  
+    <li><a href="./YARD/Server/Commands.html">YARD::Server::Commands</a>
+  
+    <li><a href="./YARD/Server/Commands/Base.html">YARD::Server::Commands::Base</a>
+  
+    <li><a href="./YARD/Server/Commands/DisplayFileCommand.html">YARD::Server::Commands::DisplayFileCommand</a>
+  
+    <li><a href="./YARD/Server/Commands/DisplayObjectCommand.html">YARD::Server::Commands::DisplayObjectCommand</a>
+  
+    <li><a href="./YARD/Server/Commands/FramesCommand.html">YARD::Server::Commands::FramesCommand</a>
+  
+    <li><a href="./YARD/Server/Commands/LibraryCommand.html">YARD::Server::Commands::LibraryCommand</a>
+  
+    <li><a href="./YARD/Server/Commands/LibraryCommand/obj.html">YARD::Server::Commands::LibraryCommand::obj</a>
+  
+    <li><a href="./YARD/Server/Commands/LibraryCommand/obj;.html">YARD::Server::Commands::LibraryCommand::obj;</a>
+  
+    <li><a href="./YARD/Server/Commands/LibraryIndexCommand.html">YARD::Server::Commands::LibraryIndexCommand</a>
+  
+    <li><a href="./YARD/Server/Commands/LibraryOptions.html">YARD::Server::Commands::LibraryOptions</a>
+  
+    <li><a href="./YARD/Server/Commands/ListCommand.html">YARD::Server::Commands::ListCommand</a>
+  
+    <li><a href="./YARD/Server/Commands/SearchCommand.html">YARD::Server::Commands::SearchCommand</a>
+  
+    <li><a href="./YARD/Server/Commands/StaticFileCommand.html">YARD::Server::Commands::StaticFileCommand</a>
+  
+    <li><a href="./YARD/Server/DocServerHelper.html">YARD::Server::DocServerHelper</a>
+  
+    <li><a href="./YARD/Server/DocServerSerializer.html">YARD::Server::DocServerSerializer</a>
+  
+    <li><a href="./YARD/Server/FinishRequest.html">YARD::Server::FinishRequest</a>
+  
+    <li><a href="./YARD/Server/LibraryNotPreparedError.html">YARD::Server::LibraryNotPreparedError</a>
+  
+    <li><a href="./YARD/Server/LibraryVersion.html">YARD::Server::LibraryVersion</a>
+  
+    <li><a href="./YARD/Server/NotFoundError.html">YARD::Server::NotFoundError</a>
+  
+    <li><a href="./YARD/Server/RackAdapter.html">YARD::Server::RackAdapter</a>
+  
+    <li><a href="./YARD/Server/RackMiddleware.html">YARD::Server::RackMiddleware</a>
+  
+    <li><a href="./YARD/Server/Router.html">YARD::Server::Router</a>
+  
+    <li><a href="./YARD/Server/StaticCaching.html">YARD::Server::StaticCaching</a>
+  
+    <li><a href="./YARD/Server/WebrickAdapter.html">YARD::Server::WebrickAdapter</a>
+  
+    <li><a href="./YARD/Server/WebrickServlet.html">YARD::Server::WebrickServlet</a>
+  
+    <li><a href="./YARD/StubProxy.html">YARD::StubProxy</a>
+  
+    <li><a href="./YARD/Tags.html">YARD::Tags</a>
+  
+    <li><a href="./YARD/Tags/AttributeDirective.html">YARD::Tags::AttributeDirective</a>
+  
+    <li><a href="./YARD/Tags/DefaultFactory.html">YARD::Tags::DefaultFactory</a>
+  
+    <li><a href="./YARD/Tags/DefaultTag.html">YARD::Tags::DefaultTag</a>
+  
+    <li><a href="./YARD/Tags/Directive.html">YARD::Tags::Directive</a>
+  
+    <li><a href="./YARD/Tags/EndGroupDirective.html">YARD::Tags::EndGroupDirective</a>
+  
+    <li><a href="./YARD/Tags/GroupDirective.html">YARD::Tags::GroupDirective</a>
+  
+    <li><a href="./YARD/Tags/Library.html">YARD::Tags::Library</a>
+  
+    <li><a href="./YARD/Tags/MacroDirective.html">YARD::Tags::MacroDirective</a>
+  
+    <li><a href="./YARD/Tags/MethodDirective.html">YARD::Tags::MethodDirective</a>
+  
+    <li><a href="./YARD/Tags/OptionTag.html">YARD::Tags::OptionTag</a>
+  
+    <li><a href="./YARD/Tags/OverloadTag.html">YARD::Tags::OverloadTag</a>
+  
+    <li><a href="./YARD/Tags/ParseDirective.html">YARD::Tags::ParseDirective</a>
+  
+    <li><a href="./YARD/Tags/RefTag.html">YARD::Tags::RefTag</a>
+  
+    <li><a href="./YARD/Tags/RefTagList.html">YARD::Tags::RefTagList</a>
+  
+    <li><a href="./YARD/Tags/ScopeDirective.html">YARD::Tags::ScopeDirective</a>
+  
+    <li><a href="./YARD/Tags/Tag.html">YARD::Tags::Tag</a>
+  
+    <li><a href="./YARD/Tags/TagFormatError.html">YARD::Tags::TagFormatError</a>
+  
+    <li><a href="./YARD/Tags/VisibilityDirective.html">YARD::Tags::VisibilityDirective</a>
+  
+    <li><a href="./YARD/Templates.html">YARD::Templates</a>
+  
+    <li><a href="./YARD/Templates/Engine.html">YARD::Templates::Engine</a>
+  
+    <li><a href="./YARD/Templates/ErbCache.html">YARD::Templates::ErbCache</a>
+  
+    <li><a href="./YARD/Templates/Helpers.html">YARD::Templates::Helpers</a>
+  
+    <li><a href="./YARD/Templates/Helpers/BaseHelper.html">YARD::Templates::Helpers::BaseHelper</a>
+  
+    <li><a href="./YARD/Templates/Helpers/FilterHelper.html">YARD::Templates::Helpers::FilterHelper</a>
+  
+    <li><a href="./YARD/Templates/Helpers/HtmlHelper.html">YARD::Templates::Helpers::HtmlHelper</a>
+  
+    <li><a href="./YARD/Templates/Helpers/HtmlSyntaxHighlightHelper.html">YARD::Templates::Helpers::HtmlSyntaxHighlightHelper</a>
+  
+    <li><a href="./YARD/Templates/Helpers/Markup.html">YARD::Templates::Helpers::Markup</a>
+  
+    <li><a href="./YARD/Templates/Helpers/Markup/RDocMarkdown.html">YARD::Templates::Helpers::Markup::RDocMarkdown</a>
+  
+    <li><a href="./YARD/Templates/Helpers/Markup/RDocMarkup.html">YARD::Templates::Helpers::Markup::RDocMarkup</a>
+  
+    <li><a href="./YARD/Templates/Helpers/Markup/RDocMarkup/RDocMarkup.html">YARD::Templates::Helpers::Markup::RDocMarkup::RDocMarkup</a>
+  
+    <li><a href="./YARD/Templates/Helpers/Markup/RDocMarkup/RDocMarkup/RDocMarkupToHtml.html">YARD::Templates::Helpers::Markup::RDocMarkup::RDocMarkup::RDocMarkupToHtml</a>
+  
+    <li><a href="./YARD/Templates/Helpers/Markup/RDocMarkup/RDocMarkupToHtml.html">YARD::Templates::Helpers::Markup::RDocMarkup::RDocMarkupToHtml</a>
+  
+    <li><a href="./YARD/Templates/Helpers/Markup/RDocMarkup/RDocMarkupToHtml/RDoc.html">YARD::Templates::Helpers::Markup::RDocMarkup::RDocMarkupToHtml::RDoc</a>
+  
+    <li><a href="./YARD/Templates/Helpers/MarkupHelper.html">YARD::Templates::Helpers::MarkupHelper</a>
+  
+    <li><a href="./YARD/Templates/Helpers/MethodHelper.html">YARD::Templates::Helpers::MethodHelper</a>
+  
+    <li><a href="./YARD/Templates/Helpers/ModuleHelper.html">YARD::Templates::Helpers::ModuleHelper</a>
+  
+    <li><a href="./YARD/Templates/Helpers/TextHelper.html">YARD::Templates::Helpers::TextHelper</a>
+  
+    <li><a href="./YARD/Templates/Helpers/UMLHelper.html">YARD::Templates::Helpers::UMLHelper</a>
+  
+    <li><a href="./YARD/Templates/Section.html">YARD::Templates::Section</a>
+  
+    <li><a href="./YARD/Templates/Template.html">YARD::Templates::Template</a>
+  
+    <li><a href="./YARD/Templates/Template/ClassMethods.html">YARD::Templates::Template::ClassMethods</a>
+  
+    <li><a href="./YARD/Templates/TemplateOptions.html">YARD::Templates::TemplateOptions</a>
+  
+    <li><a href="./YARD/Verifier.html">YARD::Verifier</a>
+  
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main">
+<p>This is the API documentation for yard-0.8.7.6 Documentation.
+</main>
+
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

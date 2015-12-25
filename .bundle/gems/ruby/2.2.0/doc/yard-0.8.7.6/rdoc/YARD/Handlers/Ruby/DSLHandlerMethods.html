@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>module YARD::Handlers::Ruby::DSLHandlerMethods - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../";
+</script>
+
+<script src="../../../js/jquery.js"></script>
+<script src="../../../js/darkfish.js"></script>
+
+<link href="../../../css/fonts.css" rel="stylesheet">
+<link href="../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    <div id="includes-section" class="nav-section">
+  <h3>Included Modules</h3>
+
+  <ul class="link-list">
+  
+  
+    <li><a class="include" href="../../CodeObjects.html">YARD::CodeObjects</a>
+  
+  
+  
+    <li><a class="include" href="../../Parser.html">YARD::Parser</a>
+  
+  
+  </ul>
+</div>
+
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-find_attached_macro">#find_attached_macro</a>
+    
+    <li ><a href="#method-i-handle_comments">#handle_comments</a>
+    
+    <li ><a href="#method-i-implicit_docstring-3F">#implicit_docstring?</a>
+    
+    <li ><a href="#method-i-method_name">#method_name</a>
+    
+    <li ><a href="#method-i-method_signature">#method_signature</a>
+    
+    <li class="calls-super" ><a href="#method-i-register_docstring">#register_docstring</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-YARD::Handlers::Ruby::DSLHandlerMethods">
+  <h1 id="module-YARD::Handlers::Ruby::DSLHandlerMethods" class="module">
+    module YARD::Handlers::Ruby::DSLHandlerMethods
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="IGNORE_METHODS">IGNORE_METHODS
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-handle_comments" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handle_comments</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="handle_comments-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/dsl_handler_methods.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">handle_comments</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">IGNORE_METHODS</span>[<span class="ruby-identifier">caller_method</span>]
+
+  <span class="ruby-ivar">@docstring</span> = <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">comments</span> <span class="ruby-operator">||</span> <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-ivar">@docstring</span> = <span class="ruby-ivar">@docstring</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;\n&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@docstring</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@docstring</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^@!?macro\s+\[[^\]]*attach/</span>
+    <span class="ruby-identifier">register_docstring</span>(<span class="ruby-keyword">nil</span>)
+    <span class="ruby-ivar">@docstring</span> = <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">macro</span> = <span class="ruby-identifier">find_attached_macro</span>
+    <span class="ruby-ivar">@docstring</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;\n&quot;</span> <span class="ruby-operator">+</span>
+      <span class="ruby-identifier">macro</span>.<span class="ruby-identifier">expand</span>([<span class="ruby-identifier">caller_method</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">call_params</span>], <span class="ruby-identifier">statement</span>.<span class="ruby-identifier">source</span>)
+  <span class="ruby-keyword">elsif</span> <span class="ruby-operator">!</span><span class="ruby-identifier">statement</span>.<span class="ruby-identifier">comments_hash_flag</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">implicit_docstring?</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">register_docstring</span>(<span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># ignore DSL definitions if @method/@attribute directive is used</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@docstring</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^@!?(method|attribute)\b/</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">register_docstring</span>(<span class="ruby-keyword">nil</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">object</span> = <span class="ruby-constant">MethodObject</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">method_name</span>, <span class="ruby-identifier">scope</span>)
+  <span class="ruby-identifier">object</span>.<span class="ruby-identifier">signature</span> = <span class="ruby-identifier">method_signature</span>
+  <span class="ruby-identifier">register</span>(<span class="ruby-identifier">object</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-register_docstring" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">register_docstring</span><span
+            class="method-args">(object, docstring = @docstring, stmt = statement)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="register_docstring-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/dsl_handler_methods.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">register_docstring</span>(<span class="ruby-identifier">object</span>, <span class="ruby-identifier">docstring</span> = <span class="ruby-ivar">@docstring</span>, <span class="ruby-identifier">stmt</span> = <span class="ruby-identifier">statement</span>)
+  <span class="ruby-keyword">super</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-find_attached_macro" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_attached_macro</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="find_attached_macro-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/dsl_handler_methods.rb, line 64</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_attached_macro</span>
+  <span class="ruby-constant">Registry</span>.<span class="ruby-identifier">all</span>(<span class="ruby-value">:macro</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">macro</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">macro</span>.<span class="ruby-identifier">method_object</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">macro</span>.<span class="ruby-identifier">method_object</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">caller_method</span>.<span class="ruby-identifier">to_s</span>
+    (<span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">inheritance_tree</span>(<span class="ruby-keyword">true</span>) <span class="ruby-operator">+</span> [<span class="ruby-constant">P</span>(<span class="ruby-string">&#39;Object&#39;</span>)]).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">obj</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">return</span> <span class="ruby-identifier">macro</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">obj</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">macro</span>.<span class="ruby-identifier">method_object</span>.<span class="ruby-identifier">namespace</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-implicit_docstring-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">implicit_docstring?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="implicit_docstring-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/dsl_handler_methods.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">implicit_docstring?</span>
+  <span class="ruby-identifier">tags</span> = <span class="ruby-node">%w(method attribute overload visibility scope return)</span>
+  <span class="ruby-identifier">tags</span>.<span class="ruby-identifier">any?</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@docstring</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/^@!?#{tag}\b/</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-method_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">method_name</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="method_name-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/dsl_handler_methods.rb, line 51</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">method_name</span>
+  <span class="ruby-identifier">name</span> = <span class="ruby-identifier">call_params</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">||</span> <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/^#{CodeObjects::METHODNAMEMATCH}$/</span>
+    <span class="ruby-identifier">name</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">UndocumentableError</span>, <span class="ruby-string">&quot;method, missing name&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-method_signature" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">method_signature</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="method_signature-source">
+            <pre><span class="ruby-comment"># File lib/yard/handlers/ruby/dsl_handler_methods.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">method_signature</span>
+  <span class="ruby-node">&quot;def #{method_name}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

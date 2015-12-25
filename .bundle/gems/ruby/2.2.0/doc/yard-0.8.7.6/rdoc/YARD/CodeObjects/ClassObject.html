@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::CodeObjects::ClassObject - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">NamespaceObject
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li class="calls-super" ><a href="#method-i-constants">#constants</a>
+    
+    <li ><a href="#method-i-inheritance_tree">#inheritance_tree</a>
+    
+    <li ><a href="#method-i-inherited_constants">#inherited_constants</a>
+    
+    <li ><a href="#method-i-inherited_meths">#inherited_meths</a>
+    
+    <li ><a href="#method-i-is_exception-3F">#is_exception?</a>
+    
+    <li class="calls-super" ><a href="#method-i-meths">#meths</a>
+    
+    <li ><a href="#method-i-superclass-3D">#superclass=</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::CodeObjects::ClassObject">
+  <h1 id="class-YARD::CodeObjects::ClassObject" class="class">
+    class YARD::CodeObjects::ClassObject
+  </h1>
+
+  <section class="description">
+    
+<p>A <a href="ClassObject.html">ClassObject</a> represents a Ruby class in
+source code. It is a {ModuleObject} with extra inheritance semantics
+through the superclass.</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-superclass" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">superclass</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The {ClassObject} that this class object inherits from in Ruby source.
+@return [ClassObject] a class object that is the superclass of this one</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(namespace, name, *args, &block)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new class object in <code>namespace</code> with <code>name</code></p>
+
+<p>@see <a href="Base.html#method-c-new">YARD::CodeObjects::Base.new</a></p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/class_object.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-keyword">super</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_exception?</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">superclass</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&quot;::Exception&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">P</span>(<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">name</span>) <span class="ruby-operator">==</span> <span class="ruby-constant">P</span>(<span class="ruby-value">:Exception</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-constant">P</span>(<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">name</span>).<span class="ruby-identifier">path</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;BasicObject&quot;</span>
+      <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-string">&quot;Object&quot;</span>
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">superclass</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&quot;::BasicObject&quot;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">self</span>.<span class="ruby-identifier">superclass</span> <span class="ruby-operator">||=</span> <span class="ruby-string">&quot;::Object&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-constants" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">constants</span><span
+            class="method-args">(opts = {})</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the list of constants matching the options hash.</p>
+
+<p>@param [Hash] opts the options hash to match @option opts [Boolean]
+:inherited (true) whether inherited constant should be</p>
+
+<pre>included in the list</pre>
+
+<p>@option opts [Boolean] :included (true) whether mixed in constant should be</p>
+
+<pre>included in the list</pre>
+
+<p>@return [Array&lt;ConstantObject&gt;] the list of constant that matched</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="constants-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/class_object.rb, line 98</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">constants</span>(<span class="ruby-identifier">opts</span> = {})
+  <span class="ruby-identifier">opts</span> = <span class="ruby-constant">SymbolHash</span>[<span class="ruby-value">:inherited</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>].<span class="ruby-identifier">update</span>(<span class="ruby-identifier">opts</span>)
+  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">opts</span>) <span class="ruby-operator">+</span> (<span class="ruby-identifier">opts</span>[<span class="ruby-value">:inherited</span>] <span class="ruby-operator">?</span> <span class="ruby-identifier">inherited_constants</span> <span class="ruby-operator">:</span> [])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-inheritance_tree" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">inheritance_tree</span><span
+            class="method-args">(include_mods = false)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the inheritance tree of the object including self.</p>
+
+<p>@param [Boolean] include_mods whether or not to include mixins in the</p>
+
+<pre>inheritance tree.</pre>
+
+<p>@return [Array&lt;NamespaceObject&gt;] the list of code objects that make
+up</p>
+
+<pre>the inheritance tree.</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="inheritance_tree-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/class_object.rb, line 42</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">inheritance_tree</span>(<span class="ruby-identifier">include_mods</span> = <span class="ruby-keyword">false</span>)
+  <span class="ruby-identifier">list</span> = (<span class="ruby-identifier">include_mods</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">mixins</span>(<span class="ruby-value">:instance</span>, <span class="ruby-value">:class</span>) <span class="ruby-operator">:</span> [])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proxy</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:inheritance_tree</span>)
+    <span class="ruby-identifier">list</span> <span class="ruby-operator">+=</span> [<span class="ruby-identifier">superclass</span>] <span class="ruby-keyword">unless</span> <span class="ruby-identifier">superclass</span> <span class="ruby-operator">==</span> <span class="ruby-constant">P</span>(<span class="ruby-value">:Object</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">superclass</span> <span class="ruby-operator">==</span> <span class="ruby-constant">P</span>(<span class="ruby-value">:BasicObject</span>)
+  <span class="ruby-keyword">end</span>
+  [<span class="ruby-keyword">self</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">list</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-identifier">m</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">m</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-identifier">m</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">m</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:inheritance_tree</span>)
+    <span class="ruby-identifier">m</span>.<span class="ruby-identifier">inheritance_tree</span>(<span class="ruby-identifier">include_mods</span>)
+  <span class="ruby-keyword">end</span>.<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-inherited_constants" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">inherited_constants</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns only the constants that were inherited.</p>
+
+<p>@return [Array&lt;ConstantObject&gt;] the list of inherited constant
+objects</p>
+          
+          
+
+          
+          <div class="method-source-code" id="inherited_constants-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/class_object.rb, line 106</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">inherited_constants</span>
+  <span class="ruby-identifier">inheritance_tree</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">inject</span>([]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">list</span>, <span class="ruby-identifier">superclass</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proxy</span>)
+      <span class="ruby-identifier">list</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">list</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">constants</span>.<span class="ruby-identifier">reject</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">child</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">name</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">list</span>.<span class="ruby-identifier">find</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">o2</span><span class="ruby-operator">|</span> <span class="ruby-identifier">o2</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">name</span> }
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-inherited_meths" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">inherited_meths</span><span
+            class="method-args">(opts = {})</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns only the methods that were inherited.</p>
+
+<p>@return [Array&lt;MethodObject&gt;] the list of inherited method objects</p>
+          
+          
+
+          
+          <div class="method-source-code" id="inherited_meths-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/class_object.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">inherited_meths</span>(<span class="ruby-identifier">opts</span> = {})
+  <span class="ruby-identifier">inheritance_tree</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">inject</span>([]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">list</span>, <span class="ruby-identifier">superclass</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proxy</span>)
+      <span class="ruby-identifier">list</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">list</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">meths</span>(<span class="ruby-identifier">opts</span>).<span class="ruby-identifier">reject</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">next</span>(<span class="ruby-keyword">false</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:all</span>]
+        <span class="ruby-identifier">child</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">name</span>, <span class="ruby-value">:scope</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">scope</span>) <span class="ruby-operator">||</span>
+          <span class="ruby-identifier">list</span>.<span class="ruby-identifier">find</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">o2</span><span class="ruby-operator">|</span> <span class="ruby-identifier">o2</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">o2</span>.<span class="ruby-identifier">scope</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">scope</span> }
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-is_exception-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">is_exception?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Whether or not the class is a Ruby Exception</p>
+
+<p>@return [Boolean] whether the object represents a Ruby exception</p>
+          
+          
+
+          
+          <div class="method-source-code" id="is_exception-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/class_object.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">is_exception?</span>
+  <span class="ruby-identifier">inheritance_tree</span>.<span class="ruby-identifier">reverse</span>.<span class="ruby-identifier">any?</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span> <span class="ruby-constant">BUILTIN_EXCEPTIONS_HASH</span>.<span class="ruby-identifier">has_key?</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">path</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-meths" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">meths</span><span
+            class="method-args">(opts = {})</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns the list of methods matching the options hash. Returns all methods
+if hash is empty.</p>
+
+<p>@param [Hash] opts the options hash to match @option opts [Boolean]
+:inherited (true) whether inherited methods should be</p>
+
+<pre>included in the list</pre>
+
+<p>@option opts [Boolean] :included (true) whether mixed in methods should be</p>
+
+<pre>included in the list</pre>
+
+<p>@return [Array&lt;MethodObject&gt;] the list of methods that matched</p>
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="meths-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/class_object.rb, line 63</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">meths</span>(<span class="ruby-identifier">opts</span> = {})
+  <span class="ruby-identifier">opts</span> = <span class="ruby-constant">SymbolHash</span>[<span class="ruby-value">:inherited</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>].<span class="ruby-identifier">update</span>(<span class="ruby-identifier">opts</span>)
+  <span class="ruby-identifier">list</span> = <span class="ruby-keyword">super</span>(<span class="ruby-identifier">opts</span>)
+  <span class="ruby-identifier">list</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">inherited_meths</span>(<span class="ruby-identifier">opts</span>).<span class="ruby-identifier">reject</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">o</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span>(<span class="ruby-keyword">false</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:all</span>]
+    <span class="ruby-identifier">list</span>.<span class="ruby-identifier">find</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">o2</span><span class="ruby-operator">|</span> <span class="ruby-identifier">o2</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">o2</span>.<span class="ruby-identifier">scope</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">o</span>.<span class="ruby-identifier">scope</span> }
+  <span class="ruby-keyword">end</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:inherited</span>]
+  <span class="ruby-identifier">list</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-superclass-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">superclass=</span><span
+            class="method-args">(object)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Sets the superclass of the object</p>
+
+<p>@param [Base, <a href="Proxy.html">Proxy</a>, <a
+href="../../String.html">String</a>, Symbol, nil] object the superclass
+value @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="superclass-3D-source">
+            <pre><span class="ruby-comment"># File lib/yard/code_objects/class_object.rb, line 122</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">superclass=</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">object</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">Base</span>, <span class="ruby-constant">Proxy</span>, <span class="ruby-constant">NilClass</span>
+    <span class="ruby-ivar">@superclass</span> = <span class="ruby-identifier">object</span>
+  <span class="ruby-keyword">when</span> <span class="ruby-constant">String</span>, <span class="ruby-constant">Symbol</span>
+    <span class="ruby-ivar">@superclass</span> = <span class="ruby-constant">Proxy</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&quot;superclass must be CodeObject, Proxy, String or Symbol&quot;</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@superclass</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">namespace</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Registry</span>.<span class="ruby-identifier">root</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Base</span>)
+    <span class="ruby-ivar">@superclass</span> = <span class="ruby-constant">Proxy</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@superclass</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>
+    <span class="ruby-identifier">msg</span> = <span class="ruby-node">&quot;superclass #{@superclass.inspect} cannot be the same as the declared class #{self.inspect}&quot;</span>
+    <span class="ruby-ivar">@superclass</span> = <span class="ruby-constant">P</span>(<span class="ruby-string">&quot;::Object&quot;</span>)
+    <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-identifier">msg</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

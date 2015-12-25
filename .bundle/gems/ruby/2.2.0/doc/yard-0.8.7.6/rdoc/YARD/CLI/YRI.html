@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::CLI::YRI - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Command.html">YARD::CLI::Command</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-c-run">::run</a>
+    
+    <li ><a href="#method-i-add_default_paths">#add_default_paths</a>
+    
+    <li ><a href="#method-i-add_gem_paths">#add_gem_paths</a>
+    
+    <li ><a href="#method-i-cache_object">#cache_object</a>
+    
+    <li ><a href="#method-i-description">#description</a>
+    
+    <li ><a href="#method-i-find_object">#find_object</a>
+    
+    <li ><a href="#method-i-load_cache">#load_cache</a>
+    
+    <li ><a href="#method-i-optparse">#optparse</a>
+    
+    <li ><a href="#method-i-print_object">#print_object</a>
+    
+    <li ><a href="#method-i-print_usage">#print_usage</a>
+    
+    <li ><a href="#method-i-run">#run</a>
+    
+    <li ><a href="#method-i-try_load_object">#try_load_object</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::CLI::YRI">
+  <h1 id="class-YARD::CLI::YRI" class="class">
+    class YARD::CLI::YRI
+  </h1>
+
+  <section class="description">
+    
+<p>A tool to view documentation in the console like `ri`</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="CACHE_FILE">CACHE_FILE
+        
+        <dd><p>The location in {YARD::CONFIG_DIR} where the <a href="YRI.html">YRI</a>
+cache file is loaded from.</p>
+        
+      
+        <dt id="DEFAULT_SEARCH_PATHS">DEFAULT_SEARCH_PATHS
+        
+        <dd><p>Default search paths that should be loaded dynamically into <a
+href="YRI.html">YRI</a>. These paths take precedence over all other paths
+({SEARCH_PATHS_FILE} and RubyGems paths). To add a path, call:</p>
+
+<pre class="ruby"><span class="ruby-constant">DEFAULT_SEARCH_PATHS</span>.<span class="ruby-identifier">push</span>(<span class="ruby-string">&quot;/path/to/.yardoc&quot;</span>)
+</pre>
+
+<p>@return [Array&lt;String&gt;] a list of extra search paths @since 0.6.0</p>
+        
+      
+        <dt id="SEARCH_PATHS_FILE">SEARCH_PATHS_FILE
+        
+        <dd><p>A file containing all paths, delimited by newlines, to search for yardoc
+databases. @since 0.5.1</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 30</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@cache</span> = {}
+  <span class="ruby-ivar">@search_paths</span> = []
+  <span class="ruby-identifier">add_default_paths</span>
+  <span class="ruby-identifier">add_gem_paths</span>
+  <span class="ruby-identifier">load_cache</span>
+  <span class="ruby-ivar">@search_paths</span>.<span class="ruby-identifier">uniq!</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">run</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Helper method to run the utility on an instance. @see <a
+href="YRI.html#method-i-run">run</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="run-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 28</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">run</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>) <span class="ruby-identifier">new</span>.<span class="ruby-identifier">run</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>) <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-description" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">description</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="description-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>
+  <span class="ruby-string">&quot;A tool to view documentation in the console like `ri`&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">run</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Runs the command-line utility.</p>
+
+<p>@example</p>
+
+<pre class="ruby"><span class="ruby-constant">YRI</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">run</span>(<span class="ruby-string">&#39;String#reverse&#39;</span>)
+</pre>
+
+<p>@param [Array&lt;String&gt;] args each tokenized argument</p>
+          
+          
+
+          
+          <div class="method-source-code" id="run-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">run</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">optparse</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">::</span><span class="ruby-constant">RbConfig</span><span class="ruby-operator">::</span><span class="ruby-constant">CONFIG</span>[<span class="ruby-string">&#39;host_os&#39;</span>] <span class="ruby-operator">=~</span> <span class="ruby-regexp">/mingw|win32/</span>
+    <span class="ruby-ivar">@serializer</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Serializers</span><span class="ruby-operator">::</span><span class="ruby-constant">StdoutSerializer</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@serializer</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Serializers</span><span class="ruby-operator">::</span><span class="ruby-constant">ProcessSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&#39;less&#39;</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@name</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@name</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">print_usage</span>
+    <span class="ruby-identifier">exit</span>(<span class="ruby-value">1</span>)
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">object</span> = <span class="ruby-identifier">find_object</span>(<span class="ruby-ivar">@name</span>)
+    <span class="ruby-identifier">print_object</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-constant">STDERR</span>.<span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;No documentation for `#{@name}&#39;&quot;</span>
+    <span class="ruby-identifier">exit</span>(<span class="ruby-value">1</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="protected-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Protected Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-cache_object" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cache_object</span><span
+            class="method-args">(name, path)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Caches the .yardoc file where an object can be found in the {CACHE_FILE}
+@return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="cache_object-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 81</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">cache_object</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">path</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">path</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Registry</span>.<span class="ruby-identifier">yardoc_file</span>
+  <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">name</span>] = <span class="ruby-identifier">path</span>
+
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open!</span>(<span class="ruby-constant">CACHE_FILE</span>, <span class="ruby-string">&#39;w&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@cache</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">file</span>.<span class="ruby-identifier">puts</span>(<span class="ruby-node">&quot;#{key} #{value}&quot;</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-find_object" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">find_object</span><span
+            class="method-args">(name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Locates an object by name starting in the cached paths and then searching
+through any search paths.</p>
+
+<p>@param [String] name the full name of the object @return
+[CodeObjects::Base] an object if found @return [nil] if no object is found</p>
+          
+          
+
+          
+          <div class="method-source-code" id="find_object-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 109</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_object</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-ivar">@search_paths</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">name</span>]) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">name</span>]
+  <span class="ruby-ivar">@search_paths</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-constant">Registry</span>.<span class="ruby-identifier">yardoc_file</span>)
+
+  <span class="ruby-comment"># Try to load it from in memory cache</span>
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">debug</span> <span class="ruby-node">&quot;Searching for #{name} in memory&quot;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">obj</span> = <span class="ruby-identifier">try_load_object</span>(<span class="ruby-identifier">name</span>, <span class="ruby-keyword">nil</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">obj</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">debug</span> <span class="ruby-node">&quot;Searching for #{name} in search paths&quot;</span>
+  <span class="ruby-ivar">@search_paths</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">path</span>)
+    <span class="ruby-identifier">log</span>.<span class="ruby-identifier">debug</span> <span class="ruby-node">&quot;Searching for #{name} in #{path}...&quot;</span>
+    <span class="ruby-constant">Registry</span>.<span class="ruby-identifier">load</span>(<span class="ruby-identifier">path</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">obj</span> = <span class="ruby-identifier">try_load_object</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">path</span>)
+      <span class="ruby-keyword">return</span> <span class="ruby-identifier">obj</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-print_object" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">print_object</span><span
+            class="method-args">(object)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@param [CodeObjects::Base] object the object to print. @return [String] the
+formatted output for an object.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="print_object-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 94</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">print_object</span>(<span class="ruby-identifier">object</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:method</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">is_alias?</span>
+    <span class="ruby-identifier">tmp</span> = <span class="ruby-constant">P</span>(<span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>, (<span class="ruby-identifier">object</span>.<span class="ruby-identifier">scope</span> <span class="ruby-operator">==</span> <span class="ruby-value">:instance</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot;#&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot;&quot;</span>) <span class="ruby-operator">+</span>
+      <span class="ruby-identifier">object</span>.<span class="ruby-identifier">namespace</span>.<span class="ruby-identifier">aliases</span>[<span class="ruby-identifier">object</span>].<span class="ruby-identifier">to_s</span>)
+    <span class="ruby-identifier">object</span> = <span class="ruby-identifier">tmp</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">CodeObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">Proxy</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">tmp</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">object</span>.<span class="ruby-identifier">format</span>(<span class="ruby-value">:serializer</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@serializer</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-print_usage" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">print_usage</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Prints the command usage @return [void] @since 0.5.6</p>
+          
+          
+
+          
+          <div class="method-source-code" id="print_usage-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">print_usage</span>
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Usage: yri [options] &lt;Path to object&gt;&quot;</span>
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;See yri --help for more options.&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-add_default_paths" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_default_paths</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Adds paths in {SEARCH_PATHS_FILE} @since 0.5.1</p>
+          
+          
+
+          
+          <div class="method-source-code" id="add_default_paths-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 180</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_default_paths</span>
+  <span class="ruby-ivar">@search_paths</span>.<span class="ruby-identifier">push</span>(<span class="ruby-operator">*</span><span class="ruby-constant">DEFAULT_SEARCH_PATHS</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-constant">SEARCH_PATHS_FILE</span>)
+  <span class="ruby-identifier">paths</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">readlines</span>(<span class="ruby-constant">SEARCH_PATHS_FILE</span>).<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span> <span class="ruby-identifier">l</span>.<span class="ruby-identifier">strip</span> }
+  <span class="ruby-ivar">@search_paths</span>.<span class="ruby-identifier">push</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">paths</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-add_gem_paths" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_gem_paths</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Adds all RubyGems yardoc files to search paths @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="add_gem_paths-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 162</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_gem_paths</span>
+  <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;rubygems&#39;</span>
+  <span class="ruby-identifier">gem_paths</span> = []
+  <span class="ruby-constant">Gem</span>.<span class="ruby-identifier">source_index</span>.<span class="ruby-identifier">find_name</span>(<span class="ruby-string">&#39;&#39;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">spec</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">yfile</span> = <span class="ruby-constant">Registry</span>.<span class="ruby-identifier">yardoc_file_for_gem</span>(<span class="ruby-identifier">spec</span>.<span class="ruby-identifier">name</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">spec</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^yard-doc-/</span>
+        <span class="ruby-identifier">gem_paths</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-identifier">yfile</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">gem_paths</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">yfile</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-ivar">@search_paths</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">gem_paths</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">LoadError</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-load_cache" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_cache</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Loads {CACHE_FILE} @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="load_cache-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">load_cache</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-constant">CACHE_FILE</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">readlines</span>(<span class="ruby-constant">CACHE_FILE</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">line</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/\s+/</span>)
+    <span class="ruby-ivar">@cache</span>[<span class="ruby-identifier">line</span>[<span class="ruby-value">0</span>]] = <span class="ruby-identifier">line</span>[<span class="ruby-value">1</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-optparse" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">optparse</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses commandline options. @param [Array&lt;String&gt;] args each
+tokenized argument</p>
+          
+          
+
+          
+          <div class="method-source-code" id="optparse-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 189</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">optparse</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">opts</span> = <span class="ruby-constant">OptionParser</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">banner</span> = <span class="ruby-string">&quot;Usage: yri [options] &lt;Path to object&gt;&quot;</span>
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">separator</span> <span class="ruby-node">&quot;Example: yri String#gsub&quot;</span>
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">separator</span> <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">separator</span> <span class="ruby-string">&quot;General Options:&quot;</span>
+
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&#39;-b&#39;</span>, <span class="ruby-string">&#39;--db FILE&#39;</span>, <span class="ruby-string">&#39;Use a specified .yardoc db to search in&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">yfile</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@search_paths</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-identifier">yfile</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&#39;-T&#39;</span>, <span class="ruby-string">&#39;--no-pager&#39;</span>, <span class="ruby-string">&#39;No pager&#39;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-ivar">@serializer</span> = <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Serializers</span><span class="ruby-operator">::</span><span class="ruby-constant">StdoutSerializer</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&#39;-p PAGER&#39;</span>, <span class="ruby-string">&#39;--pager&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pager</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@serializer</span> = <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Serializers</span><span class="ruby-operator">::</span><span class="ruby-constant">ProcessSerializer</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">pager</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">common_options</span>(<span class="ruby-identifier">opts</span>)
+  <span class="ruby-identifier">parse_options</span>(<span class="ruby-identifier">opts</span>, <span class="ruby-identifier">args</span>)
+  <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-try_load_object" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">try_load_object</span><span
+            class="method-args">(name, cache_path)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Tries to load the object with name. If successful, caches the object with
+the cache_path</p>
+
+<p>@param [String] name the object path @param [String] cache_path the
+location of the yardoc</p>
+
+<pre>db containing the object to cache for future lookups.
+No caching is done if this is nil.</pre>
+
+<p>@return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="try_load_object-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/yri.rb, line 141</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">try_load_object</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">cache_path</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">obj</span> = <span class="ruby-constant">Registry</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">name</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">cache_path</span>
+      <span class="ruby-identifier">cache_object</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">cache_path</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">obj</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

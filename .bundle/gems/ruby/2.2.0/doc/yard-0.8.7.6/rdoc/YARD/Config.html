@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Config - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#class-YARD::Config-label-User+Configuration+Files">User Configuration Files</a>
+    <li><a href="#class-YARD::Config-label-Automatic+Loading+of+Plugins">Automatic Loading of Plugins</a>
+    <li><a href="#class-YARD::Config-label-Ignored+Plugins+File">Ignored Plugins File</a>
+    <li><a href="#class-YARD::Config-label-Safe+Mode">Safe Mode</a>
+    <li><a href="#class-YARD::Config-label-Plugin+Specific+Configuration">Plugin Specific Configuration</a>
+  </ul>
+</div>
+
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-add_ignored_plugins_file">::add_ignored_plugins_file</a>
+    
+    <li ><a href="#method-c-arguments">::arguments</a>
+    
+    <li ><a href="#method-c-load">::load</a>
+    
+    <li ><a href="#method-c-load_autoload_plugins">::load_autoload_plugins</a>
+    
+    <li ><a href="#method-c-load_commandline_plugins">::load_commandline_plugins</a>
+    
+    <li ><a href="#method-c-load_commandline_safemode">::load_commandline_safemode</a>
+    
+    <li ><a href="#method-c-load_gem_plugins">::load_gem_plugins</a>
+    
+    <li ><a href="#method-c-load_plugin">::load_plugin</a>
+    
+    <li ><a href="#method-c-load_plugin_failed">::load_plugin_failed</a>
+    
+    <li ><a href="#method-c-load_plugins">::load_plugins</a>
+    
+    <li ><a href="#method-c-read_config_file">::read_config_file</a>
+    
+    <li ><a href="#method-c-save">::save</a>
+    
+    <li ><a href="#method-c-translate_plugin_name">::translate_plugin_name</a>
+    
+    <li ><a href="#method-c-translate_plugin_names">::translate_plugin_names</a>
+    
+    <li ><a href="#method-c-with_yardopts">::with_yardopts</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Config">
+  <h1 id="class-YARD::Config" class="class">
+    class YARD::Config
+  </h1>
+
+  <section class="description">
+    
+<p>This class maintains all system-wide configuration for <a
+href="../YARD.html">YARD</a> and handles the loading of plugins. To access
+options call {options}, and to load a plugin use {load_plugin}. All other
+public methods are used by <a href="../YARD.html">YARD</a> during load
+time.</p>
+
+<h2 id="class-YARD::Config-label-User+Configuration+Files">User Configuration Files<span><a href="#class-YARD::Config-label-User+Configuration+Files">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Persistent user configuration files can be stored in the file
++~/.yard/config+, which is read when <a href="../YARD.html">YARD</a> first
+loads. The file should be formatted as YAML, and should contain a map of
+keys and values.</p>
+
+<p>Although you can specify any key-value mapping in the configuration file,
+<a href="../YARD.html">YARD</a> defines special keys specified in
+{DEFAULT_CONFIG_OPTIONS}.</p>
+
+<p>An example of a configuration file is listed below:</p>
+
+<pre>!!!yaml
+load_plugins: true # Auto-load plugins when YARD starts
+ignored_plugins:
+  - yard-broken
+  - broken2 # yard- prefix not necessary
+autoload_plugins:
+  - yard-rspec</pre>
+
+<h2 id="class-YARD::Config-label-Automatic+Loading+of+Plugins">Automatic Loading of Plugins<span><a href="#class-YARD::Config-label-Automatic+Loading+of+Plugins">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p><a href="../YARD.html">YARD</a> 0.6.2 will no longer automatically load all
+plugins by default. This option can be reset by setting
+&#39;load_plugins&#39; to true in the configuration file. In addition, you
+can specify a set of specific plugins to load on load through the
+&#39;autoload_plugins&#39; list setting. This setting is independent of the
+&#39;load_plugins&#39; value and will always be processed.</p>
+
+<h2 id="class-YARD::Config-label-Ignored+Plugins+File">Ignored Plugins <a href="../File.html">File</a><span><a href="#class-YARD::Config-label-Ignored+Plugins+File">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p><a href="../YARD.html">YARD</a> 0.5 and below used a
++~/.yard/ignored_plugins+ file to specify plugins to be ignored at load
+time. Ignored plugins in 0.6.2 and above should now be specified in the
+main configuration file, though <a href="../YARD.html">YARD</a> will
+support the <code>ignored_plugins</code> file until 0.7.x.</p>
+
+<h2 id="class-YARD::Config-label-Safe+Mode">Safe Mode<span><a href="#class-YARD::Config-label-Safe+Mode">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p><a href="../YARD.html">YARD</a> supports running in safe-mode. By doing
+this, it will avoid executing any user code such as require files or
+queries. Plugins will still be loaded with safe mode on, because plugins
+are properly namespaced with a &#39;yard-&#39; prefix, must be installed as
+a gem, and therefore cannot be touched by the user. To specify safe mode,
+use the <code>safe_mode</code> key.</p>
+
+<h2 id="class-YARD::Config-label-Plugin+Specific+Configuration">Plugin Specific Configuration<span><a href="#class-YARD::Config-label-Plugin+Specific+Configuration">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Additional settings can be defined within the configuration file
+specifically to provide configuration for a plugin. A plugin that utilizes
+the <a href="../YARD.html">YARD</a> configuration is strongly encouraged to
+utilize namespacing of their configuration content.</p>
+
+<pre>!!!yaml
+load_plugins: true # Auto-load plugins when YARD starts
+ignored_plugins:
+  - yard-broken
+  - broken2 # yard- prefix not necessary
+autoload_plugins:
+  - yard-rspec
+# Plugin Specific Configuration
+yard-sample-plugin:
+  show-results-inline: true</pre>
+
+<p>As the configuration is available system wide, it can be accessed within
+the plugin code.</p>
+
+<pre class="ruby"><span class="ruby-keyword">if</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">options</span>[<span class="ruby-string">&#39;yard-sample-plugin&#39;</span>] <span class="ruby-keyword">and</span>
+  <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">options</span>[<span class="ruby-string">&#39;yard-sample-plugin&#39;</span>][<span class="ruby-string">&#39;show-results-inline&#39;</span>]
+  <span class="ruby-comment"># ... perform the action that places the results inline ...</span>
+<span class="ruby-keyword">else</span>
+  <span class="ruby-comment"># ... do the default behavior of not showing the results inline ...</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>When accessing the configuration, be aware that this file is user managed
+so configuration keys and values may not be present. Make no assumptions
+and instead ensure that you check for the existence of keys before
+proceeding to retrieve values.</p>
+
+<p>@since 0.6.2 @see options</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="CONFIG_DIR">CONFIG_DIR
+        
+        <dd><p>The location where <a href="../YARD.html">YARD</a> stores user-specific
+settings</p>
+        
+      
+        <dt id="CONFIG_FILE">CONFIG_FILE
+        
+        <dd><p>The main configuration YAML file.</p>
+        
+      
+        <dt id="DEFAULT_CONFIG_OPTIONS">DEFAULT_CONFIG_OPTIONS
+        
+        <dd><p>Default configuration options</p>
+        
+      
+        <dt id="IGNORED_PLUGINS">IGNORED_PLUGINS
+        
+        <dd><p><a href="../File.html">File</a> listing all ignored plugins @deprecated Set
+`ignored_plugins` in the {CONFIG_FILE} instead.</p>
+        
+      
+        <dt id="YARD_PLUGIN_PREFIX">YARD_PLUGIN_PREFIX
+        
+        <dd><p>The prefix used for <a href="../YARD.html">YARD</a> plugins. Name your gem
+with this prefix to allow it to be used as a plugin.</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-c-options" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">options</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>The system-wide configuration options for <a href="../YARD.html">YARD</a>
+@return [SymbolHash] a map a key-value pair settings. @see <a
+href="Config.html#DEFAULT_CONFIG_OPTIONS">DEFAULT_CONFIG_OPTIONS</a></p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-load" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Loads settings from {CONFIG_FILE}. This method is called by <a
+href="../YARD.html">YARD</a> at load time and should not be called by the
+user. @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="load-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 118</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">load</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">options</span> = <span class="ruby-constant">SymbolHash</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">false</span>)
+  <span class="ruby-identifier">options</span>.<span class="ruby-identifier">update</span>(<span class="ruby-constant">DEFAULT_CONFIG_OPTIONS</span>)
+  <span class="ruby-identifier">options</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">read_config_file</span>)
+  <span class="ruby-identifier">load_commandline_safemode</span>
+  <span class="ruby-identifier">add_ignored_plugins_file</span>
+  <span class="ruby-identifier">translate_plugin_names</span>
+  <span class="ruby-identifier">load_plugins</span>
+<span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">error</span> <span class="ruby-string">&quot;Invalid configuration file, using default options.&quot;</span>
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">backtrace</span>(<span class="ruby-identifier">e</span>)
+  <span class="ruby-identifier">options</span>.<span class="ruby-identifier">update</span>(<span class="ruby-constant">DEFAULT_CONFIG_OPTIONS</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-load_plugin" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_plugin</span><span
+            class="method-args">(name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Loads an individual plugin by name. It is not necessary to include the
+<code>yard-</code> plugin prefix here.</p>
+
+<p>@param [String] name the name of the plugin (with or without
+<code>yard-</code> prefix) @return [Boolean] whether the plugin was
+successfully loaded</p>
+          
+          
+
+          
+          <div class="method-source-code" id="load_plugin-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 156</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">load_plugin</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-identifier">name</span> = <span class="ruby-identifier">translate_plugin_name</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:ignored_plugins</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/^yard-doc-/</span>
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">debug</span> <span class="ruby-node">&quot;Loading plugin &#39;#{name}&#39;...&quot;</span>
+  <span class="ruby-identifier">require</span> <span class="ruby-identifier">name</span>
+  <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">LoadError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+  <span class="ruby-identifier">load_plugin_failed</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">e</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-load_plugins" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_plugins</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Loads gems that match the name &#39;yard-*&#39; (recommended) or
+&#39;yard_*&#39; except those listed in +~/.yard/ignored_plugins+. This is
+called immediately after <a href="../YARD.html">YARD</a> is loaded to allow
+plugin support.</p>
+
+<p>@return [Boolean] true if all plugins loaded successfully, false otherwise.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="load_plugins-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 145</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">load_plugins</span>
+  <span class="ruby-identifier">load_gem_plugins</span> <span class="ruby-operator">&amp;&amp;</span>
+    <span class="ruby-identifier">load_autoload_plugins</span> <span class="ruby-operator">&amp;&amp;</span>
+    <span class="ruby-identifier">load_commandline_plugins</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-save" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">save</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Saves settings to {CONFIG_FILE}. @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="save-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 134</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">save</span>
+  <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;yaml&#39;</span>
+  <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">mkdir</span>(<span class="ruby-constant">CONFIG_DIR</span>) <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-constant">CONFIG_DIR</span>)
+  <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">CONFIG_FILE</span>, <span class="ruby-string">&#39;w&#39;</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>(<span class="ruby-constant">YAML</span>.<span class="ruby-identifier">dump</span>(<span class="ruby-identifier">options</span>)) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-add_ignored_plugins_file" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_ignored_plugins_file</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Legacy support for {IGNORED_PLUGINS}</p>
+          
+          
+
+          
+          <div class="method-source-code" id="add_ignored_plugins_file-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 222</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">add_ignored_plugins_file</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-constant">IGNORED_PLUGINS</span>)
+    <span class="ruby-identifier">options</span>[<span class="ruby-value">:ignored_plugins</span>] <span class="ruby-operator">+=</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">IGNORED_PLUGINS</span>).<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/\s+/</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-arguments" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">arguments</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>@return [Array&lt;String&gt;] arguments from commandline and yardopts file</p>
+          
+          
+
+          
+          <div class="method-source-code" id="arguments-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 265</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">arguments</span>
+  <span class="ruby-constant">ARGV</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@yardopts</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-load_autoload_plugins" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_autoload_plugins</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Load plugins set in :autoload_plugins</p>
+          
+          
+
+          
+          <div class="method-source-code" id="load_autoload_plugins-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 190</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">load_autoload_plugins</span>
+  <span class="ruby-identifier">options</span>[<span class="ruby-value">:autoload_plugins</span>].<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-identifier">load_plugin</span>(<span class="ruby-identifier">name</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-load_commandline_plugins" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_commandline_plugins</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Load plugins from {#arguments}</p>
+          
+          
+
+          
+          <div class="method-source-code" id="load_commandline_plugins-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 195</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">load_commandline_plugins</span>
+  <span class="ruby-identifier">with_yardopts</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">arguments</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">arg</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">arg</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;--plugin&#39;</span>
+      <span class="ruby-identifier">load_plugin</span>(<span class="ruby-identifier">arguments</span>[<span class="ruby-identifier">i</span><span class="ruby-operator">+</span><span class="ruby-value">1</span>])
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-load_commandline_safemode" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_commandline_safemode</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Check for command-line safe_mode switch in {#arguments}</p>
+          
+          
+
+          
+          <div class="method-source-code" id="load_commandline_safemode-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 205</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">load_commandline_safemode</span>
+  <span class="ruby-identifier">with_yardopts</span> <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">arguments</span>.<span class="ruby-identifier">each_with_index</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">arg</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">options</span>[<span class="ruby-value">:safe_mode</span>] = <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">arg</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;--safe&#39;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-load_gem_plugins" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_gem_plugins</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Load gem plugins if :load_plugins is true</p>
+          
+          
+
+          
+          <div class="method-source-code" id="load_gem_plugins-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 170</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">load_gem_plugins</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">options</span>[<span class="ruby-value">:load_plugins</span>]
+  <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;rubygems&#39;</span>
+  <span class="ruby-identifier">result</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-constant">Gem</span>.<span class="ruby-identifier">source_index</span>.<span class="ruby-identifier">find_name</span>(<span class="ruby-string">&#39;&#39;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">gem</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">begin</span>
+      <span class="ruby-keyword">next</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">gem</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">YARD_PLUGIN_PREFIX</span>
+      <span class="ruby-identifier">load_plugin</span>(<span class="ruby-identifier">gem</span>.<span class="ruby-identifier">name</span>)
+    <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Gem</span><span class="ruby-operator">::</span><span class="ruby-constant">LoadError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+      <span class="ruby-identifier">tmp</span> = <span class="ruby-identifier">load_plugin_failed</span>(<span class="ruby-identifier">gem</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">e</span>)
+      <span class="ruby-identifier">result</span> = <span class="ruby-identifier">tmp</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">tmp</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">result</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">LoadError</span>
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">debug</span> <span class="ruby-string">&quot;RubyGems is not present, skipping plugin loading&quot;</span>
+  <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-load_plugin_failed" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_plugin_failed</span><span
+            class="method-args">(name, exception)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Print a warning if the plugin failed to load @return [false]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="load_plugin_failed-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 215</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">load_plugin_failed</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">exception</span>)
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;Error loading plugin &#39;#{name}&#39;&quot;</span>
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">backtrace</span>(<span class="ruby-identifier">exception</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">$DEBUG</span>
+  <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-read_config_file" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">read_config_file</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Loads the YAML configuration file into memory @return [Hash] the contents
+of the YAML file from disk @see <a
+href="Config.html#CONFIG_FILE">CONFIG_FILE</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="read_config_file-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 237</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">read_config_file</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-constant">CONFIG_FILE</span>)
+    <span class="ruby-identifier">require</span> <span class="ruby-string">&#39;yaml&#39;</span>
+    <span class="ruby-constant">YAML</span>.<span class="ruby-identifier">load_file</span>(<span class="ruby-constant">CONFIG_FILE</span>)
+  <span class="ruby-keyword">else</span>
+    {}
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-translate_plugin_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">translate_plugin_name</span><span
+            class="method-args">(name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Sanitizes and normalizes a plugin name to include the &#39;yard-&#39;
+prefix. @param [String] name the plugin name @return [String] the sanitized
+and normalized plugin name.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="translate_plugin_name-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 249</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">translate_plugin_name</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-identifier">name</span> = <span class="ruby-identifier">name</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&#39;/&#39;</span>, <span class="ruby-string">&#39;&#39;</span>) <span class="ruby-comment"># Security sanitization</span>
+  <span class="ruby-identifier">name</span> = <span class="ruby-string">&quot;yard-&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">name</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">YARD_PLUGIN_PREFIX</span>
+  <span class="ruby-identifier">name</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-translate_plugin_names" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">translate_plugin_names</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Translates plugin names to add yard- prefix.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="translate_plugin_names-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 229</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">translate_plugin_names</span>
+  <span class="ruby-identifier">options</span>[<span class="ruby-value">:ignored_plugins</span>].<span class="ruby-identifier">map!</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-identifier">translate_plugin_name</span>(<span class="ruby-identifier">name</span>) }
+  <span class="ruby-identifier">options</span>[<span class="ruby-value">:autoload_plugins</span>].<span class="ruby-identifier">map!</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-identifier">translate_plugin_name</span>(<span class="ruby-identifier">name</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-with_yardopts" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">with_yardopts</span><span
+            class="method-args">() { || ... }</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Temporarily loads .yardopts file into @yardopts</p>
+          
+          
+
+          
+          <div class="method-source-code" id="with_yardopts-source">
+            <pre><span class="ruby-comment"># File lib/yard/config.rb, line 256</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">with_yardopts</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">yfile</span> = <span class="ruby-constant">CLI</span><span class="ruby-operator">::</span><span class="ruby-constant">Yardoc</span><span class="ruby-operator">::</span><span class="ruby-constant">DEFAULT_YARDOPTS_FILE</span>
+  <span class="ruby-ivar">@yardopts</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">file?</span>(<span class="ruby-identifier">yfile</span>) <span class="ruby-operator">?</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">read_binary</span>(<span class="ruby-identifier">yfile</span>).<span class="ruby-identifier">shell_split</span> <span class="ruby-operator">:</span> []
+  <span class="ruby-identifier">result</span> = <span class="ruby-keyword">yield</span>
+  <span class="ruby-ivar">@yardopts</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">result</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

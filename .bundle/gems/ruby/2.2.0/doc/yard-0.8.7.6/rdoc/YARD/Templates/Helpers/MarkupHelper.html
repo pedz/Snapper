@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>module YARD::Templates::Helpers::MarkupHelper - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../";
+</script>
+
+<script src="../../../js/jquery.js"></script>
+<script src="../../../js/darkfish.js"></script>
+
+<link href="../../../css/fonts.css" rel="stylesheet">
+<link href="../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-clear_markup_cache">::clear_markup_cache</a>
+    
+    <li ><a href="#method-i-load_markup_provider">#load_markup_provider</a>
+    
+    <li ><a href="#method-i-markup_class">#markup_class</a>
+    
+    <li ><a href="#method-i-markup_file_contents">#markup_file_contents</a>
+    
+    <li ><a href="#method-i-markup_for_file">#markup_for_file</a>
+    
+    <li ><a href="#method-i-markup_provider">#markup_provider</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-YARD::Templates::Helpers::MarkupHelper">
+  <h1 id="module-YARD::Templates::Helpers::MarkupHelper" class="module">
+    module YARD::Templates::Helpers::MarkupHelper
+  </h1>
+
+  <section class="description">
+    
+<p>Helper methods for loading and managing markup types.</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="MARKUP_EXTENSIONS">MARKUP_EXTENSIONS
+        
+        <dd><p>Returns a list of extensions for various markup types. To register
+extensions for a type, add them to the array of extensions for the type.
+@since 0.6.0</p>
+        
+      
+        <dt id="MARKUP_FILE_SHEBANG">MARKUP_FILE_SHEBANG
+        
+        <dd><p>Contains the Regexp object that matches the shebang line of extra files to
+detect the markup type.</p>
+        
+      
+        <dt id="MARKUP_PROVIDERS">MARKUP_PROVIDERS
+        
+        <dd><p>The default list of markup providers for each markup type</p>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-c-markup_cache" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">markup_cache</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>@return [Hash{Symbol=&gt;{(:provider,:class)=&gt;Object}}] the cached
+markup providers @private @since 0.6.4</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-clear_markup_cache" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">clear_markup_cache</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Clears the markup provider cache information. Mainly used for testing.
+@return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="clear_markup_cache-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/markup_helper.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">clear_markup_cache</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">markup_cache</span> = {}
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-load_markup_provider" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_markup_provider</span><span
+            class="method-args">(type = options.markup)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Attempts to load the first valid markup provider in {MARKUP_PROVIDERS}. If
+a provider is specified, immediately try to load it.</p>
+
+<p>On success this sets `@markup_provider` and `@markup_class` to the provider
+name and library constant class/module respectively for the loaded
+provider.</p>
+
+<p>On failure this method will inform the user that no provider could be found
+and exit the program.</p>
+
+<p>@return [Boolean] whether the markup provider was successfully loaded.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="load_markup_provider-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/markup_helper.rb, line 81</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">load_markup_provider</span>(<span class="ruby-identifier">type</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">markup</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">MarkupHelper</span>.<span class="ruby-identifier">markup_cache</span>[<span class="ruby-identifier">type</span>]
+  <span class="ruby-constant">MarkupHelper</span>.<span class="ruby-identifier">markup_cache</span>[<span class="ruby-identifier">type</span>] <span class="ruby-operator">||=</span> {}
+
+  <span class="ruby-identifier">providers</span> = <span class="ruby-constant">MARKUP_PROVIDERS</span>[<span class="ruby-identifier">type</span>.<span class="ruby-identifier">to_sym</span>]
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">providers</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">providers</span>.<span class="ruby-identifier">empty?</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">providers</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">options</span>.<span class="ruby-identifier">markup_provider</span>
+    <span class="ruby-identifier">providers</span> = <span class="ruby-identifier">providers</span>.<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>[<span class="ruby-value">:lib</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">options</span>.<span class="ruby-identifier">markup_provider</span> }
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">providers</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">providers</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">log</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;Invalid markup type &#39;#{type}&#39; or markup provider &quot;</span> <span class="ruby-operator">+</span>
+      <span class="ruby-node">&quot;(#{options.markup_provider}) is not registered.&quot;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># Search for provider, return the library class name as const if found</span>
+  <span class="ruby-identifier">providers</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">provider</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">begin</span> <span class="ruby-identifier">require</span> <span class="ruby-identifier">provider</span>[<span class="ruby-value">:lib</span>].<span class="ruby-identifier">to_s</span>; <span class="ruby-keyword">rescue</span> <span class="ruby-constant">LoadError</span>; <span class="ruby-keyword">next</span> <span class="ruby-keyword">end</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">provider</span>[<span class="ruby-value">:lib</span>]
+    <span class="ruby-keyword">begin</span> <span class="ruby-identifier">klass</span> = <span class="ruby-identifier">eval</span>(<span class="ruby-string">&quot;::&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">provider</span>[<span class="ruby-value">:const</span>]); <span class="ruby-keyword">rescue</span> <span class="ruby-constant">NameError</span>; <span class="ruby-keyword">next</span> <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">MarkupHelper</span>.<span class="ruby-identifier">markup_cache</span>[<span class="ruby-identifier">type</span>][<span class="ruby-value">:provider</span>] = <span class="ruby-identifier">provider</span>[<span class="ruby-value">:lib</span>] <span class="ruby-comment"># Cache the provider</span>
+    <span class="ruby-constant">MarkupHelper</span>.<span class="ruby-identifier">markup_cache</span>[<span class="ruby-identifier">type</span>][<span class="ruby-value">:class</span>] = <span class="ruby-identifier">klass</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># Show error message telling user to install first potential provider</span>
+  <span class="ruby-identifier">name</span>, <span class="ruby-identifier">lib</span> = <span class="ruby-operator">*</span>[<span class="ruby-identifier">providers</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">:const</span>], <span class="ruby-identifier">providers</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">:lib</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">type</span>]
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;Missing &#39;#{lib}&#39; gem for #{type.to_s.capitalize} formatting. Install it with `gem install #{lib}`&quot;</span>
+  <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-markup_class" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">markup_class</span><span
+            class="method-args">(type = options.markup)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Gets the markup provider class/module constant for a markup type Call
+{#load_markup_provider} before using this method.</p>
+
+<p>@param [Symbol] type the markup type (:rdoc, :markdown, etc.) @return
+[Class] the markup class</p>
+          
+          
+
+          
+          <div class="method-source-code" id="markup_class-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/markup_helper.rb, line 154</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">markup_class</span>(<span class="ruby-identifier">type</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">markup</span>)
+  <span class="ruby-identifier">load_markup_provider</span>(<span class="ruby-identifier">type</span>)
+  <span class="ruby-constant">MarkupHelper</span>.<span class="ruby-identifier">markup_cache</span>[<span class="ruby-identifier">type</span>][<span class="ruby-value">:class</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-markup_file_contents" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">markup_file_contents</span><span
+            class="method-args">(contents)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Strips any shebang lines on the file contents that pertain to markup or
+preprocessing data.</p>
+
+<p>@deprecated Use {CodeObjects::ExtraFileObject#contents} instead @return
+[String] the file contents minus any preprocessing tags @since 0.6.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="markup_file_contents-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/markup_helper.rb, line 145</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">markup_file_contents</span>(<span class="ruby-identifier">contents</span>)
+  <span class="ruby-identifier">contents</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">MARKUP_FILE_SHEBANG</span> <span class="ruby-operator">?</span> <span class="ruby-node">$&#39;</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">contents</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-markup_for_file" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">markup_for_file</span><span
+            class="method-args">(contents, filename)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Checks for a shebang or looks at the file extension to determine the markup
+type for the file contents. <a href="../../../File.html">File</a>
+extensions are registered for a markup type in {MARKUP_EXTENSIONS}.</p>
+
+<p>A shebang should be on the first line of a file and be in the form:</p>
+
+<pre class="ruby"><span class="ruby-comment">#!markup_type</span>
+</pre>
+
+<p>Standard markup types are text, html, rdoc, markdown, textile</p>
+
+<p>@param [String] contents Unused. Was necessary prior to 0.7.0.</p>
+
+<pre>Newer versions of YARD use {CodeObjects::ExtraFileObject#contents}</pre>
+
+<p>@return [Symbol] the markup type recognized for the file @see <a
+href="MarkupHelper.html#MARKUP_EXTENSIONS">MARKUP_EXTENSIONS</a> @since
+0.6.0</p>
+          
+          
+
+          
+          <div class="method-source-code" id="markup_for_file-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/markup_helper.rb, line 127</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">markup_for_file</span>(<span class="ruby-identifier">contents</span>, <span class="ruby-identifier">filename</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">contents</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">contents</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">MARKUP_FILE_SHEBANG</span> <span class="ruby-comment"># Shebang support</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-node">$1</span>.<span class="ruby-identifier">to_sym</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">ext</span> = (<span class="ruby-constant">File</span>.<span class="ruby-identifier">extname</span>(<span class="ruby-identifier">filename</span>)[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] <span class="ruby-operator">||</span> <span class="ruby-string">&#39;&#39;</span>).<span class="ruby-identifier">downcase</span>
+  <span class="ruby-constant">MARKUP_EXTENSIONS</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">type</span>, <span class="ruby-identifier">exts</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">type</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">exts</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">ext</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">options</span>.<span class="ruby-identifier">markup</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-markup_provider" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">markup_provider</span><span
+            class="method-args">(type = options.markup)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Gets the markup provider name for a markup type Call
+{#load_markup_provider} before using this method.</p>
+
+<p>@param [Symbol] type the markup type (:rdoc, :markdown, etc.) @return
+[Symbol] the markup provider name (usually the gem name of the library)</p>
+          
+          
+
+          
+          <div class="method-source-code" id="markup_provider-source">
+            <pre><span class="ruby-comment"># File lib/yard/templates/helpers/markup_helper.rb, line 164</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">markup_provider</span>(<span class="ruby-identifier">type</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">markup</span>)
+  <span class="ruby-constant">MarkupHelper</span>.<span class="ruby-identifier">markup_cache</span>[<span class="ruby-identifier">type</span>][<span class="ruby-value">:provider</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

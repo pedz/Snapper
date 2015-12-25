@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::CLI::Command - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../";
+</script>
+
+<script src="../../js/jquery.js"></script>
+<script src="../../js/darkfish.js"></script>
+
+<link href="../../css/fonts.css" rel="stylesheet">
+<link href="../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../table_of_contents.html#pages">Pages</a>
+    <a href="../../table_of_contents.html#classes">Classes</a>
+    <a href="../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="../../Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-run">::run</a>
+    
+    <li ><a href="#method-i-common_options">#common_options</a>
+    
+    <li ><a href="#method-i-description">#description</a>
+    
+    <li ><a href="#method-i-load_script">#load_script</a>
+    
+    <li ><a href="#method-i-parse_options">#parse_options</a>
+    
+    <li ><a href="#method-i-unrecognized_option">#unrecognized_option</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::CLI::Command">
+  <h1 id="class-YARD::CLI::Command" class="class">
+    class YARD::CLI::Command
+  </h1>
+
+  <section class="description">
+    
+<p>Abstract base class for <a href="../CLI.html">CLI</a> utilities. Provides
+some helper methods for the option parser</p>
+
+<p>@abstract @since 0.6.0</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-run" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">run</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Helper method to run the utility on an instance. @see run</p>
+          
+          
+
+          
+          <div class="method-source-code" id="run-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/command.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">run</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>) <span class="ruby-identifier">new</span>.<span class="ruby-identifier">run</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>) <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-description" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">description</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="description-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/command.rb, line 15</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">description</span>; <span class="ruby-string">&#39;&#39;</span> <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="protected-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Protected Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-common_options" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">common_options</span><span
+            class="method-args">(opts)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Adds a set of common options to the tail of the OptionParser</p>
+
+<p>@param [OptionParser] opts the option parser object @return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="common_options-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/command.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">common_options</span>(<span class="ruby-identifier">opts</span>)
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">separator</span> <span class="ruby-string">&quot;&quot;</span>
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">separator</span> <span class="ruby-string">&quot;Other options:&quot;</span>
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&#39;-e&#39;</span>, <span class="ruby-string">&#39;--load FILE&#39;</span>, <span class="ruby-string">&#39;A Ruby script to load before running command.&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">load_script</span>(<span class="ruby-identifier">file</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&#39;--plugin PLUGIN&#39;</span>, <span class="ruby-string">&#39;Load a YARD plugin (gem with `yard-\ prefix)&#39;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span>
+    <span class="ruby-comment"># Not actually necessary to load here, this is done at boot in YARD::Config.load_plugins</span>
+    <span class="ruby-comment"># YARD::Config.load_plugin(name)</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&#39;--legacy&#39;</span>, <span class="ruby-string">&#39;Use old style Ruby parser and handlers. &#39;</span>,
+                      <span class="ruby-string">&#39;  Always on in 1.8.x.&#39;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Parser</span><span class="ruby-operator">::</span><span class="ruby-constant">SourceParser</span>.<span class="ruby-identifier">parser_type</span> = <span class="ruby-value">:ruby18</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-string">&#39;--safe&#39;</span>, <span class="ruby-string">&#39;Enable safe mode for this instance&#39;</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-comment"># Parsed in YARD::Config.load</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on_tail</span>(<span class="ruby-string">&#39;-q&#39;</span>, <span class="ruby-string">&#39;--quiet&#39;</span>, <span class="ruby-string">&#39;Show no warnings.&#39;</span>) { <span class="ruby-identifier">log</span>.<span class="ruby-identifier">level</span> = <span class="ruby-constant">Logger</span><span class="ruby-operator">::</span><span class="ruby-constant">ERROR</span> }
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on_tail</span>(<span class="ruby-string">&#39;--verbose&#39;</span>, <span class="ruby-string">&#39;Show more information.&#39;</span>) { <span class="ruby-identifier">log</span>.<span class="ruby-identifier">level</span> = <span class="ruby-constant">Logger</span><span class="ruby-operator">::</span><span class="ruby-constant">INFO</span> }
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on_tail</span>(<span class="ruby-string">&#39;--debug&#39;</span>, <span class="ruby-string">&#39;Show debugging information.&#39;</span>) { <span class="ruby-identifier">log</span>.<span class="ruby-identifier">level</span> = <span class="ruby-constant">Logger</span><span class="ruby-operator">::</span><span class="ruby-constant">DEBUG</span> }
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on_tail</span>(<span class="ruby-string">&#39;--backtrace&#39;</span>, <span class="ruby-string">&#39;Show stack traces&#39;</span>) { <span class="ruby-identifier">log</span>.<span class="ruby-identifier">show_backtraces</span> = <span class="ruby-keyword">true</span> }
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on_tail</span>(<span class="ruby-string">&#39;-v&#39;</span>, <span class="ruby-string">&#39;--version&#39;</span>, <span class="ruby-string">&#39;Show version.&#39;</span>) { <span class="ruby-identifier">log</span>.<span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;yard #{YARD::VERSION}&quot;</span>; <span class="ruby-identifier">exit</span> }
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on_tail</span>(<span class="ruby-string">&#39;-h&#39;</span>, <span class="ruby-string">&#39;--help&#39;</span>, <span class="ruby-string">&#39;Show this help.&#39;</span>)  { <span class="ruby-identifier">log</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">opts</span>; <span class="ruby-identifier">exit</span> }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-load_script" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_script</span><span
+            class="method-args">(file)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Loads a Ruby script. If <code>Config.options[:safe_mode]</code> is enabled,
+this method will do nothing.</p>
+
+<p>@param [String] file the path to the script to load @since 0.6.2</p>
+          
+          
+
+          
+          <div class="method-source-code" id="load_script-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/command.rb, line 67</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">load_script</span>(<span class="ruby-identifier">file</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-constant">YARD</span><span class="ruby-operator">::</span><span class="ruby-constant">Config</span>.<span class="ruby-identifier">options</span>[<span class="ruby-value">:safe_mode</span>]
+  <span class="ruby-identifier">load</span>(<span class="ruby-identifier">file</span>)
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">LoadError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">load_exception</span>
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">error</span> <span class="ruby-node">&quot;The file `#{file}&#39; could not be loaded:\n#{load_exception}&quot;</span>
+  <span class="ruby-identifier">exit</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse_options" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse_options</span><span
+            class="method-args">(opts, args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parses the option and gracefully handles invalid switches</p>
+
+<p>@param [OptionParser] opts the option parser object @param
+[Array&lt;String&gt;] args the arguments passed from input. This</p>
+
+<pre>array will be modified.</pre>
+
+<p>@return [void]</p>
+          
+          
+
+          
+          <div class="method-source-code" id="parse_options-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/command.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_options</span>(<span class="ruby-identifier">opts</span>, <span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">parse!</span>(<span class="ruby-identifier">args</span>)
+<span class="ruby-keyword">rescue</span> <span class="ruby-constant">OptionParser</span><span class="ruby-operator">::</span><span class="ruby-constant">ParseError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">err</span>
+  <span class="ruby-identifier">unrecognized_option</span>(<span class="ruby-identifier">err</span>)
+  <span class="ruby-identifier">args</span>.<span class="ruby-identifier">shift</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>[<span class="ruby-value">0</span>,<span class="ruby-value">1</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&#39;-&#39;</span>
+  <span class="ruby-keyword">retry</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-unrecognized_option" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">unrecognized_option</span><span
+            class="method-args">(err)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Callback when an unrecognize option is parsed</p>
+
+<p>@param [OptionParser::ParseError] err the exception raised by the</p>
+
+<pre class="ruby"><span class="ruby-identifier">option</span> <span class="ruby-identifier">parser</span>
+</pre>
+          
+          
+
+          
+          <div class="method-source-code" id="unrecognized_option-source">
+            <pre><span class="ruby-comment"># File lib/yard/cli/command.rb, line 79</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">unrecognized_option</span>(<span class="ruby-identifier">err</span>)
+  <span class="ruby-identifier">log</span>.<span class="ruby-identifier">warn</span> <span class="ruby-node">&quot;Unrecognized/#{err.message}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

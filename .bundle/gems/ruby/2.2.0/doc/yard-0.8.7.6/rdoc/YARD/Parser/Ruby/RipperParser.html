@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class YARD::Parser::Ruby::RipperParser - yard-0.8.7.6 Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../";
+</script>
+
+<script src="../../../js/jquery.js"></script>
+<script src="../../../js/darkfish.js"></script>
+
+<link href="../../../css/fonts.css" rel="stylesheet">
+<link href="../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">Ripper
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li class="calls-super" ><a href="#method-c-new">::new</a>
+    
+    <li ><a href="#method-i-add_comment">#add_comment</a>
+    
+    <li ><a href="#method-i-add_token">#add_token</a>
+    
+    <li ><a href="#method-i-comment_starts_line-3F">#comment_starts_line?</a>
+    
+    <li ><a href="#method-i-enumerator">#enumerator</a>
+    
+    <li ><a href="#method-i-file_encoding">#file_encoding</a>
+    
+    <li ><a href="#method-i-freeze_tree">#freeze_tree</a>
+    
+    <li ><a href="#method-i-insert_comments">#insert_comments</a>
+    
+    <li ><a href="#method-i-on_aref">#on_aref</a>
+    
+    <li ><a href="#method-i-on_aref_field">#on_aref_field</a>
+    
+    <li ><a href="#method-i-on_array">#on_array</a>
+    
+    <li ><a href="#method-i-on_assoc_new">#on_assoc_new</a>
+    
+    <li ><a href="#method-i-on_assoclist_from_args">#on_assoclist_from_args</a>
+    
+    <li ><a href="#method-i-on_bare_assoc_hash">#on_bare_assoc_hash</a>
+    
+    <li ><a href="#method-i-on_body_stmt">#on_body_stmt</a>
+    
+    <li ><a href="#method-i-on_bodystmt">#on_bodystmt</a>
+    
+    <li ><a href="#method-i-on_comment">#on_comment</a>
+    
+    <li ><a href="#method-i-on_const_path_ref">#on_const_path_ref</a>
+    
+    <li ><a href="#method-i-on_embdoc">#on_embdoc</a>
+    
+    <li ><a href="#method-i-on_embdoc_beg">#on_embdoc_beg</a>
+    
+    <li ><a href="#method-i-on_embdoc_end">#on_embdoc_end</a>
+    
+    <li ><a href="#method-i-on_hash">#on_hash</a>
+    
+    <li ><a href="#method-i-on_label">#on_label</a>
+    
+    <li ><a href="#method-i-on_lambda">#on_lambda</a>
+    
+    <li ><a href="#method-i-on_lbracket">#on_lbracket</a>
+    
+    <li ><a href="#method-i-on_params">#on_params</a>
+    
+    <li ><a href="#method-i-on_parse_error">#on_parse_error</a>
+    
+    <li ><a href="#method-i-on_program">#on_program</a>
+    
+    <li ><a href="#method-i-on_qwords_add">#on_qwords_add</a>
+    
+    <li ><a href="#method-i-on_qwords_new">#on_qwords_new</a>
+    
+    <li ><a href="#method-i-on_rbracket">#on_rbracket</a>
+    
+    <li ><a href="#method-i-on_rescue">#on_rescue</a>
+    
+    <li ><a href="#method-i-on_string_content">#on_string_content</a>
+    
+    <li ><a href="#method-i-on_string_literal">#on_string_literal</a>
+    
+    <li ><a href="#method-i-on_top_const_ref">#on_top_const_ref</a>
+    
+    <li ><a href="#method-i-on_unary">#on_unary</a>
+    
+    <li ><a href="#method-i-on_void_stmt">#on_void_stmt</a>
+    
+    <li class="calls-super" ><a href="#method-i-parse">#parse</a>
+    
+    <li ><a href="#method-i-visit_event">#visit_event</a>
+    
+    <li ><a href="#method-i-visit_event_arr">#visit_event_arr</a>
+    
+    <li ><a href="#method-i-visit_ns_token">#visit_ns_token</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-YARD::Parser::Ruby::RipperParser">
+  <h1 id="class-YARD::Parser::Ruby::RipperParser" class="class">
+    class YARD::Parser::Ruby::RipperParser
+  </h1>
+
+  <section class="description">
+    
+<p>Internal parser class @since 0.5.6</p>
+
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="AST_TOKENS">AST_TOKENS
+        
+        <dd>
+        
+      
+        <dt id="MAPPINGS">MAPPINGS
+        
+        <dd>
+        
+      
+        <dt id="REV_MAPPINGS">REV_MAPPINGS
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-ast" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">ast</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-charno" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">charno</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-comments" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">comments</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-encoding_line" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">encoding_line</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-file" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">file</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-root" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">root</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-shebang_line" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">shebang_line</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-tokens" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">tokens</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">(source, filename, *args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">source</span>, <span class="ruby-identifier">filename</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@last_ns_token</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@file</span> = <span class="ruby-identifier">filename</span>
+  <span class="ruby-ivar">@source</span> = <span class="ruby-identifier">source</span>
+  <span class="ruby-ivar">@tokens</span> = []
+  <span class="ruby-ivar">@comments</span> = {}
+  <span class="ruby-ivar">@comments_range</span> = {}
+  <span class="ruby-ivar">@comments_flags</span> = {}
+  <span class="ruby-ivar">@heredoc_tokens</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@heredoc_state</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@map</span> = {}
+  <span class="ruby-ivar">@ns_charno</span> = <span class="ruby-value">0</span>
+  <span class="ruby-ivar">@list</span> = []
+  <span class="ruby-ivar">@charno</span> = <span class="ruby-value">0</span>
+  <span class="ruby-ivar">@shebang_line</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@encoding_line</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@file_encoding</span> = <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-enumerator" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">enumerator</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="enumerator-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 58</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">enumerator</span>
+  <span class="ruby-identifier">ast</span>.<span class="ruby-identifier">children</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-file_encoding" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">file_encoding</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="file_encoding-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">file_encoding</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span> <span class="ruby-keyword">unless</span> <span class="ruby-keyword">defined?</span>(<span class="ruby-operator">::</span><span class="ruby-constant">Encoding</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@file_encoding</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@file_encoding</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-constant">Encoding</span>.<span class="ruby-identifier">default_internal</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@encoding_line</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">match</span> = <span class="ruby-ivar">@encoding_line</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">SourceParser</span><span class="ruby-operator">::</span><span class="ruby-constant">ENCODING_LINE</span>)
+    <span class="ruby-ivar">@file_encoding</span> = <span class="ruby-identifier">match</span>.<span class="ruby-identifier">captures</span>.<span class="ruby-identifier">last</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-parse" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">parse</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="parse-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse</span>
+  <span class="ruby-ivar">@ast</span> = <span class="ruby-keyword">super</span>
+  <span class="ruby-ivar">@ast</span>.<span class="ruby-identifier">full_source</span> = <span class="ruby-ivar">@source</span>
+  <span class="ruby-ivar">@ast</span>.<span class="ruby-identifier">file</span> = <span class="ruby-ivar">@file</span>
+  <span class="ruby-identifier">freeze_tree</span>
+  <span class="ruby-identifier">insert_comments</span>
+  <span class="ruby-keyword">self</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="private-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Private Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-add_comment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_comment</span><span
+            class="method-args">(line, node = nil, before_node = nil, into = false)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="add_comment-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 601</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_comment</span>(<span class="ruby-identifier">line</span>, <span class="ruby-identifier">node</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">before_node</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">into</span> = <span class="ruby-keyword">false</span>)
+  <span class="ruby-identifier">comment</span> = <span class="ruby-ivar">@comments</span>[<span class="ruby-identifier">line</span>]
+  <span class="ruby-identifier">source_range</span> = <span class="ruby-ivar">@comments_range</span>[<span class="ruby-identifier">line</span>]
+  <span class="ruby-identifier">line_range</span> = ((<span class="ruby-identifier">line</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">comment</span>.<span class="ruby-identifier">count</span>(<span class="ruby-string">&quot;\n&quot;</span>))<span class="ruby-operator">..</span><span class="ruby-identifier">line</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">node</span> = <span class="ruby-constant">CommentNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:comment</span>, [<span class="ruby-identifier">comment</span>], <span class="ruby-value">:line</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">line_range</span>, <span class="ruby-value">:char</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">source_range</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">into</span>
+      <span class="ruby-identifier">before_node</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">node</span>)
+      <span class="ruby-identifier">before_node</span>.<span class="ruby-identifier">unfreeze</span>
+      <span class="ruby-identifier">node</span>.<span class="ruby-identifier">parent</span> = <span class="ruby-identifier">before_node</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">before_node</span>
+      <span class="ruby-identifier">parent_node</span> = <span class="ruby-identifier">before_node</span>.<span class="ruby-identifier">parent</span>
+      <span class="ruby-identifier">idx</span> = <span class="ruby-identifier">parent_node</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">before_node</span>)
+      <span class="ruby-identifier">parent_node</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-identifier">idx</span>, <span class="ruby-identifier">node</span>)
+      <span class="ruby-identifier">parent_node</span>.<span class="ruby-identifier">unfreeze</span>
+      <span class="ruby-identifier">node</span>.<span class="ruby-identifier">parent</span> = <span class="ruby-identifier">parent_node</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">docstring</span> = <span class="ruby-identifier">comment</span>
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">docstring_hash_flag</span> = <span class="ruby-ivar">@comments_flags</span>[<span class="ruby-identifier">line</span>]
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">docstring_range</span> = <span class="ruby-identifier">line_range</span>
+  <span class="ruby-ivar">@comments</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">line</span>)
+  <span class="ruby-ivar">@comments_range</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">line</span>)
+  <span class="ruby-ivar">@comments_flags</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">line</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-add_token" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_token</span><span
+            class="method-args">(token, data)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="add_token-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 247</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">token</span>, <span class="ruby-identifier">data</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@tokens</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@tokens</span>.<span class="ruby-identifier">last</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">==</span> <span class="ruby-value">:symbeg</span>
+    <span class="ruby-ivar">@tokens</span>[<span class="ruby-value">-1</span>] = [<span class="ruby-value">:symbol</span>, <span class="ruby-string">&quot;:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">data</span>, <span class="ruby-ivar">@tokens</span>.<span class="ruby-identifier">last</span>[<span class="ruby-value">2</span>]]
+  <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@heredoc_state</span> <span class="ruby-operator">==</span> <span class="ruby-value">:started</span>
+    <span class="ruby-ivar">@heredoc_tokens</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">token</span>, <span class="ruby-identifier">data</span>, [<span class="ruby-identifier">lineno</span>, <span class="ruby-identifier">charno</span>]]
+
+    <span class="ruby-comment"># fix ripper encoding of heredoc bug</span>
+    <span class="ruby-comment"># (see http://bugs.ruby-lang.org/issues/6200)</span>
+    <span class="ruby-identifier">data</span>.<span class="ruby-identifier">force_encoding</span>(<span class="ruby-identifier">file_encoding</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">file_encoding</span>
+
+    <span class="ruby-ivar">@heredoc_state</span> = <span class="ruby-value">:ended</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">token</span> <span class="ruby-operator">==</span> <span class="ruby-value">:heredoc_end</span>
+  <span class="ruby-keyword">elsif</span> (<span class="ruby-identifier">token</span> <span class="ruby-operator">==</span> <span class="ruby-value">:nl</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">token</span> <span class="ruby-operator">==</span> <span class="ruby-value">:comment</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@heredoc_state</span> <span class="ruby-operator">==</span> <span class="ruby-value">:ended</span>
+    <span class="ruby-ivar">@heredoc_tokens</span>.<span class="ruby-identifier">unshift</span>([<span class="ruby-identifier">token</span>, <span class="ruby-identifier">data</span>, [<span class="ruby-identifier">lineno</span>, <span class="ruby-identifier">charno</span>]])
+    <span class="ruby-ivar">@tokens</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@heredoc_tokens</span>
+    <span class="ruby-ivar">@heredoc_tokens</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-ivar">@heredoc_state</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@tokens</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">token</span>, <span class="ruby-identifier">data</span>, [<span class="ruby-identifier">lineno</span>, <span class="ruby-identifier">charno</span>]]
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">token</span> <span class="ruby-operator">==</span> <span class="ruby-value">:heredoc_beg</span>
+      <span class="ruby-ivar">@heredoc_state</span> = <span class="ruby-value">:started</span>
+      <span class="ruby-ivar">@heredoc_tokens</span> = []
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-comment_starts_line-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">comment_starts_line?</span><span
+            class="method-args">(charno)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="comment_starts_line-3F-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 548</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">comment_starts_line?</span>(<span class="ruby-identifier">charno</span>)
+  (<span class="ruby-identifier">charno</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">downto</span>(<span class="ruby-value">0</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">ch</span> = <span class="ruby-ivar">@source</span>[<span class="ruby-identifier">i</span>]
+    <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\n&quot;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot; &quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">ch</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;\t&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-freeze_tree" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">freeze_tree</span><span
+            class="method-args">(node = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="freeze_tree-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 627</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">freeze_tree</span>(<span class="ruby-identifier">node</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">node</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">root</span>
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">children</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">child</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">child</span>.<span class="ruby-identifier">parent</span> = <span class="ruby-identifier">node</span>
+    <span class="ruby-identifier">freeze_tree</span>(<span class="ruby-identifier">child</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-insert_comments" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">insert_comments</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="insert_comments-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 557</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">insert_comments</span>
+  <span class="ruby-identifier">root</span>.<span class="ruby-identifier">traverse</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:comment</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:list</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">parent</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">!=</span> <span class="ruby-value">:list</span>
+    <span class="ruby-comment"># check upwards from line before node; check node&#39;s line at the end</span>
+    ((<span class="ruby-identifier">node</span>.<span class="ruby-identifier">line</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>).<span class="ruby-identifier">downto</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">line</span><span class="ruby-operator">-</span><span class="ruby-value">2</span>).<span class="ruby-identifier">to_a</span> <span class="ruby-operator">+</span> [<span class="ruby-identifier">node</span>.<span class="ruby-identifier">line</span>]).<span class="ruby-identifier">each</span>  <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">comment</span> = <span class="ruby-ivar">@comments</span>[<span class="ruby-identifier">line</span>]
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">comment</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">comment</span>.<span class="ruby-identifier">empty?</span>
+        <span class="ruby-identifier">add_comment</span>(<span class="ruby-identifier">line</span>, <span class="ruby-identifier">node</span>)
+        <span class="ruby-keyword">break</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-ivar">@comments</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">line</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">line</span>
+        <span class="ruby-identifier">add_comment</span>(<span class="ruby-identifier">line</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">node</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># insert any lone unadded comments before node</span>
+  <span class="ruby-identifier">root</span>.<span class="ruby-identifier">traverse</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">node</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:list</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">parent</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">!=</span> <span class="ruby-value">:list</span>
+    <span class="ruby-ivar">@comments</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">line_range</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">line</span>)
+        <span class="ruby-identifier">pick</span> = <span class="ruby-keyword">nil</span>
+        <span class="ruby-identifier">node</span>.<span class="ruby-identifier">traverse</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">subnode</span><span class="ruby-operator">|</span>
+          <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">subnode</span>.<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:list</span>
+          <span class="ruby-identifier">pick</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">subnode</span>
+          <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">subnode</span>.<span class="ruby-identifier">line_range</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">line</span>)
+          <span class="ruby-identifier">pick</span> = <span class="ruby-identifier">subnode</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">add_comment</span>(<span class="ruby-identifier">line</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">pick</span>, <span class="ruby-keyword">true</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">pick</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@comments</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+
+  <span class="ruby-comment"># insert all remaining comments</span>
+  <span class="ruby-ivar">@comments</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span>, <span class="ruby-identifier">comment</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">add_comment</span>(<span class="ruby-identifier">line</span>, <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">root</span>, <span class="ruby-keyword">true</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@comments</span> = {}
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_aref" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_aref</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_aref-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 335</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_aref</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-ivar">@map</span>[<span class="ruby-value">:lbracket</span>].<span class="ruby-identifier">pop</span>
+  <span class="ruby-identifier">ll</span>, <span class="ruby-identifier">lc</span> = <span class="ruby-operator">*</span><span class="ruby-ivar">@map</span>[<span class="ruby-value">:aref</span>].<span class="ruby-identifier">pop</span>
+  <span class="ruby-identifier">sr</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">source_range</span>.<span class="ruby-identifier">first</span><span class="ruby-operator">..</span><span class="ruby-identifier">lc</span>
+  <span class="ruby-identifier">lr</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">line_range</span>.<span class="ruby-identifier">first</span><span class="ruby-operator">..</span><span class="ruby-identifier">ll</span>
+  <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:aref</span>, <span class="ruby-identifier">args</span>, <span class="ruby-value">:char</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">sr</span>, <span class="ruby-value">:line</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">lr</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_aref_field" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_aref_field</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_aref_field-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 343</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_aref_field</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-ivar">@map</span>[<span class="ruby-value">:lbracket</span>].<span class="ruby-identifier">pop</span>
+  <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:aref_field</span>, <span class="ruby-identifier">args</span>,
+              <span class="ruby-value">:listline</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">lineno</span><span class="ruby-operator">..</span><span class="ruby-identifier">lineno</span>, <span class="ruby-value">:listchar</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">charno</span><span class="ruby-operator">...</span><span class="ruby-identifier">charno</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_array" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_array</span><span
+            class="method-args">(other)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_array-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 349</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_array</span>(<span class="ruby-identifier">other</span>)
+  <span class="ruby-identifier">node</span> = <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">node_class_for</span>(<span class="ruby-value">:array</span>).<span class="ruby-identifier">new</span>(<span class="ruby-value">:array</span>, [<span class="ruby-identifier">other</span>])
+  <span class="ruby-identifier">map</span> = <span class="ruby-ivar">@map</span>[<span class="ruby-constant">MAPPINGS</span>[<span class="ruby-identifier">node</span>.<span class="ruby-identifier">type</span>]]
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">map</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">map</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">sstart</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">map</span>.<span class="ruby-identifier">pop</span>
+    <span class="ruby-identifier">node</span>.<span class="ruby-identifier">source_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">sstart</span>, <span class="ruby-ivar">@ns_charno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+    <span class="ruby-identifier">node</span>.<span class="ruby-identifier">line_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">lineno</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">sstart</span> = <span class="ruby-identifier">other</span>.<span class="ruby-identifier">source_range</span>.<span class="ruby-identifier">begin</span>
+    <span class="ruby-identifier">lstart</span> = <span class="ruby-identifier">other</span>.<span class="ruby-identifier">line_range</span>.<span class="ruby-identifier">begin</span>
+    <span class="ruby-identifier">node</span>.<span class="ruby-identifier">source_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">sstart</span>, <span class="ruby-ivar">@ns_charno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+    <span class="ruby-identifier">node</span>.<span class="ruby-identifier">line_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">lineno</span>)
+    <span class="ruby-identifier">node</span>.<span class="ruby-identifier">source_range</span> = <span class="ruby-identifier">other</span>.<span class="ruby-identifier">source_range</span>
+    <span class="ruby-identifier">node</span>.<span class="ruby-identifier">line_range</span> = <span class="ruby-identifier">other</span>.<span class="ruby-identifier">line_range</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">node</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_assoc_new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_assoc_new</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_assoc_new-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 310</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_assoc_new</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:assoc</span>, <span class="ruby-identifier">args</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_assoclist_from_args" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_assoclist_from_args</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_assoclist_from_args-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 322</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_assoclist_from_args</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_bare_assoc_hash" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_bare_assoc_hash</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_bare_assoc_hash-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 318</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_bare_assoc_hash</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:list</span>, <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_body_stmt" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_body_stmt</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_body_stmt-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 305</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_body_stmt</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">args</span>.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">:</span> <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:list</span>, <span class="ruby-identifier">args</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+        <div class="aliases">
+          Also aliased as: <a href="RipperParser.html#method-i-on_bodystmt">on_bodystmt</a>
+        </div>
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_bodystmt" class="method-detail method-alias">
+        
+        <div class="method-heading">
+          <span class="method-name">on_bodystmt</span><span
+            class="method-args">(*args)</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+        </div>
+
+        
+
+        
+        <div class="aliases">
+          Alias for: <a href="RipperParser.html#method-i-on_body_stmt">on_body_stmt</a>
+        </div>
+        
+      </div>
+
+    
+      <div id="method-i-on_comment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_comment</span><span
+            class="method-args">(comment)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_comment-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 483</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_comment</span>(<span class="ruby-identifier">comment</span>)
+  <span class="ruby-identifier">not_comment</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@last_ns_token</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@last_ns_token</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">comment</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">SourceParser</span><span class="ruby-operator">::</span><span class="ruby-constant">SHEBANG_LINE</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@encoding_line</span>
+      <span class="ruby-ivar">@shebang_line</span> = <span class="ruby-identifier">comment</span>
+      <span class="ruby-identifier">not_comment</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">comment</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">SourceParser</span><span class="ruby-operator">::</span><span class="ruby-constant">ENCODING_LINE</span>
+      <span class="ruby-ivar">@encoding_line</span> = <span class="ruby-identifier">comment</span>
+      <span class="ruby-identifier">not_comment</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">charno</span>
+  <span class="ruby-identifier">visit_ns_token</span>(<span class="ruby-value">:comment</span>, <span class="ruby-identifier">comment</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">not_comment</span>
+    <span class="ruby-ivar">@last_ns_token</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">source_range</span> = <span class="ruby-identifier">ch</span><span class="ruby-operator">..</span>(<span class="ruby-identifier">charno</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)
+  <span class="ruby-identifier">comment</span> = <span class="ruby-identifier">comment</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">/^(\#+)\s{0,1}/</span>, <span class="ruby-string">&#39;&#39;</span>).<span class="ruby-identifier">chomp</span>
+  <span class="ruby-identifier">append_comment</span> = <span class="ruby-ivar">@comments</span>[<span class="ruby-identifier">lineno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>]
+
+  <span class="ruby-identifier">hash_flag</span> = <span class="ruby-node">$1</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;##&#39;</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">append_comment</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@comments_last_column</span> <span class="ruby-operator">&amp;&amp;</span>
+      <span class="ruby-ivar">@comments_last_column</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">column</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">comment_starts_line?</span>(<span class="ruby-identifier">ch</span>)
+    <span class="ruby-ivar">@comments</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">lineno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+    <span class="ruby-ivar">@comments_flags</span>[<span class="ruby-identifier">lineno</span>] = <span class="ruby-ivar">@comments_flags</span>[<span class="ruby-identifier">lineno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>]
+    <span class="ruby-ivar">@comments_flags</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">lineno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+    <span class="ruby-identifier">range</span> = <span class="ruby-ivar">@comments_range</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">lineno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+    <span class="ruby-identifier">source_range</span> = <span class="ruby-identifier">range</span>.<span class="ruby-identifier">first</span><span class="ruby-operator">..</span><span class="ruby-identifier">source_range</span>.<span class="ruby-identifier">last</span>
+    <span class="ruby-identifier">comment</span> = <span class="ruby-identifier">append_comment</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">comment</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-ivar">@comments</span>[<span class="ruby-identifier">lineno</span>] = <span class="ruby-identifier">comment</span>
+  <span class="ruby-ivar">@comments_range</span>[<span class="ruby-identifier">lineno</span>] = <span class="ruby-identifier">source_range</span>
+  <span class="ruby-ivar">@comments_flags</span>[<span class="ruby-identifier">lineno</span>] = <span class="ruby-identifier">hash_flag</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">append_comment</span>
+  <span class="ruby-ivar">@comments_last_column</span> = <span class="ruby-identifier">column</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_const_path_ref" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_const_path_ref</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_const_path_ref-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 389</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_const_path_ref</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-constant">ReferenceNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:const_path_ref</span>, <span class="ruby-identifier">args</span>, <span class="ruby-value">:listline</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">lineno</span><span class="ruby-operator">..</span><span class="ruby-identifier">lineno</span>, <span class="ruby-value">:listchar</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">charno</span><span class="ruby-operator">..</span><span class="ruby-identifier">charno</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_embdoc" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_embdoc</span><span
+            class="method-args">(text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_embdoc-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 530</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_embdoc</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">visit_ns_token</span>(<span class="ruby-value">:embdoc</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-ivar">@embdoc</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">text</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_embdoc_beg" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_embdoc_beg</span><span
+            class="method-args">(text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_embdoc_beg-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 524</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_embdoc_beg</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">visit_ns_token</span>(<span class="ruby-value">:embdoc_beg</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-ivar">@embdoc_start</span> = <span class="ruby-identifier">charno</span><span class="ruby-operator">-</span><span class="ruby-identifier">text</span>.<span class="ruby-identifier">length</span>
+  <span class="ruby-ivar">@embdoc</span> = <span class="ruby-string">&quot;&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_embdoc_end" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_embdoc_end</span><span
+            class="method-args">(text)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_embdoc_end-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 535</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_embdoc_end</span>(<span class="ruby-identifier">text</span>)
+  <span class="ruby-identifier">visit_ns_token</span>(<span class="ruby-value">:embdoc_end</span>, <span class="ruby-identifier">text</span>)
+  <span class="ruby-ivar">@comments_last_column</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@comments</span>[<span class="ruby-identifier">lineno</span>] = <span class="ruby-ivar">@embdoc</span>
+  <span class="ruby-ivar">@comments_range</span>[<span class="ruby-identifier">lineno</span>] = <span class="ruby-ivar">@embdoc_start</span><span class="ruby-operator">...</span><span class="ruby-identifier">charno</span>
+  <span class="ruby-ivar">@embdoc_start</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-ivar">@embdoc</span> = <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_hash" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_hash</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_hash-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 314</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_hash</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">visit_event</span> <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:hash</span>, <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">||</span> [])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_label" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_label</span><span
+            class="method-args">(data)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_label-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 475</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_label</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">add_token</span>(<span class="ruby-value">:label</span>, <span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">charno</span>
+  <span class="ruby-ivar">@charno</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">length</span>
+  <span class="ruby-ivar">@ns_charno</span> = <span class="ruby-identifier">charno</span>
+  <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:label</span>, [<span class="ruby-identifier">data</span>[<span class="ruby-value">0</span><span class="ruby-operator">...</span><span class="ruby-value">-1</span>]], <span class="ruby-value">:line</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">lineno</span><span class="ruby-operator">..</span><span class="ruby-identifier">lineno</span>, <span class="ruby-value">:char</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ch</span><span class="ruby-operator">..</span><span class="ruby-identifier">charno</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>, <span class="ruby-value">:token</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_lambda" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_lambda</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_lambda-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 436</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_lambda</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">visit_event_arr</span> <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:lambda</span>, <span class="ruby-identifier">args</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_lbracket" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_lbracket</span><span
+            class="method-args">(tok)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_lbracket-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 367</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_lbracket</span>(<span class="ruby-identifier">tok</span>)
+  (<span class="ruby-ivar">@map</span>[<span class="ruby-value">:lbracket</span>] <span class="ruby-operator">||=</span> []) <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">lineno</span>, <span class="ruby-identifier">charno</span>]
+  <span class="ruby-identifier">visit_ns_token</span>(<span class="ruby-value">:lbracket</span>, <span class="ruby-identifier">tok</span>, <span class="ruby-keyword">false</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_params" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_params</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_params-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 453</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_params</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">args</span>.<span class="ruby-identifier">map!</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">arg</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-identifier">arg</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">arg</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Array</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">arg</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Array</span>
+      <span class="ruby-identifier">arg</span>.<span class="ruby-identifier">map!</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sub_arg</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">next</span> <span class="ruby-identifier">sub_arg</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">sub_arg</span>.<span class="ruby-identifier">class</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Array</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">sub_arg</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:label</span>
+          <span class="ruby-identifier">type</span> = <span class="ruby-value">:named_arg</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-identifier">type</span> = <span class="ruby-value">:unnamed_optional_arg</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">sub_arg</span>, <span class="ruby-value">:listline</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">lineno</span><span class="ruby-operator">..</span><span class="ruby-identifier">lineno</span>, <span class="ruby-value">:listchar</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">charno</span><span class="ruby-operator">..</span><span class="ruby-identifier">charno</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:list</span>, <span class="ruby-identifier">arg</span>, <span class="ruby-value">:listline</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">lineno</span><span class="ruby-operator">..</span><span class="ruby-identifier">lineno</span>, <span class="ruby-value">:listchar</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">charno</span><span class="ruby-operator">..</span><span class="ruby-identifier">charno</span>)
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-constant">ParameterNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:params</span>, <span class="ruby-identifier">args</span>, <span class="ruby-value">:listline</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">lineno</span><span class="ruby-operator">..</span><span class="ruby-identifier">lineno</span>, <span class="ruby-value">:listchar</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">charno</span><span class="ruby-operator">..</span><span class="ruby-identifier">charno</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_parse_error" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_parse_error</span><span
+            class="method-args">(msg)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_parse_error-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 544</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_parse_error</span>(<span class="ruby-identifier">msg</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ParserSyntaxError</span>, <span class="ruby-node">&quot;syntax error in `#{file}`:(#{lineno},#{column}): #{msg}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_program" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_program</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_program-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 301</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_program</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_qwords_add" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_qwords_add</span><span
+            class="method-args">(list, item)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_qwords_add-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 415</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_qwords_add</span>(<span class="ruby-identifier">list</span>, <span class="ruby-identifier">item</span>)
+  <span class="ruby-identifier">last</span> = <span class="ruby-ivar">@source</span>[<span class="ruby-ivar">@ns_charno</span>,<span class="ruby-value">1</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;\n&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@ns_charno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@ns_charno</span>
+  <span class="ruby-identifier">list</span>.<span class="ruby-identifier">source_range</span> = (<span class="ruby-identifier">list</span>.<span class="ruby-identifier">source_range</span>.<span class="ruby-identifier">first</span><span class="ruby-operator">..</span><span class="ruby-identifier">last</span>)
+  <span class="ruby-identifier">list</span>.<span class="ruby-identifier">line_range</span> = (<span class="ruby-identifier">list</span>.<span class="ruby-identifier">line_range</span>.<span class="ruby-identifier">first</span><span class="ruby-operator">..</span><span class="ruby-identifier">lineno</span>)
+  <span class="ruby-identifier">list</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">item</span>)
+  <span class="ruby-identifier">list</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_qwords_new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_qwords_new</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_qwords_new-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 405</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_qwords_new</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">node</span> = <span class="ruby-constant">LiteralNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:qwords_literal</span>, <span class="ruby-identifier">args</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@map</span>[<span class="ruby-value">:qwords_beg</span>]
+    <span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">sstart</span> = <span class="ruby-operator">*</span><span class="ruby-ivar">@map</span>[<span class="ruby-value">:qwords_beg</span>].<span class="ruby-identifier">pop</span>
+    <span class="ruby-identifier">node</span>.<span class="ruby-identifier">source_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">sstart</span>, <span class="ruby-ivar">@ns_charno</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)
+    <span class="ruby-identifier">node</span>.<span class="ruby-identifier">line_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">lineno</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">node</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_rbracket" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_rbracket</span><span
+            class="method-args">(tok)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_rbracket-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 372</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_rbracket</span>(<span class="ruby-identifier">tok</span>)
+  (<span class="ruby-ivar">@map</span>[<span class="ruby-value">:aref</span>] <span class="ruby-operator">||=</span> []) <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">lineno</span>, <span class="ruby-identifier">charno</span>]
+  <span class="ruby-identifier">visit_ns_token</span>(<span class="ruby-value">:rbracket</span>, <span class="ruby-identifier">tok</span>, <span class="ruby-keyword">false</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_rescue" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_rescue</span><span
+            class="method-args">(exc, *args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_rescue-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 444</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_rescue</span>(<span class="ruby-identifier">exc</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">exc</span> = <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:list</span>, <span class="ruby-identifier">exc</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">exc</span>
+  <span class="ruby-identifier">visit_event</span> <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:rescue</span>, [<span class="ruby-identifier">exc</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_string_content" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_string_content</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_string_content-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 440</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_string_content</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:string_content</span>, <span class="ruby-identifier">args</span>, <span class="ruby-value">:listline</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">lineno</span><span class="ruby-operator">..</span><span class="ruby-identifier">lineno</span>, <span class="ruby-value">:listchar</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">charno</span><span class="ruby-operator">..</span><span class="ruby-identifier">charno</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_string_literal" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_string_literal</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_string_literal-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 423</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_string_literal</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">node</span> = <span class="ruby-identifier">visit_event_arr</span>(<span class="ruby-constant">LiteralNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:string_literal</span>, <span class="ruby-identifier">args</span>))
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+    <span class="ruby-identifier">r</span> = <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">source_range</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">source_range</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">r</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">r</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>)
+      <span class="ruby-identifier">klass</span> = <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">node_class_for</span>(<span class="ruby-identifier">node</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">type</span>)
+      <span class="ruby-identifier">r</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">node</span>.<span class="ruby-identifier">source_range</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">node</span>.<span class="ruby-identifier">source_range</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+      <span class="ruby-identifier">node</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">node</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">type</span>, [<span class="ruby-ivar">@source</span>[<span class="ruby-identifier">r</span>]], <span class="ruby-value">:line</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">line_range</span>, <span class="ruby-value">:char</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">r</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">node</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_top_const_ref" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_top_const_ref</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_top_const_ref-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 377</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_top_const_ref</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">type</span> = <span class="ruby-value">:top_const_ref</span>
+  <span class="ruby-identifier">node</span> = <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">node_class_for</span>(<span class="ruby-identifier">type</span>).<span class="ruby-identifier">new</span>(<span class="ruby-identifier">type</span>, <span class="ruby-identifier">args</span>)
+  <span class="ruby-identifier">mapping</span> = <span class="ruby-ivar">@map</span>[<span class="ruby-constant">MAPPINGS</span>[<span class="ruby-identifier">type</span>]]
+  <span class="ruby-identifier">extra_op</span> = <span class="ruby-identifier">mapping</span>.<span class="ruby-identifier">last</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-value">2</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">charno</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">mapping</span>.<span class="ruby-identifier">pop</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">sstart</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">mapping</span>.<span class="ruby-identifier">pop</span>
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">source_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">sstart</span>, <span class="ruby-identifier">args</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">source_range</span>.<span class="ruby-identifier">last</span>)
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">line_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">args</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">line_range</span>.<span class="ruby-identifier">last</span>)
+  <span class="ruby-identifier">mapping</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">extra_op</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">extra_op</span>
+  <span class="ruby-identifier">node</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_unary" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_unary</span><span
+            class="method-args">(op, val)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_unary-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 326</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_unary</span>(<span class="ruby-identifier">op</span>, <span class="ruby-identifier">val</span>)
+  <span class="ruby-identifier">map</span> = <span class="ruby-ivar">@map</span>[<span class="ruby-identifier">op</span>.<span class="ruby-identifier">to_s</span>[<span class="ruby-value">0</span>,<span class="ruby-value">1</span>]]
+  <span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">sstart</span> = <span class="ruby-operator">*</span>(<span class="ruby-identifier">map</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">map</span>.<span class="ruby-identifier">pop</span> <span class="ruby-operator">:</span> [<span class="ruby-identifier">lineno</span>, <span class="ruby-ivar">@ns_charno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>])
+  <span class="ruby-identifier">node</span> = <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">node_class_for</span>(<span class="ruby-value">:unary</span>).<span class="ruby-identifier">new</span>(<span class="ruby-value">:unary</span>, [<span class="ruby-identifier">op</span>, <span class="ruby-identifier">val</span>])
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">source_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">sstart</span>, <span class="ruby-ivar">@ns_charno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">line_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">lineno</span>)
+  <span class="ruby-identifier">node</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-on_void_stmt" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">on_void_stmt</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="on_void_stmt-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 449</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">on_void_stmt</span>
+  <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value">:void_stmt</span>, [], <span class="ruby-value">:line</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">lineno</span><span class="ruby-operator">..</span><span class="ruby-identifier">lineno</span>, <span class="ruby-value">:char</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">charno</span><span class="ruby-operator">...</span><span class="ruby-identifier">charno</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-visit_event" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visit_event</span><span
+            class="method-args">(node)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visit_event-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 215</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_event</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-identifier">map</span> = <span class="ruby-ivar">@map</span>[<span class="ruby-constant">MAPPINGS</span>[<span class="ruby-identifier">node</span>.<span class="ruby-identifier">type</span>]]
+  <span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">sstart</span> = <span class="ruby-operator">*</span>(<span class="ruby-identifier">map</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">map</span>.<span class="ruby-identifier">pop</span> <span class="ruby-operator">:</span> [<span class="ruby-identifier">lineno</span>, <span class="ruby-ivar">@ns_charno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>])
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">source_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">sstart</span>, <span class="ruby-ivar">@ns_charno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">line_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">lineno</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">node</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:block</span>)
+    <span class="ruby-identifier">sr</span>, <span class="ruby-identifier">lr</span> = <span class="ruby-identifier">node</span>.<span class="ruby-identifier">block</span>.<span class="ruby-identifier">source_range</span>, <span class="ruby-identifier">node</span>.<span class="ruby-identifier">block</span>.<span class="ruby-identifier">line_range</span>
+    <span class="ruby-identifier">node</span>.<span class="ruby-identifier">block</span>.<span class="ruby-identifier">source_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">sr</span>.<span class="ruby-identifier">first</span>, <span class="ruby-ivar">@tokens</span>.<span class="ruby-identifier">last</span>[<span class="ruby-value">2</span>][<span class="ruby-value">1</span>])
+    <span class="ruby-identifier">node</span>.<span class="ruby-identifier">block</span>.<span class="ruby-identifier">line_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lr</span>.<span class="ruby-identifier">first</span>, <span class="ruby-ivar">@tokens</span>.<span class="ruby-identifier">last</span>[<span class="ruby-value">2</span>][<span class="ruby-value">0</span>])
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">node</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-visit_event_arr" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visit_event_arr</span><span
+            class="method-args">(node)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visit_event_arr-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 228</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_event_arr</span>(<span class="ruby-identifier">node</span>)
+  <span class="ruby-identifier">mapping</span> = <span class="ruby-constant">MAPPINGS</span>[<span class="ruby-identifier">node</span>.<span class="ruby-identifier">type</span>].<span class="ruby-identifier">find</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@map</span>[<span class="ruby-identifier">k</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@map</span>[<span class="ruby-identifier">k</span>].<span class="ruby-identifier">empty?</span> }
+  <span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">sstart</span> = <span class="ruby-operator">*</span><span class="ruby-ivar">@map</span>[<span class="ruby-identifier">mapping</span>].<span class="ruby-identifier">pop</span>
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">source_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">sstart</span>, <span class="ruby-ivar">@ns_charno</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>)
+  <span class="ruby-identifier">node</span>.<span class="ruby-identifier">line_range</span> = <span class="ruby-constant">Range</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">lstart</span>, <span class="ruby-identifier">lineno</span>)
+  <span class="ruby-identifier">node</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-visit_ns_token" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">visit_ns_token</span><span
+            class="method-args">(token, data, ast_token = false)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="visit_ns_token-source">
+            <pre><span class="ruby-comment"># File lib/yard/parser/ruby/ruby_parser.rb, line 236</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">visit_ns_token</span>(<span class="ruby-identifier">token</span>, <span class="ruby-identifier">data</span>, <span class="ruby-identifier">ast_token</span> = <span class="ruby-keyword">false</span>)
+  <span class="ruby-identifier">add_token</span>(<span class="ruby-identifier">token</span>, <span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">ch</span> = <span class="ruby-identifier">charno</span>
+  <span class="ruby-ivar">@last_ns_token</span> = [<span class="ruby-identifier">token</span>, <span class="ruby-identifier">data</span>]
+  <span class="ruby-ivar">@charno</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">length</span>
+  <span class="ruby-ivar">@ns_charno</span> = <span class="ruby-identifier">charno</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">ast_token</span>
+    <span class="ruby-constant">AstNode</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">token</span>, [<span class="ruby-identifier">data</span>], <span class="ruby-value">:line</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">lineno</span><span class="ruby-operator">..</span><span class="ruby-identifier">lineno</span>, <span class="ruby-value">:char</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">ch</span><span class="ruby-operator">..</span><span class="ruby-identifier">charno</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>, <span class="ruby-value">:token</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
