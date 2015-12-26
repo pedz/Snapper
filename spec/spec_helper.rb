@@ -9,13 +9,3 @@ TEST_DUMP_SNAP = TEST_SNAP + "/dump/dump.snap"
 TEST_ERROR_OUT = TEST_SNAP + "/general/errpt.out"
 
 Top = self.class
-
-# Factory Girl is not used yet.  Gonna try rolling my own
-# require 'factory_girl'
-# RSpec.configure do |config|
-#   config.include FactoryGirl::Syntax::Methods
-#
-#   config.before(:suite) do
-#     FactoryGirl.find_definitions
-#   end
-# end

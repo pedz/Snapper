@@ -272,7 +272,7 @@ Item.add_filter("Sea", { level: 0 .. 11 }) do |context, item|
   sea_ent = item[:super]
   modifier = "ha_mode:#{sea_ent.attributes.ha_mode.value}"
   if (sea_ent.attributes.ha_mode.value != "disabled" &&
-      entstat = item.super.entstat)
+      (entstat = item.super.entstat))
     bridge_mode = entstat['Bridge Mode']
     state = entstat['State']
     modifier += " State:#{state} Bridge Mode:#{bridge_mode}"

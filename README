@@ -785,10 +785,6 @@ Some ToDos that I can think of... I'm sure there are others.
 
 1.  Review files down caa and ctsupt path.
 
-1.  fix all specs to include method.
-
-1.  Camelcase classes.
-
 1.  add path to snap output somehow.
 
 1.  Keep working on and finalize the commands idea.

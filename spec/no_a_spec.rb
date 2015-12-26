@@ -2,8 +2,9 @@ require "spec_helper"
 require "no_a"
 
 describe NoA do
-  before(:context) {
-    text = <<'EOF'
+  describe "#parse" do
+    before(:context) {
+      text = <<'EOF'
 
                  arpqsize = 1024
                arpt_killc = 20
@@ -152,22 +153,23 @@ ie5_old_multicast_mapping = 0
            use_sndbufpool = 1
 
 EOF
-    @result = NoA.new(text, Hash.new).parse
-  }
-
-  it "parses and makes an entry for each value" do
-    expect(@result.length).to eq(145)
-  end
-
-  it "converts integer values to Fixnums" do
-    expect(@result['udp_inpcb_hashtab_siz']).to be_an_instance_of(Fixnum)
-  end
-
-  it "keeps other values as strings" do
-    expect(@result['ndd_event_name']).to be_an_instance_of(String)
-  end
-
-  it "removes the new line from string values" do
-    expect(@result['net_malloc_frag_mask']).to eq('{512:2048}')
+      @result = NoA.new(text, Hash.new).parse
+    }
+    
+    it "parses and makes an entry for each value" do
+      expect(@result.length).to eq(145)
+    end
+    
+    it "converts integer values to Fixnums" do
+      expect(@result['udp_inpcb_hashtab_siz']).to be_an_instance_of(Fixnum)
+    end
+    
+    it "keeps other values as strings" do
+      expect(@result['ndd_event_name']).to be_an_instance_of(String)
+    end
+    
+    it "removes the new line from string values" do
+      expect(@result['net_malloc_frag_mask']).to eq('{512:2048}')
+    end
   end
 end

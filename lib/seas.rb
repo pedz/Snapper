@@ -4,6 +4,8 @@ require_relative 'snapper'
 # The load order is devices, ethchans, seas, vlans, interfaces
 require_relative 'ethchans'
 
+$debug = false
+
 # A snap processor that runs through the Devices looking Sea devices.
 # This processor must run after Devices but before Vlans and
 # Interfaces.
@@ -87,17 +89,24 @@ class Seas < Item
     # First, processes the batch as a sequence of independent LPARs.
     # @param batch [Batch] The batch to process.
     def process_batch(batch)
+      puts "process_batch #{batch.cecs.length}" if $debug
       batch.each_cec do |cec|
+        puts "cec #{cec.id_to_system}" if $debug
 
         seas_by_control_pvid = {}
 
         cec.each_lpar do |lpar|
+          puts "lpar #{lpar.hostname}" if $debug
+
           lpar.each_snap do |snap|
+            puts "snap #{snap.date_time}" if $debug
             next unless (seas = snap.db["seas"])
+            puts "snap -- have seas" if $debug
 
             devices = snap.db.devices # need this for later
 
             seas.each_pair do |logical_name, sea|
+              puts logical_name if $debug
               attrs = sea.super.attributes
               ha_mode = attrs.ha_mode.value
               next if ha_mode == "disabled" || ha_mode == "standby"
@@ -108,10 +117,10 @@ class Seas < Item
               else
                 control = ctl_chan
               end
-
               next unless (control_device = devices[control]) &&
                           (entstat = control_device['entstat']) &&
                           (pvid = entstat["Port VLAN ID"])
+              puts "wee!!!" if $debug
 
               # Remember that we can have multiple snaps for the same
               # hostname.  In that case, we want to check each snap we
@@ -197,7 +206,7 @@ class Seas < Item
     def sea_to_blah(sea)
       veas = {}
       sea.virt_adapters.each do |virt|
-        next unless (entstat = virt.entstat)
+        next unless (entstat = virt['entstat'])
         veas[entstat["Port VLAN ID"]] = [ entstat["VLAN Tag IDs"], virt.name ]
       end
       veas
@@ -219,8 +228,12 @@ class Seas < Item
         new_allowed, new_vea = new_blah[pvid]
         missing_allowed = target_allowed - new_allowed
         added_allowed = new_allowed - target_allowed
-        snap.add_alert("SEA #{sea.name} missing VLAN#{missing_allowed.length > 1 ? "s" : ""} #{missing_allowed.join(',')} on #{new_vea}") unless missing_allowed.empty?
-        snap.add_alert("SEA #{sea.name} added VLAN#{missing_allowed.length > 1 ? "s" : ""} #{added_allowed.join(',')} on #{new_vea}") unless added_allowed.empty?
+        unless missing_allowed.empty?
+          snap.add_alert("SEA #{sea.name} missing VLAN#{missing_allowed.length > 1 ? "s" : ""} #{missing_allowed.join(',')} on#{new_vea}") 
+        end
+        unless added_allowed.empty?
+          snap.add_alert("SEA #{sea.name} added VLAN#{missing_allowed.length > 1 ? "s" : ""} #{added_allowed.join(',')} on #{new_vea}")
+        end
       end
     end
   end

@@ -19,42 +19,44 @@ describe Logging do
     EOF
   end
 
-  it "should create a class logger method in the class that includes it" do
-    klass = make_class
-    expect(klass.respond_to?(:logger)).to be true
-  end
-
-  it "should create a class logger= method in the class that includes it" do
-    klass = make_class
-    expect(klass.respond_to?(:logger=)).to be true
-  end
-
-  it "should provide a logger instance method" do
-    klass = make_class
-    inst = klass.new
-    expect(inst.respond_to?(:logger)).to be true
-  end
-
-  it "should use the class declared LOG_LEVEL as the default logging level" do
-    klass = make_class
-    inst = klass.new
-    expect(inst.logger.level).to eq(Logger::DEBUG)
-  end
-
-  it "should use $stderr and Logger::INFO as its defaults" do
-    orig_stderr = $stderr
-    stringio = StringIO.new
-    $stderr = stringio
-    class T2
-      include Logging
+  describe ".included" do
+    it "should create a class logger method in the class that includes it" do
+      klass = make_class
+      expect(klass.respond_to?(:logger)).to be true
     end
-    expect(T2.logger.level).to eq(Logger::INFO)
-    T2.logger.info("test")
-    expect(stringio.string).to eq("T2: test\n")
-    $stderr = orig_stderr
+    
+    it "should create a class logger= method in the class that includes it" do
+      klass = make_class
+      expect(klass.respond_to?(:logger=)).to be true
+    end
+    
+    it "should provide a logger instance method" do
+      klass = make_class
+      inst = klass.new
+      expect(inst.respond_to?(:logger)).to be true
+    end
+    
+    it "should use the class declared LOG_LEVEL as the default logging level" do
+      klass = make_class
+      inst = klass.new
+      expect(inst.logger.level).to eq(Logger::DEBUG)
+    end
+    
+    it "should use $stderr and Logger::INFO as its defaults" do
+      orig_stderr = $stderr
+      stringio = StringIO.new
+      $stderr = stringio
+      class T2
+        include Logging
+      end
+      expect(T2.logger.level).to eq(Logger::INFO)
+      T2.logger.info("test")
+      expect(stringio.string).to eq("T2: test\n")
+      $stderr = orig_stderr
+    end
   end
-
-  describe "Logging.set_new_logger" do
+  
+  describe ".set_new_logger" do
     it "should change the logger if called after the class has been created" do
       klass = make_class
       inst = klass.new
@@ -92,7 +94,7 @@ describe Logging do
     end
   end
 
-  describe "Logging.set_new_loggers" do
+  describe ".set_new_loggers" do
     it "should change all classes" do
       klass1 = make_class
       klass2 = make_class

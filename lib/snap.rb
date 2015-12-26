@@ -1,6 +1,8 @@
-require_relative 'logging'
+require_relative 'db'
 require_relative 'list'
+require_relative 'logging'
 require_relative 'print_list'
+require_relative 'alert'
 
 # The body of information contained within a single snap.
 class Snap
