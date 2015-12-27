@@ -103,10 +103,15 @@ class Seas < Item
             next unless (seas = snap.db["seas"])
             puts "snap -- have seas" if $debug
 
+            vlans = []
             devices = snap.db.devices # need this for later
 
             seas.each_pair do |logical_name, sea|
               puts logical_name if $debug
+
+              # Add vlans used by virt_adapters and ctl_chan
+              add_vlans(snap, sea, vlans)
+
               attrs = sea.super.attributes
               ha_mode = attrs.ha_mode.value
               next if ha_mode == "disabled" || ha_mode == "standby"
@@ -232,8 +237,35 @@ class Seas < Item
           snap.add_alert("SEA #{sea.name} missing VLAN#{missing_allowed.length > 1 ? "s" : ""} #{missing_allowed.join(',')} on#{new_vea}") 
         end
         unless added_allowed.empty?
-          snap.add_alert("SEA #{sea.name} added VLAN#{missing_allowed.length > 1 ? "s" : ""} #{added_allowed.join(',')} on #{new_vea}")
+          snap.add_alert("SEA #{sea.name} added VLAN#{added_allowed.length > 1 ? "s" : ""} #{added_allowed.join(',')} on #{new_vea}")
         end
+      end
+    end
+
+    # @param snap [Snap] Used to add alerts
+    # @param sea [Sea] The SEA we are processing
+    # @param vlans [Array] Index by VLAN id, contains name of VEA.
+    def add_vlans(snap, sea, vlans)
+      _add_vlans(snap, sea[:ctl_chan], vlans)
+      sea[:virt_adapters].each { |ent| _add_vlans(snap, ent, vlans) }
+    end
+
+    # (see add_vlans)
+    def _add_vlans(snap, ent, vlans)
+      return unless ent
+      return unless (entstat = ent['entstat'])
+      check_vlan(snap, entstat['Port VLAN ID'], ent, vlans)
+      allowed = entstat["VLAN Tag IDs"]
+      if allowed.is_a?(Array)
+        allowed.each { |vid| check_vlan(snap, vid, ent, vlans) }
+      end
+    end
+
+    def check_vlan(snap, vid, ent, vlans)
+      if vlans[vid]
+        snap.add_alert("#{vlans[vid]} and #{ent.name} both use VLAN #{vid}")
+      else
+        vlans[vid] = ent.name
       end
     end
   end

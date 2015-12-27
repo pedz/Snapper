@@ -1,4 +1,3 @@
-require_relative "make_batch"
 
 def batch1
   {
