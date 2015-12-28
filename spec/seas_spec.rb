@@ -45,7 +45,7 @@ describe Seas do
         batch = Batch.new([ snap ])
         expect(snap).to receive(:add_alert).
                          once.
-                         with("#{virt.name} on #{sea.name} should have \"Control\" buffer type and it does not")
+                         with(Seas::SeasAlerts.discovery_vea(sea.name, virt.name))
         Seas.process_batch(batch)
       end
     end
@@ -54,13 +54,14 @@ describe Seas do
       it "alerts if multiple VEAs using same PVID" do
         snap = start_new_cec
         pvid = 5
-        virt = new_vea({ allowed: "None", pvid: pvid })
-        ctl = new_vea({ pvid: pvid})
+        vswitch = "vswitch1"
+        virt = new_vea({ allowed: "None", pvid: pvid, vswitch: vswitch })
+        ctl = new_vea({ pvid: pvid, vswitch: vswitch })
         add_sea({ virt_adapters: [ virt ], ctl_chan: ctl })
         batch = Batch.new([ snap ])
         expect(snap).to receive(:add_alert).
                          once.
-                         with("#{ctl.name} and #{virt.name} both use VLAN #{pvid}")
+                         with(Seas::SeasAlerts.vid_conflict(ctl.name, virt.name, pvid, vswitch))
         Seas.process_batch(batch)
       end
 
@@ -69,13 +70,14 @@ describe Seas do
         pvid = 5
         dup = 7
         allowed = [ 6, dup, 8 ]
-        virt = new_vea({ allowed: allowed, pvid: pvid })
-        ctl = new_vea({ pvid: dup })
+        vswitch = "vswitch1"
+        virt = new_vea({ allowed: allowed, pvid: pvid, vswitch: vswitch })
+        ctl = new_vea({ pvid: dup, vswitch: vswitch })
         add_sea({ virt_adapters: [ virt ], ctl_chan: ctl })
         batch = Batch.new([ snap ])
         expect(snap).to receive(:add_alert).
                          once.
-                         with("#{ctl.name} and #{virt.name} both use VLAN #{dup}")
+                         with(Seas::SeasAlerts.vid_conflict(ctl.name, virt.name, dup, vswitch))
         Seas.process_batch(batch)
       end
 

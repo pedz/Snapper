@@ -5,6 +5,7 @@ require 'time'
 require 'hostname'
 
 class Device < Item; end
+class Sea < Device;  end
 
 module CreateBatchDSL
   def start_new_cec(options = {})
@@ -50,14 +51,22 @@ module CreateBatchDSL
     ent = new_ent(options)
     options.delete(:name)
     name = ent.name
-    sea = new_device(options.merge({name: ent.name}))
-    sea[:super] = ent
-    sea[:real_adapter] = options[:real_adapter] || new_ent(options)
-    sea[:virt_adapters] = options[:virt_adapters] || [ new_vea(options) ]
-    sea[:ctl_chan] = options[:ctl_chan]
+
+    real_adapter = options[:real_adapter] || new_ent(options)
+    virt_adapters = options[:virt_adapters] || [ new_vea(options) ]
+    ctl_chan = options[:ctl_chan]
+
+    add_attr(ent, :ctl_chan, ctl_chan ? ctl_chan.name : "")
     add_attr(ent, :ha_mode, options[:ha_mode] || 'auto')
-    add_attr(ent, :pvid_adapter, sea[:virt_adapters].first.name)
-    add_attr(ent, :ctl_chan, sea[:ctl_chan] ? sea[:ctl_chan].name : "")
+    add_attr(ent, :pvid_adapter, virt_adapters.first.name)
+    add_attr(ent, :real_adapter, real_adapter.name)
+    add_attr(ent, :virt_adapters, virt_adapters.map(&:name).join(','))
+
+    sea = ent.subclass(Sea)
+    sea[:ctl_chan] = ctl_chan
+    sea[:pvid_adapter] = virt_adapters.first
+    sea[:real_adapter] = real_adapter
+    sea[:virt_adapters] = virt_adapters
     seas[name] = sea
     sea
   end
@@ -86,11 +95,7 @@ module CreateBatchDSL
       entstat["Trunk Adapter"] = "False"
     end
 
-    if options.has_key?(:switch)
-      entstat["Switch ID"] = options[:switch]
-    else
-      entstat["Switch ID"] = "ETHERNET0"
-    end
+    entstat["Switch ID"] = options[:vswitch] || "ETHERNET0"
 
     if options[:discovery] == true
       t = entstat
@@ -147,11 +152,11 @@ module CreateBatchDSL
       prefix = options[:prefix] || "dev"
       name = "%s%d" % [ prefix, new_dev_num ]
     end
-    devices[name] = new_item.tap { |item| item[:name] = name }
+    devices[name] = new_item(Device).tap { |item| item[:name] = name }
   end
 
-  def new_item
-    Item.new(@db)
+  def new_item(klass = Item)
+    klass.new(@db)
   end
 
   def new_lparstat_out(options = {})
