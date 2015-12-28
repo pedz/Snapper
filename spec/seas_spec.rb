@@ -45,7 +45,7 @@ describe Seas do
         batch = Batch.new([ snap ])
         expect(snap).to receive(:add_alert).
                          once.
-                         with(Seas::SeasAlerts.discovery_vea(sea.name, virt.name))
+                         with(Seas::Alerts.discovery_vea(sea.name, virt.name))
         Seas.process_batch(batch)
       end
     end
@@ -61,7 +61,7 @@ describe Seas do
         batch = Batch.new([ snap ])
         expect(snap).to receive(:add_alert).
                          once.
-                         with(Seas::SeasAlerts.vid_conflict(ctl.name, virt.name, pvid, vswitch))
+                         with(Seas::Alerts.vid_conflict(ctl.name, virt.name, pvid, vswitch))
         Seas.process_batch(batch)
       end
 
@@ -77,7 +77,7 @@ describe Seas do
         batch = Batch.new([ snap ])
         expect(snap).to receive(:add_alert).
                          once.
-                         with(Seas::SeasAlerts.vid_conflict(ctl.name, virt.name, dup, vswitch))
+                         with(Seas::Alerts.vid_conflict(ctl.name, virt.name, dup, vswitch))
         Seas.process_batch(batch)
       end
 

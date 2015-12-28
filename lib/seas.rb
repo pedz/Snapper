@@ -15,7 +15,7 @@ class Seas < Item
 
   # A class for alerts using class methods so the alerts are available
   # from test units.
-  class SeasAlerts
+  class Alerts
     class << self
       # Formats the proper alert string when the +pvid+ attribute of the
       # SEA does not match the <tt>Port VLAN ID</tt> of the
@@ -29,8 +29,7 @@ class Seas < Item
       #   from the entstat for the pvid_adapter.
       # @return [String] The alert text.
       # @example Sample PVID Mismatch Text
-      #   <b>pvid attribute for ent16 of 1234 mismatches ent15's Port
-      #   VLAN ID of 9876</b>
+      #   pvid attribute for ent16 of 1234 mismatches ent15's Port VLAN ID of 9876
       def pvid_mismatch(sea, sea_pvid, pvid_adapter, adapter_pvid)
         t = "pvid attribute for #{sea} of #{sea_pvid} mismatches " +
             "#{pvid_adapter}'s Port VLAN ID of #{adapter_pvid}"
@@ -44,7 +43,7 @@ class Seas < Item
       #   attribute.
       # @return [String] The alert text.
       # @example  Sample Reset Adapter Text
-      #   <b>adapter_reset on ent16 set to "no"</b>
+      #   adapter_reset on ent16 set to "no"
       def reset_adapter_yes(sea, value)
         "adapter_reset on #{sea.name} set to #{value.inspect}"
       end
@@ -61,7 +60,7 @@ class Seas < Item
       #   connected to.
       # @return [String] The alert text.
       # @example Sample VID Conflict Text
-      #   <b>ent14 and ent15 both use VLAN 42 on ETHERNET0</b>
+      #   ent14 and ent15 both use VLAN 42 on ETHERNET0
       def vid_conflict(ent1, ent2, vid, vswitch)
         "#{ent1} and #{ent2} both use VLAN #{vid} on #{vswitch}"
       end
@@ -72,7 +71,7 @@ class Seas < Item
       #   matched (has no mate in the batch).
       # @return [String] The alert text.
       # @example Same Unmatched SEA Text
-      #   <b>Mate to ent16 not found within Snapper run</b>
+      #   Mate to ent16 not found within Snapper run
       def unmatch_sea(sea)
         "Mate to #{sea} not found within Snapper run"
       end
@@ -88,8 +87,7 @@ class Seas < Item
       #   LPARs that have a SEA in the conflict.
       # @return [String] The alert text.
       # @example Sample Over Matched SEAs Text
-      #   <b>3 other hosts mate with SEA ent16 using PVID 1234 on
-      #   ETHERNET0: host5, host8, and host12</b>
+      #   3 other hosts mate with SEA ent16 using PVID 1234 on ETHERNET0: host5, host8, and host12
       def over_matched_seas(sea, vswitch, pvid, other_hosts)
         count = other_hosts.length
         last_host = other_hosts.pop
@@ -107,8 +105,7 @@ class Seas < Item
       # @param vea [String] The logical name of the VEA.
       # @return [String] The alert text.
       # @example Sample Discovery VEA Text
-      #   <b>VEA ent15 on SEA ent16 should have \"Control\" buffer
-      #   type but does not</b>
+      #   VEA ent15 on SEA ent16 should have "Control" buffer type but does not
       def discovery_vea(sea, vea)
         "VEA #{vea} on SEA #{sea} should have \"Control\" buffer type but " +
           "does not"
@@ -121,8 +118,7 @@ class Seas < Item
       # @param pvid [Integer] The PVID
       # @return [String] The alert text.
       # @example Sample SEA Changed Text
-      #   <b>SEA #{sea} using PVID #{pvid} on #{vswitch} differs
-      #   between snaps</b>
+      #   SEA ent16 using PVID 1234 on ETHERNET0 differs between snaps
       def sea_changed(sea, vswitch, pvid)
         "SEA #{sea} using PVID #{pvid} on #{vswitch} differs between snaps"
       end
@@ -133,8 +129,7 @@ class Seas < Item
       # @param a [Array] [ vswitch, pvid, vlan1, ... vlan2, vea ]
       # @return (see sea_changed)
       # @example Sample VEA Added Text
-      #   <b>SEA ent16 has additional VEA ent15 with PVID 1234 and
-      #   VLAN Tag IDs of 12, 13, 14, 15 on ETHERNET0</b>
+      #   SEA ent16 has additional VEA ent15 with PVID 1234 and VLAN Tag IDs of 12, 13, 14, 15 on ETHERNET0
       def vea_added(sea, a)
         vswitch = a.shift
         pvid = a.shift
@@ -149,8 +144,7 @@ class Seas < Item
       # @param a [Array] [ vswitch, pvid, vlan1, ... vlan2, vea ]
       # @return (see sea_changed)
       # @example Sample VEA Added Text
-      #   <b>SEA ent16 is missing a VEA with PVID 1234 and VLAN Tag
-      #   IDs of 12, 13, 14, 15 on ETHERNET0</b>
+      #   SEA ent16 is missing a VEA with PVID 1234 and VLAN Tag IDs of 12, 13, 14, 15 on ETHERNET0
       def vea_missing(sea, a)
         vswitch = a.shift
         pvid = a.shift
@@ -167,8 +161,7 @@ class Seas < Item
       # @param a [Array] [ vswitch, pvid, vlan1, ... vlan2, vea ]
       # @return (see sea_changed)
       # @example Sample VLAN Added Text
-      #   <b>VEA ent15 with PVID 1234 using ETHERNET0 on SEA ent16 has
-      #   additional VLANs 14, 15 from its mate</b>
+      #   VEA ent15 with PVID 1234 using ETHERNET0 on SEA ent16 has additional VLANs 14, 15 from its mate
       def vlan_added(sea, vlans, a)
         vswitch = a.shift
         pvid = a.shift
@@ -186,8 +179,7 @@ class Seas < Item
       # @param a [Array] [ vswitch, pvid, vlan1, ... vlan2, vea ]
       # @return (see sea_changed)
       # @example Sample VLAN Added Text
-      #   <b>VEA ent15 with PVID 1234 using ETHERNET0 on SEA ent16 is
-      #   missing VLANs 14, 15 compared to its mate</b>
+      #   VEA ent15 with PVID 1234 using ETHERNET0 on SEA ent16 is missing VLANs 14, 15 compared to its mate
       def vlan_added(sea, vlans, a)
         vswitch = a.shift
         pvid = a.shift
@@ -215,8 +207,6 @@ class Seas < Item
     #   2. If +adapter_reset+ is set to +yes+.
     #
     # @param snap [Snap] The snap to process.
-    # @todo Within a snap, flag is more than one SEA has the same
-    #   virtual switch with PVID combination
     def process_snap(snap)
       db = snap.db
       devices = db.devices
@@ -264,7 +254,7 @@ class Seas < Item
 
     # Checks if the +pvid+ attribute for the SEA matches the <tt>Port
     # VLAN ID</tt> of the +pvid_adapter+.  If they do not match, a
-    # {SeasAlerts.pvid_mismatch} alert is added to the snap.
+    # {Alerts.pvid_mismatch} alert is added to the snap.
     # @param snap [Snap] The snap that contains the SEA.
     # @param sea [Sea] The SEA to check.
     def check_pvid(snap, sea)
@@ -276,19 +266,19 @@ class Seas < Item
       pvid_entstat = pvid_device['entstat']
       adapter_pvid = pvid_entstat['Port VLAN ID']
       unless pvid == adapter_pvid
-        t = SeasAlerts.pvid_mismatch(sea.name, sea_pvid, pvid_adapter, adapter_pvid)
+        t = Alerts.pvid_mismatch(sea.name, sea_pvid, pvid_adapter, adapter_pvid)
         snap.add_alert(t)
       end
     rescue
     end
     
     # Checks if the reset_adapter attribute is set to _no_.  If it not
-    # set to _no_, adds a {SeasAlerts.reset_adapter_yes} alert to the
+    # set to _no_, adds a {Alerts.reset_adapter_yes} alert to the
     # snap.
     # @param (see check_pvid)
     def check_reset_adapter(snap, sea)
       if (value = sea.attributes.adapter_reset.value) != "no"
-        t = SeasAlerts.reest_adapter_yes(sea, value)
+        t = Alerts.reest_adapter_yes(sea, value)
         snap.add_alert(t)
       end
     rescue
@@ -331,7 +321,7 @@ class Seas < Item
         when 1                  # unmatched
           host, array = host_hash.first
           array.each do |hash|
-            t = SeasAlerts.unmatched_sea(hash[:sea].name)
+            t = Alerts.unmatched_sea(hash[:sea].name)
             hash[:snap].add_alert(t)
           end
           
@@ -344,7 +334,7 @@ class Seas < Item
             array = host_hash[host]
             array.each do |hash|
               other_hosts = (hosts - [ host ])
-              t = SeasAlerts(hash[:sea].name, hash[:vswitch], hash[:pvid], other_hosts)
+              t = Alerts(hash[:sea].name, hash[:vswitch], hash[:pvid], other_hosts)
               hash[:snap].add_alert(t)
             end
           end
@@ -389,7 +379,7 @@ class Seas < Item
           # subsequent runs of Snapper.
           if host_set.length > 1 
             array.each do |hash|
-              t = SeasAlerts.sea_changed(hash[:sea].name, hash[:vswitch], hash[:pvid])
+              t = Alerts.sea_changed(hash[:sea].name, hash[:vswitch], hash[:pvid])
               hash[:snap].add_alert(t)
             end
           else
@@ -478,13 +468,13 @@ class Seas < Item
               type = alert.shift
               case type
               when :vea_added
-                t = SeasAlerts.vea_added(hash[:sea].name, alert.shift)
+                t = Alerts.vea_added(hash[:sea].name, alert.shift)
               when :vea_missing
-                t = SeasAlerts.vea_missing(hash[:sea].name, alert.shift)
+                t = Alerts.vea_missing(hash[:sea].name, alert.shift)
               when :vlan_added
-                t = SeasAlerts.vlan_added(hash[:sea].name, alert[0], alert[1])
+                t = Alerts.vlan_added(hash[:sea].name, alert[0], alert[1])
               when :vlan_missing
-                t = SeasAlerts.vlan_missing(hash[:sea].name, alert[0], alert[1])
+                t = Alerts.vlan_missing(hash[:sea].name, alert[0], alert[1])
               end
             end
           end
@@ -550,7 +540,7 @@ class Seas < Item
     end
 
     # Verifies that the VEA has +Control+ buffers allocated to it.  If
-    # it does not, a {SeasAlerts.discovery_vea} alert is added to the
+    # it does not, a {Alerts.discovery_vea} alert is added to the
     # snap.
     # @param snap [Snap] The Snap being processed.
     # @param sea [Sea] The SEA being checked.
@@ -560,7 +550,7 @@ class Seas < Item
       [ "Receive Information", "Receive Buffers", "Control" ].each do |attr|
         d = d[attr] if d
       end
-      snap.add_alert(SeasAlerts.discovery_vea(sea.name, vea.name)) unless d
+      snap.add_alert(Alerts.discovery_vea(sea.name, vea.name)) unless d
     end
 
     # Checks the VLANs used by the +sea+ and adds alerts if conflicts
@@ -587,7 +577,7 @@ class Seas < Item
     end
 
     # Checks a single virtual switch vlan id combination and adds a
-    # {SeasAlerts.vid_conflict} alert if a conflict is found.
+    # {Alerts.vid_conflict} alert if a conflict is found.
     # @param snap [Snap] The Snap being processed.
     # @param vea [String] The logical name of the VEA being processed.
     # @param vswitch [String] The virtual switch name the VEA is connected to.
@@ -595,7 +585,7 @@ class Seas < Item
     def check_vlan(snap, vea, vswitch, vid)
       index = "#{vswitch}-#{vid}"
       if (other_vea = @vlans[index])
-        snap.add_alert(SeasAlerts.vid_conflict(other_vea, vea, vid, vswitch))
+        snap.add_alert(Alerts.vid_conflict(other_vea, vea, vid, vswitch))
       else
         @vlans[index] = vea
       end
