@@ -1,6 +1,8 @@
 require_relative 'item'
 require_relative 'logging'
 require_relative 'snapper'
+# The load order is devices, ethchans, seas, vlans, etherner_adapters,
+# interfaces
 
 # A container in the db that has an entry for each logical device
 # found in CuDv.  The key for the entry is the logical name

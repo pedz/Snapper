@@ -7,7 +7,7 @@ require 'hostname'
 class Device < Item; end
 class Sea < Device;  end
 
-module CreateBatchDSL
+module BatchDSL
   def start_new_cec(options = {})
     system_num
     @system_num += 1
@@ -48,26 +48,57 @@ module CreateBatchDSL
   end
 
   def add_sea(options = {})
+    options = options.dup       # because we muck with them
     ent = new_ent(options)
-    options.delete(:name)
+    options.delete(:name)       # name would be for the SEA
     name = ent.name
 
-    real_adapter = options[:real_adapter] || new_ent(options)
-    virt_adapters = options[:virt_adapters] || [ new_vea(options) ]
-    ctl_chan = options[:ctl_chan]
+    ent.cu_dv['PdDvLn'] = "adapter/pseudo/sea"
 
+    # The default is to properly create a working SEA that passes all
+    # tests.  To do this, we do not create a control channel and that
+    # implies that the single virt_adapter will also be the pvid
+    # adapter and be use discovery mode.
+    #
+    # We also put the virt adapter into Trunk mode by specifying
+    # allowed of None (if it is not already present)
+    virt_options = options.dup
+    unless options.has_key?(:ctl_chan)
+      virt_options = { discovery: true }.merge(virt_options)
+    end
+    virt_options = { allowed: "None" }.merge(virt_options)
+    virt_adapters = options[:virt_adapters] || [ new_vea(virt_options) ]
+
+    # If :pvid was present and :virt_adapters is not, it would be
+    # picked up by virt_adapt.  If we did not, then the user must
+    # dance the correct steps.
+    unless options.has_key?(:virt_adapters)
+      options.delete(:pvid)
+      options.delete(:allowed)
+    end
+
+    real_adapter = options[:real_adapter] || new_ent(options)
+    ctl_chan = options[:ctl_chan]
+    pvid_adapter = virt_adapters.first
+    pvid = options[:pvid] || pvid_adapter.entstat["Port VLAN ID"]
+    
     add_attr(ent, :ctl_chan, ctl_chan ? ctl_chan.name : "")
     add_attr(ent, :ha_mode, options[:ha_mode] || 'auto')
-    add_attr(ent, :pvid_adapter, virt_adapters.first.name)
+    add_attr(ent, :pvid_adapter, pvid_adapter.name)
     add_attr(ent, :real_adapter, real_adapter.name)
     add_attr(ent, :virt_adapters, virt_adapters.map(&:name).join(','))
+    add_attr(ent, :pvid, pvid)
+    add_attr(ent, :adapter_reset, options[:adapter_reset] || "no")
 
     sea = ent.subclass(Sea)
     sea[:ctl_chan] = ctl_chan
     sea[:pvid_adapter] = virt_adapters.first
     sea[:real_adapter] = real_adapter
     sea[:virt_adapters] = virt_adapters
-    seas[name] = sea
+    # batches (used for process_batch testing) start with
+    # start_new_cec and need db['seas'] while snaps (used for
+    # process_snap testing) can not have it.
+    seas[name] = sea if system_num > 0
     sea
   end
 
@@ -152,7 +183,16 @@ module CreateBatchDSL
       prefix = options[:prefix] || "dev"
       name = "%s%d" % [ prefix, new_dev_num ]
     end
-    devices[name] = new_item(Device).tap { |item| item[:name] = name }
+    devices[name] = new_item(Device).tap do |item|
+      item[:name] = name
+      item['CuDv'] = new_item.tap do |cu_dv|
+        cu_dv['PdDvLn'] = "some/random/device"
+      end
+      item['CuAt'] = []
+      item['PdDv'] = []
+      item['PdAt'] = []
+      item['PdDvLn'] = []
+    end
   end
 
   def new_item(klass = Item)
@@ -209,256 +249,3 @@ module CreateBatchDSL
     "host#{lpar_num}"
   end
 end
-
-  # @@cec_number = 1
-  # @@lpar_number = 1
-  # @@snap_number = 1
-  # @@dev_number = 1
-  # @@vlan_number = 1
-  # @@db = nil
-
-  # def start_new_cec
-  #   @@cec_number += 1
-  #   new_lpar
-  # end
-
-  # def start_new_lpar
-  #   @@lpar_number += 1
-  #   new_snap
-  # end
-
-  # def new_snap
-  #   @@snap_number += 1
-  #   @@db = nil
-  # end
-
-  # def new_item
-  #   Item.new(db)
-  # end
-
-  # # Creates a device with prefix and adds it to Devices
-  # # @param prefix [String] device prefix such as +ent+ to produce
-  # # +ent0+.
-  # def device(prefix)
-  #   item = new_item
-  #   name = "%s%d" % [ prefix, @@dev_number += 1]
-  #   item[:name] = name
-  #   devices = (db["Devices"] ||= new_item)
-  #   devices[name] = item
-  #   item
-  # end
-
-  # def ent
-  #   item = device("ent")
-  #   item['entstat'] = new_item
-  #   item
-  # end
-  
-  # def sea(options = {})
-  #   item = ent
-  # end
-
-  # private
-
-  # def db
-  #   @@db ||= Db.new
-  # end
-# end
-
-# module FakeBatch
-#   @@global = 0
-
-#   puts "In FakeBatch #{self.name} #{self.class}"
-
-#   class << self
-#     def orange
-#       puts "I am orange"
-#     end
-
-#     def included(mod)
-#       puts "I am included! #{mod.name}"
-#       class << mod
-#         def puppy
-#           puts "I am a puppy!!!"
-#         end
-#       end
-#     end
-#   end
-
-#   def instance_blah
-#     "Instance Blah"
-#   end
-
-#   def fake_batch(options = {})
-#     FakeBatch.orange
-#     self.class.dog
-#     self.class.puppy
-#     # self.class.puppy
-#     @@global += 1
-#     @banana = @@global unless @banana
-#     puts "fake_batch"
-#     snaps = options[:snaps].map { |snap| fake_snap(snap) }
-#     Batch.new(snaps)
-#   end
-
-#   def adjust_object(obj, list)
-#     list.each do |method, result, proc|
-#       if obj.respond_to?(method) && (obj.send(method) == result)
-#         proc.call(obj)
-#       end
-#     end
-#   end
-
-#   def adjust_item(item, list)
-#     adjust_object(item, list)
-#     item.each_pair do |k, v|
-#       adjust_item(v, list) if v.is_a?(Item)
-#     end
-#   end
-
-#   def adjust_batch(batch, list)
-#     batch.each_cec do |cec|
-#       adjust_object(cec, list)
-#       cec.each_lpar do |lpar|
-#         adjust_object(lpar, list)
-#         lpar.each_snap do |snap|
-#           adjust_object(snap, list)
-#           adjust_item(snap.db, list)
-#         end
-#       end
-#     end
-#     batch
-#   end
-
-#   def expect_no_alerts(batch)
-#     expect(batch).not_to receive(:add_alert)
-#     batch.each_cec do |cec|
-#       expect(cec).not_to receive(:add_alert)
-#       cec.each_lpar do |lpar|
-#         expect(lpar).not_to receive(:add_alert)
-#         lpar.each_snap do |snap|
-#           expect(snap).not_to receive(:add_alert)
-#         end
-#       end
-#     end
-#     batch
-#   end
-
-#   def fake_snap(options = {})
-#     dir = (options[:dir] || "none")
-#     db = Db.new
-
-#     options[:db].each_pair do |k, v|
-#       v = [ v ] unless v.is_a?(Array)
-#       v.each do |f|
-#         item = db.create_item(k.to_s)
-#         fake_item(item, f, db)
-#       end
-#     end
-#     db.date_time = DateTime.parse(options[:date_time]) if options.has_key?(:date_time)
-
-#     Snap.new(db: db, dir: dir )
-#   end
-
-#   def fake_item(item, attrs, db)
-#     attrs.each_pair do |k, v|
-#       if v.is_a?(Hash)
-#         item[k] = fake_item(Item.new(db), v, db)
-#       elsif v.is_a?(Array)
-#         item[k] = v.map { |h| fake_item(Item.new(db), h, db) }
-#       else
-#         item[k] = v
-#       end
-#     end
-#     item
-#   end
-
-#   def fake_attr(value)
-#     { value: value }
-#   end
-# end
-
-# def batch1
-#   {
-#     snaps: [ snap1 ]
-#   }
-# end
-
-# def snap1
-#   {
-#     dir: "/some/path",
-#     date_time: "Fri Dec 25 19:31:01 CST 2015",
-#     db: {
-#       devices: {
-#         sys0: sys0_1,
-#         inet0: inet0_1,
-#         ent16: sea16,
-#         ent15: vea15,
-#       },
-#       seas: {
-#         ent16: sea16,
-#       }
-#     }
-#   }
-# end
-
-# def sys0_1
-#   {
-#     attributes: {
-#       id_to_partition: fake_attr("1"),
-#       id_to_system: fake_attr("1"),
-#       fwversion: fake_attr("IBM,fw12345"),
-#       modelname: fake_attr("IBM,model12345")
-#     }
-#   }
-# end
-
-# def inet0_1
-#   {
-#     attributes: {
-#       hostname: fake_attr("snap1")
-#     }
-#   }
-# end
-
-# def sea16
-#   {
-#     name: "ent16",
-#     super: ent16,
-#     real_adapter: ent0,
-#     virt_adapters: [ vea15 ],
-#     ctl_chan: nil
-#   }
-# end
-
-# def ent16
-#   {
-#     name: "ent16",
-#     attributes: {
-#       ha_mode: fake_attr("auto"),
-#       ctl_chan: fake_attr(""),
-#       pvid_adapter: fake_attr("ent15")
-#     }
-#   }
-# end
-
-# def vea15
-#   {
-#     name: "ent15",
-#     entstat: {
-#       "Port VLAN ID" => 199,
-#       "Receive Information" => {
-#         "Receive Buffers" => {
-#           "Control" => {
-#           }
-#         }
-#       }
-#     }
-#   }
-# end
-
-# def ent0
-#   {
-#     name: "ent0"
-#   }
-# end

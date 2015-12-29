@@ -2,7 +2,8 @@ require "set"
 require_relative 'logging'
 require_relative 'item'
 require_relative 'snapper'
-# The load order is devices, ethchans, seas, vlans, interfaces
+# The load order is devices, ethchans, seas, vlans, etherner_adapters,
+# interfaces
 require_relative 'ethchans'
 
 # A snap processor that runs through the Devices looking Sea devices.
@@ -33,19 +34,40 @@ class Seas < Item
       def pvid_mismatch(sea, sea_pvid, pvid_adapter, adapter_pvid)
         t = "pvid attribute for #{sea} of #{sea_pvid} mismatches " +
             "#{pvid_adapter}'s Port VLAN ID of #{adapter_pvid}"
-        snap.add_alert(t)
       end
 
       # Formats the proper alert string when the +reset_adapter+
       # attribute of a Sea is not set properly.
-      # @param sea [Sea] The Sea.
+      # @param sea [String] The logical name for the SEA.
       # @param value ["yes", "no"] The value of the +reset_adapter+
       #   attribute.
       # @return [String] The alert text.
       # @example  Sample Reset Adapter Text
       #   adapter_reset on ent16 set to "no"
       def reset_adapter_yes(sea, value)
-        "adapter_reset on #{sea.name} set to #{value.inspect}"
+        "adapter_reset on #{sea} set to #{value.inspect}"
+      end
+
+      # Formats the proper alert string when a VEA needs to be in
+      # trunk mode and it is not.
+      # @param sea [String] The logical name for the SEA.
+      # @param vea [String] The logical name for the VEA that failed.
+      # @return (see reset_adapter_yes)
+      # @example Sample Not Trunk Text
+      #   VEA ent15 on SEA ent16 must be a Trunk Adapter"
+      def not_trunk(sea, vea)
+        "VEA #{vea} on SEA #{sea} must be a Trunk Adapter"
+      end
+
+      # Formats the proper alert string when a VEA is a Trunk Adapter
+      # but it should not be.
+      # @param sea [String] The logical name for the SEA.
+      # @param vea [String] The logical name for the VEA that failed.
+      # @return (see reset_adapter_yes)
+      # @example Sample Not Trunk Text
+      #   VEA ent15 on SEA ent16 can not b a Trunk Adapter"
+      def is_trunk(sea, vea)
+        "VEA #{vea} on SEA #{sea} can not be a Trunk Adapter"
       end
 
       # Formats the proper alert string when two VEAs within the same
@@ -72,7 +94,7 @@ class Seas < Item
       # @return [String] The alert text.
       # @example Same Unmatched SEA Text
       #   Mate to ent16 not found within Snapper run
-      def unmatch_sea(sea)
+      def unmatched_sea(sea)
         "Mate to #{sea} not found within Snapper run"
       end
 
@@ -126,31 +148,33 @@ class Seas < Item
       # Formats the proper alert string when a VEA has been added to
       # the SEA in this snap when compared to snaps of its _mate_.
       # @param sea [String] The logical name for the SEA.
-      # @param a [Array] [ vswitch, pvid, vlan1, ... vlan2, vea ]
+      # @param vea_config [VeaConfig] The configuration for the VEA on
+      #   this SEA that has more VLANs allowed than its mate.
       # @return (see sea_changed)
       # @example Sample VEA Added Text
       #   SEA ent16 has additional VEA ent15 with PVID 1234 and VLAN Tag IDs of 12, 13, 14, 15 on ETHERNET0
-      def vea_added(sea, a)
-        vswitch = a.shift
-        pvid = a.shift
-        vea = a.pop
+      def vea_added(sea, vea_config)
+        vswitch, pvid, allowed = vea_config.triple
+        vea = vea_config.name
+        allowed = allowed.join(', ') if allowed.is_a?(Array)
         "SEA #{sea} has additional VEA #{vea} with PVID #{pvid} and VLAN Tag " +
-          "IDs of #{a.join(', ')} on #{vswitch}"
+          "IDs of #{allowed} on #{vswitch}"
       end
 
       # Formats the proper alert string when a VEA is missing from the
       # SEA in this snap when compared to snaps of its _mate_.
       # @param sea [String] The logical name for the SEA.
-      # @param a [Array] [ vswitch, pvid, vlan1, ... vlan2, vea ]
+      # @param vea_config [VeaConfig] The configuration for the VEA on
+      #   this SEA that has more VLANs allowed than its mate.
       # @return (see sea_changed)
       # @example Sample VEA Added Text
       #   SEA ent16 is missing a VEA with PVID 1234 and VLAN Tag IDs of 12, 13, 14, 15 on ETHERNET0
-      def vea_missing(sea, a)
-        vswitch = a.shift
-        pvid = a.shift
-        vea = a.pop
+      def vea_missing(sea, vea_config)
+        vswitch, pvid, allowed = vea_config.triple
+        vea = vea_config.name
+        allowed = allowed.join(', ') if allowed.is_a?(Array)
         "SEA #{sea} is missing a VEA with PVID #{pvid} and VLAN Tag IDs of " +
-          "#{a.join(', ')} on #{vswitch}"
+          "#{allowed} on #{vswitch}"
       end
 
       # Formats the proper alert string when a VEA on a SEA has
@@ -158,14 +182,14 @@ class Seas < Item
       # the matching SEA.
       # @param sea [String] The logical name of the SEA.
       # @param vlans [Array<Integer>] The list of added vlans
-      # @param a [Array] [ vswitch, pvid, vlan1, ... vlan2, vea ]
+      # @param vea_config [VeaConfig] The configuration for the VEA on
+      #   this SEA that has more VLANs allowed than its mate.
       # @return (see sea_changed)
       # @example Sample VLAN Added Text
       #   VEA ent15 with PVID 1234 using ETHERNET0 on SEA ent16 has additional VLANs 14, 15 from its mate
-      def vlan_added(sea, vlans, a)
-        vswitch = a.shift
-        pvid = a.shift
-        vea = a.pop
+      def vlan_added(sea, vlans, vea_config)
+        vswitch, pvid, allowed = vea_config.triple
+        vea = vea_config.name
         vlan_text = vlans.length == 1 ? "VLAN" : "VLANs"
         "VEA #{vea} with PVID #{pvid} using #{vswitch} on SEA #{sea} has " +
           "additional #{vlan_text} #{vlans.join(', ')} from its mate"
@@ -176,18 +200,87 @@ class Seas < Item
       # the matching SEA.
       # @param sea [String] The logical name of the SEA.
       # @param vlans [Array<Integer>] The list of added vlans
-      # @param a [Array] [ vswitch, pvid, vlan1, ... vlan2, vea ]
+      # @param vea_config [VeaConfig] The configuration for the VEA on
+      #   this SEA that has fewer VLANs allowed than its mate.
       # @return (see sea_changed)
       # @example Sample VLAN Added Text
       #   VEA ent15 with PVID 1234 using ETHERNET0 on SEA ent16 is missing VLANs 14, 15 compared to its mate
-      def vlan_added(sea, vlans, a)
-        vswitch = a.shift
-        pvid = a.shift
-        vea = a.pop
+      def vlan_missing(sea, vlans, vea_config)
+        vswitch, pvid, allowed = vea_config.triple
+        vea = vea_config.name
         vlan_text = vlans.length == 1 ? "VLAN" : "VLANs"
         "VEA #{vea} with PVID #{pvid} using #{vswitch} on SEA #{sea} is " +
           "missing #{vlan_text} #{vlans.join(', ')} compared to its mate"
       end
+    end
+  end
+
+  # Wraps, in a single object, how a VEA is configured: the virtual
+  # switch it is connected to, the PVID, and the allowed VLANs.  It
+  # also includes the name of the VEA but the name is excluded from
+  # operations such as equality and ordering.
+  # @param vea [Device] The Device entry for a VEA.
+  class VeaConfig
+    # @return [String] The virtual switch the VEA used to initialize
+    #   the instance is connected to.
+    attr_reader :vswitch
+
+    # @return [Integer] The PVID of the VEA used to initialize the
+    #   instance.
+    attr_reader :pvid
+
+    # @return [Array<Integer>] The VLAN Tag IDs of the VEA used to
+    #   initialize the instance.
+    attr_reader :allowed
+
+    # @return [Array(vswitch, pvid, allowed)]  Used in compares and
+    #   many other places.
+    attr_reader :triple
+
+    # @return [String] The name of the VEA used to initialize the
+    #   instance.
+    attr_reader :name
+
+    def initialize(vea)
+      @name = vea.name
+      if vea['entstat']
+        @vswitch, @pvid, @allowed = Seas.vlan_triple(vea.entstat)
+      else
+        @vswitch = nil
+        @pvid = nil
+        @allowed = []
+      end
+      @triple = [ @vswitch, @pvid, @allowed ]
+    end
+
+    def triple
+      @triple
+    end
+    alias :to_a :triple
+    
+    def name
+      @name
+    end
+
+    def !=(other)
+      self.to_a != other.to_a
+    end
+
+    def ==(other)
+      self.to_a == other.to_a
+    end
+
+    def <=>(other)
+      self.to_a <=> other.to_a
+    end
+
+    def to_s
+      {
+        vswitch: vswitch,
+        pvid: pvid,
+        allowed: allowed,
+        name: name
+      }.to_s
     end
   end
 
@@ -202,9 +295,15 @@ class Seas < Item
     # {Alert}s created for:
     #
     #   1. The <tt>Port VLAN ID</tt> of the +pvid_adapter+ equals the
-    #      +pvid+ attr of the SEA
+    #      +pvid+ attr of the SEA.
     #
     #   2. If +adapter_reset+ is set to +yes+.
+    #
+    #   3. All +virt_adapters+ must be trunk adapters.
+    #
+    #   4. The +ctl_chan+ must not be a trunk adapter.
+    #
+    #   5. PVID adapter in discovery mode must have Control buffers.
     #
     # @param snap [Snap] The snap to process.
     def process_snap(snap)
@@ -220,9 +319,26 @@ class Seas < Item
 
           # Test 2 -- adapter_reset (if present) should be no
           check_reset_adapter(snap, sea)
+
+          # Test 3 -- virt_adapter must be trunk adapters
+          check_virt_adapters(snap, sea)
+
+          # Test 4 -- ctl_chan must not be trunk adapter
+          check_ctl_chan(snap, sea)
+
+          # Test 5 -- PVID adapter in discovery mode must have Control buffers
+          verify_discovery_vea(snap, sea, sea[:pvid_adapter]) unless sea[:ctl_chan]
         end
       end
       snap.add_item(seas, 25)
+    end
+
+    def caught_rescue(e)
+      rescues << e
+    end
+
+    def rescues
+      @rescues ||= []
     end
 
     private
@@ -265,11 +381,12 @@ class Seas < Item
       pvid_device = devices[pvid_adapter]
       pvid_entstat = pvid_device['entstat']
       adapter_pvid = pvid_entstat['Port VLAN ID']
-      unless pvid == adapter_pvid
+      unless sea_pvid == adapter_pvid
         t = Alerts.pvid_mismatch(sea.name, sea_pvid, pvid_adapter, adapter_pvid)
         snap.add_alert(t)
       end
-    rescue
+    rescue => e
+      caught_rescue(e)
     end
     
     # Checks if the reset_adapter attribute is set to _no_.  If it not
@@ -278,10 +395,41 @@ class Seas < Item
     # @param (see check_pvid)
     def check_reset_adapter(snap, sea)
       if (value = sea.attributes.adapter_reset.value) != "no"
-        t = Alerts.reest_adapter_yes(sea, value)
+        t = Alerts.reset_adapter_yes(sea.name, value)
         snap.add_alert(t)
       end
-    rescue
+    rescue => e
+      caught_rescue(e)
+    end
+
+    # Checks if all of the adapters listed in the virt_adapters list
+    # are trunk adapters and adds {Alerts.not_trunk} for each which is
+    # not.
+    # @param (see check_pvid)
+    def check_virt_adapters(snap, sea)
+      sea.virt_adapters.each do |vea|
+        if vea.entstat.trunk_adapter != "True"
+          snap.add_alert(Alerts.not_trunk(sea.name, vea.name))
+        else
+          # {EthernetAdapters} checks all VEAs and flags the Trunk
+          # Adapters unless this attribute is true.
+          vea[:is_trunk] = true
+        end
+      end
+    rescue => e
+      caught_rescue(e)
+    end
+
+    # Alerts if ctl_chan is a trunk adapter and adds {Alerts.is_trunk}
+    # if it is.
+    # @param (see check_pvid)
+    def check_ctl_chan(snap, sea)
+      if (ctl_chan = sea.ctl_chan) &&
+         ctl_chan.entstat.trunk_adapter != "False"
+        snap.add_alert(Alerts.is_trunk(sea.name, ctl_chan.name))
+      end
+    rescue => e
+      caught_rescue(e)
     end
 
     public
@@ -334,7 +482,10 @@ class Seas < Item
             array = host_hash[host]
             array.each do |hash|
               other_hosts = (hosts - [ host ])
-              t = Alerts(hash[:sea].name, hash[:vswitch], hash[:pvid], other_hosts)
+              t = Alerts.over_matched_seas(hash[:sea].name,
+                                           hash[:vswitch], 
+                                           hash[:pvid],
+                                           other_hosts)
               hash[:snap].add_alert(t)
             end
           end
@@ -368,7 +519,9 @@ class Seas < Item
         host_hash.each_pair do |host, array|
           host_set = Set.new
           array.each do |hash|
-            host_set.add(hash[:accum][0 ... -1]) # remove VEA name
+            vea_config_list = hash[:vea_config_list]
+            vea_config_list = vea_config_list.map(&:triple)
+            host_set.add(vea_config_list) # remove VEA name
           end
 
           # If we have multiple snaps for the same host and the SEA
@@ -388,53 +541,58 @@ class Seas < Item
         end
         next unless all.length > 1
 
-        # here is the ick.  What do we know at this point?
+        # here is the ick I mentioned before.
+        #
+        # So....  What do we know at this point?
         #
         # Any SEAs that are over matched have been thrown out by the
-        # if at the top of the method.  Thus the host_hash has 1 or 2
-        # keys.
+        # "next if" at the top of the method.  Thus the host_hash has
+        # 1 or 2 keys.
         #
         # Any host with multiple snaps that changed have also been
-        # thrown out.  That would leave only one host in that case and
-        # the all.set would have at most 1 entry so that has been
-        # thrown out as well.
+        # thrown out by the sea_changed alert.  That would leave only
+        # one host in that case and the all.set would have at most 1
+        # entry so that has been thrown out as well.
         #
         # That leaves us with exactly two hosts and we know that all
         # the snaps within each host match.  Thus we can pick one snap
         # from each host, compare them, determine the proper alert
         # strings, and then add them to all of the snaps.
-        host1, array1 = host_hash.first
+        host_hash_copy = host_hash.dup
+        host1, array1 = host_hash_copy.shift
         hash1 = array1.first    # they are all the same -- just pick one
-        accum1 = hash1[:accum]
-        host2, array2 = host_hash.last
+        vea_config_list1 = hash1[:vea_config_list]
+        host2, array2 = host_hash_copy.shift
         hash2 = array2.first    # they are all the same -- just pick one
-        accum2 = hash2[:accum]
+        vea_config_list2 = hash2[:vea_config_list]
         alerts1 = []
         alerts2 = []
-        while accum1.length > 0 && accum2.length > 0
-          v1 = accum1[0]
-          v2 = accum2[0]
+        while vea_config_list1.length > 0 || vea_config_list2.length > 0
+          v1 = vea_config_list1[0]
+          v2 = vea_config_list2[0]
 
-          # We match. shift one off each accum and move on.
-          if v1[0 ... -1] == v2[0 ... -1]
-            accum1.shift
-            accum2.shift
+          # We match. shift one off each vea_config_list and move on.
+          if v1 == v2
+            vea_config_list1.shift
+            vea_config_list2.shift
             next
           end
           
-          if accum1.empty?
-            a = accum2.shift
+          if vea_config_list1.empty?
+            # case 1
+            a = vea_config_list2.shift
             alerts1.push([:vea_missing, a])
             alerts2.push([:vea_added, a])
-          elsif accum2.empty?
-            a = accum1.shift
+          elsif vea_config_list2.empty?
+            # case 2
+            a = vea_config_list1.shift
             alerts1.push([:vea_added, a])
             alerts2.push([:vea_missing, a])
           else
-            # same vswich and pvid so they differ by allowed VLANs
-            if v1[0 .. 1] == v2[0 .. 1] 
-              allowed1 = v1[2 ... -1] # trim off VEA
-              allowed2 = v2[2 ... -1]
+            # if same switch and pvid
+            if v1.triple[0 .. 1] == v2.triple[0 .. 1] 
+              allowed1 = v1.allowed
+              allowed2 = v2.allowed
               added1 = allowed1 - allowed2
               added2 = allowed2 - allowed1
               unless added1.empty?
@@ -445,14 +603,18 @@ class Seas < Item
                 alerts1.push([:vlan_missing, added2, v1])
                 alerts2.push([:vlan_added, added2, v2])
               end
+              vea_config_list1.shift
+              vea_config_list2.shift
             else
               # vswitch and pvid differ so shift off the lowest one
-              if v1 < v2
-                a = accum1.shift
+              if (v1 <=> v2) < 0 # v1 < v2
+                # case 3
+                a = vea_config_list1.shift
                 alerts1.push([:vea_added, a])
                 alerts2.push([:vea_missing, a])
               else
-                a = accum2.shift
+                # case 4
+                a = vea_config_list2.shift
                 alerts1.push([:vea_missing, a])
                 alerts2.push([:vea_added, a])
               end
@@ -476,6 +638,7 @@ class Seas < Item
               when :vlan_missing
                 t = Alerts.vlan_missing(hash[:sea].name, alert[0], alert[1])
               end
+              hash[:snap].add_alert(t)
             end
           end
         end
@@ -519,24 +682,23 @@ class Seas < Item
       ha_mode = sea.attributes.ha_mode.value
       return if ha_mode == "disabled" || ha_mode == "standby"
       control_adapter = sea[:ctl_chan] || sea[:pvid_adapter]
-      verify_discovery_vea(snap, sea, sea[:pvid_adapter]) unless sea[:ctl_chan]
       return unless (entstat = control_adapter['entstat'])
       @hosts_with_seas.add(snap.hostname)
       vswitch, pvid, allowed = vlan_triple(entstat)
-      accum = []
+      vea_config_list = []
       sea[:virt_adapters].each do |vea|
         next unless (e = vea['entstat'])
         # We add the VEA name at the end.  Later in
         # flag_non_congruent_seas we trim it off during the compares.
         # But it helps with the alert messages.
-        accum.push(vlan_triple(e).flatten.push(vea.name))
+        vea_config_list.push(VeaConfig.new(vea))
       end
-      accum.sort!
+      vea_config_list.sort!
       id = "%#{vswitch}-#{pvid}"
       t = (@make_up_good_name[id] ||= {})
       t = (t[snap.hostname] ||= [])
       t.push({ snap: snap, sea: sea, vswitch: vswitch, pvid: pvid,
-               allowed: allowed, accum: accum})
+               allowed: allowed, vea_config_list: vea_config_list})
     end
 
     # Verifies that the VEA has +Control+ buffers allocated to it.  If
@@ -591,6 +753,8 @@ class Seas < Item
       end
     end
 
+    public
+    
     # From the entstat, returns the <tt>Switch ID</tt>, the <tt>Port
     # VLAN ID</tt>, and the <tt>VLAN Tag IDs</tt>.
     # @param entstat [Entstat] The entstat from a VEA.

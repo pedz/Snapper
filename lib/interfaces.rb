@@ -1,8 +1,9 @@
 require_relative 'logging'
 require_relative 'item'
 require_relative 'snapper'
-# The load order is devices, ethchans, seas, vlans, interfaces
-require_relative 'vlans'
+# The load order is devices, ethchans, seas, vlans, etherner_adapters,
+# interfaces
+require_relative 'ethernet_adapters'
 
 # A snap processor that runs and creates an Intefaces container in the
 # top level db.

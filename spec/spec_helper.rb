@@ -2,7 +2,7 @@
 # this.
 # $LOAD_PATH.unshift File.expand_path("../..", __FILE__)
 
-require_relative 'factories/make_batch'
+require_relative 'factories/batch_dsl'
 
 TEST_SNAP = File.expand_path("../../test.snap", __FILE__)
 TEST_TCPIP_SNAP = TEST_SNAP + "/tcpip/tcpip.snap"
@@ -13,5 +13,5 @@ TEST_ERROR_OUT = TEST_SNAP + "/general/errpt.out"
 Top = self.class
 
 RSpec.configure do |c|
-  c.include  CreateBatchDSL, :create_batch_dsl
+  c.include  BatchDSL, :batch_dsl
 end

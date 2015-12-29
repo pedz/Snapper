@@ -1,7 +1,8 @@
 require_relative 'logging'
 require_relative 'item'
 require_relative 'snapper'
-# The load order is devices, ethchans, seas, vlans, interfaces
+# The load order is devices, ethchans, seas, vlans, etherner_adapters,
+# interfaces
 require_relative 'vlans'
 
 # Finds all the ethernet adapters.  This is done by looking at the
@@ -22,9 +23,16 @@ class EthernetAdapters < Item
     logger.debug { "create called"}
     db = snap.db
     adapters = db.create_item("EthernetAdapters")
-    db.devices.each_pair do |key, value|
-      if ETHERNET_NAME_REGEXP.match(key)
-        adapters[key] = value
+    db.devices.each_pair do |logical_name, device|
+      if ETHERNET_NAME_REGEXP.match(logical_name)
+        adapters[logical_name] = device
+      end
+      if (cu_dv = device.cu_dv) &&
+         cu_dv.pd_dv_ln == "adapter/vdevice/IBM,l-lan" &&
+         device[:is_trunk] != true &&
+         (entstat = device['entstat']) &&
+         entstat['Trunk Adapter'] == "True"
+        snap.add_alert("#{logical_name} is a Trunk Adapter")
       end
     end
     snap.add_item(adapters, 50)
