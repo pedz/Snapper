@@ -1,6 +1,7 @@
 require_relative 'logging'
-require_relative 'filter'
 require_relative 'string'
+require_relative 'print'
+
 # See alternative coding below
 # require_relative 'empty_item'
 require 'json'
@@ -14,6 +15,8 @@ class Item
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
+
+  include Print
 
   # A hash indexed by the same key as the main hash that contains the
   # text of the key in its original form.  For example, when
@@ -29,47 +32,6 @@ class Item
   attr_reader :orig_key
 
   class << self
-    # @overload add_filter(filter)
-    #   Adds filter to the class.
-    #   @param filter [Filter] The filter to add to the class.
-    # @overload add_filter(klass, options = {}, &proc)
-    #   Creates a Filter using options and proc and adds it to the
-    #   class specified by klass.
-    #   @param klass [String] Specifies the class to add the filter
-    #     to.
-    #   @param options [Hash] The options to pass to Filter.new.
-    #   @param proc [Proc] The proc to pass to Filter.new.
-    #   @see add_filter_to_class
-    def add_filter(*args, &proc)
-      if args.length == 1 && args[0].is_a?(Filter)
-        local_add_filter(args[0])
-      else
-        add_filter_to_class(args[0], args[1], &proc)
-      end
-    end
-
-    # @return [Array<Filter>] The list of filters for this class and
-    #   all of its super classes that support the call.  Thus if
-    #   Ethchan is a subclass of Device and Device is a subclass of
-    #   Item, calling Ethchan.filters results in the filters for
-    #   Ethchan followed by the filters for Device, followed by the
-    #   filters for Item.
-    def filters
-      temp = []
-      entity = self
-      while entity
-        temp << entity.local_filters if entity.respond_to?(:local_filters)
-        entity = entity.superclass
-      end
-      temp.flatten
-    end
-
-    # @return [Array<Filter>] The set of filters only for this class
-    #   sorted using Filter#<=>
-    def local_filters
-      (@filters ||= []).sort!
-    end
-
     # Magic needed to get marshaling to work.  Many classes are
     # created during parse time.  When the dumped file is loaded
     # again, Ruby must already have those classes defined.  This is
@@ -79,118 +41,18 @@ class Item
     # set of the list of classes that need to be created before the
     # marshaled snap file can be reloaded.
     #
-    # This is also where the filters defined for a subclass are loaded
-    # into the class.
-    #
     # @see Snapper#restore
     # @param subclass [Class] The class that just subclassed the
     #   class.
     def inherited(subclass)
       children.push(subclass.to_s)
-      load_filters(subclass)
-    end
 
-    # Called via {Item#inherited} to load the filters for the new
-    # class when it is created.
-    # @param klass [Symbol] The class to load the filters for.
-    def load_filters(klass)
-      logger.debug { "load #{class_hash[klass.to_s].length} filters for #{klass}" }
-      class_hash[klass.to_s].each { |filter| klass.add_filter(filter) }
     end
 
     # This is just a convenience method to initialize children to an
     # empty array.
     def children
       @children ||= []
-    end
-
-    private
-
-    # A new Filter is created using options and proc and added to the
-    # class named by the first argument.  The first argument is
-    # converted to a string if it is not one already.
-    #
-    # This works even before the class exists by saving the Filter in
-    # a local hash and then adding them when the class is created via
-    # the Item.inherited method.
-    #
-    # Note that it is assumed that the target of the message is Item
-    # since this is a private method and the code in add_filter makes
-    # sure that Item is the target before calling this method.
-    #
-    # Creates a Filter using options and proc and adds it to the
-    # class specified by klass.
-    # @param klass [String] Specifies the class to add the filter
-    #   to.
-    # @param options [Hash] The options to pass to Filter.new.
-    # @param proc [Proc] The proc to pass to Filter.new.
-    def add_filter_to_class(klass, options = {}, &proc)
-      klass = klass.to_s
-      filter = Filter.new(options, &proc)
-      if (::Object.const_defined?(klass) &&
-          (klass = ::Object.const_get(klass)) &&
-          klass.respond_to?(:add_filter))
-        logger.debug { "adding filter at #{proc.source_location} to #{klass} "}
-        klass.add_filter(filter)
-      else
-        logger.debug { "storing filter at #{proc.source_location} for #{klass} "}
-        class_hash[klass] << filter
-      end
-    end
-
-    # Each class has its own set of filters.  This method adds Filter
-    # to the class that is the target of the message.
-    # e.g. Foo.add_filter(filter) will add the Filter to class Foo.
-    # @param filter [Filter] The filter to add.
-    def local_add_filter(filter)
-      logger.debug { "local_add_filter #{filter.source_location}" }
-      local_filters << filter
-    end
-
-    # Returns the class variable.
-    def class_hash
-      @@class_hash ||= Hash.new { |hash, key| hash[key] = [] }
-    end
-  end
-
-  # In concept, prints the item.  In reality, it finds the first
-  # filter from {#filters} that is valid for {Context#level} and then
-  # calls that filter's {Filter#run} method.  Sets +@printed+ to true
-  # after the filter is run.  Sets internal +@printing+ to true while
-  # filter is running and thens it back to false when it completes.
-  # @param context [Context] The context to use for printing.
-  def print(context)
-    unless @printing
-      @printing = true
-      filters(context).first(1).each do |filter|
-        filter.run(context, self)
-      end
-    end
-    @printing = false
-    @printed = true
-    context.done unless context.in_list
-    # return context so inject can be used
-    context
-  rescue => e
-    STDERR.puts self.class
-    raise e
-  end
-
-  # @overload filters
-  #   @return [Array<Filter>] returns the full list of filters
-  #     returned by {Item.filters}.
-  # @overload filter(context)
-  #   @param context [Context] Provides the level as specified on the
-  #     command line.
-  #   @return [Array<Filter>] returns the list of filters returned by
-  #     {Item.filter} but filtered such that {Filter#level} ===
-  #     {Context#level}.  Note: {Filter#level} is a range so the test
-  #     above is true if {Filter#level} contains {Context#level}.
-  def filters(context = nil)
-    if context
-      self.class.filters.select { |filter| filter.level === context.level }
-    else
-      self.class.filters
     end
   end
 

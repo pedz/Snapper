@@ -1,6 +1,5 @@
 require_relative "netstat_v"
 require_relative "entstat"
-require_relative "filter"
 
 # Parsers the output from netstat -d entN where entN is a vioent
 # adapter.

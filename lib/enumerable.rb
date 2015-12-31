@@ -18,7 +18,7 @@ module Enumerable
   #   end
   #
   # @param context [Context] The context to pass to each item's
-  #   {Item#print} routine.
+  #   {Print#print} routine.
   # @param proc [Proc] Optional proc.
   # @yieldparam context [Context] The contexted passed in.
   # @yieldparam item [Object] Each item in the enumeration.

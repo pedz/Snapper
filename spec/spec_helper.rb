@@ -12,6 +12,9 @@ TEST_ERROR_OUT = TEST_SNAP + "/general/errpt.out"
 
 Top = self.class
 
-RSpec.configure do |c|
-  c.include  BatchDSL, :batch_dsl
+RSpec.configure do |config|
+  config.include  BatchDSL, :batch_dsl
+  config.mock_with :rspec do |mocks|
+    mocks.verify_doubled_constant_names = true
+  end
 end

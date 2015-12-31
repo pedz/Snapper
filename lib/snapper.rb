@@ -4,6 +4,7 @@ require_relative 'logging'
 require_relative 'options'
 require_relative 'snap'
 require_relative 'batch'
+require_relative 'print'
 
 # A class that represents the snapper program
 class Snapper
@@ -281,7 +282,7 @@ class Snapper
   end
 
   def print
-    @batch.print(Context.new(@options))
+    @batch.print(Print::Context.new(@options))
   end
 
   def interactive

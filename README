@@ -164,10 +164,10 @@ two SEAs on two different LPARs but on the same CEC are using the same
 VLAN tag.
 
 The fourth phrase is the output phase.  The output phrase is done via
-{Filter} instances.  Currently all of the Filter instances are in the
-Filters.rb file but eventually they will also be pulled in from user
-config files.  You can view this file on the {file:Filters Filters}
-page.
+{Print::Filter} instances.  Currently all of the Filter instances are
+in the Filters.rb file but eventually they will also be pulled in from
+user config files.  You can view this file on the {file:Filters
+Filters} page.
 
 As mentioned, a user can add in a parser for an part of a snap
 currently unparsed, add in a Snap processor, a Batch processor, and
@@ -386,8 +386,8 @@ entstat starting with the base of {Entstat} which is a subclass of
 Item and then specific parsers for the adapters are subclassed off of
 Entstat such as {EntstatGoent} or {EntstatEthchan}.
 
-The output is generated or +filtered+ by {Filter}s that are class as
-well as level specific.
+The output is generated or +filtered+ by {Print::Filter}s that are
+class as well as level specific.
 
 A filter is added like this:
 
@@ -403,9 +403,9 @@ A filter is added like this:
 The first argument specifies the class as a string.  The second
 argument is a Range of levels that it is valid for.  The 0 .. 11 is
 exactly what it appears -- a range from 0 to 11 inclusive.  We can see
-that this calls {Context#output context.output} with a string which
-ends up going to standard output.  We also see it calling print for
-items within the device such as the list of error log entries, the
+that this calls {Print::Context#output context.output} with a string
+which ends up going to standard output.  We also see it calling print
+for items within the device such as the list of error log entries, the
 entstat output, and the lsattr output.  As mentioned, this hangs off
 of the Device class.  Thus when an item's print method is called and
 the item is a Device, this filter will get involved.
@@ -505,11 +505,11 @@ the arguments that it wants to pass.  In this case, the context and
 the item.
 
 We have not talked about context.  For now, its enough to know that it
-has two methods.  {Context#level context.level} is the level specified
-by the user on the command line.  And {Context#output context.output}
-will get the argument to standard output.  The arguments in this case
-are rather aggressively converted to strings by calling their +to_s+
-method.
+has two methods.  {Print::Context#level context.level} is the level
+specified by the user on the command line.  And {Print::Context#output
+context.output} will get the argument to standard output.  The
+arguments in this case are rather aggressively converted to strings by
+calling their +to_s+ method.
 
 === Parsers
 
@@ -746,7 +746,8 @@ Some ToDos that I can think of... I'm sure there are others.
 1.  The coloring output needs to automatically turn off if output is
     not a tty and couple this with options to force it on or off.
 
-1.  Map out the different levels and what each do.
+1.  Map out the different levels and what each do.  Such as:
+
      0.  all off
 
      1.  alerts only
@@ -788,3 +789,17 @@ Some ToDos that I can think of... I'm sure there are others.
 1.  add path to snap output somehow.
 
 1.  Keep working on and finalize the commands idea.
+
+1.  Separate out the print and filter concept so that other classes
+    can leverage it.
+
+1.  Perhaps separate out the []= and [] features of Item into a mixin.
+    Db already uses something similar.
+
+1.  Do I want alerts per Item?
+
+1.  Iron out the list of directories to search at load time, how to
+    specify them, the default list, and how to override the default
+    list by the command line, options file and perhaps an environment
+    variable.
+
