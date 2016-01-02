@@ -734,15 +734,6 @@ will pop up menus which will currently only lead you to frustration.
 
 Some ToDos that I can think of... I'm sure there are others.
 
-1.  There is a bug in the way I do attributes because some attributes
-    can have multiple CuAt entries and I have not taken that into
-    account in the Ruby code (the javascript code did).
-
-1.  A more comprehensive review of VIOS settings with the SEAs.  This
-    requires matching pairs of SEAs probably via the control channel
-    and then making sure that the VEAs are paired correctly.  This is
-    especially key for sharing mode.
-
 1.  The coloring output needs to automatically turn off if output is
     not a tty and couple this with options to force it on or off.
 
@@ -778,7 +769,7 @@ Some ToDos that I can think of... I'm sure there are others.
 
      11. all keys hierarchically printed
 
-1.  Should be on level where we print out attributes which are not set
+1.  Should be one level where we print out attributes which are not set
     to their defaults.  This should be for device attributes, no
     options, (anything else?).
 
@@ -789,9 +780,6 @@ Some ToDos that I can think of... I'm sure there are others.
 1.  add path to snap output somehow.
 
 1.  Keep working on and finalize the commands idea.
-
-1.  Separate out the print and filter concept so that other classes
-    can leverage it.
 
 1.  Perhaps separate out the []= and [] features of Item into a mixin.
     Db already uses something similar.

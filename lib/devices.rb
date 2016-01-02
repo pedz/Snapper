@@ -23,32 +23,64 @@ class Devices < Item
     db = snap.db
     cu_dvs = db['CuDv']
 
-    # pd_dvs (which may be empty) is a hash by uniquetype
-    pd_dvs = Item.new(@db)
-    db['PdDv'] && db['PdDv'].each do |pd_dv|
-      pd_dv = pd_dv
-      pd_dvs[pd_dv['uniquetype']] = pd_dv
+    # pd_dvs (which may be empty) is a hash[uniquetype]
+    if db['PdDv']
+      pd_dvs = Hash[
+        db['PdDv'].group_by(&:uniquetype).map do |key, array|
+          snap.add_alert("Multiple PdDv entries for #{key}") if array.length > 1
+          [ key, array[0] ]
+        end
+      ]
+    else
+      pd_dvs = {}
     end
 
-    # pd_ats (which may be empty) is a hash by uniquetype of hashes by attribute name
-    pd_ats = Item.new(@db)
-    db['PdAt'] && db['PdAt'].each do |pd_at|
-      pd_at = pd_at
-      uniquetype = pd_at['uniquetype']
-      attribute = pd_at['attribute']
-      pd_ats[uniquetype] ||= Item.new(@db)
-      pd_ats[uniquetype][attribute] = pd_at
+    # Result is hash[uniquetype][attribute]
+    if db['PdAt']
+      pd_ats = Hash[
+        db['PdAt'].group_by(&:uniquetype).map do |uniquetype_key, uniquetype_array|
+          [ uniquetype_key, Hash[ uniquetype_array.group_by(&:attribute) ] ]
+        end
+      ]
+    else
+      pd_ats = {}
     end
 
-    # cu_ats is hash by device name of hashes by attribute name
-    cu_ats = Item.new(@db)
-    db['CuAt'].each do |cu_at|
-      cu_at = cu_at
-      name = cu_at['name']
-      attribute = cu_at['attribute']
-      cu_ats[name] ||= Item.new(@db)
-      cu_ats[name][attribute] = cu_at
+    # pd_dvs = Item.new(@db)
+    # db['PdDv'] && db['PdDv'].each do |pd_dv|
+    #   pd_dv = pd_dv
+    #   pd_dvs[pd_dv['uniquetype']] = pd_dv
+    # end
+
+    # Result is hash[name][attribute]
+    if db['CuAt']
+      cu_ats = Hash[ db['CuAt'].group_by(&:name).map do |key, array|
+                       [ key, array.group_by(&:attribute) ]
+                     end
+                   ]
+    else
+      cu_ats = {}
     end
+
+    # # pd_ats (which may be empty) is a hash by uniquetype of hashes by attribute name
+    # pd_ats = Item.new(@db)
+    # db['PdAt'] && db['PdAt'].each do |pd_at|
+    #   pd_at = pd_at
+    #   uniquetype = pd_at['uniquetype']
+    #   attribute = pd_at['attribute']
+    #   pd_ats[uniquetype] ||= Item.new(@db)
+    #   pd_ats[uniquetype][attribute] = pd_at
+    # end
+
+    # # cu_ats is hash by device name of hashes by attribute name
+    # cu_ats = Item.new(@db)
+    # db['CuAt'].each do |cu_at|
+    #   cu_at = cu_at
+    #   name = cu_at['name']
+    #   attribute = cu_at['attribute']
+    #   cu_ats[name] ||= Item.new(@db)
+    #   cu_ats[name][attribute] = cu_at
+    # end
 
     errs = Item.new(@db)
     db['Errpt'].each do |err|
@@ -61,37 +93,29 @@ class Devices < Item
 
     devices = db.create_item("Devices")
     cu_dvs.each do |cu_dv|
-      cu_dv = cu_dv
       name = cu_dv['name']
+      pd_dv_ln = cu_dv['PdDvLn']
+
       device = Device.new("", db)
       devices[name] = device
+
       device[:name] = name
       device['CuDv'] = cu_dv
-      device['CuAt'] = cu_ats[name]
-      pd_dv_ln = cu_dv['PdDvLn']
+      device['CuAt'] = device_cu_ats = (cu_ats[name] || {})
       device['PdDv'] = pd_dvs[pd_dv_ln]
-      device['PdAt'] = pd_ats[pd_dv_ln]
+      device['PdAt'] = device_pd_ats = (pd_ats[pd_dv_ln] || {})
+
       attributes = Item.new(@db)
-      (device['PdAt'] || device['CuAt'] || Item.new(@db)).keys.each do |key|
-        cu_at = cu_at[key] if cu_at = device['CuAt']
-        pd_at = pd_at[key] if pd_at = device['PdAt']
-        hash = Item.new(@db)
-        unless pd_at.nil?
-          %w{ attribute uniquetype deflt values width type generic rep nls_index }.each do |field|
-            hash[field] = pd_at[field]
-          end
-          # Assume the default is set
-          hash['value'] = pd_at['deflt']
-        end
-        unless cu_at.nil?
-          %w{ name attribute value type generic rep nls_index }.each do |field|
-            hash[field] = cu_at[field]
-          end
-        end
-        attributes[key] = hash
+      attrs = Item.new(@db)
+      (device['PdAt'] || device['CuAt'] || {}).keys.each do |attribute|
+        attr = Attribute.new(device_cu_ats[attribute], device_pd_ats[attribute])
+        attributes[attribute] = attr
+        attrs[attribute] = attr.value
       end
-      device['lsattr'] = nil  # filled in by Lsattr later
       device['attributes'] = attributes
+      device['attrs'] = attrs
+
+      device['lsattr'] = nil  # filled in by Lsattr later
       device['errpt'] = errs[name]
       device['entstat'] = netstat_v[name]
       device['netstat_in'] = netstat_in[name]

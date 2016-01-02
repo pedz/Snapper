@@ -10,34 +10,34 @@ class Options
 
   extend Forwardable
 
-  # @!macro [attach] def_delegators
+  # @!macro [attach] def_delegator
   #   @!method $2
   #     Forwards to $1.
   #     @see OptParser#$2
-  def_delegators :opt_parser, :order!
-  def_delegators :opt_parser, :on
-  def_delegators :opt_parser, :on_head
-  def_delegators :opt_parser, :on_tail
-  def_delegators :opt_parser, :help
-  def_delegators :opt_parser, :add_officious
-  def_delegators :opt_parser, :banner
-  def_delegators :opt_parser, :banner=
-                              true # Added to keep emacs formatting happy
-  def_delegators :opt_parser, :program_name
-  def_delegators :opt_parser, :abort
-  def_delegators :opt_parser, :release
-                              true # Added to keep emacs formatting happy
-  def_delegators :opt_parser, :release=
-  def_delegators :opt_parser, :version
-  def_delegators :opt_parser, :version=
-                              true # Added to keep emacs formatting happy
+  def_delegator :opt_parser, :order!
+  def_delegator :opt_parser, :on
+  def_delegator :opt_parser, :on_head
+  def_delegator :opt_parser, :on_tail
+  def_delegator :opt_parser, :help
+  def_delegator :opt_parser, :add_officious
+  def_delegator :opt_parser, :banner
+  def_delegator :opt_parser, :banner=
+                             true # Added to keep emacs formatting happy
+  def_delegator :opt_parser, :program_name
+  def_delegator :opt_parser, :abort
+  def_delegator :opt_parser, :release
+  def_delegator :opt_parser, :release=
+                             true # Added to keep emacs formatting happy
+  def_delegator :opt_parser, :version
+  def_delegator :opt_parser, :version=
+                             true # Added to keep emacs formatting happy
   
-  # @!macro [attach] def_delegators
+  # @!macro [attach] def_delegator
   #   @!method $2(*args)
   #     Forwards to $1.
   #     @see IO#$2
-  def_delegators :output, :puts
-  def_delegators :output, :printf
+  def_delegator :output, :puts
+  def_delegator :output, :printf
 
   # @return [Array<String>] The list of snaps to process
   attr_accessor :dir_list
