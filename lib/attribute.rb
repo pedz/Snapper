@@ -23,12 +23,12 @@ class Attribute
       fail "Both cu_ats and pd_at can not be empty"
     end
     @cu_ats = cu_ats
-    @pd_ats = pd_at
+    @pd_ats = pd_ats
   end
 
-  # @return [Array<Item>] The CuAt entries for this attribute.  Note that
-  #   this is an Array usually with zero or one elements but can be a
-  #   list such as the +route+ attribute of +inet0+.
+  # @return [Array<Item>] The CuAt entries for this attribute.
+  # @note This is an Array usually with zero or one elements but can
+  #   be a list such as the +route+ attribute of +inet0+.
   def cu_ats
     @cu_ats ||= []
   end
@@ -41,7 +41,7 @@ class Attribute
   end
 
   # @return [Array<Item>] The PdAt entries with the same uniquetype.
-  #   This usually has zero or one elements but there are cases of
+  # @note This usually has zero or one elements but there are cases of
   #   multiple PdAt entries for the same attribute with the same
   #   uniquetype.
   def pd_ats
@@ -55,15 +55,16 @@ class Attribute
   end
 
   # @return [Array<String, Integer>] Returns the +value+ field of the
-  #   CuAt entries.  Note that the +PdAt+ ODM entries also have a
-  #   +values+ field which is the set of legal values for the
-  #   attribute.  To access this field, use {#pd_at_values}.
+  #   CuAt entries.
+  # @note The +PdAt+ ODM entries also have a +values+ field which is
+  #   the set of legal values for the attribute.  To access this
+  #   field, use {#pd_at_values}.
   def values
     @values ||= @cu_ats.map(&:value)
   end
 
   # @return [Boolean] true if at least one value in values is not
-  #   equal to the default value.
+  #   equal to the deflt value.
   def customized?
     default = deflt
     !(values.empty? || values.all? { |v| v == default })
@@ -127,6 +128,8 @@ class Attribute
 
   # @return [String] The +rep+ field of either the +PdAt+ entry
   #   or the +CuAt+ entry.
+  # @note In some examples the rep of the CuAt entry does not match
+  #   the rep in the matching PdAt entry.
   def rep
     either.rep
   end
