@@ -1,10 +1,17 @@
 require_relative "list"
+require_relative "print"
 
 # The term CEC is used to denote a set of hardware including the CPU,
 # memory, etc.  A CEC may then be divided into virtual LPARs which is
 # what is traditionally viewed as a host.  Note that this is *not* a
 # subclass of Item.
 class CEC
+  include Print
+
+  # @return [Array<Alert>] Array of {Alert}s that has been added to
+  #   the CEC.
+  attr_reader :alerts
+  
   # @return [String] The id_to_system attribute as pulled from the
   #   sys0 device.
   attr_reader :id_to_system
@@ -64,16 +71,6 @@ class CEC
   # @param b [CEC] The other CEC to compare to.
   def <=>(b)
     self.id_to_system <=> b.id_to_system
-  end
-
-  # Print the CEC out which prints out the info about the CEC along
-  # with the list of {Alert}s and {LPAR}s nested one level deeper.
-  # @param context [Context] The context to use for printing.
-  def print(context)
-    context.output("CEC model:#{model} CPU:#{cpu_type} firmware:#{firmware_level} Id:#{id_to_system}")
-    @alerts.print(context.nest)
-    @lpar_list.print(context.nest)
-    context
   end
 
   # Marshal out the CEC as a JSON object

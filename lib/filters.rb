@@ -9,22 +9,37 @@ Print.add_filter("Alert", { level: 1 .. 10 }) do |context, item|
   context.output(item.to_text, [ :red ])
 end
 
+# Print the CEC out which prints out the info about the CEC along with
+# the list of {Alert}s and {LPAR}s nested one level deeper.
+Print.add_filter("CEC", { level: 0 .. 11 }) do |context, cec|
+  if context.level >= 2
+    context.output("CEC model:#{cec.model} CPU:#{cec.cpu_type} " +
+                   "firmware:#{cec.firmware_level} Id:#{cec.id_to_system}")
+  end
+  cec.alerts.print(context.nest)
+  cec.lpar_list.print(context.nest)
+  context
+end
+
 # Device filter for all levels calls output for the currenct device as
 # well as the error log entries from errpt.out, the entstat -d output
 # from tcpip.snap, and the lsattr output from general.snap
 Print.add_filter("Device", { level: 0 .. 11 }) do |context, item|
   unless item.printed
-    context.output([ item.cu_dv.name, item.cu_dv.ddins, context.modifier ].join(' '))
+    if context.level >= 2
+      context.output([ item.cu_dv.name, item.cu_dv.ddins, context.modifier ].join(' '))
+    end
     item['errpt'].print(context.nest) if item['errpt']
-    item['entstat'].print(context.nest)    if item['entstat']
-    item['lsattr'].print(context.nest)     if item['lsattr']
+    item['entstat'].print(context.nest) if item['entstat']
+    item['lsattr'].print(context.nest) if item['lsattr']
   end
 end
 
-# The level 1 Entstat filter prints out lines that contain error,
-# overrun, or underrun if the values are not zero.  It also checks the
-# LACP Actor and Partner State to make sure that the state is good.
-Print.add_filter("Entstat", { level: 1 .. 5 }) do |context, item|
+# The level 3 through 7 Entstat filter prints out lines that contain
+# error, overrun, or underrun if the values are not zero.  It also
+# checks the LACP Actor and Partner State to make sure that the state
+# is good.
+Print.add_filter("Entstat", { level: 3 .. 7 }) do |context, item|
   item.flat_keys.each do |k, v|
     if /error|overrun|underrun/i.match(k) && v != 0
       context.output("#{k}:#{v}")
@@ -47,20 +62,19 @@ Print.add_filter("Entstat", { level: 1 .. 5 }) do |context, item|
   end
 end
 
-# The level 2 through 10 filter for Entstat simply dumps the text to
-# output.  This probably needs to be improved.  Perhaps the above
-# filter's range could be 1 .. 4 and this filter could be 5 .. 10.
-Print.add_filter("Entstat", { level: 6 .. 10 }) do |context, item|
+# The level 8 through 10 filter for Entstat simply dumps the text to
+# output.  This probably needs to be improved.
+Print.add_filter("Entstat", { level: 8 .. 10 }) do |context, item|
   text = item.to_text.each_line
   text = text.select { |line| /\A=+\Z/.match(line) ? false : true }
   context.output(text)
 end
 
-# The filter for EntstatVioent levels 1 through 5 print out the VLAN
+# The filter for EntstatVioent levels 3 through 7 print out the VLAN
 # Tag ID (PVID) as well as the allowed VLANs.  It also checks and
 # prints out any Hypervisor Send or Receive Failures that are
 # non-zero.
-Print.add_filter("EntstatVioent", { level: 1 .. 5 })  do |context, item|
+Print.add_filter("EntstatVioent", { level: 3 .. 7 })  do |context, item|
   text = "Port VLAN ID: #{item["Port VLAN ID"]}"
   text += " VLAN Tag IDs #{item["VLAN Tag IDs"]}" unless item["VLAN Tag IDs"] == "None"
   text += " on #{item["Switch ID"]}"
@@ -77,7 +91,7 @@ Print.add_filter("EntstatVioent", { level: 1 .. 5 })  do |context, item|
   context.output(text)
 end
 
-# The level 1 filter for Errpt prints out the count of errors passed
+# The level 3 filter for Errpt prints out the count of errors passed
 # to it.  The assumption is that the Device printing out the error
 # report entries and for level 1 output, only the number of entries is
 # reported (and then only if it is not zero).
@@ -85,7 +99,7 @@ end
 # This is an example of how a context can be used to just report the
 # number of entries rather than the details of all the entries.
 # 
-Print.add_filter("Errpt", { level: 1 .. 1 }) do |context, item|
+Print.add_filter("Errpt", { level: 3 .. 3 }) do |context, item|
   if context.state.nil?
     context.state = { count: 0 }
     context.proc = Proc.new do |context|
@@ -95,15 +109,16 @@ Print.add_filter("Errpt", { level: 1 .. 1 }) do |context, item|
   context.state[:count] += 1
 end
 
-# The level 2 through 5 filter for Errpt removes duplicate error
-# report entries where a duplicate is one that has the same label (and
-# will be for the same device when the error log entries are printed
-# by the Device filter above).
+# The level 4 filter for Errpt removes duplicate error report entries
+# where a duplicate is one that has the same label (and will be for
+# the same device when the error log entries are printed by the Device
+# filter above).
 # 
 # This is an example of how a context can be used to remove duplicat
 # entries.
-Print.add_filter("Errpt", { level: 2 .. 5 }) do |context, item|
+Print.add_filter("Errpt", { level: 4 .. 4 }) do |context, item|
   text = "%*s %s" % [ -22, item.label, item.date_time ]
+  @internal = false
 
   if context.state.nil?
     context.state = {
@@ -121,9 +136,11 @@ Print.add_filter("Errpt", { level: 2 .. 5 }) do |context, item|
           context.nest.output("#{state[:count]} duplicates removed")
         end
       end
-      context.output(state[:last_text])
+      context.output(state[:last_text]) if state[:last_text]
+      context.output() unless @internal
       state[:middle_text] = state[:last_text] = nil
       state[:count] = -1
+      @internal = false
     end
   end
   state = context.state
@@ -133,10 +150,21 @@ Print.add_filter("Errpt", { level: 2 .. 5 }) do |context, item|
     state[:last_text] = text
   else
     if state[:last_text]
+      @internal = true
       context.proc.call(context)
     end
     context.output(text)
     state[:first] = item
+  end
+end
+
+# The level 5 filter prints a condensed form of the error entry but
+# does not remove duplicates.
+Print.add_filter("Errpt", { level: 5 .. 10 }) do |context, item|
+  text = "%*s %s" % [ -22, item.label, item.date_time ]
+  context.output(text)
+  context.proc = Proc.new do |context|
+    context.output()
   end
 end
 
@@ -157,7 +185,7 @@ Print.add_filter("EthernetAdapters", { level: 0 .. 11 }) do |context, item|
     # @todo this probably should change at higher levels to print the
     #   name and then print the status beside it.
     unless device.printed || (device.cu_dv.status == 0)
-      if first_item
+      if first_item && context.level >= 2
         context.output("Unused Adapters")
         first_item = false
       end
@@ -165,24 +193,11 @@ Print.add_filter("EthernetAdapters", { level: 0 .. 11 }) do |context, item|
     end
     context
   end
-  if first_item
+  if first_item && context.level >= 2
     context.output("No unused adapters")
   end
-  if context.level > 0
+  if context.level >= 3
     context.output()
-  end
-end
-
-# This could be broken into two filters possibly.  For levels greater
-# than 2, a banner is printed with the host name centered.  For level
-# 0 and 1, a simpler "Host: foo" is printed.
-Print.add_filter("Hostname", { level: 0 .. 10 }) do |context, item|
-  if context.level > 2
-    context.output("#" * 80)
-    context.output("##{item.node_name.center(78)}#")
-    context.output("#" * 80)
-  elsif context.level >= 0
-    context.output("Host: #{item.node_name}")
   end
 end
 
@@ -194,31 +209,33 @@ end
 # on (loopback has no Device entry).
 Print.add_filter("Interface", { level: 0 .. 11 }) do |context, item|
   unless item.printed
-    text = item[:name]
-    text += " #{item[:inet][0][:address]}" if item[:inet]
-    text += " #{item[:inet6][0][:address]}" if item[:inet6]
-    text += " mtu:%s mac:%s ipkts:%s opkts:%s" %
-            [ item[:mtu],
-              item[:mac],
-              item[:ipkts],
-              item[:opkts] ]
-    if item[:ierrs] > 0 || item[:oerrs] > 0
-      context.output(text, [ :nocr ])
-      text = []
-      if item[:ierrs] > 0
-        text << ("ierrs:%s" % item[:ierrs])
+    if context.level >= 2
+      text = item[:name]
+      text += " #{item[:inet][0][:address]}" if item[:inet]
+      text += " #{item[:inet6][0][:address]}" if item[:inet6]
+      text += " mtu:%s mac:%s ipkts:%s opkts:%s" %
+              [ item[:mtu],
+                item[:mac],
+                item[:ipkts],
+                item[:opkts] ]
+      if item[:ierrs] > 0 || item[:oerrs] > 0
+        context.output(text, [ :nocr ])
+        text = []
+        if item[:ierrs] > 0
+          text << ("ierrs:%s" % item[:ierrs])
+        end
+        if item[:oerrs] > 0
+          text << ("oerrs:%s" % item[:oerrs])
+        end
+        context.output(text, [ :red ])
+      else
+        context.output(text)
       end
-      if item[:oerrs] > 0
-        text << ("oerrs:%s" % item[:oerrs])
-      end
-      context.output(text, [ :red ])
-    else
-      context.output(text)
     end
     if item[:adapter]
       item[:adapter].print(context.nest)
     end
-    if context.level > 0
+    if context.level > 2
       context.output()
     end
   end
@@ -227,9 +244,6 @@ end
 # A Filter that simply runs through the list of interfaces printing
 # each out.
 Print.add_filter("Interfaces", { level: 0 .. 11 }) do |context, item|
-  if context.level > 2
-    context.output("##{"Interfaces".center(78)}#")
-  end
   item.each_value.print(context.dup)
 end
 
@@ -238,7 +252,7 @@ Print.add_filter("Item", { level: 0 }) { |context, item| } # do nothing
 
 # The default Filter for levels 6 though 10 dumps out the text
 # associated with the item.
-Print.add_filter("Item", { level: 6 .. 10 }) do |context, item| # print all the text
+Print.add_filter("Item", { level: 6 .. 10 }) do |context, item|
   unless item.printed
     context.output(item.to_text)
   end
@@ -252,12 +266,22 @@ Print.add_filter("Item", { level: 11 }) do |context, item|
   end
 end
 
+# Print the LPAR out which prints out the info about the LPAR along
+# with the list of {Alert}s and the list of {Snap}s nested one level
+# deeper.
+Print.add_filter("LPAR", { level: 0 .. 11 }) do |context, lpar|
+  context.output("Host: #{lpar.hostname}") if context.level >= 2
+  lpar.alerts.print(context.nest)
+  lpar.snap_list.print(context.nest)
+  context
+end
+
 # Currently, the lsattr entries dump out their original text at level
 # 4 through 10.  This needs to be improved and probably some level
 # should print entries only if they differ from their defaults.  Also,
 # the Device filter could change.  If the PdAt entries are present, it
 # would provide a better mechanism for printing out the attributes.
-Print.add_filter("Lsattr", { level: 4 .. 10 }) do |context, item|
+Print.add_filter("Lsattr", { level: 9 .. 10 }) do |context, item|
   context.output(item.to_text)
 end
 
@@ -291,7 +315,7 @@ Print.add_filter("Seas", { level: 0 .. 11 }) do |context, item|
   item.each_value.print(context) do |context, device|
     unless device.printed
       context = device.print(context)
-      if context.level > 0
+      if context.level >= 3
         context.output()
       end
     end
@@ -299,7 +323,17 @@ Print.add_filter("Seas", { level: 0 .. 11 }) do |context, item|
   end
 end
 
-Print.add_filter("Vlan", { level: 1 .. 11 }) do |context, item|
+# Print the Snap out which prints out the info about the Snap along
+# with the list of {Alert}s and the list of {Item}s the were added via
+# {Snap#add_item add_item} nested one level deeper.
+Print.add_filter("Snap", { level: 0 .. 11 }) do |context, snap|
+  context.output("Snap taken #{snap.date_time}") if context.level >= 2
+  snap.alerts.print(context.nest)
+  snap.print_list.print(context.nest)
+  context
+end
+
+Print.add_filter("Vlan", { level: 0 .. 11 }) do |context, item|
   modifier = "VLAN ID: #{item.attributes.vlan_tag_id.value}"
   item[:super].print(context.modifier(modifier))
   item[:base_adapter].print(context.nest)

@@ -1,7 +1,14 @@
 require_relative "list"
+require_relative "print"
 
 # An LPAR or a host.
 class LPAR
+  include Print
+
+  # @return [Array<Alert>] Array of {Alert}s that has been added to
+  #   the LPAR.
+  attr_reader :alerts
+
   # @return [String] The hostname as found by the hostname attribute
   #   of the inet0 device.
   attr_reader :hostname
@@ -46,17 +53,6 @@ class LPAR
   # @param b [LPAR] The other LPAR to compare to.
   def <=>(b)
     self.hostname <=> b.hostname
-  end
-
-  # Print the LPAR out which prints out the info about the LPAR along
-  # with the list of {Alert}s and the list of {Snap}s nested one level
-  # deeper.
-  # @param context [Context] The context to use for printing.
-  def print(context)
-    context.output("Host: #{hostname}")
-    @alerts.print(context.nest)
-    @snap_list.print(context.nest)
-    context
   end
 
   # Marshal out the LPAR as a JSON object

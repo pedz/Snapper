@@ -3,9 +3,19 @@ require_relative 'list'
 require_relative 'logging'
 require_relative 'print_list'
 require_relative 'alert'
+require_relative 'print'
 
 # The body of information contained within a single snap.
 class Snap
+  include Print
+  
+  # @return [Array<Alert>] Array of {Alert}s that has been added to
+  #   the Snap.
+  attr_reader :alerts
+
+  # @return [PrintList] The print list associated with this snap.
+  attr_reader :print_list
+  
   # @return [Db] The Db database passed
   attr_reader :db
 
@@ -67,17 +77,6 @@ class Snap
   #   item.
   def add_item(item, priority)
     @print_list.add(item, priority)
-  end
-
-  # Print the Snap out which prints out the info about the Snap along
-  # with the list of {Alert}s and the list of {Item}s the were added
-  # via {Snap#add_item add_item} nested one level deeper.
-  # @param context [Context] The context to use for printing.
-  def print(context)
-    context.output("Snap taken #{date_time}")
-    @alerts.print(context.nest)
-    @print_list.print(context.nest)
-    context
   end
 
   # Marshal out the Snap as a JSON object

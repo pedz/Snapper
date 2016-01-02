@@ -38,8 +38,8 @@ and out to the real network can be easily followed.
                                        is INFO (1) and the default output is
                                        STDERR.
       -k, --print-keys                 Print the top level keys of the first snap
-      -l, --level N                    Output verbosity level from -1 to 11
-                                       default is 1
+      -l, --level N                    Output verbosity level from 0 to 11
+                                       default is 3
       -o, --output file                Specify an output file
                                        Default is STDOUT
       -q file                          Sets the file that the Quick debug goes to
@@ -128,7 +128,7 @@ other groups.
 
 === Phases
 
-Snapper is set up to work in four phases.  
+Snapper is set up to work in four phases.
 
 The first phase is the parse phase where the snaps are ransacked and
 as much of it is parsed as possible.  Details of parsing will be
@@ -175,48 +175,54 @@ create filters to more precisely control the output.
 
 === Levels
 
-Levels go from -1 up to (as Spinal Tap says) 11.  
+Levels go from 0 up to 11.
 
-The purpose of level -1 is for debugging.  All normal output is
+The purpose of level 0 is for debugging.  All normal output is
 stopped and the user will only see the debug statements.
 
-The purpose of level 0 is to give a very quick overview of the set up.
+The purpose of level 1 is to see only the alerts.  Currently there is
+not much context to match so this may be confusing.  Alerts are
+settings or conditions that points to an issue or often leads to an
+issue.  Alerts can be added to the CEC, LPAR, or Snap and levels 2 and
+up are listed at the start of the CEC, LPAR, or Snap output.
+
+The purpose of level 2 is to give a very quick overview of the set up.
 The output from the sample snap is this:
 
    1 CEC model:9117-MMC CPU:POWER7 firmware:AM740_100 Id:0X8000007F46B00000
    2   Host: aph001
-   3     Snap taken 2013-07-17T08:18:26+02:00
+   3     Snap taken 2013-07-17T08:17:34+02:00
    4       en9 10.201.10.31 mtu:1500 mac:0.0.c9.d9.e8.bf ipkts:0 opkts:14
-   5         ent9 pci/elxentdd 
+   5         ent9 pci/elxentdd
    6       en22 10.201.55.100 mtu:1500 mac:e4.1f.13.fd.29.75 ipkts:190896 opkts:210601
-   7         ent22 seadd State:PRIMARY Bridge Mode:All
-   8           ent2 pci/goentdd 
-   9           ent15 vioentdd 
+   7         ent22 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
+   8           ent2 pci/goentdd
+   9           ent15 vioentdd
   10           ent10 vioentdd ctrl channel
   11       lo0 127.0.0.1  mtu:16896 mac: ipkts:5735 opkts:5735
-  12       ent23 seadd State:PRIMARY Bridge Mode:All
-  13         ent20 ethchandd 
-  14           ent0 pci/elxentdd 
-  15           ent8 pci/elxentdd 
-  16         ent16 vioentdd 
+  12       ent23 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
+  13         ent20 ethchandd
+  14           ent0 pci/elxentdd
+  15           ent8 pci/elxentdd
+  16         ent16 vioentdd
   17         ent11 vioentdd ctrl channel
-  18       ent24 seadd State:PRIMARY Bridge Mode:All
-  19         ent21 ethchandd 
-  20           ent6 pci/elxentdd 
-  21           ent7 pci/elxentdd 
-  22         ent17 vioentdd 
+  18       ent24 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
+  19         ent21 ethchandd
+  20           ent6 pci/elxentdd
+  21           ent7 pci/elxentdd
+  22         ent17 vioentdd
   23         ent12 vioentdd ctrl channel
-  24       ent25 seadd State:PRIMARY Bridge Mode:All
-  25         ent3 pci/goentdd 
-  26         ent18 vioentdd 
+  24       ent25 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
+  25         ent3 pci/goentdd
+  26         ent18 vioentdd
   27         ent13 vioentdd ctrl channel
-  28       ent26 seadd State:PRIMARY Bridge Mode:All
-  29         ent4 pci/goentdd 
-  30         ent19 vioentdd 
+  28       ent26 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
+  29         ent4 pci/goentdd
+  30         ent19 vioentdd
   31         ent14 vioentdd ctrl channel
   32       Unused Adapters
-  33         ent1 pci/elxentdd 
-  34         ent5 pci/goentdd 
+  33         ent1 pci/elxentdd
+  34         ent5 pci/goentdd
 
 Line 1 is for the CEC and includes the mode, CPU type, firmware level,
 and a little known attribute called +id_to_system+ that is found in
@@ -240,7 +246,7 @@ if it is present and much of the data could also come from +CuDv+ and
 snap.  Each interface, also prints the device associated with it
 nested one level deeper.
 
-Line 5 is the device that line 4 is on top of.  For level 0, only the
+Line 5 is the device that line 4 is on top of.  For level 2, only the
 device name and the driver are printed.  I could add the description
 as seen from lsdev.adapters but I personally find that useless.
 
@@ -263,100 +269,97 @@ are not part of a SEA, have no interface on top of them (or their
 container in the case of adapters within an ether channel), and are
 not in the Defined state.
 
-I believe that level 0 output is done.  I can't think of what else I
-want to add to it.  Remember, the default is level 1 so the user must
-ask for level 0 output so I assume minimal output is desired.
+I believe that level 2 output is done.  I can't think of what else I
+want to add to it.  Remember, the default is level 3 so the user must
+ask for level 2 output so I assume minimal output is desired.
 
-The default output of snapper allowing the level to default to 1 is
+The default output of snapper allowing the level to default to 3 is
 shown below:
 
    1 CEC model:9117-MMC CPU:POWER7 firmware:AM740_100 Id:0X8000007F46B00000
    2   Host: aph001
-   3     Snap taken 2013-07-17T08:18:26+02:00
+   3     Snap taken 2013-07-17T08:17:34+02:00
    4       en9 10.201.10.31 mtu:1500 mac:0.0.c9.d9.e8.bf ipkts:0 opkts:14
-   5         ent9 pci/elxentdd 
+   5         ent9 pci/elxentdd
    6           Receive Statistics,Receive Errors:685617
    7           Receive Statistics,DMA Overrun:685617
-   8 
+   8
    9       en22 10.201.55.100 mtu:1500 mac:e4.1f.13.fd.29.75 ipkts:190896 opkts:210601
-  10         ent22 seadd State:PRIMARY Bridge Mode:All
+  10         ent22 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
   11           16 error log entries
-  12           ent2 pci/goentdd 
-  13           ent15 vioentdd 
-  14             Port VLAN ID: 300 on ETHERNET0 Active:True
+  12           ent2 pci/goentdd
+  13           ent15 vioentdd
+  14             Port VLAN ID: 300 on ETHERNET0 Active:True Pri:1
   15             Hypervisor Send Failures: 4927
   16           ent10 vioentdd ctrl channel
   17             Port VLAN ID: 1300 on ETHERNET0
-  18 
+  18
   19       lo0 127.0.0.1  mtu:16896 mac: ipkts:5735 opkts:5735
-  20 
-  21       ent23 seadd State:PRIMARY Bridge Mode:All
+  20
+  21       ent23 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
   22         19 error log entries
   23         Receive Statistics,Receive Errors:842400
   24         Receive Statistics,DMA Overrun:842400
   25         Other Statistics,ICMP error packets sent:931
-  26         ent20 ethchandd 
+  26         ent20 ethchandd
   27           Receive Statistics,Receive Errors:842400
   28           Receive Statistics,DMA Overrun:842400
-  29           ent0 pci/elxentdd 
+  29           ent0 pci/elxentdd
   30             Receive Statistics,Receive Errors:156783
   31             Receive Statistics,DMA Overrun:156783
-  32           ent8 pci/elxentdd 
+  32           ent8 pci/elxentdd
   33             Receive Statistics,Receive Errors:685617
   34             Receive Statistics,DMA Overrun:685617
-  35         ent16 vioentdd 
-  36           Port VLAN ID: 4094 VLAN Tag IDs [104, 105, 106, 201, 202, 203, 205, 209, 210, 248, 250, 267, 288, 801, 802] on ETHERNET0 Active:True
+  35         ent16 vioentdd
+  36           Port VLAN ID: 4094 VLAN Tag IDs [104, 105, 106, 201, 202, 203, 205, 209, 210, 248, 250, 267, 288, 801, 802] on ETHERNET0 Active:True Pri:1
   37           Hypervisor Send Failures: 21562715
   38         ent11 vioentdd ctrl channel
   39           Port VLAN ID: 1310 on ETHERNET0
-  40 
-  41       ent24 seadd State:PRIMARY Bridge Mode:All
+  40
+  41       ent24 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
   42         14 error log entries
-  43         ent21 ethchandd 
-  44           ent6 pci/elxentdd 
-  45           ent7 pci/elxentdd 
-  46         ent17 vioentdd 
-  47           Port VLAN ID: 320 on ETHERNET0 Active:True
+  43         ent21 ethchandd
+  44           ent6 pci/elxentdd
+  45           ent7 pci/elxentdd
+  46         ent17 vioentdd
+  47           Port VLAN ID: 320 on ETHERNET0 Active:True Pri:1
   48           Hypervisor Send Failures: 141
   49         ent12 vioentdd ctrl channel
   50           Port VLAN ID: 1320 on ETHERNET0
-  51 
-  52       ent25 seadd State:PRIMARY Bridge Mode:All
+  51
+  52       ent25 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
   53         12 error log entries
-  54         ent3 pci/goentdd 
-  55         ent18 vioentdd 
-  56           Port VLAN ID: 4093 VLAN Tag IDs [270, 275] on ETHERNET0 Active:True
+  54         ent3 pci/goentdd
+  55         ent18 vioentdd
+  56           Port VLAN ID: 4093 VLAN Tag IDs [270, 275] on ETHERNET0 Active:True Pri:1
   57           Hypervisor Send Failures: 1250
   58         ent13 vioentdd ctrl channel
   59           Port VLAN ID: 1340 on ETHERNET0
-  60 
-  61       ent26 seadd State:PRIMARY Bridge Mode:All
+  60
+  61       ent26 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
   62         16 error log entries
-  63         ent4 pci/goentdd 
-  64         ent19 vioentdd 
-  65           Port VLAN ID: 4092 VLAN Tag IDs [271, 272, 1288] on ETHERNET0 Active:True
+  63         ent4 pci/goentdd
+  64         ent19 vioentdd
+  65           Port VLAN ID: 4092 VLAN Tag IDs [271, 272, 1288] on ETHERNET0 Active:True Pri:1
   66           Hypervisor Send Failures: 6942
   67         ent14 vioentdd ctrl channel
   68           Port VLAN ID: 1350 on ETHERNET0
-  69 
+  69
   70       Unused Adapters
-  71         ent1 pci/elxentdd 
-  72         ent5 pci/goentdd 
+  71         ent1 pci/elxentdd
+  72         ent5 pci/goentdd
 
 The flow is the same.  The CEC, host, interfaces, SEAs, and finally
 the unused adapters.
 
-In level 1 mode, the intent is to still be very concise yet point to
-possible problem areas.  level 1 output contains alerts which are
-settings or conditions that one of the various processors believes to
-be either an issue or often leads to an issue.  Processors can add
-alerts to the Batch, CEC, LPAR, or Snap depending.
+In level 3 mode, the intent is to still be very concise yet point to
+possible problem areas.
 
 As you can see on samples of line 6 and 7, entstat fields with the
 word +error+, +overrun+ or +underrun+ are printed out *if* the value
 of the field is not zero.
 
-Line 11 shows a sample of level 1 output for error log entries.  A
+Line 11 shows a sample of level 3 output for error log entries.  A
 count of the error log entries is done to clue the user into the fact
 that this device is having errors in the error log.
 
@@ -367,13 +370,45 @@ should be easy to follow packets in a sharing VIOS setup.
 
 Line 37 is our trusty Hypervisor errors we all love.
 
-Since level 1 is the default, the intent is to make the output concise
-yet point the user to the trouble areas.  Higher levels can be used if
-the user needs more details.
+Here is the objectives of the various levels:
 
-Levels 2 through 11 are very raw and will are changing frequently at
-this point.  Currently level 2 is the same as level 1 except it
-reports lists the error report errors but removes the duplicates.
+0.  all off
+
+1.  alerts only
+
+2.  structural only -- what is now 0 but also include SEAs vlan
+    tag info
+
+3.  The default level shows:
+    * per device errpt collapsed to just counts
+    * errors, dma overruns shown.
+    * LACP issues
+    * Hypervisor errors
+
+4.  level 3 plus
+    * per device errors with dups removed
+
+5.  level 4 plus
+    * all errors
+    * any changed attributes (not implemented)
+    * any changed no settings (also not implemented)
+
+6.  Currently same as level 5.  I am considering decorating the output
+    with banners between sections, etc.
+
+7.  level 5 plus:
+    * full list of ip addresses (not implemented)
+
+8.  level 7 plus:
+    * full list of entstat output
+
+9.  level 8 plus:
+    * full list of lsattr
+
+10. level 9 plus:
+    * no additions yet
+
+11. all keys hierarchically printed
 
 === Filters
 
@@ -394,9 +429,9 @@ A filter is added like this:
   Item.add_filter("Device", { level: 0 .. 11 }) do |context, item|
     unless item.printed
       context.output([ item.cudv.name, item.cudv.ddins, context.modifier ].join(' '))
-      item['errpt'].print(context.nest) if item['errpt']
-      item['entstat'].print(context.nest)    if item['entstat']
-      item['lsattr'].print(context.nest)     if item['lsattr']
+      item['errpt'].print(context.nest)   if item['errpt']
+      item['entstat'].print(context.nest) if item['entstat']
+      item['lsattr'].print(context.nest)  if item['lsattr']
     end
   end
 
@@ -408,7 +443,7 @@ which ends up going to standard output.  We also see it calling print
 for items within the device such as the list of error log entries, the
 entstat output, and the lsattr output.  As mentioned, this hangs off
 of the Device class.  Thus when an item's print method is called and
-the item is a Device, this filter will get involved.
+the item is a Device, this filter will get invoked.
 
 If, for example, a Sea needs to be printed, since Sea is a subclass of
 Device, and Device is a subclass of Item, the list of available
@@ -416,8 +451,8 @@ filters come from (in order) Sea, Device, and then Item.  Currently
 the list is searched until the *first* filter matches the level
 specified on the command line.  If the command line specified an
 output level of 4 and Sea does not have a filter for level 4, then the
-above Device entry will be used and the Filter entries for Item will
-never be really considered.
+Device filter listed above will be used and the Filter entries for
+Item will never be really considered.
 
 This current scheme has issues with code reuse and I may alter it.
 
@@ -483,7 +518,7 @@ could use it.  The output of flat_keys is a list of tuples.  The first
 is the flattened key, the second is the value.  The flattened key is
 the list of hash keys needed to get to the entry separated by commas.
 For example, the number of packets received has a flattened key of
-+Receive Statistics,Packets+ and in our example, value would be
+<tt>Receive Statistics,Packets</tt> and in our example, value would be
 238619.
 
 Lines 2 and 6 create a loop.  Inside that loop, key and value are set
@@ -491,7 +526,7 @@ with successive values.  The if statement starting on line 3 asks if
 the key matches the regular expression.  The i at the end is to make
 the match ignore case.  If the regular expression matches the key and
 the value is not zero, we send to the output a string with the key and
-the value.  In the second sample output above where level is set to 1,
+the value.  In the second sample output above where level is set to 3,
 this is how lines 21 through 23 and many other lines of output got
 produced.
 
@@ -525,7 +560,7 @@ below.
  .....
  .....    netstat -in
  .....
- 
+
  Name  Mtu   Network     Address           Ipkts Ierrs    Opkts Oerrs  Coll
  en10  1500  link#2      e4.1d.2d.e.fd.60 3367529084     0 3619873322    28     0
  en10  1500  10.126.137. 10.126.137.189   3367529084     0 3619873322    28     0
@@ -534,19 +569,19 @@ below.
  lo0   16896 link#1                       21470805     0 21467696     0     0
  lo0   16896 127         127.0.0.1        21470805     0 21467696     0     0
  lo0   16896 ::1%1                        21470805     0 21467696     0     0
- 
+
  .....
  .....    netstat -v
  .....
- 
+
  -------------------------------------------------------------
  ETHERNET STATISTICS (ent10) :
  Device Type: IEEE 802.3ad Link Aggregation
  Hardware Address: e4:1d:2d:0e:fd:60
  Elapsed Time: 12 days 4 hours 46 minutes 32 seconds
- 
+
  Between each set of output is a banner such as:
- 
+
  .....
  .....    netstat -in
  .....
@@ -601,7 +636,7 @@ values.
 
 A sample production is:
 
- # Sample Match:   | Actor State: 
+ # Sample Match:   | Actor State:
  # States Matched: :normal
  # New State:      :LACP_State
  # State Pushed:   yes
@@ -665,7 +700,7 @@ automatically turn off when the output is not a tty.
 
 When the +-D+ command line option is given, snapper will dump the
 current state of the database out to a file called +.ruby.snap.gz+ in
-the top level directory as the snap.  Once this file is created, it
+the top level directory of the snap.  Once this file is created, it
 will be used in place of the phase 1 parsing.  Note that the dump
 currently occurs before the phase 2 processing.  Also, if you are
 adding features to snapper, you might need to delete the file to get
@@ -675,14 +710,14 @@ state will be from before the changes made to the parser.
 
 === HTML
 
-<b>The HTML feature is often broken as I rearrange the internals of
-Snapper.</b>
+<b>Currently, the HTML feature is often broken as I rearrange the
+internals of Snapper.</b>
 
 Snapper can load up a list of snaps and then produce an HTML document
 that shows the configuration of the various LPARs and CECs.  Here is a
 simple one snap sample. link:../images/snapper-sample.jpg
 
-The diagram may need some explaining.  
+The diagram may need some explaining.
 
 The outer grey rectangle is a CEC.  Multiple CECs are handled although
 I've only tried two CECs.
@@ -736,42 +771,6 @@ Some ToDos that I can think of... I'm sure there are others.
 
 1.  The coloring output needs to automatically turn off if output is
     not a tty and couple this with options to force it on or off.
-
-1.  Map out the different levels and what each do.  Such as:
-
-     0.  all off
-
-     1.  alerts only
-
-     2.  structural only -- what is now 0 but also include SEAs vlan
-         tag info
-
-     3.  what is now 1
-          * errpt collapsed to just counts
-          * errors, dma overruns shown.
-          * LACP issues
-          * Hypervisor errors
-
-     4.  errors with dups removed
-
-     5.  any changed attributes
-         all errors
-
-     6.  decroate output -- splats, etc?
-
-     7.  full list of ip addresses
-
-     8.  full list of entstat output
-
-     9.  full list of lsattr
-
-     10. blah blah
-
-     11. all keys hierarchically printed
-
-1.  Should be one level where we print out attributes which are not set
-    to their defaults.  This should be for device attributes, no
-    options, (anything else?).
 
 1.  Hook ifconfig output into netstat -in output.
 

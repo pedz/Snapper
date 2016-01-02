@@ -83,7 +83,7 @@ class Options
     @dump = false
     @html = nil
     @interactive = false
-    @level = 1
+    @level = 3
     @one_file = true
     @output = $stdout
     @print_keys = false
@@ -201,9 +201,9 @@ class Options
       opts.on("-l N",
               "--level N",
               Integer,
-              "Output verbosity level from -1 to 11",
-              "default is 1") do |l|
-        if l < -1 || l > 11
+              "Output verbosity level from 0 to 11",
+              "default is 3") do |l|
+        if l < 0 || l > 11
           raise OptionParser::InvalidArgument.new(l)
         end
         @level = l
