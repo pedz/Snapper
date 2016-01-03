@@ -32,7 +32,7 @@ and out to the real network can be easily followed.
                                        the specified class.  level can be 0, 1, 2,
                                        3, 4, DEBUG, INFO, WARN, ERROR, or FATAL.
                                        path may be a path to a file that is opened
-                                       in append mode, +STDERR+, or +STDOUT+.
+                                       in append mode, "STDERR", or "STDOUT".
                                        Multiple -L options can be specified and
                                        are processed in order.  The default level
                                        is INFO (1) and the default output is
@@ -50,10 +50,16 @@ and out to the real network can be easily followed.
                                        Javascript and CSS files into the HTML
                                        output or (--no-one-file) keep them
                                        separate.
+          --color=[never | always | auto]
+                                       Decorate output with colors
+                                       Default is auto
+          --no-color                   Same as --color=never
+      -p, --paginate                   Pipes output into $SNAPPER_PAGER, or $PAGER, or less
+          --pager=PAGER                Pipes output to PAGER
+          --no-pager                   Do not invoke the pager
+          --interactive                Drops the user into an irb session
           --flat-keys                  Print the flat_keys and value of the entire
                                        database from the first snap.
-          --interactive                Drops the user into an irb session
-      -?, --help                       Show this message
 
 The +-D+ option is detailed in the -D[#label-D] section.
 
@@ -89,6 +95,31 @@ separate.  The default +--one-file+ option embeds the Javascript and
 CSS code which makes it easy to move the HTML file around and load it
 into a browser.
 
+Normally, snapper.rb pipes the output to _less_ and adds colors to
+alerts and a few other pieces of text.  The normal plethora of options
+are available to control these activities.
+
+The +--color+ option can be set to +never+ so the output is never
+colorized, +always+ so the output is always colorized (even when sent
+to a file), or +auto+ causes the output to be colorized only if the
+output is going to a TTY.  The +--no-color+ option is the same as
++--color=never+ option.
+
+If the output is going to a TTY, then normally a pager is used.  The
+choice of pager can be from the +SNAPPER_PAGER+ environment variable,
+else the +PAGER+ environment variable, else _less_.  It may also be
+specified by the +--pager+ command line argument.  The +--no-pager+
+option prevents using a pager.  Likewise, the +-p+ or +--paginate+
+option will reverse a +--no-pager+ option.
+
+If a pager is being used and the pager is _less_ and the +LESS+
+environment variable is not set, it is set to "FRSX" before _less_ is
+invoked.
+
+The +--interactive+ flag is a bit experimental but in essence it
+parses the dump and then drops the user into an interactive Ruby
+session.
+
 The +--flat-keys+ option dumps out the flattened keys (see
 Item#flat_keys) of the database from the first snap.  This is useful
 in debugging to show the path to get to particular fields but it may
@@ -96,9 +127,18 @@ also be useful for diagnostic purposes because after the output is
 produced, simple things like grep will search and find items very
 quickly.
 
-The +--interactive+ flag is a bit experimental but in essence it
-parses the dump and then drops the user into an interactive Ruby
-session.
+=== Source of options
+
+The SNAPPER environment variable may be set with a list of snapper
+options as well as putting command line options into the
+$HOME/.snapper_opts file.  The command line options are scanned in the
+following order:
+
+1. $HOME/.snapper.opts
+
+2. SNAPPER environment variable
+
+3. command line arguments.
 
 == Features
 
@@ -236,7 +276,7 @@ Line 3 is for the {Snap}.  There can be multiple snaps for the same
 host.  The date and time that the +general.snap+ file was created is
 given.
 
-Line 4 starts the interfaces.  Part of snappre is it also represents
+Line 4 starts the interfaces.  Part of Snapper is it also represents
 how I think and go through a snap.  The first piece I want is the
 interfaces.  This tells me which adapters are being used.  Most of the
 data shown on the interface comes from the <tt>netstat -in</tt>
@@ -386,7 +426,7 @@ Here is the objectives of the various levels:
     * Hypervisor errors
 
 4.  level 3 plus
-    * per device errors with dups removed
+    * per device errors with duplicates removed
 
 5.  level 4 plus
     * all errors
@@ -485,7 +525,7 @@ original text as above but also via altered text:
 
   item['receive_statistics']
 
-and you can also retrieve it using dot notition
+and you can also retrieve it using dot notation.
 
   item.receive_statistics
 
@@ -494,7 +534,7 @@ These can be cascaded so
   item.receive_statistics.packets
 
 would return 238619 and the 238619 is recognized as an integer so
-arithmatic can be done on it.  It should be relatively easy to compute
+arithmetic can be done on it.  It should be relatively easy to compute
 error rates or percentages.
 
 All this parsing and nesting leaves filtering hard to do.  You don't
@@ -596,7 +636,7 @@ If it does, it creates an instance of calls parse on that instance.
 If it does not, it uses a generic parser that doesn't really "parse"
 but just saves the text.
 
-The basic concept continues.  The Netstat_v parser pickes up the
+The basic concept continues.  The Netstat_v parser picks up the
 string after Device Type, in our example "IEEE 802.3ad Link
 Aggregation".  In this case, it is a two step process.  It looks to
 see if any class has registered to parse that particular device.  In
@@ -606,10 +646,10 @@ instance of that class is created and parse is called.
 When the instance is created, the file io object is passed to it as
 well as the "database" created for this particular snap.  The parser
 then parses the text from its io object and adds entries to the
-database object.  Its probably eaiser for you just to review the code
+database object.  Its probably easier for you just to review the code
 than to read English text trying to describe it.
 
-The net is however that if some piece of the snap currentl does not
+The net is however that if some piece of the snap currently does not
 have a parser for it, one can be created and added by the user.
 
 === PDA
@@ -726,7 +766,7 @@ The next grey rectangle that consumes the bottom 2/3rds is an LPAR
 with a hostname of aph001.  Multiple LPARs within a CEC are handled.
 
 The blue box at the top labeled "ETHERNET0" is a virtual switch as
-gleamed from the entstat output from the varoius VEAs that connect to
+gleamed from the entstat output from the various VEAs that connect to
 it.  Multiple virtual switches are handled although, again, I've only
 tried two.
 
@@ -739,7 +779,7 @@ This gives a flow from virtual client out to the real network as going
 from top to bottom.
 
 In this case, the LPAR has 5 SEAs which are represented as grey boxes
-that encompases the adapters contained within each SEA.  e.g. the grey
+that encompasses the adapters contained within each SEA.  e.g. the grey
 box that encompasses ent15, ent10, ent22, and ent2.  The SEA itself is
 the center box (going top to bottom) e.g. ent25 is a SEA.  The
 adapters above the SEA are the virtual adapters.  The ones connected
@@ -750,7 +790,7 @@ connects to the bottom of the SEA.
 
 ent23 and ent24 are SEAs that have a real adapter that is an
 etherchannel.  Etherchannels are represented similar to a SEA.  They
-have a surrounding grey box that emcompasses all the adapters within
+have a surrounding grey box that encompasses all the adapters within
 the etherchannel.  The top box is the etherchannel itself with the
 primary adapters connecting to the bottom of the etherchannel box (as
 all of these here do).  The backup adapter connects to the side of the
@@ -769,24 +809,23 @@ will pop up menus which will currently only lead you to frustration.
 
 Some ToDos that I can think of... I'm sure there are others.
 
-1.  The coloring output needs to automatically turn off if output is
-    not a tty and couple this with options to force it on or off.
+1. $HOME/.snapper (directory)
 
-1.  Hook ifconfig output into netstat -in output.
+1. Hook ifconfig output into netstat -in output.
 
-1.  Review files down caa and ctsupt path.
+1. Review files down caa and ctsupt path.
 
-1.  add path to snap output somehow.
+1. add path to snap output somehow.
 
-1.  Keep working on and finalize the commands idea.
+1. Keep working on and finalize the commands idea.
 
-1.  Perhaps separate out the []= and [] features of Item into a mixin.
-    Db already uses something similar.
+1. Perhaps separate out the []= and [] features of Item into a mixin.
+   Db already uses something similar.
 
-1.  Do I want alerts per Item?
+1. Do I want alerts per Item?
 
-1.  Iron out the list of directories to search at load time, how to
-    specify them, the default list, and how to override the default
-    list by the command line, options file and perhaps an environment
-    variable.
+1. Iron out the list of directories to search at load time, how to
+   specify them, the default list, and how to override the default
+   list by the command line, options file and perhaps an environment
+   variable.
 

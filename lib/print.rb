@@ -333,6 +333,14 @@ module Print
           fail "Unknown attribute for output #{attr}"
         end
       end
+
+      # If colorize is off, we stomp these back to off.
+      unless @options.colorize
+        bold = false
+        fg_code = nil
+        bg_code = nil
+      end
+
       blanks = (" " * (@indent * 2))
       if @last_output_had_nocr
         lead = " "

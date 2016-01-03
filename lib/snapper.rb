@@ -87,12 +87,14 @@ class Snapper
   # We load and process the options but ignore any errors so that any
   # logging can be turned on as early as possible
   def run
+    gather_original_command_arguments
     first_option_parse
     load_files
     second_option_parse
     create_batch
     run_batch_processors
     do_cmd
+    @options.output.close
   end
 
   # Needed to get interactive to work
@@ -102,6 +104,22 @@ class Snapper
 
   private
   
+  # Creates @cmd_args which are the arguments from
+  # $HOME/.snapper_opt plus ENV["SNAPPER"] plus ARGV
+  def gather_original_command_arguments
+    @cmd_args = []
+    if home = ENV["HOME"]
+      begin
+        @cmd_args += (Pathname.new(home) + ".snapper_opts").read.split(/\s+/)
+      rescue Errno::ENOENT => e
+      end
+    end
+    if snapper = ENV["SNAPPER"]
+      @cmd_args += snapper.split(/\s+/)
+    end
+    @cmd_args += ARGV
+  end
+
   # Options are parsed in two stages.  As early as possible, the
   # options are parsed so the various debugging and logging options
   # can be set as early as possible.  Then the files are loaded which
@@ -109,13 +127,14 @@ class Snapper
   # done and then the general processing is done.
   def first_option_parse
     @args = []
+    tmp_args = @cmd_args.dup
     begin
-      @options.order!(ARGV) do |opt|
+      @options.order!(tmp_args) do |opt|
         @args << opt
       end
     rescue OptionParser::InvalidOption => e
-      e.recover(ARGV)
-      @args << ARGV.shift
+      e.recover(tmp_args)
+      @args << tmp_args.shift
       retry
     rescue => e
       @options.abort(e.message)
@@ -139,15 +158,11 @@ class Snapper
   # and also allow an option to add to the lists of directories to
   # load.
   def load_files
-    youngest = Time.new(2000)
     Pathname.glob(Pathname.new(__FILE__).parent.realpath + "**/*.rb") do |f|
-      youngest = f.mtime if youngest < f.mtime
       require_relative f
     end
-    youngest.utc
-    @options.version = [ youngest.year , youngest.month, youngest.day ]
-    @options.release = "#{"%02d:%02d:%02d" % [youngest.hour, youngest.min,youngest.sec]}"
-
+    @options.version = "%%% VERSION %%%"
+    @options.release = "%%% RELEASE %%%"
     @@add_command_procs.each do |proc|
       proc.call(self, @options)
     end

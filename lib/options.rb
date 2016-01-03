@@ -39,6 +39,12 @@ class Options
   def_delegator :output, :puts
   def_delegator :output, :printf
 
+  # @return [Boolean] The argument given to --color.  +:auto+ means to
+  #   colorize if the output is a tty (even when being sent to a
+  #   pager).  +:never+ means to never colorize.  +:always+ means to
+  #   always colorize.  Default is :auto
+  # attr_reader :colorize
+
   # @return [Array<String>] The list of snaps to process
   attr_accessor :dir_list
 
@@ -46,6 +52,11 @@ class Options
   #   line.  Default is false.
   attr_reader :dump
   
+  # @return [File] The file to write the html file out to.  The
+  #   default is that this is nil and the text output is done.  When
+  #   this is set, the text output is not done.
+  attr_reader :html
+
   # @return [Boolean] true if the --interactive command line option
   #   was specified and false otherwise.
   attr_reader :interactive
@@ -53,15 +64,6 @@ class Options
   # @return [-1 .. 11] The level indicated by the -l option on the
   #   command line.  The default is 1.
   attr_reader :level
-
-  # @return [Boolean] True if the -k option was given on the command
-  #   line.  The default is false.
-  attr_reader :print_keys
-  
-  # @return [File] The file to write the html file out to.  The
-  #   default is that this is nil and the text output is done.  When
-  #   this is set, the text output is not done.
-  attr_reader :html
 
   # @return [Boolean] True if --one-file was given on the command line
   #   and false if the --no-one-file was given.  The html file can be
@@ -75,10 +77,23 @@ class Options
   # @return [File] Returns the file which text output should be sent.
   #   Defaults to $stderr but may be altered by the +-o+ command line
   #   argument.
-  attr_reader :output
+  # attr_reader :output
 
+  # @return [String] The argument given to --pager.  Used as a path to
+  #   the pager to invoke.  Default is nil
+  # attr_accessor :pager
+
+  # @return [Boolean] True if -p or --paginate given on the command
+  #   line and False if --no-pager.  Defaults to true.
+  # attr_accessor :paginate
+
+  # @return [Boolean] True if the -k option was given on the command
+  #   line.  The default is false.
+  attr_reader :print_keys
+  
   # @param program_name [String] The name of the program.
   def initialize(program_name = File.basename($0))
+    @colorize = :auto
     @dir_list = []
     @dump = false
     @html = nil
@@ -86,6 +101,8 @@ class Options
     @level = 3
     @one_file = true
     @output = $stdout
+    @pager = nil
+    @paginate = true
     @print_keys = false
     @program_name = program_name
   end
@@ -122,7 +139,44 @@ class Options
     @cmds ||= []
   end
 
+  # @return [Boolean] true if output should be colorized and false
+  #   otherwise.
+  def colorize
+    @once ||= setup_pager
+    @colorize
+  end
+
+  # @return [IO] Returns the I/O handler the output stream.
+  def output
+    @once ||= setup_pager
+    @output
+  end
+
   private
+
+  # Determines proper setting for colorize and output.
+  def setup_pager
+    if @paginate && @output.isatty
+      env = {}
+      @pager = ENV["SNAPPER_PAGER"] if @pager.nil?
+      @pager = ENV["PAGER"] if @pager.nil?
+      @pager = "less" if @pager.nil?
+
+      # Set less options unless LESS already set in environment
+      if @pager == "less"
+        # -F or --quit-if-one-screen
+        # -R or --RAW-CONTROL-CHARS
+        # -S or --chop-long-lines
+        # -X or --no-init
+        env["LESS"] = "FRSX" unless ENV["LESS"]
+      end
+      @output = IO.popen(env, [ "sh", "-c", @pager ], "w")
+      @colorize = !(@colorize == :never)
+    else
+      @colorize = (@colorize == :always)
+    end
+    true
+  end
 
   # Creates the OptionsParser along with many of the command's
   # arguments.
@@ -242,6 +296,35 @@ class Options
               "output or (--no-one-file) keep them",
               "separate.") do |v|
         @one_file = v
+      end
+
+      opts.on("--color=[never | always | auto]",
+              [:never, :always, :auto],
+              "Decorate output with colors",
+              "Default is auto"
+             ) do |p|
+        @colorize = p
+      end
+      
+      opts.on("--no-color",
+              "Same as --color=never") do |p|
+        @colorize = :never
+      end
+
+      opts.on("-p",
+              "--paginate",
+              "Pipes output into $SNAPPER_PAGER, or $PAGER, or less") do |p|
+        @paginate = true
+      end
+ 
+      opts.on("--pager=PAGER",
+              "Pipes output to PAGER") do |p|
+        @pager = p
+      end
+      
+      opts.on("--no-pager",
+              "Do not invoke the pager") do |p|
+        @paginate = false
       end
 
       opts.on("--interactive",
