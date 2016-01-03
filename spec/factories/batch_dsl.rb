@@ -21,7 +21,7 @@ module BatchDSL
   end
 
   # The DSL has state.  In particular @db is set to the current Db
-  # instance.  Thus one snap is built up, then {#new_snap} is called
+  # instance.  Thus one snap is built up, then {#start_new_snap} is called
   # and the next snap is built up.  This is the easiest, least verbose
   # syntax I can come up with.
   # @param options [Hash]

@@ -5,7 +5,7 @@
 $qb = $stderr
 # Quick Bug does a puts to the quick bug output file passing it the
 # args that it was passed.
-# @param *args [Array<Object>]
+# @param args [Array<Object>]
 def qb(*args)
   $qb.puts(*args)
 end

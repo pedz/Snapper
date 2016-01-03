@@ -66,15 +66,15 @@ task :yard => [:make_filters] do
     "yard",
     "'--title=Snapper'",
     "'--main=README'",
-    "--plugin",
-    "rspec",
-    "--verbose",
+    "--plugin", "rspec",
+    "'--verbose'",
     "'--private'",
     "'--files=doc/Filters'",
     "'--exclude=\\./(#{exclude_list})'",
     "'--output=doc/yard'",
-    "lib/*.rb",
-    "spec/*.rb"
+    "'snapper.rb'",
+    "'lib/**/*.rb'",
+    "'spec/**/*.rb'"
   ].join(' ')
 end
 
