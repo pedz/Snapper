@@ -10,6 +10,9 @@ def qb(*args)
   $qb.puts(*args)
 end
 
+$snapper_version = "%%% VERSION %%%"
+$snapper_release = "%%% RELEASE %%%"
+
 # Load Snapper class and then call it
 require_relative 'lib/snapper'
 Snapper.new.run

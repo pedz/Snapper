@@ -161,8 +161,8 @@ class Snapper
     Pathname.glob(Pathname.new(__FILE__).parent.realpath + "**/*.rb") do |f|
       require_relative f
     end
-    @options.version = "%%% VERSION %%%"
-    @options.release = "%%% RELEASE %%%"
+    @options.version = $snapper_version
+    @options.release = $snapper_release
     @@add_command_procs.each do |proc|
       proc.call(self, @options)
     end
