@@ -95,7 +95,7 @@ class Devices < Item
     cu_dvs.each do |cu_dv|
       name = cu_dv['name']
       pd_dv_ln = cu_dv['PdDvLn']
-
+      logger.debug { "#{name} #{pd_dv_ln}"}
       device = Device.new("", db)
       devices[name] = device
 
@@ -104,10 +104,13 @@ class Devices < Item
       device['CuAt'] = device_cu_ats = (cu_ats[name] || {})
       device['PdDv'] = pd_dvs[pd_dv_ln]
       device['PdAt'] = device_pd_ats = (pd_ats[pd_dv_ln] || {})
-
+      logger.debug { "device_cu_ats.keys.length=#{device_cu_ats.class}"}
+      logger.debug { "device_pd_ats.keys.length=#{device_pd_ats.class}"}
       attributes = Item.new(@db)
       attrs = Item.new(@db)
-      (device['PdAt'] || device['CuAt'] || {}).keys.each do |attribute|
+      temp = device_pd_ats.empty? ? device_cu_ats : device_pd_ats
+      temp.keys.each do |attribute|
+        logger.debug { "attribute=#{attribute}"}
         attr = Attribute.new(device_cu_ats[attribute], device_pd_ats[attribute])
         attributes[attribute] = attr
         attrs[attribute] = attr.value
