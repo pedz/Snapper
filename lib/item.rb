@@ -137,7 +137,7 @@ class Item
   # @param proc [Proc] The proc (if any) that was passed.
   def method_missing(method, *args, &proc)
     if !block_given? && args.length == 0 && @hash.has_key?(method)
-      return @hash[method]
+      return self[method]
     end
     # An alternative coding leveraging EmptyItem but I'm not sure I
     # really like it.
@@ -202,7 +202,8 @@ class Item
   #   the key to the local hash.
   # @return [Object] The value found at +fix_key(key)+.
   def [](key)
-    @hash[fix_key(key)]
+    v = @hash[fix_key(key)]
+    v.is_a?(Proc) ? v.call : v
   end
 
   # An enumerator that produces a flat set of values.

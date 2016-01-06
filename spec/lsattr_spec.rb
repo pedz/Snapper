@@ -29,16 +29,16 @@ tcp_recvspace      Set Socket Buffer Space for Receiving         True
 tcp_sendspace      Set Socket Buffer Space for Sending           True
 thread        off  Enable/Disable thread attribute               True
 HERE
-      @item = @db.create_item("lsattr_elfoo", @text)
+      @item = @db.create_item("lsattr_el_foo", @text)
       @devices = @db.create_item("devices")
       @devices['foo'] = Item.new(@db)
       @snap = Snap.new({ dir: "blah", db: @db})
       Lsattr.process_snap(@snap)
       @lsattrs = @db.lsattrs
-      @lsattr = @lsattrs.lsattr_elfoo
+      @lsattr = @lsattrs.lsattr_el_foo
     end
     
-    it "should replace the lsattr_elfoo entry with an lsattr entry" do
+    it "should replace the lsattr_el_foo entry with an lsattr entry" do
       expect(@lsattr.class).to eq(Lsattr)
     end
     

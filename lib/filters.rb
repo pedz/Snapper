@@ -254,7 +254,7 @@ Print.add_filter("Item", { level: 0 }) { |context, item| } # do nothing
 # associated with the item.
 Print.add_filter("Item", { level: 6 .. 10 }) do |context, item|
   unless item.printed
-    context.output(item.to_text)
+    context.output(item.to_text.split("\n"))
   end
 end
 
@@ -281,8 +281,11 @@ end
 # should print entries only if they differ from their defaults.  Also,
 # the Device filter could change.  If the PdAt entries are present, it
 # would provide a better mechanism for printing out the attributes.
+Print.add_filter("Lsattr", { level: 0 .. 8 }) do |context, item|
+end
+
 Print.add_filter("Lsattr", { level: 9 .. 10 }) do |context, item|
-  context.output(item.to_text)
+  context.output(item.to_text.split("\n"))
 end
 
 # The Sea filter for all levels print out the Device entry for itself

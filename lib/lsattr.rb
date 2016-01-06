@@ -23,7 +23,7 @@ class Lsattr < Item
 
   # @return [Regexp] Pattern that matches the original class like
   #   lsattr_elent0 where ent0 is the logical name of the device.
-  NAME_REGEXP = /\Alsattr_el(.*)\z/
+  NAME_REGEXP = /\Alsattr_el_(.*)\z/
 
   # Scans the lines capture by the lsattr_elfoo class and tries to
   # determine the attribute name, value, description, and alterable
@@ -43,78 +43,86 @@ class Lsattr < Item
       next if lines.empty?
 
       logical_name = md[1]
-      if (device = devices[logical_name]) &&
-         (cu_dv = device['cu_dv']) &&
-         (driver = cu_dv.ddins.sub(/.*\//, ''))
-        class_name = "lsattr_#{driver}"
-      else
-        class_name = "lsattr"
-      end
-      klass = get_class(class_name, Lsattr)
-      new_item = klass.new(orig_item.to_text, db)
-      lines = new_item.to_text.split("\n")
 
-      # There are four columns of data each with a left (first
-      # non-blank) column and a right (last non-blank column) side.
-      # These columns will be numbered 0 through 3.
-      left = []
-      right = []
-      current_column = 0
-      (0 .. 3).each do |column|
-        # First increment column until at least one line has a
-        # non-blank character in that column
-        flag = true
-        loop do
-          flag = false
-          lines.each do |line|
-            fail "Could not parse lsattr output for #{key}" if (line.length <= current_column)
-            if line[current_column] != ' '
-              flag = true
-              break
-            end
-          end
-          break if flag
-          current_column += 1 
+      deferred_lambda = -> do
+        logger.debug { "Computing lsattr for #{logical_name}" }
+        if (device = devices[logical_name]) &&
+           (cu_dv = device['cu_dv']) &&
+           (driver = cu_dv.ddins.sub(/.*\//, ''))
+          class_name = "lsattr_#{driver}"
+        else
+          class_name = "lsattr"
         end
-        left[column] = current_column
-        current_column += 1
+        klass = get_class(class_name, Lsattr)
+        new_item = klass.new(orig_item.to_text, db)
+        lines = new_item.to_text.split("\n")
 
-        # Now find the right side (end) of the column by scanning all
-        # rows until all of them have a blank in that column or we
-        # fall off the end of the line
-        flag = true
-        while flag
-          flag = false
-          lines.each do |line|
-            if (line.length > current_column) && (line[current_column] != ' ')
-              flag = true
-              break
+        # There are four columns of data each with a left (first
+        # non-blank) column and a right (last non-blank column) side.
+        # These columns will be numbered 0 through 3.
+        left = []
+        right = []
+        current_column = 0
+        (0 .. 3).each do |column|
+          # First increment column until at least one line has a
+          # non-blank character in that column
+          flag = true
+          loop do
+            flag = false
+            lines.each do |line|
+              fail "Could not parse lsattr output for #{key}" if (line.length <= current_column)
+              if line[current_column] != ' '
+                flag = true
+                break
+              end
             end
+            break if flag
+            current_column += 1 
           end
-          current_column += 1 if flag
+          left[column] = current_column
+          current_column += 1
+
+          # Now find the right side (end) of the column by scanning all
+          # rows until all of them have a blank in that column or we
+          # fall off the end of the line
+          flag = true
+          while flag
+            flag = false
+            lines.each do |line|
+              if (line.length > current_column) && (line[current_column] != ' ')
+                flag = true
+                break
+              end
+            end
+            current_column += 1 if flag
+          end
+          right[column] = current_column
+          current_column += 1
         end
-        right[column] = current_column
-        current_column += 1
+        
+        new_item.to_text.each_line do |line|
+          attr =  line[left[0] .. right[0]].strip
+          value = line[left[1] .. right[1]].strip
+          desc  = line[left[2] .. right[2]].strip
+          alter = line[left[3] .. right[3]].strip
+          if value.empty?
+            value = nil
+          else
+            value = value.to_i if /\A[0-9]+\Z/.match(value)
+          end
+          target = Item.new("", db)
+          target[:value] = value
+          target[:desc]  = desc
+          target[:alter] = alter
+          new_item[attr] = target
+        end
+        lsattrs[key] = new_item
+        devices[logical_name]['lsattr'] = new_item if devices.has_key?(logical_name)
       end
       
-      new_item.to_text.each_line do |line|
-        attr =  line[left[0] .. right[0]].strip
-        value = line[left[1] .. right[1]].strip
-        desc  = line[left[2] .. right[2]].strip
-        alter = line[left[3] .. right[3]].strip
-        if value.empty?
-          value = nil
-        else
-          value = value.to_i if /\A[0-9]+\Z/.match(value)
-        end
-        target = Item.new("", db)
-        target[:value] = value
-        target[:desc]  = desc
-        target[:alter] = alter
-        new_item[attr] = target
-      end
-      lsattrs[key] = new_item
-      devices[logical_name]['lsattr'] = new_item if devices.has_key?(logical_name)
+      logger.debug { "assigning lsattr for #{logical_name}" }
+      lsattrs[key] = deferred_lambda
+      devices[logical_name]['lsattr'] =  deferred_lambda if devices.has_key?(logical_name)
     end
   end
   Snapper.add_snap_processor(self)
