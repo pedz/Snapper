@@ -277,7 +277,7 @@ Print.add_filter("LPAR", { level: 0 .. 11 }) do |context, lpar|
 end
 
 # Currently, the lsattr entries dump out their original text at level
-# 4 through 10.  This needs to be improved and probably some level
+# 9 through 10.  This needs to be improved and probably some level
 # should print entries only if they differ from their defaults.  Also,
 # the Device filter could change.  If the PdAt entries are present, it
 # would provide a better mechanism for printing out the attributes.

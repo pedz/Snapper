@@ -294,16 +294,16 @@ class Seas < Item
     #
     # {Alert}s created for:
     #
-    #   1. The <tt>Port VLAN ID</tt> of the +pvid_adapter+ equals the
-    #      +pvid+ attr of the SEA.
+    # 1. The <tt>Port VLAN ID</tt> of the +pvid_adapter+ equals the
+    #    +pvid+ attr of the SEA.
     #
-    #   2. If +adapter_reset+ is set to +yes+.
+    # 2. If +adapter_reset+ is set to +yes+.
     #
-    #   3. All +virt_adapters+ must be trunk adapters.
+    # 3. All +virt_adapters+ must be trunk adapters.
     #
-    #   4. The +ctl_chan+ must not be a trunk adapter.
+    # 4. The +ctl_chan+ must not be a trunk adapter.
     #
-    #   5. PVID adapter in discovery mode must have Control buffers.
+    # 5. PVID adapter in discovery mode must have Control buffers.
     #
     # @param snap [Snap] The snap to process.
     def process_snap(snap)
