@@ -330,7 +330,14 @@ end
 # with the list of {Alert}s and the list of {Item}s the were added via
 # {Snap#add_item add_item} nested one level deeper.
 Print.add_filter("Snap", { level: 0 .. 11 }) do |context, snap|
-  context.output("Snap taken #{snap.date_time}") if context.level >= 2
+  time = snap.date_time.strftime("%D %T")
+  base = snap.dir.basename
+  vios = snap.vios
+  sp = snap.service_pack
+  sp = " level:#{sp}" unless sp.empty?
+  vios = " VIOS:#{vios}" unless vios.empty?
+  text = "Snap dir:#{base} time:#{time}#{sp}#{vios}"
+  context.output(text) if context.level >= 2
   snap.alerts.print(context.nest)
   snap.print_list.print(context.nest)
   context

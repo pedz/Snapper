@@ -1,0 +1,39 @@
+01/09/2016 Version 0.9.7
+
+   	Added parsing of lslpp -lc found in general.snap.  Added
+	bos_vrmf_map to distribution.  Added parsing of VIOS.level.
+	Now the Snap output line looks something like:
+
+	Snap dir:test.snap time:07/17/13 08:17:34 level:6100-08-02 VIOS:2.2.2.2
+
+	providing the basename of where the snap was found, the time
+	of the snap, the AIX level, and VIOS level.
+
+	Also added printing of News from command line.
+
+01/06/2016 Version 0.9.3
+
+	Deferred processing of lsattr to speed up execution of snaps
+	with a large number of lsattr -El hdiskNNNN entries.
+
+01/02/2016 Version 0.9.0
+
+	Added pager and coloring options
+    
+	Added --color, --o-color, --paginate, --pager, and --no-pager
+	options as well as hooking up to less.
+
+01/01/2016
+
+	Fixed / redid print levels.
+
+	I reworked the print levels.  They now go fro 0 to 11 instead
+	of -1 to 11.  The default is now 3.  level 1 is for alerts
+	only.
+
+	Also incorporated Print feature into CEC, LPAR, and Snap so
+	that their filters may now be altered by the general user.
+
+12/28/2015
+
+	Added many checks for SEAs.

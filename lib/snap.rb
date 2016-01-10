@@ -4,11 +4,21 @@ require_relative 'logging'
 require_relative 'print_list'
 require_relative 'alert'
 require_relative 'print'
+require 'pathname'
 
 # The body of information contained within a single snap.
 class Snap
   include Print
   
+  def Snap.bos_vrmf_map
+    return @bos_vrmf_map if @bos_vrmf_map
+    Hash[(Pathname.new(__FILE__).parent.parent + 'bos_vrmf_map').readlines.map do |line|
+      a, b = line.chomp.split(' ')
+      a = "%02d.%02d.%04d.%04d" % a.split('.')
+      [ a, b ]
+    end]
+  end
+
   # @return [Array<Alert>] Array of {Alert}s that has been added to
   #   the Snap.
   attr_reader :alerts
@@ -77,6 +87,29 @@ class Snap
   #   item.
   def add_item(item, priority)
     @print_list.add(item, priority)
+  end
+
+  # @return [String] Returns the VIOS Level such as 2.2.3.1 from the
+  #   <tt>svCollect/VIOS.level</tt> file or the empty string.
+  def vios
+    # greps the VIOS Level is 2.2.2.2 line and reports back  just the
+    # 2.2.2.2 text
+    @vios ||= @db.              # from the db
+      vios_level.               # the svCollect/VIOS.level file
+      to_text.                  # the text from that file
+      split("\n").              # split into lines
+      grep(/VIOS Level/)[0].    # grep for 'VIOS Level'; use first hit
+      split(' ')[3]             # split into words, return 4th word
+  rescue
+    @vios = ""
+  end
+
+  # @return [String] Maps the vrmf level of bos.mp64 to a service pack
+  #   name.  If something goes wrong, the empty string is returned.
+  def service_pack
+    @service_pack ||= (Snap.bos_vrmf_map[@db.lslpp_lc['bos.mp64'].vrmf] || "")
+  rescue
+    @service_pack = ""
   end
 
   # Marshal out the Snap as a JSON object

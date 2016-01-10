@@ -13,6 +13,15 @@ require_relative 'snapper'
 #     ...
 # This file "parses" those files.
 # An example of one of these is the tcpip.snap file.
+#
+# Each section is turned into an {Item} via {Db#create_item} using the
+# full command as the name.  Then the item's {Item#parse} command is
+# called.  By default, this does nothing and the result is an Item
+# with the text of the command.
+#
+# But if command maps to an existing class, then its parse method
+# would be called.  Examples of these are {NetstatV}, {NetstatIn}, and
+# {LslppLc}.
 class DotFileParser < FileParser
   include Logging
   # The default log level is INFO
@@ -24,8 +33,9 @@ class DotFileParser < FileParser
   
   # Parse a "dot file".  io is the file to parse and must respond to
   # read with an array while db is the "database" to add the entries
-  # to.  The piece of the file before the first separator is thrown
-  # away.
+  # to.  The piece of the file before the first separator is usually
+  # thrown away but for general.snap, it is used as the time stamp for
+  # the {Db#date_time} which is what {Snap#date_time} forwards to.
   def parse
     # Since DotSeparator has a group within it, this results in an
     # array
@@ -43,7 +53,8 @@ class DotFileParser < FileParser
     lines = 5
     while pieces.length > 1
       name, text = pieces.shift(2)
-      next if name.match(/\A *\z/) # yes... it happens :-(
+      # ignore empty command names (yes... it happens :-( )
+      next if name.match(/\A *\z/)
       begin
         item = @db.create_item(name, text).parse
       rescue => e

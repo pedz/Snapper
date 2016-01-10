@@ -1,3 +1,4 @@
+require 'pathname'
 require 'optparse'
 require 'forwardable'
 require_relative 'logging'
@@ -268,6 +269,12 @@ class Options
               "Specify an output file",
               "Default is STDOUT") do |path|
         @output = File.open(path, "w")
+      end
+
+      opts.on("--news",
+              "Prints new items added to snapper") do |not_used|
+        self.puts (Pathname.new(__FILE__).parent.parent + "News").readlines
+        exit(0)
       end
 
       opts.on("-q file",
