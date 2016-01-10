@@ -274,6 +274,7 @@ class Options
       opts.on("--news",
               "Prints new items added to snapper") do |not_used|
         self.puts (Pathname.new(__FILE__).parent.parent + "News").readlines
+        output.close
         exit(0)
       end
 
