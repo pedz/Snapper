@@ -76,6 +76,13 @@ task :yard => [:make_filters] do
     "'lib/**/*.rb'",
     "'spec/**/*.rb'"
   ].join(' ')
+  system("ed - doc/yard/index.html <<EOF
+/<p>all off
+-1
+s/li/li value=0/
+w
+q
+EOF");
 end
 
 desc "Make the rdoc documentation"
