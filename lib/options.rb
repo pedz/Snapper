@@ -284,8 +284,7 @@ class Options
         $qb = File.open(path, "w")
       end
 
-      opts.on("-h path",
-              "--html path",
+      opts.on("--html path",
               "Outputs an html file that shows the layout",
               "of the systems") do |path|
         if path.nil?

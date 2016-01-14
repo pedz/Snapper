@@ -140,6 +140,17 @@ class Attribute
     either.type
   end
 
+  # @param options [Hash] The usual options passed to +to_json+.
+  # @return [String] The JSON representation of the target.  The
+  #   cu_ats and pd_ats as passed in at initialization time are added
+  #   to a hash and converted to JSON.
+  def to_json(options = {})
+    {
+      cu_ats: @cu_ats,
+      pd_ats: @pd_ats
+    }.to_json(options)
+  end
+
   private
 
   # Used internally as a quick means to get a non-nil value that

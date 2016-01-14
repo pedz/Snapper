@@ -345,6 +345,9 @@ end
 
 Print.add_filter("Vlan", { level: 0 .. 11 }) do |context, item|
   modifier = "VLAN ID: #{item.attributes.vlan_tag_id.value}"
+  if item[:base_adapter].printed
+    modifier += " (on #{item[:base_adapter].name})"
+  end
   item[:super].print(context.modifier(modifier))
   item[:base_adapter].print(context.nest)
 end

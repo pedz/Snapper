@@ -11,7 +11,9 @@
 #   - dist/**/*.js
 #
 src_files:
-  - public/javascripts/**/*.js
+  - http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js
+  - http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js
+  - lib/javascript/**/*.js
 
 # stylesheets
 #
@@ -25,7 +27,8 @@ src_files:
 #   - stylesheets/*.css
 #
 stylesheets:
-  - stylesheets/**/*.css
+  - http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css
+  - lib/stylesheets/**/*.css
 
 # helpers
 #

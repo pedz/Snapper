@@ -136,7 +136,25 @@ class Snapper
       e.recover(tmp_args)
       @args << tmp_args.shift
       retry
+
+    # I want -h to be for help and not --html.  On this phase, it
+    # matches --html which is expecting an argument.  So, if we hit
+    # missing argument and the argument was -h, we just shift it to
+    # @args and keep going.  We will process the -h in the second
+    # phase after all the other files have been loaded because they
+    # can add to the options.
+    rescue OptionParser::MissingArgument => e
+      e.recover(tmp_args)
+      if tmp_args[0] == "-h"
+        @args << tmp_args.shift
+        retry
+      else
+        puts "abort 1"
+        @options.abort(e.message)
+      end
+
     rescue => e
+      puts "abort 2"
       @options.abort(e.message)
     end
     @options.add_officious
@@ -146,9 +164,18 @@ class Snapper
   # been called.
   def second_option_parse
     begin
+      @options.on_tail("-h",
+                       "--help",
+                       "-?",
+                       "This message") do |o|
+        $stderr.puts @options.help
+        exit(0)
+      end
+
       @options.parse!(@args)
       raise OptionParser::MissingArgument.new("<path to snap1>") if @options.dir_list.empty?
     rescue => e
+      puts "abort 3"
       @options.abort(e.message)
     end
   end
