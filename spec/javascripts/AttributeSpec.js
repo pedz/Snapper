@@ -1,3 +1,4 @@
+var afterAll, afterEach, beforeAll, beforeEach, describe, expect, it;
 
 describe("attribute", function() {
     var Attribute = window.snapper.Attribute;
@@ -10,7 +11,7 @@ describe("attribute", function() {
     var o0, o1, o2;
     var t0, t1, t2;
 
-    beforeEach(function () {
+    beforeAll(function () {
 	pdat1 = {
 	    uniquetype: "adapter/pseudo/sea",
 	    attribute: "ha_mode",

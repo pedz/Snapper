@@ -1,3 +1,4 @@
+var afterAll, afterEach, beforeAll, beforeEach, describe, expect, it;
 
 describe("snapper", function() {
     it("has a Padding constructor", function() {
@@ -51,5 +52,10 @@ describe("snapper", function() {
     it("has a Attribute constructor", function() {
 	expect(typeof window.snapper.Attribute).toBe("function");
 	expect(typeof window.snapper.Attribute.prototype).toBe("object");
+    });
+
+    it("has a world object", function() {
+	expect(typeof window.snapper.world).toBe("object");
+	expect(window.snapper.world instanceof window.snapper.World).toBe(true);
     });
 });
