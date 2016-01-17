@@ -221,8 +221,8 @@ class Item
   #   out.
   def to_json(options = {})
     temp = @hash.dup
-    temp[:text] = @text
-    temp[:orig_key] = @orig_key
+    # temp[:text] = @text
+    # temp[:orig_key] = @orig_key
     temp.to_json(options)
   end
 

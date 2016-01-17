@@ -19,9 +19,9 @@ class Attribute
   # @param pd_ats [Item, nil] The +PdAt+ entry for this device and
   #   attribute combination if available.
   def initialize(cu_ats = [], pd_ats = [])
-    if (cu_ats.nil? || cu_ats.empty?) && (pd_ats.nil? || pd_ats.empty?)
-      fail "Both cu_ats and pd_at can not be empty"
-    end
+    pd_ats = [] if pd_ats.nil?
+    cu_ats = [] if cu_ats.nil?
+    fail "Both cu_ats and pd_at can not be empty" if cu_ats.empty? && pd_ats.empty?
     @cu_ats = cu_ats
     @pd_ats = pd_ats
   end

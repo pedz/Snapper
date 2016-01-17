@@ -94,8 +94,8 @@ describe("attribute", function() {
 		new Attribute([], {});
 	    };
 	    expect(both_empty).toThrowError(TypeError, "Both cu_ats and pd_ats can not be empty");
-	    expect(cu_ats_null).toThrowError(TypeError, "cu_ats is not an array");
-	    expect(pd_ats_null).toThrowError(TypeError, "pd_ats is not an array");
+	    expect(cu_ats_null).toThrowError(TypeError, "Both cu_ats and pd_ats can not be empty");
+	    expect(pd_ats_null).toThrowError(TypeError, "Both cu_ats and pd_ats can not be empty");
 	    expect(cu_ats_obj).toThrowError(TypeError, "cu_ats is not an array");
 	    expect(pd_ats_obj).toThrowError(TypeError, "pd_ats is not an array");
 	});
