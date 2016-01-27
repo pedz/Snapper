@@ -27,7 +27,13 @@ end
 Print.add_filter("Device", { level: 0 .. 11 }) do |context, item|
   unless item.printed
     if context.level >= 2
-      context.output([ item.cu_dv.name, item.cu_dv.ddins, context.modifier ].join(' '))
+      temp = [ item.cu_dv.name, item.cu_dv.ddins, context.modifier ].join(' ')
+      if item.cu_dv.status == 1
+        context.output(temp)
+      else
+        context.output(temp, [ :nocr ])
+        context.output("Defined", [ :red ])
+      end
     end
     item['errpt'].print(context.nest) if item['errpt']
     item['entstat'].print(context.nest) if item['entstat']
@@ -172,7 +178,8 @@ end
 # the Device entries of the adapters listed in adapter_names as well
 # as the backup_adapter.  The child entries are nested in one level.
 Print.add_filter("Ethchan", { level: 0 .. 11 }) do |context, item|
-  item[:super].print(context)
+  mode = "mode:#{item.super.attributes.mode.value}"
+  item[:super].print(context.modifier(mode))
   item[:adapter_names].print(context.nest)
   if item[:backup_adapter]
     item[:backup_adapter].print(context.nest.modifier("BACKUP"))
@@ -270,7 +277,10 @@ end
 # with the list of {Alert}s and the list of {Snap}s nested one level
 # deeper.
 Print.add_filter("LPAR", { level: 0 .. 11 }) do |context, lpar|
-  context.output("Host: #{lpar.hostname}") if context.level >= 2
+  hostname = lpar.hostname
+  cpus = lpar.cpus
+  smt =  lpar.smt
+  context.output("Host:#{hostname} Virtual CPUs:#{cpus} SMT:#{smt}") if context.level >= 2
   lpar.alerts.print(context.nest)
   lpar.snap_list.print(context.nest)
   context

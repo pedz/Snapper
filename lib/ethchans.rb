@@ -33,6 +33,26 @@ class Ethchans < Item
           new_value[:backup_adapter] = db['Devices'][backup_adapter]
         end
         db.devices[key] = new_value
+        validate_ethchan(new_value, snap)
+      end
+    end
+  end
+
+  def self.validate_ethchan(ethchan, snap)
+    if ethchan.attributes.mode.value == "8023ad"
+      list = ethchan.adapter_names
+      push ethchan.backup_adapter if ethchan['backup_adapter']
+      first = list.shift
+      return unless first.entstat && first.entstat.partner_state
+      gold = first.entstat
+      list.each do |adapter|
+        partner = adapter.entstat
+        unless gold['Partner System'] == partner['Partner System']
+          snap.add_alert("'Partner System' for #{first.name} and #{adapter.name} do not match")
+        end
+        unless gold['Partner Operational Key'] == partner['Partner Operational Key']
+          snap.add_alert("'Partner Operational Key' for #{first.name} and #{adapter.name} do not match")
+        end
       end
     end
   end

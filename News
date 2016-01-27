@@ -1,6 +1,23 @@
+01/26/2016 Version 0.9.14
+
+	Added mode of the etherchannel (Bob's suggestion)
+
+	Added number of virtual CPUs and SMT mode to the LPAR output.
+	
+	Added alerts if 802.3ad ether channel Partner System attribute
+	in the entstat does not match across all of the adapters in
+	the ether channel.  Similarly, allert for Partner Operational
+	Key.  I started adding a testcase for this but it was too much
+	work for too little gain.
+	
+	Flag devices which are in Defined state.  SEAs are always
+	reported even if they are defined and children of containers
+	are always reported even if they are defined.  This helps
+	users notice that something is amiss with these devices.
+
 01/09/2016 Version 0.9.7
 
-   	Added parsing of lslpp -lc found in general.snap.  Added
+	Added parsing of lslpp -lc found in general.snap.  Added
 	bos_vrmf_map to distribution.  Added parsing of VIOS.level.
 	Now the Snap output line looks something like:
 
