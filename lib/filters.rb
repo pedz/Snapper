@@ -178,7 +178,11 @@ end
 # the Device entries of the adapters listed in adapter_names as well
 # as the backup_adapter.  The child entries are nested in one level.
 Print.add_filter("Ethchan", { level: 0 .. 11 }) do |context, item|
-  mode = "mode:#{item.super.attributes.mode.value}"
+  if item.attributes.has_key?('mode')
+    mode = "mode:#{item.attributes.mode.value}"
+  else
+    mode = "standard"
+  end
   item[:super].print(context.modifier(mode))
   item[:adapter_names].print(context.nest)
   if item[:backup_adapter]
