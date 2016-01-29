@@ -125,5 +125,13 @@ class Lsattr < Item
       devices[logical_name]['lsattr'] =  deferred_lambda if devices.has_key?(logical_name)
     end
   end
+
+  # Similar concept to +attrs+ that Device has, this method will
+  # return the value from the lsattr output if the attribute is found;
+  # otherwise, it returns the default value.
+  def value(attribute, default = "Unknown")
+    self.has_key?(attribute) ? self[attribute].value : default
+  end
+
   Snapper.add_snap_processor(self)
 end
