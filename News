@@ -1,3 +1,8 @@
+01/29/2016 Version 0.9.19
+
+	Add alerts to the snap if an fscsi device does not have
+	fc_err_recov set to fast_fail or dyntrk set to yes.
+
 01/26/2016 Version 0.9.14
 
 	Added mode of the etherchannel (Bob's suggestion)
