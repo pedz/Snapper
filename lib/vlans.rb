@@ -21,7 +21,7 @@ class Vlans < Item
       if value.cu_dv.pd_dv_ln == "adapter/vlan/eth"
         logger.debug { "Converting #{key} into a Vlan"}
         new_value = value.subclass(Vlan)
-        new_value[:base_adapter] = db['Devices'][value.attributes.base_adapter.value]
+        new_value[:base_adapter] = db['Devices'][value.attrs.base_adapter]
         logger.debug { "base adapter is #{new_value[:base_adapter].class}"}
         db.devices[key] = new_value
       end

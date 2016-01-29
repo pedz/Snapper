@@ -13,7 +13,7 @@ module Enumerable
   # (like the hash name of an item) then a block can be specified
   # like:
   #
-  #   attributes.ctl_chan.value.split(',').print(context.nest) do |context, adapter_name|
+  #   attrs.ctl_chan.split(',').print(context.nest) do |context, adapter_name|
   #     @db.devices[adapter_name].print(context)
   #   end
   #

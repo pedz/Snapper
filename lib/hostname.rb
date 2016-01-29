@@ -23,11 +23,11 @@ class Hostname < Item
   def self.process_snap(snap)
     db = snap.db
     hostname = db.create_item("Hostname")
-    hostname['hostname'] = db.devices.inet0.attributes.hostname.value
+    hostname['hostname'] = db.devices.inet0.attrs.hostname
     hostname['Node Name'] = db.lparstat_out.node_name
     hostname['Partition Name'] = db.lparstat_out.partition_name
-    hostname['id_to_partition'] = db.devices.sys0.attributes.id_to_partition.value
-    hostname['id_to_system'] = db.devices.sys0.attributes.id_to_system.value
+    hostname['id_to_partition'] = db.devices.sys0.attrs.id_to_partition
+    hostname['id_to_system'] = db.devices.sys0.attrs.id_to_system
   end
 
   Snapper.add_snap_processor(self)

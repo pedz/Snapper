@@ -41,10 +41,10 @@ class LPAR
     @smt = "Unknown"
     if devices = db['devices']
       if sys0 = devices['sys0']
-        @id_to_partition = sys0.attributes.id_to_partition.value
+        @id_to_partition = sys0.attrs.id_to_partition
       end
       if inet0 = devices['inet0']
-        @hostname = inet0.attributes.hostname.value
+        @hostname = inet0.attrs.hostname
       end
     end
     if lparstat = db['lparstat.out']

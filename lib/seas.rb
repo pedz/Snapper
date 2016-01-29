@@ -394,7 +394,7 @@ class Seas < Item
     # snap.
     # @param (see check_pvid)
     def check_reset_adapter(snap, sea)
-      if (value = sea.attributes.adapter_reset.value) != "no"
+      if (value = sea.attrs.adapter_reset) != "no"
         t = Alerts.reset_adapter_yes(sea.name, value)
         snap.add_alert(t)
       end
@@ -679,7 +679,7 @@ class Seas < Item
     # {.flag_bad_matched_seas} and {.flag_non_congruent_seas} passes.
     # @param (see review_sea)
     def register_sea_vswitch_pvid(snap, sea)
-      ha_mode = sea.attributes.ha_mode.value
+      ha_mode = sea.attrs.ha_mode
       return if ha_mode == "disabled" || ha_mode == "standby"
       control_adapter = sea[:ctl_chan] || sea[:pvid_adapter]
       return unless (entstat = control_adapter['entstat'])

@@ -62,6 +62,13 @@ require_relative 'item'
 #
 #              [nls_index]  The nls index for the attribute.
 #
+# [attrs]      While +attributes+ is a complete accurate
+#              representation of the attributes with many convenience
+#              features, it is still error prone for use.  Most of the
+#              time the user just wants the value of the attribute and
+#              that is what +attrs+ provides.  It is simply the value
+#              of each attribute.
+#
 # [errpt]      The list of error log entries found in errpt.out for
 #              this device (matching the Resource Name in the error
 #              log entry to the logical name for the device.
@@ -80,7 +87,7 @@ require_relative 'item'
 #
 # Since all of these are of type Item, the dot notation can be used.
 # For example if you know that item is a Sea, then you can get the
-# list of virtual adapters with: +item.attributes.virt_adapters.value+
+# list of virtual adapters with: +item.attrs.virt_adapters+
 class Device < Item
   include Logging
   # Default log level is INFO

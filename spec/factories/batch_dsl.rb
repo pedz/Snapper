@@ -34,7 +34,7 @@ module BatchDSL
     dir = options[:dir] || 'some/path'
     new_sys0(options)
     inet0 = new_inet0(options)
-    hostname = inet0.attributes.hostname.value
+    hostname = inet0.attrs.hostname
     new_lparstat_out(options.merge({ node_name: hostname, partition_name: hostname }))
     Snap.new(db: @db, dir: dir).tap do |snap|
       Hostname.process_snap(snap)
@@ -170,9 +170,11 @@ module BatchDSL
   end
 
   def add_attr(item, sym, value)
-    attrs = item['attributes'] ||= new_item
-    attr = attrs[sym] ||= new_item
-    attr['value'] = value
+    attributes = item['attributes'] ||= new_item
+    attribute = attributes[sym] ||= new_item
+    attribute['value'] = value
+    item['attrs'] ||= new_item
+    item.attrs[sym] = value
   end
 
   # Creates a new 
