@@ -95,6 +95,85 @@ describe Seas, :batch_dsl do
         Seas.process_snap(snap)
       end
     end
+
+    context "validate SEA state" do
+      it "alerts when state is PRIMARY but bridge mode is not All" do
+        snap = start_new_snap
+        sea = add_sea()
+        virt = sea[:pvid_adapter]
+        sea.entstat['State'] = "PRIMARY"
+        sea.entstat['Bridge Mode'] = "None"
+        virt.entstat['Active'] = "False"
+        expect(snap).to receive(:add_alert).
+                         once.
+                         with(Seas::Alerts.bmode_not_correct(sea.name, "All", "None"))
+        Seas.process_snap(snap)
+      end
+
+      it "alerts when SEA Bridge Mode All and VEA is not active" do
+        snap = start_new_snap
+        sea = add_sea()
+        virt = sea[:pvid_adapter]
+        sea.entstat['State'] = "PRIMARY"
+        sea.entstat['Bridge Mode'] = "All"
+        virt.entstat['Active'] = "False"
+        expect(snap).to receive(:add_alert).
+                         once.
+                         with(Seas::Alerts.vea_not_active(sea.name, virt.name))
+        Seas.process_snap(snap)
+      end
+
+      it "alerts when SEA Bridge Mode None and VEA is active" do
+        snap = start_new_snap
+        sea = add_sea()
+        virt = sea[:pvid_adapter]
+        sea.entstat['State'] = "BACKUP"
+        sea.entstat['Bridge Mode'] = "None"
+        virt.entstat['Active'] = "True"
+        expect(snap).to receive(:add_alert).
+                         once.
+                         with(Seas::Alerts.vea_is_active(sea.name, virt.name))
+        Seas.process_snap(snap)
+      end
+
+      it "alerts when SEA Bridge Mode Partial and VEA not in VID Shared is active" do
+        snap = start_new_snap
+        pvid1 = 99
+        pvid2 = 100
+        vea1 = new_vea({ pvid: pvid1, allowed: [ 101 ] })
+        vea2 = new_vea({ pvid: pvid2, allowed: [ 102 ] })
+        ctl = new_vea
+        sea = add_sea({ virt_adapters: [ vea1, vea2 ], ctl_chan: ctl })
+        sea.entstat['State'] = "PRIMARY_SH"
+        sea.entstat['Bridge Mode'] = "Partial"
+        vea1.entstat['Active'] = "True"
+        vea2.entstat['Active'] = "True"
+        sea.entstat['VID Shared'] = "99 101"
+        expect(snap).to receive(:add_alert).
+                         once.
+                         with(Seas::Alerts.vea_is_active(sea.name, vea2.name))
+        Seas.process_snap(snap)
+      end
+
+      it "alerts when SEA Bridge Mode Partial and VEA in VID Shared is not active" do
+        snap = start_new_snap
+        pvid1 = 99
+        pvid2 = 100
+        vea1 = new_vea({ pvid: pvid1, allowed: [ 101 ] })
+        vea2 = new_vea({ pvid: pvid2, allowed: [ 102 ] })
+        ctl = new_vea
+        sea = add_sea({ virt_adapters: [ vea1, vea2 ], ctl_chan: ctl })
+        sea.entstat['State'] = "PRIMARY_SH"
+        sea.entstat['Bridge Mode'] = "Partial"
+        vea1.entstat['Active'] = "False"
+        vea2.entstat['Active'] = "False"
+        sea.entstat['VID Shared'] = "99 101"
+        expect(snap).to receive(:add_alert).
+                         once.
+                         with(Seas::Alerts.vea_not_active(sea.name, vea1.name))
+        Seas.process_snap(snap)
+      end
+    end
   end
 
   describe ".process_batch" do

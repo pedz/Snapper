@@ -133,6 +133,38 @@ class Seas < Item
           "does not"
       end
 
+      # Formats the proper alert string when a SEA's bridge mode is
+      # not what it should be.  For example, the bridge mode should be
+      # "All" if the state is PRIMARY.
+      # @param sea [String] The logical name of the Sea.
+      # @param correct [String] The correct value for bridge mode.
+      # @param current [String] The current value for bridge mode.
+      # @example Sample Bridge Mode not correct Text
+      #   SEA ent10 bridge mode should be All but is None
+      def bmode_not_correct(sea, correct, current)
+        "SEA #{sea} bridge mode should be #{correct} but is #{current}"
+      end
+
+      # Formats the proper alert string when a VEA for a SEA should
+      # have Active of True and it does not.
+      # @param sea [String] The logical name of the Sea.
+      # @param vea [String] The Vea that is not active
+      # @example Sample Bridge Mode not correct Text
+      #   VEA ent15 on ent10 should be Active: True and it is not
+      def vea_not_active(sea, vea)
+        "VEA #{vea} on #{sea} should be Active: True and it is not"
+      end
+
+      # Formats the proper alert string when a VEA for a SEA should
+      # have Active of False and it does not.
+      # @param sea [String] The logical name of the Sea.
+      # @param vea [String] The Vea that is not active
+      # @example Sample Bridge Mode not correct Text
+      #   VEA ent15 on ent10 should be Active: False and it is not
+      def vea_is_active(sea, vea)
+        "VEA #{vea} on #{sea} should be Active: False and it is not"
+      end
+
       # Formats the proper alert string when a SEA on the same host
       # changes between snaps.
       # @param sea [String] The logical name of the SEA.
@@ -305,6 +337,20 @@ class Seas < Item
     #
     # 5. PVID adapter in discovery mode must have Control buffers.
     #
+    # 6. Sanity check bridge mode is All when State is PRIMARY.  Also
+    #    bridge mode should be Partial when State is PRIMARY_SH or
+    #    BACKUP_SH.
+    #
+    # 7. Check VEAs are active
+    #
+    #    a. If bridge mode is All, then all the VEAs should be active.
+    #
+    #    b. If bridge mode is Partial, then the VEAs for the VID
+    #       shared list should be active.
+    #
+    #    c. If bridge mode is None, then all VEAs should have active
+    #       set to false.
+    #
     # @param snap [Snap] The snap to process.
     def process_snap(snap)
       db = snap.db
@@ -328,6 +374,12 @@ class Seas < Item
 
           # Test 5 -- PVID adapter in discovery mode must have Control buffers
           verify_discovery_vea(snap, sea, sea[:pvid_adapter]) unless sea[:ctl_chan]
+
+          # Test 6 -- check state and bridge mode combination
+          check_state_and_bridge_mode(snap, sea)
+
+          # Test 7 -- check active status on VEAs
+          check_active_status(snap, sea)
         end
       end
       snap.add_item(seas, 25)
@@ -408,7 +460,8 @@ class Seas < Item
     # @param (see check_pvid)
     def check_virt_adapters(snap, sea)
       sea.virt_adapters.each do |vea|
-        if vea.entstat.trunk_adapter != "True"
+        next unless (e = vea['entstat'])
+        if e['Trunk Adapter'] != "True"
           snap.add_alert(Alerts.not_trunk(sea.name, vea.name))
         else
           # {EthernetAdapters} checks all VEAs and flags the Trunk
@@ -713,6 +766,69 @@ class Seas < Item
         d = d[attr] if d
       end
       snap.add_alert(Alerts.discovery_vea(sea.name, vea.name)) unless d
+    end
+
+    State_to_Bridge_Mode_Map = {
+      "PRIMARY" => "All",
+      "BACKUP" => "None",
+      "PRIMARY_SH" => "Partial",
+      "BACKUP_SH" => "Partial"
+    }
+
+    # Creates an alert if the SEA State is PRIMARY and the Bridge Mode
+    # is not All.  Also creates an alert if the SEA State is
+    # PRIMARY_SH or BACKUP_SH and the Bridge Mode is not PARTIAL.
+    # @param snap [Snap] The Snap being processed.
+    # @param sea [Sea] The SEA being checked.
+    def check_state_and_bridge_mode(snap, sea)
+      return unless (e = sea['entstat'])
+      return unless (state = e['State']) && (bridge_mode = e['Bridge Mode'])
+      correct = State_to_Bridge_Mode_Map[state]
+      snap.add_alert(Alerts.bmode_not_correct(sea.name, correct, bridge_mode)) unless correct == bridge_mode
+    end
+
+    # Creates alerts if the Active flag for the VEAs is not set
+    # properly.  This keys from the Bridge Mode rather than the
+    # State.
+    # @param snap [Snap] The Snap being processed.
+    # @param sea [Sea] The SEA being checked.
+    def check_active_status(snap, sea)
+      return unless (e = sea['entstat'])
+      return unless (state = e['State']) && (bridge_mode = e['Bridge Mode'])
+      correct = State_to_Bridge_Mode_Map[state]
+      return unless correct == bridge_mode
+
+      case bridge_mode
+      when "None"
+        sea[:virt_adapters].each do |vea|
+          next unless (e = vea['entstat'])
+          if e['Trunk Adapter'] == "True"
+            snap.add_alert(Alerts.vea_is_active(sea.name, vea.name)) unless e['Active'] == "False"
+          end
+        end
+
+      when "Partial"
+        return unless (shared = e['VID shared'])
+        shared = shared.split(' ').map(&:to_i)
+        sea[:virt_adapters].each do |vea|
+          next unless (e = vea['entstat'])
+          if e['Trunk Adapter'] == "True"
+            if shared.include?(e['Port VLAN ID'])
+              snap.add_alert(Alerts.vea_not_active(sea.name, vea.name)) unless e['Active'] == "True"
+            else
+              snap.add_alert(Alerts.vea_is_active(sea.name, vea.name)) unless e['Active'] == "False"
+            end
+          end
+        end
+
+      when "All"
+        sea[:virt_adapters].each do |vea|
+          next unless (e = vea['entstat'])
+          if e['Trunk Adapter'] == "True"
+            snap.add_alert(Alerts.vea_not_active(sea.name, vea.name)) unless e['Active'] == "True"
+          end
+        end
+      end
     end
 
     # Checks the VLANs used by the +sea+ and adds alerts if conflicts

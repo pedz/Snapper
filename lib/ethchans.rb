@@ -43,7 +43,7 @@ class Ethchans < Item
       list = ethchan.adapter_names.dup
       push ethchan.backup_adapter if ethchan['backup_adapter']
       first = list.shift
-      return unless first.entstat && first.entstat.partner_state
+      return unless first['entstat'] && first.entstat['partner_state']
       gold = first.entstat
       list.each do |adapter|
         partner = adapter.entstat
