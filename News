@@ -1,3 +1,27 @@
+03/08/2016 Version 0.9.21
+
+	Jim noticed that in his snap, the SMT did not display
+	correctly.  I guess I have to get the SMT enabled and SMT
+	threads from the attributes of proc0.
+
+03/08/2016 Version 0.9.20
+
+	Added tests to SEA.
+	
+	6. Sanity check bridge mode is All when State is PRIMARY.  Also
+	   bridge mode should be Partial when State is PRIMARY_SH or
+	   BACKUP_SH.
+
+	7. Check VEAs are active
+
+	   a. If bridge mode is All, then all the VEAs should be active.
+
+	   b. If bridge mode is Partial, then the VEAs for the VID
+	      shared list should be active.
+
+	   c. If bridge mode is None, then all VEAs should have active
+	      set to false.
+
 01/29/2016 Version 0.9.19
 
 	Add alerts to the snap if an fscsi device does not have
