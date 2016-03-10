@@ -206,7 +206,15 @@ end
 # On a Mac, the following list is produced with the command:
 #  egrep 'prefix = "fcs"|uniquetype' PdDv.add |grep 'prefix = "fcs"' -A 1 |grep uniquetype|sort | sed -e 's%.* "%%' -e 's%"%%'
 %w{
-adapter/pci/77101223
+77101223
+77102224
+df1000f7
+df1000f9
+df1000fa
+df1000fd
+df1023fd
+df1080f9
+77101223
 adapter/pci/77102224
 adapter/pci/df1000f7
 adapter/pci/df1000f9
