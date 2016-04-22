@@ -413,7 +413,9 @@ class Seas < Item
       attrs.virt_adapters.value.split(',').each do |adapter_name|
         sea[:virt_adapters].push(devices[adapter_name])
       end
-      sea[:ctl_chan] = devices[attrs.ctl_chan.value]
+      if attrs.has_key?(:ctl_chan)
+        sea[:ctl_chan] = devices[attrs.ctl_chan.value]
+      end
       sea[:pvid_adapter] = devices[attrs.pvid_adapter.value]
       devices[logical_name] = sea
       seas[logical_name] = sea
