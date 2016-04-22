@@ -811,7 +811,13 @@ class Seas < Item
 
       when "Partial"
         return unless (shared = e['VID shared'])
-        shared = shared.split(' ').map(&:to_i)
+        # One of the features of our parsing is sometimes shared is a
+        # single integer.
+        if shared.respond_to?(:split)
+          shared = shared.split(' ').map(&:to_i)
+        else
+          shared = [ shared ]
+        end
         sea[:virt_adapters].each do |vea|
           next unless (e = vea['entstat'])
           if e['Trunk Adapter'] == "True"
