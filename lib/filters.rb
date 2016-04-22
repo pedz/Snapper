@@ -178,7 +178,7 @@ end
 # the Device entries of the adapters listed in adapter_names as well
 # as the backup_adapter.  The child entries are nested in one level.
 Print.add_filter("Ethchan", { level: 0 .. 11 }) do |context, item|
-  mode = "mode:" + (item.attrs.mode || "standard")
+  mode = "mode:" + (item.attrs[:mode] || "standard")
   item[:super].print(context.modifier(mode))
   item[:adapter_names].print(context.nest)
   if item[:backup_adapter]
@@ -308,8 +308,8 @@ end
 # Likewise, the backup adapter for ethchan also needs to be marked.
 Print.add_filter("Sea", { level: 0 .. 11 }) do |context, item|
   sea_ent = item[:super]
-  modifier = "ha_mode:#{sea_ent.attrs.ha_mode}"
-  if (sea_ent.attrs.ha_mode != "disabled" &&
+  modifier = "ha_mode:#{sea_ent.attrs[:ha_mode]}"
+  if (sea_ent.attrs[:ha_mode] != "disabled" &&
       (entstat = item.super.entstat))
     bridge_mode = entstat['Bridge Mode']
     state = entstat['State']
@@ -355,7 +355,7 @@ Print.add_filter("Snap", { level: 0 .. 11 }) do |context, snap|
 end
 
 Print.add_filter("Vlan", { level: 0 .. 11 }) do |context, item|
-  modifier = "VLAN ID: #{item.attrs.vlan_tag_id}"
+  modifier = "VLAN ID: #{item.attrs[:vlan_tag_id]}"
   if item[:base_adapter].printed
     modifier += " (on #{item[:base_adapter].name})"
   end

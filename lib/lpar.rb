@@ -46,10 +46,10 @@ class LPAR
     proc0 = nil
     if devices = db['devices']
       if sys0 = devices['sys0']
-        @id_to_partition = sys0.attrs.id_to_partition
+        @id_to_partition = sys0.attrs[:id_to_partition]
       end
       if inet0 = devices['inet0']
-        @hostname = inet0.attrs.hostname
+        @hostname = inet0.attrs[:hostname]
       end
       proc0 = devices['proc0']
     end

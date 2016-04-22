@@ -25,11 +25,11 @@ class Ethchans < Item
         logger.debug { "Converting #{key} into a Ethchan"}
         new_value = value.subclass(Ethchan)
         new_value[:adapter_names] = List.new
-        value.attrs.adapter_names.split(',').each do |adapter_name|
+        value.attrs[:adapter_names].split(',').each do |adapter_name|
           new_value[:adapter_names].push(db['Devices'][adapter_name])
         end
         unless value.attributes['backup_adapter'] &&
-               (backup_adapter = value.attrs.backup_adapter) == "NONE"
+               (backup_adapter = value.attrs[:backup_adapter]) == "NONE"
           new_value[:backup_adapter] = db['Devices'][backup_adapter]
         end
         db.devices[key] = new_value
@@ -39,7 +39,7 @@ class Ethchans < Item
   end
 
   def self.validate_ethchan(ethchan, snap)
-    if ethchan.attrs.mode == "8023ad"
+    if ethchan.attrs[:mode] == "8023ad"
       list = ethchan.adapter_names.dup
       push ethchan.backup_adapter if ethchan['backup_adapter']
       first = list.shift
