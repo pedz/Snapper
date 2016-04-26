@@ -18,7 +18,7 @@ describe NetstatV do
 ETHERNET STATISTICS (ent1) :
 blah blah blah
 EOF
-      expect{ NetstatV.new(text, @db).parse }.to raise_error(RuntimeError, "'Device Type:' string not found\nDevice name: ent1")
+      expect{ NetstatV.new(text, @db).parse }.to raise_error(RuntimeError, "'Device Type:' string not found")
     end
     
     it "uses the generic netstat -v parser for an unknown device" do 
