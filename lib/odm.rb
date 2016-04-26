@@ -2,6 +2,7 @@ require_relative 'logging'
 require_relative 'file_parser'
 require_relative 'item'
 require_relative 'snapper'
+require_relative "parse_error"
 
 # A class that parses the ODM files found in a snap such as CuAt.add,
 # etc.  The class might should have been called OdmParser or some
@@ -52,10 +53,8 @@ class Odm < FileParser
         raw_line = ""
         full_line = ""
       rescue => e
-        new_message = e.message.split("\n").insert(1, "Odm: line:#{@io.lineno}").join("\n")
-        new_e = e.exception(new_message)
-        new_e.set_backtrace(e.backtrace)
-        raise new_e
+        e.add_message("Odm: line:#{@io.lineno}")
+        raise e
       end
     end
     self

@@ -2,6 +2,7 @@ require_relative "write_once_hash"
 require_relative 'logging'
 require_relative "pda"
 require_relative "item"
+require_relative "parse_error"
 
 # @abstract Subclass and override {#productions}.  The _virtual_ base
 # class for the other EntstatFoo classes.  This defines three arrays
@@ -296,9 +297,12 @@ class Entstat < Item
   def parse
     pda = PDA.new(self, productions)
     lineno = 0
+    history = []
     @text.each_line do |line|
       lineno += 1
       line.chomp!
+      history.shift while history.length >= 5
+      history.push(line)
       begin
         matched = pda.match_productions(line)
         # This is for error recovery and trying to provide as much
@@ -321,16 +325,14 @@ class Entstat < Item
           # original state
           unless matched == true
             pda.state = original_state
-            fail "Miss: '#{line}'"
+            raise ParseError.new("Parsing Error in:", history)
           end
         end
-      rescue => e
+      rescue ParseError => e
         # As the exception unwinds the stack, we add in tidbits to the
         # message to help us locate where we were in the parse.
-        new_message = e.message.split("\n").insert(1, "line: #{lineno}\nstate: #{pda.state}\n#{line}\n#{e.message}").join("\n")
-        new_e = e.exception(new_message)
-        new_e.set_backtrace(e.backtrace)
-        raise new_e
+        e.add_message("line offset within device entry: #{lineno}; state: #{pda.state}")
+        raise e
       end
     end
     self

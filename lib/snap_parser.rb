@@ -1,4 +1,5 @@
 require_relative 'logging'
+require_relative "parse_error"
 require 'pathname'
 
 #
@@ -42,11 +43,9 @@ class SnapParser
               begin
                 logger.debug { "parsing #{path} with #{parser.name}" }
                 parser.new(io, @db, path).parse
-              rescue => e
-                new_message = e.message.split("\n").insert(1, "snap parser: path:#{path}").join("\n")
-                new_e = e.exception(new_message)
-                new_e.set_backtrace(e.backtrace)
-                raise new_e
+              rescue ParseError => e
+                e.add_message("path: #{path}")
+                raise e
               end
             end
           end
@@ -54,5 +53,14 @@ class SnapParser
       end
     end
     self
+  rescue ParseError => e
+    pretty_parse_error(e)
+    exit(1)
+  end
+
+  private
+
+  def pretty_parse_error(e)
+    $stderr.puts e.message
   end
 end

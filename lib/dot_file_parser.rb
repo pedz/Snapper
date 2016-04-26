@@ -4,6 +4,7 @@ require_relative 'logging'
 require_relative 'file_parser'
 require_relative 'item'
 require_relative 'snapper'
+require_relative "parse_error"
 
 # Snap has a lot of files that is a concatenation of a sequence of
 # various commands with the output separated by a sequence that looks
@@ -50,18 +51,16 @@ class DotFileParser < FileParser
       rescue ArgumentError => e
       end
     end
-    lines = 5
+    lines = 4
     while pieces.length > 1
       name, text = pieces.shift(2)
       # ignore empty command names (yes... it happens :-( )
       next if name.match(/\A *\z/)
       begin
         item = @db.create_item(name, text).parse
-      rescue => e
-        new_message = e.message.split("\n").insert(1, "dot file parser: lineno:#{lines}").join("\n")
-        new_e = e.exception(new_message)
-        new_e.set_backtrace(e.backtrace)
-        raise new_e
+      rescue ParseError => e
+        e.add_message("file section: #{name.inspect}; starting at line #{lines}")
+        raise e
       end
       lines += (text.lines.count + 5)
     end
