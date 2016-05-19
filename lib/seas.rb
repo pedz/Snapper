@@ -373,7 +373,9 @@ class Seas < Item
           check_ctl_chan(snap, sea)
 
           # Test 5 -- PVID adapter in discovery mode must have Control buffers
-          verify_discovery_vea(snap, sea, sea[:pvid_adapter]) unless sea[:ctl_chan]
+          unless sea[:ctl_chan] || sea.attrs['ha_mode'] == 'diabled'
+            verify_discovery_vea(snap, sea, sea[:pvid_adapter])
+          end
 
           # Test 6 -- check state and bridge mode combination
           check_state_and_bridge_mode(snap, sea)
