@@ -76,7 +76,7 @@ task :yard => [:make_filters] do
     "'lib/**/*.rb'",
     "'spec/**/*.rb'"
   ].join(' ')
-  system("ed - doc/yard/index.html <<EOF
+  system("ed - doc/yard/index.html > /dev/null <<EOF
 /<p>all off
 -1
 s/li/li value=0/
