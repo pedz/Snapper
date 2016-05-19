@@ -47,8 +47,11 @@ end
 # is good.
 Print.add_filter("Entstat", { level: 3 .. 7 }) do |context, item|
   item.flat_keys.each do |k, v|
-    if /error|overrun|underrun/i.match(k) && v != 0
-      context.output("#{k}:#{v}")
+    if /error|overrun|underrun|dropped|drops/i.match(k) && v != 0
+      # This is more noise than useful
+      unless k == "Real Side Statistics,Packets dropped"
+        context.output("#{k}:#{v}")
+      end
     end
   end
   # Report bad LACP
