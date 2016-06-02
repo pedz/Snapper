@@ -15,7 +15,8 @@ class Vlans < Item
   # Runs through the Devices of the Snap looking for devices with a
   # PdDvLn of +adapter/vlan/eth+ and converts them to a Vlan.
   # @param snap [Snap] The snap to review.
-  def self.process_snap(snap)
+  # @param options [Options] The options specified on the command line
+  def self.process_snap(snap, options)
     db = snap.db
     db.devices.each_pair do |key, value|
       if value.cu_dv.pd_dv_ln == "adapter/vlan/eth"

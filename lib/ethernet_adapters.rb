@@ -19,7 +19,8 @@ class EthernetAdapters < Item
   # within the db and adds a print item at level 50 which will cause
   # all the unused ethernet adapters to be listed.
   # @param snap [Snap] The snap to process.
-  def self.process_snap(snap)
+  # @param options [Options] The options specified on the command line
+  def self.process_snap(snap, options)
     logger.debug { "create called"}
     db = snap.db
     adapters = db.create_item("EthernetAdapters")

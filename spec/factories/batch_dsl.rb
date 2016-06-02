@@ -37,7 +37,7 @@ module BatchDSL
     hostname = inet0.attrs.hostname
     new_lparstat_out(options.merge({ node_name: hostname, partition_name: hostname }))
     Snap.new(db: @db, dir: dir).tap do |snap|
-      Hostname.process_snap(snap)
+      Hostname.process_snap(snap, {})
     end
   end
 

@@ -33,7 +33,7 @@ HERE
       @devices = @db.create_item("devices")
       @devices['foo'] = Item.new(@db)
       @snap = Snap.new({ dir: "blah", db: @db})
-      Lsattr.process_snap(@snap)
+      Lsattr.process_snap(@snap, {})
       @lsattrs = @db.lsattrs
       @lsattr = @lsattrs.lsattr_el_foo
     end

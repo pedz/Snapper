@@ -18,7 +18,8 @@ class Ethchans < Item
   # entry for these into the {Ethchan} subclass as well as creates and
   # populates the +adapter_names+ and +backup_adapter+ fields.
   # @param snap [Snap] The snap to process.
-  def self.process_snap(snap)
+  # @param options [Options] The options specified on the command line
+  def self.process_snap(snap, options)
     db = snap.db
     db.devices.each_pair do |key, value|
       if value.cu_dv.pd_dv_ln == "adapter/pseudo/ibm_ech"

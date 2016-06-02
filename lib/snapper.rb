@@ -228,7 +228,7 @@ class Snapper
 
       snap_processors.each do |klass|
         logger.debug { "calling snap_processor for #{klass}"}
-        klass.process_snap(snap)
+        klass.process_snap(snap, @options)
       end
       snap
     end
@@ -240,7 +240,7 @@ class Snapper
     logger.debug { "run_batch_processors"}
     batch_processors.each do |klass|
       logger.debug { "calling batch_processor for #{klass}"}
-      klass.process_batch(@batch)
+      klass.process_batch(@batch, @options)
     end
   end
 

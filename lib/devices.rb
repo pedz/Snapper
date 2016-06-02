@@ -19,7 +19,8 @@ class Devices < Item
   # Creates an Alert if +ipsec_v4+ or +ipsec_v6+ is configured.
   #
   # @param snap [Snap] The snap to process.
-  def self.process_snap(snap)
+  # @param options [Options] The options specified on the command line
+  def self.process_snap(snap, options)
     db = snap.db
     cu_dvs = db['CuDv']
 
@@ -27,7 +28,9 @@ class Devices < Item
     if db['PdDv']
       pd_dvs = Hash[
         db['PdDv'].group_by(&:uniquetype).map do |key, array|
-          snap.add_alert("Multiple PdDv entries for #{key}") if array.length > 1
+          if array.length > 1 && options.level > 3
+            snap.add_alert("Multiple PdDv entries for #{key}")
+          end
           [ key, array[0] ]
         end
       ]

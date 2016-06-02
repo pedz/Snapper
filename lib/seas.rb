@@ -352,7 +352,8 @@ class Seas < Item
     #       set to false.
     #
     # @param snap [Snap] The snap to process.
-    def process_snap(snap)
+    # @param options [Options] The options specified on the command line
+    def process_snap(snap, options)
       db = snap.db
       devices = db.devices
       seas = db.create_item("seas")
@@ -495,7 +496,7 @@ class Seas < Item
     
     # First, processes the batch as a sequence of independent LPARs.
     # @param batch [Batch] The batch to process.
-    def process_batch(batch)
+    def process_batch(batch, options)
       batch.each_cec do |cec|
         review_cec(cec)
       end

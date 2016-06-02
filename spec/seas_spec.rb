@@ -8,7 +8,7 @@ describe Seas, :batch_dsl do
         snap = start_new_snap
         expect(snap).not_to receive(:add_alert)
         expect(Seas).not_to receive(:caught_rescue)
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
 
       it "accepts snap with one SEA with control channel" do
@@ -23,7 +23,7 @@ describe Seas, :batch_dsl do
         expect(t).to be_nil
         expect(snap).not_to receive(:add_alert)
         expect(Seas).not_to receive(:caught_rescue)
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
 
       it "accepts snap with one SEA using discovery protocol" do
@@ -31,7 +31,7 @@ describe Seas, :batch_dsl do
         add_sea
         expect(snap).not_to receive(:add_alert)
         expect(Seas).not_to receive(:caught_rescue)
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
     end
 
@@ -46,7 +46,7 @@ describe Seas, :batch_dsl do
         expect(snap).to receive(:add_alert).
                          once.
                          with(Seas::Alerts.pvid_mismatch(sea.name, sea_pvid, virt.name, vea_pvid))
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
       
       it "alerts when adapter_reset is set to \"yes\"" do
@@ -56,7 +56,7 @@ describe Seas, :batch_dsl do
                          once.
                          with(Seas::Alerts.reset_adapter_yes(sea.name, "yes"))
         expect(Seas).not_to receive(:caught_rescue)
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
       
       it "alert if any virt_adapters not in trunk mode" do
@@ -68,7 +68,7 @@ describe Seas, :batch_dsl do
                          once.
                          with(Seas::Alerts.not_trunk(sea.name, virt.name))
         expect(Seas).not_to receive(:caught_rescue)
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
       
       it "alert if ctl_chan in trunk mode" do
@@ -80,7 +80,7 @@ describe Seas, :batch_dsl do
                          once.
                          with(Seas::Alerts.is_trunk(sea.name, ctl.name))
         expect(Seas).not_to receive(:caught_rescue)
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
     end
 
@@ -92,7 +92,7 @@ describe Seas, :batch_dsl do
         expect(snap).to receive(:add_alert).
                          once.
                          with(Seas::Alerts.discovery_vea(sea.name, virt.name))
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
     end
 
@@ -107,7 +107,7 @@ describe Seas, :batch_dsl do
         expect(snap).to receive(:add_alert).
                          once.
                          with(Seas::Alerts.bmode_not_correct(sea.name, "All", "None"))
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
 
       it "alerts when SEA Bridge Mode All and VEA is not active" do
@@ -120,7 +120,7 @@ describe Seas, :batch_dsl do
         expect(snap).to receive(:add_alert).
                          once.
                          with(Seas::Alerts.vea_not_active(sea.name, virt.name))
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
 
       it "alerts when SEA Bridge Mode None and VEA is active" do
@@ -133,7 +133,7 @@ describe Seas, :batch_dsl do
         expect(snap).to receive(:add_alert).
                          once.
                          with(Seas::Alerts.vea_is_active(sea.name, virt.name))
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
 
       it "alerts when SEA Bridge Mode Partial and VEA not in VID Shared is active" do
@@ -152,7 +152,7 @@ describe Seas, :batch_dsl do
         expect(snap).to receive(:add_alert).
                          once.
                          with(Seas::Alerts.vea_is_active(sea.name, vea2.name))
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
 
       it "alerts when SEA Bridge Mode Partial and VEA in VID Shared is not active" do
@@ -171,7 +171,7 @@ describe Seas, :batch_dsl do
         expect(snap).to receive(:add_alert).
                          once.
                          with(Seas::Alerts.vea_not_active(sea.name, vea1.name))
-        Seas.process_snap(snap)
+        Seas.process_snap(snap, {})
       end
     end
   end
@@ -181,7 +181,7 @@ describe Seas, :batch_dsl do
       it "accepts batch with no SEAs" do
         batch = Batch.new([ start_new_cec ])
         expect_no_alerts(batch)
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
 
       it "accepts batch with one SEA with control channel" do
@@ -191,7 +191,7 @@ describe Seas, :batch_dsl do
         add_sea({ virt_adapters: [ virt ], ctl_chan: ctl })
         batch = Batch.new([ snap ])
         expect_no_alerts(batch)
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
 
       it "accepts batch with one SEA using discovery protocol" do
@@ -200,7 +200,7 @@ describe Seas, :batch_dsl do
         add_sea({ virt_adapters: [ virt ] })
         batch = Batch.new([ snap ])
         expect_no_alerts(batch)
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
     end
 
@@ -216,7 +216,7 @@ describe Seas, :batch_dsl do
         expect(snap).to receive(:add_alert).
                          once.
                          with(Seas::Alerts.vid_conflict(ctl.name, virt.name, pvid, vswitch))
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
 
       it "alerts if PVID also allowed" do
@@ -232,7 +232,7 @@ describe Seas, :batch_dsl do
         expect(snap).to receive(:add_alert).
                          once.
                          with(Seas::Alerts.vid_conflict(ctl.name, virt.name, dup, vswitch))
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
     end
 
@@ -253,7 +253,7 @@ describe Seas, :batch_dsl do
                           with(Seas::Alerts.sea_changed(sea1.name, vswitch, pvid))
         expect(snap2).to receive(:add_alert).
                           with(Seas::Alerts.sea_changed(sea2.name, vswitch, pvid))
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
 
       it "alerts mismatched VEAs" do
@@ -273,7 +273,7 @@ describe Seas, :batch_dsl do
                           with(Seas::Alerts.sea_changed(sea1.name, vswitch, pvid))
         expect(snap2).to receive(:add_alert).
                           with(Seas::Alerts.sea_changed(sea2.name, vswitch, pvid))
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
     end
 
@@ -294,7 +294,7 @@ describe Seas, :batch_dsl do
         expect(snap2).to receive(:add_alert).
                           once.
                           with(Seas::Alerts.unmatched_sea(sea2.name))
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
 
       it " alerts if control virtual switch mismatch" do
@@ -312,7 +312,7 @@ describe Seas, :batch_dsl do
         expect(snap2).to receive(:add_alert).
                           once.
                           with(Seas::Alerts.unmatched_sea(sea2.name))
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
 
       it " alerts mismatched allowed vlans" do
@@ -336,7 +336,7 @@ describe Seas, :batch_dsl do
                           with(Seas::Alerts.vlan_added(sea2.name, [ 5 ], vea_conf2))
         expect(snap2).to receive(:add_alert).
                           with(Seas::Alerts.vlan_missing(sea2.name, [ 4 ], vea_conf2))
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
 
       it " alerts mismatched VEAs [case 1]" do
@@ -360,7 +360,7 @@ describe Seas, :batch_dsl do
                           with(Seas::Alerts.vea_missing(sea1.name, vea_conf2_2))
         expect(snap2).to receive(:add_alert).
                           with(Seas::Alerts.vea_added(sea2.name, vea_conf2_2))
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
 
       it " alerts mismatched VEAs [case 2]" do
@@ -384,7 +384,7 @@ describe Seas, :batch_dsl do
                           with(Seas::Alerts.vea_added(sea1.name, vea_conf1_2))
         expect(snap2).to receive(:add_alert).
                           with(Seas::Alerts.vea_missing(sea2.name, vea_conf1_2))
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
 
       it " alerts mismatched VEAs [case 3]" do
@@ -408,7 +408,7 @@ describe Seas, :batch_dsl do
                           with(Seas::Alerts.vea_added(sea1.name, vea_conf1_2))
         expect(snap2).to receive(:add_alert).
                           with(Seas::Alerts.vea_missing(sea2.name, vea_conf1_2))
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
 
       it " alerts mismatched VEAs [case 4]" do
@@ -432,7 +432,7 @@ describe Seas, :batch_dsl do
                           with(Seas::Alerts.vea_missing(sea1.name, vea_conf2_2))
         expect(snap2).to receive(:add_alert).
                           with(Seas::Alerts.vea_added(sea2.name, vea_conf2_2))
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
     end
 
@@ -455,7 +455,7 @@ describe Seas, :batch_dsl do
         expect(snap3).to receive(:add_alert)
 
         batch = Batch.new( [ snap1, snap2, snap3 ])
-        Seas.process_batch(batch)
+        Seas.process_batch(batch, {})
       end
     end
   end

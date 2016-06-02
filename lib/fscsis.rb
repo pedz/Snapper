@@ -11,7 +11,12 @@ class Fscsis < Item
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
 
-  def self.process_snap(snap)
+  # Runs through the fscsi devices adding alerts for configurations
+  # that are not optimum.  This was suggested by Steve Lang.
+  #
+  # @param snap [Snap] The snap to process.
+  # @param options [Options] The options specified on the command line
+  def self.process_snap(snap, options)
     db = snap.db
     devices = db.devices
     fscsis = db.create_item("Fscsis")

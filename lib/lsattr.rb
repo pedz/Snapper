@@ -31,8 +31,9 @@ class Lsattr < Item
   # logical name for the device and an item which has the fields of
   # +:attr+, +:value+, +:desc+, and +:alter+.
   # @param snap [Snap] the snap to scan.
+  # @param options [Options] The options specified on the command line
   # @raise [RuntimeError] if the parse failed.
-  def self.process_snap(snap)
+  def self.process_snap(snap, options)
     db = snap.db
     lsattrs = db.create_item("lsattrs")
     devices = db.devices

@@ -7,7 +7,7 @@ describe Ethchans, :batch_dsl do
       it "accepts snap with no ether channels" do
         snap = start_new_snap
         expect(snap).not_to receive(:add_alert)
-        Ethchans.process_snap(snap)
+        Ethchans.process_snap(snap, {})
       end
     end
   end
