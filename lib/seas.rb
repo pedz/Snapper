@@ -374,7 +374,7 @@ class Seas < Item
 
           # Test 5 -- PVID adapter in discovery mode must have Control buffers
           unless sea[:ctl_chan] ||
-                 sea.attrs['ha_mode'] == 'diabled' ||
+                 sea.attrs['ha_mode'] == 'disabled' ||
                  sea.attrs['ha_mode'].nil? # no PdAt in snap; default is disabled
             verify_discovery_vea(snap, sea, sea[:pvid_adapter])
           end
