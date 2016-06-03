@@ -42,6 +42,7 @@ and out to the real network can be easily followed.
                                        default is 3
       -o, --output file                Specify an output file
                                        Default is STDOUT
+          --news                       Prints new items added to snapper
       -q file                          Sets the file that the Quick debug goes to
                                        default is $stderr
       -h, --html path                  Outputs an html file that shows the layout
@@ -76,6 +77,9 @@ The levels are described in the Levels[#label-Levels] section.
 
 For completeness sake, the output file can be specified with the +-o+
 or +--output+ option.
+
+The +--news+ option is to get the log of the latest updates, fixes,
+etc.
 
 The code has a +qb+ method for quickly adding debug statements.  The
 +-q+ option can route this to a specific file.
@@ -750,8 +754,11 @@ state will be from before the changes made to the parser.
 
 === HTML
 
-<b>Currently, the HTML feature is often broken as I rearrange the
-internals of Snapper.</b>
+<b>Currently, the HTML feature is broken.  I've started a rewrite of
+the javascript code but have not had time to finish it.  The feature
+is sorta cute but I've honestly not found it useful.  If you believe
+you would find it useful, drop me an email and I'll start to put more
+effort into it.</b>
 
 Snapper can load up a list of snaps and then produce an HTML document
 that shows the configuration of the various LPARs and CECs.  Here is a

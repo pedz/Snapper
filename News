@@ -1,3 +1,20 @@
+06/03/2016 Version 0.9.34
+
+	Updated README.  Changed snap and batch processors to accept
+	the options mostly so the level specified on the command line
+	would be available.
+
+05/19/2016 Version 0.9.32
+
+	Discovered that "Control" buffers alert came out too often.
+	Added "drops" and "dropped" to the list of default entstat
+	lines that are printed at the default level.
+
+04/26/2016 Version 0.9.30
+
+	When snapper barfs and dies, the error messages are now much
+	nicer and I am hoping more understandable by the users.
+
 03/08/2016 Version 0.9.21
 
 	Jim noticed that in his snap, the SMT did not display
