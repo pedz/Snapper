@@ -10,6 +10,36 @@ class EntstatShient < Entstat
 
   SHIENT_PRODUCTIONS =
     [
+      # Sample Match:   |Enabled VLAN IDs:
+      # States Matched: :normal
+      # New State:      :shiVLANIds
+      # State Pushed:   none
+      # States Popped:  0
+      # This attribute comes in two flavors.  Usually it is
+      # "Enabled VLAN IDs: None" which is consume be the rules below.
+      # The other flavor is a list of VLAN IDs.  I don't know if they
+      # are listed one per line since I've never seen such output.
+      # I've only seen a single vlan id listed on the nextl line
+      PDA::Production.new("^(?<field>Enabled VLAN IDs):$", [:normal], :shiVLANIds) do |md, pda|
+        field = md[:field].strip
+        value = []
+        pda.target[field] = value
+        pda.push(value)
+      end,
+
+      # Sample Match:   |	0148
+      # States Matched: :shiVLANIds
+      # New State:      :no_change
+      # State Pushed:   none
+      # States Popped:  0
+      # Parse the list of vlan ids
+      # Whatever we do must be in place.  e.g. += does not work
+      # because it creates a new object and breaks the link from the
+      # "Enabled VLAN IDs" field
+      PDA::Production.new("^(?<values>[^:\n]+)$", [:shiVLANIds]) do |md, pda|
+        md[:values].split.each { |v| pda.target.push(v.to_i(10)) }
+      end,
+
       # Sample Match:   |PCIe2 4-Port Adapter (10GbE SFP+) (e4148a1614109304)
       # States Matched: :normal
       # New State:      :no_change
@@ -29,7 +59,7 @@ class EntstatShient < Entstat
         field = md[:field].strip
         value = WriteOnceHash.new
         pda.target[field] = value
-        pda.push(value);
+        pda.push(value)
       end,
 
       # Sample Match:   |	15344	MGT
@@ -62,7 +92,7 @@ class EntstatShient < Entstat
       end,
       
       # Sample Match:   |Adapter Reset Count: 0
-      # States Matched: :normal
+      # States Matched: :all
       # New State:      :no_change
       # State Pushed:   none
       # States Popped:  0
@@ -71,6 +101,7 @@ class EntstatShient < Entstat
       # md[:field].  Text after colon is md[:value].  Leading and
       # trailing white space from both are stripped.  Value can not
       # be empty and is converted to an integer.
+      # Needed because the rule in BASE is only for state of normal
       PDA::Production.new("^\\s*(?<field>[^: ][^:]+):\\s*(?<value>-?\\d+)\\s*$", [:shientQStats]) do |md, pda|
         field = md[:field].strip
         value = md[:value].to_i
@@ -78,7 +109,7 @@ class EntstatShient < Entstat
       end,
       
       # Sample Match:   |	[q-0]: rx_bytes:	0
-      # States Matched: :normal
+      # States Matched: :all
       # New State:      :no_change
       # State Pushed:   none
       # States Popped:  0
