@@ -11,8 +11,13 @@ class LPAR
 
   # @return ["Unknown"|Integer] If lparstat.out was parsed, returns
   #   the integer value found of <tt>Online Virtual CPUs</tt>.
-  #   Otherwise <tt>Unknown<tt> (a string) is returned.
+  #   Otherwise <tt>Unknown</tt> (a string) is returned.
   attr_reader :cpus
+
+  # @return ["Unknown"|Integer] If lparstat.out was parsed, returns
+  #   the integer value found of <tt>Entitled Capacity</tt>.
+  #   Otherwise <tt>Unknown</tt> (a string) is returned.
+  attr_reader :entitlement
 
   # @return [String] The hostname as found by the hostname attribute
   #   of the inet0 device.
@@ -42,6 +47,7 @@ class LPAR
     @snap_list = List.new
     @alerts = List.new
     @cpus = "Unknown"
+    @entitlement = "Unknown"
     @smt = "Unknown"
     proc0 = nil
     if devices = db['devices']
@@ -55,6 +61,7 @@ class LPAR
     end
     if lparstat = db['lparstat.out']
       @cpus = lparstat['Online Virtual CPUs'].to_i
+      @entitlement = lparstat['Entitled Capacity'].to_i
 
       # "Type" from lparstat.out comes in a few forms:
       #  1. Dedicated-SMT

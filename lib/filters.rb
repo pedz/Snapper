@@ -284,7 +284,8 @@ Print.add_filter("LPAR", { level: 0 .. 11 }) do |context, lpar|
   cpus = lpar.cpus
   smt =  lpar.smt
   type = lpar.type
-  context.output("Host:#{hostname} Virtual CPUs:#{cpus} #{type} SMT:#{smt}") if context.level >= 2
+  entitlement = lpar.entitlement
+  context.output("Host:#{hostname} Virtual CPUs:#{cpus} #{type} SMT:#{smt} Entitlement:#{entitlement}") if context.level >= 2
   lpar.alerts.print(context.nest)
   lpar.snap_list.print(context.nest)
   context
