@@ -1,3 +1,10 @@
+09/07/2016 Version 0.9.37
+
+	Changed NetstatV::Parsers.instance.add to also take a pattern
+	to avoid constantly needing to add entries for fiber channel
+	adapters.  The patterns are searched first and then the table
+	of strings is used.
+
 06/03/2016 Version 0.9.34
 
 	Updated README.  Changed snap and batch processors to accept

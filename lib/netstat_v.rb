@@ -26,10 +26,14 @@ class NetstatV < Item
     # Each parser registers its class and the device strings that it
     # understands by calling this method.
     # @param klass [Class] The class to add
-    # @param string [String] The string after <tt>Device Type:</tt> in
+    # @param string [String, Regexp] The string after <tt>Device Type:</tt> in
     #   the entstat output that this class can parse.
     def add(klass, string)
-      table[string] = klass
+      if string.is_a? Regexp
+        patterns[string] = klass
+      else
+        table[string] = klass
+      end
     end
 
     # The +netstat_v+ front end finds the adapter specific parser by
@@ -38,10 +42,17 @@ class NetstatV < Item
     # @return [Class] The class that registered for this specific
     #   string or {EntstatGeneric} if no registration is found.
     def find(string)
+      patterns.each_pair do |regexp, klass|
+        return klass if regexp.match(string)
+      end
       table[string] || EntstatGeneric
     end
 
     private
+
+    def patterns
+      @patterns ||= {}
+    end
 
     # @return [Hash] the hash table of String to Class
     def table
