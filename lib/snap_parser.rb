@@ -53,14 +53,5 @@ class SnapParser
       end
     end
     self
-  rescue ParseError => e
-    pretty_parse_error(e)
-    exit(1)
-  end
-
-  private
-
-  def pretty_parse_error(e)
-    $stderr.puts e.message
   end
 end

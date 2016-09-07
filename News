@@ -1,3 +1,9 @@
+09/07/2016 Version 0.9.39
+
+	Added a log file that records date, user, arguments, and exit
+	status.  If an error is thrown, the stack and error message is
+	recorded.
+	
 09/07/2016 Version 0.9.38
 
 	Fixed a crash if more than one snap is sucked up at the same
