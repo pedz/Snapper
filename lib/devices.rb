@@ -93,6 +93,9 @@ class Devices < Item
 
     netstat_in = (db['Netstat -in'] ||= {})
     netstat_v = (db['Netstat -v'] ||= {})
+    if netstat_v.is_a? Array
+      fail "\nFound multiple tcpip.snap files within specified directory.\nPlease clean up testcase first"
+    end
 
     devices = db.create_item("Devices")
     cu_dvs.each do |cu_dv|

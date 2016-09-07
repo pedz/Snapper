@@ -1,3 +1,9 @@
+09/07/2016 Version 0.9.38
+
+	Fixed a crash if more than one snap is sucked up at the same
+	time.  An error message is printed that I hope wlil be easier
+	to understand.
+	
 09/07/2016 Version 0.9.37
 
 	Changed NetstatV::Parsers.instance.add to also take a pattern
