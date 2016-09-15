@@ -1,23 +1,37 @@
 
-
 = Snapper
 
-This is a tool to quickly go through one or more snaps.  It currently
-can not work with perfpmr output but that is planned.
+Snapper is a tool to quickly go through a set of snaps.  It currently
+can not work with perfpmr output but that is planned if there is
+enough interest.
+
+Snapper has two main objectives.  The first is to provide an overview
+of the structure of how the LPARs are set up.  Currently this is
+network focused but it should be that, for example, an HA person could
+get a quick view from an HA perspective or a disk person could get a
+quick view from a disk perspective.
+
+The second objective is to flag any static misconfiguration issues.
+With a SEA for example, there are a lot of ways users can foul up the
+VLAN tags.  I'm sure that is true with most every area of AIX.
+
+Snapper parses the files in a snap and puts everything it finds into a
+data structure that can be processed while looking at all the data of
+all the snaps.  This allows features such as finding when a SEA HA in
+one LPAR is not set up the same as the maching SEA HA in another LPAR.
+There are more than a dozen checks done with the configuration of the
+SEA alone.
 
 == Usage
 
 The simplest form is:
 
-  snapper.rb path/to/snap
+  snapper.rb path/to/snap1 [ path/to/snap2 ... ]
 
-where +path/to/snap+ is to the top directory of the snap -- the
+where +path/to/snap1+ is to the top directory of the snap -- the
 directory that contains +general+ and other directories.  A list of
-snaps can be supplied on a single command line and ultimately that is
-where this tool is heading so that configuration errors in VIOS HA
-environments can be found or packets from a particular interface on a
-particular virtual client flowing out through a SEA and a real adapter
-and out to the real network can be easily followed.
+snaps can be supplied on a single command line and is where the real
+power of snapper is leveraged.
 
   Usage: snapper.rb [options] <path to snap1> [ <path to snap2> ... ]
       -D, --dump                       For each snap, creates a .ruby.dump.gz file
@@ -45,7 +59,7 @@ and out to the real network can be easily followed.
           --news                       Prints new items added to snapper
       -q file                          Sets the file that the Quick debug goes to
                                        default is $stderr
-      -h, --html path                  Outputs an html file that shows the layout
+          --html path                  Outputs an html file that shows the layout
                                        of the systems
           --[no-]one-file              Embed (the default --one-file) the
                                        Javascript and CSS files into the HTML
@@ -61,6 +75,7 @@ and out to the real network can be easily followed.
           --interactive                Drops the user into an irb session
           --flat-keys                  Print the flat_keys and value of the entire
                                        database from the first snap.
+      -h, -?, --help                   This message
 
 The +-D+ option is detailed in the -D[#label-D] section.
 
