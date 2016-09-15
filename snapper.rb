@@ -18,7 +18,7 @@ end
 
 def foo(options = {})
   text = []
-  text.push("")
+  text.push("--------------------")
   text.push("Date: #{DateTime.now}")
   text.push("User: #{ENV["USER"]}")
   text.push("Version: #{$snapper_version}")
