@@ -19,4 +19,4 @@ class EntstatVlan < Entstat
   end
 end
 
-NetstatV::Parsers.instance.add(EntstatVlan, "")
+NetstatV::Parsers.instance.add(EntstatVlan, /Hardware Address: (\h{1,2}:)#{5}\h{1,2}/)

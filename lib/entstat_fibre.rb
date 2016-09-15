@@ -203,4 +203,4 @@ class EntstatFibre < Entstat
   end
 end
 
-NetstatV::Parsers.instance.add(EntstatFibre, /FC Adapter (.*)/)
+NetstatV::Parsers.instance.add(EntstatFibre, /FC Adapter \(.*\)/)

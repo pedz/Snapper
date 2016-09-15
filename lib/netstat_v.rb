@@ -69,7 +69,7 @@ class NetstatV < Item
   private_constant :VASI
 
   # Regexp that matches the Device Type: ... line
-  DEVICE_TYPE_REGEXP = Regexp.new("^\n?Device Type: +(.*)")
+  DEVICE_TYPE_REGEXP = Regexp.new("^\n?Device Type: +\n?([^\n]*)", Regexp::MULTILINE)
   private_constant :DEVICE_TYPE_REGEXP
   
   # <tt>netstat -v</tt> is essentially a sequence of calling
