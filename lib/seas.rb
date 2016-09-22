@@ -18,6 +18,11 @@ class Seas < Item
   # from test units.
   class Alerts
     class << self
+      def mismatched_bridge_modes(sea1, bmode1, sea2, bmode2)
+        "SEA #{sea1} with bridge mode of #{bmode1} mismatched with SEA #{sea2} in other LPAR with bridge mode of #{bmode2}"
+      end
+
+
       # Formats the proper alert string when the +pvid+ attribute of the
       # SEA does not match the <tt>Port VLAN ID</tt> of the
       # +pvid_adapter+.
@@ -494,7 +499,7 @@ class Seas < Item
 
     public
     
-    # First, processes the batch as a sequence of independent LPARs.
+    # First, processes the batch as a sequence of independent CECs.
     # @param batch [Batch] The batch to process.
     def process_batch(batch, options)
       batch.each_cec do |cec|
@@ -504,8 +509,11 @@ class Seas < Item
 
     private
 
+    # First, process the CEC as a sequence of independent LPARs.  Then
+    # review for errors between LPARs.
+    # @param cec [CEC] The cec to process.
     def review_cec(cec)
-      @make_up_good_name = {}
+      @pvid_vswitch_hash = {}
       @hosts_with_seas = Set.new
       cec.each_lpar do |lpar|
         review_lpar(lpar)
@@ -524,7 +532,7 @@ class Seas < Item
     # here.
     def flag_bad_matched_seas
       return unless @hosts_with_seas.length > 1
-      @make_up_good_name.each_pair do |id, host_hash|
+      @pvid_vswitch_hash.each_pair do |id, host_hash|
         case host_hash.keys.length
         when 1                  # unmatched
           host, array = host_hash.first
@@ -533,8 +541,46 @@ class Seas < Item
             hash[:snap].add_alert(t)
           end
           
-        when 2                  # just right
-          next
+        # When we have one snap for each VIOS, we assume that the
+        # snaps were taken at the same time and check to make sure
+        # that the bridge modes match up correctly.  We don't do this
+        # if there are multiple snaps for a VIOS because we're too
+        # lazy to figure out, time wise, which snaps to compare.
+        # But, in concept, it could be done.
+        when 2                  # two hosts on this pvid+vswitch id
+          skip_it = false
+          bmodes = []
+          seas = []
+          snaps = []
+          host_hash.each_pair do |host, array|
+            if array.length > 1
+              skip_it = true
+              break
+            end
+            next unless (sea = array.first[:sea])
+            next unless (snap = array.first[:snap])
+            next unless (entstat = sea['entstat'])
+            next unless (bmode = entstat['Bridge Mode'])
+            bmodes.push(bmode)
+            snaps.push(snap)
+            seas.push(sea)
+          end
+          next if skip_it || (bmodes.length != 2)
+          case bmodes[0]
+          when "All"
+            next if bmodes[1] == "None"
+
+          when "None"
+            next if bmodes[1] == "All"
+
+          when "Partial"
+            next if bmodes[1] == "Partial"
+
+          end
+          t = Alerts.mismatched_bridge_modes(seas[0].name, bmodes[0], seas[1].name, bmodes[1])
+          snaps[0].add_alert(t)
+          t = Alerts.mismatched_bridge_modes(seas[1].name, bmodes[1], seas[0].name, bmodes[0])
+          snaps[1].add_alert(t)
 
         else                    # more than 2 hosts
           hosts = host_hash.keys
@@ -573,7 +619,7 @@ class Seas < Item
     # match exactly.  The _ick_ comes up when things don't match and
     # producing useful alerts.
     def flag_non_congruent_seas
-      @make_up_good_name.each_pair do |id, host_hash|
+      @pvid_vswitch_hash.each_pair do |id, host_hash|
         next if host_hash.keys.length > 2
         all = Set.new
         host_hash.each_pair do |host, array|
@@ -755,7 +801,7 @@ class Seas < Item
       end
       vea_config_list.sort!
       id = "%#{vswitch}-#{pvid}"
-      t = (@make_up_good_name[id] ||= {})
+      t = (@pvid_vswitch_hash[id] ||= {})
       t = (t[snap.hostname] ||= [])
       t.push({ snap: snap, sea: sea, vswitch: vswitch, pvid: pvid,
                allowed: allowed, vea_config_list: vea_config_list})
@@ -776,10 +822,11 @@ class Seas < Item
     end
 
     State_to_Bridge_Mode_Map = {
-      "PRIMARY" => "All",
       "BACKUP" => "None",
-      "PRIMARY_SH" => "Partial",
-      "BACKUP_SH" => "Partial"
+      "BACKUP_SH" => "Partial",
+      "LIMBO" => "None",
+      "PRIMARY" => "All",
+      "PRIMARY_SH" => "Partial"
     }
 
     # Creates an alert if the SEA State is PRIMARY and the Bridge Mode
@@ -790,7 +837,7 @@ class Seas < Item
     def check_state_and_bridge_mode(snap, sea)
       return unless (e = sea['entstat'])
       return unless (state = e['State']) && (bridge_mode = e['Bridge Mode'])
-      correct = State_to_Bridge_Mode_Map[state]
+      return unless (correct = State_to_Bridge_Mode_Map[state])
       snap.add_alert(Alerts.bmode_not_correct(sea.name, correct, bridge_mode)) unless correct == bridge_mode
     end
 

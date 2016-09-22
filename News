@@ -1,3 +1,10 @@
+09/22/2016 Version 0.9.43
+
+        Added a check for mismatched bridge modes between SEAs using
+        the same pvid+vswitch for their control packets.  e.g. a SEA
+        with a bridge mode of partial should have its mate also in
+        partial bridge mode or something is wrong.
+
 09/07/2016 Version 0.9.39
 
 	Added a log file that records date, user, arguments, and exit
