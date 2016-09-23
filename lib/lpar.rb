@@ -61,7 +61,7 @@ class LPAR
     end
     if lparstat = db['lparstat.out']
       @cpus = lparstat['Online Virtual CPUs'].to_i
-      @entitlement = lparstat['Entitled Capacity'].to_i
+      @entitlement = lparstat['Entitled Capacity'].to_f
 
       # "Type" from lparstat.out comes in a few forms:
       #  1. Dedicated-SMT
