@@ -851,3 +851,5 @@ Some ToDos that I can think of... I'm sure there are others.
    list by the command line, options file and perhaps an environment
    variable.
 
+1. Snapper dies if there is no tcpip.snap which is sorta weak in the
+   general case.
