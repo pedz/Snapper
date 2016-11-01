@@ -188,6 +188,15 @@ class EntstatFibre < Entstat
         field = md[:field].strip
         value = md[:value].to_i
         pda.target[field] = value
+      end,
+
+      # Sample Match:   |Error reading statistics information
+      # States Matched: :normal
+      # New State:      :no_change
+      # State Pushed:   none
+      # States Popped:  none
+      # We need to ignore these lines
+      PDA::Production.new("^Error reading statistics information\\s*$", [:normal]) do |md, pda|
       end
     ]
 

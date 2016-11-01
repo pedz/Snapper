@@ -1,3 +1,8 @@
+11/01/2016 Version 0.9.48
+
+        Ignore error lines in entstat_fiber.rb and also empty date
+	lines in dot_file_parser.rb
+
 10/26/2016 Version 0.9.46
 
         Updated bos_vrmf_map

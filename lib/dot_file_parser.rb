@@ -45,7 +45,7 @@ class DotFileParser < FileParser
     # The lines0 piece is thrown away.
     pieces = @io.read.split(DotSeparator)
     maybe_date = pieces.shift     # date or blanks before 1st command
-    if @path && (!maybe_date.empty?) && (@path.basename.to_s == "general.snap")
+    if @path && maybe_date && (!maybe_date.empty?) && (@path.basename.to_s == "general.snap")
       begin
         @db.date_time = DateTime.parse(maybe_date)
       rescue ArgumentError => e
