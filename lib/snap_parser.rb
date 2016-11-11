@@ -34,9 +34,7 @@ class SnapParser
   def parse
     Dir[File.expand_path(@dir) + "/**/*"].each do |string|
       path = Pathname.new(string)
-      if @prune && @prune.match(path.to_s)
-        Find.prune
-      end
+      next if @prune && @prune.match(path.to_s)
       if path.file?
         @patterns.each do |regexp, parser|
           if regexp.match(path.to_s)
