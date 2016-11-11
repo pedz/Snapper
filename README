@@ -132,7 +132,7 @@ option prevents using a pager.  Likewise, the +-p+ or +--paginate+
 option will reverse a +--no-pager+ option.
 
 If a pager is being used and the pager is _less_ and the +LESS+
-environment variable is not set, it is set to "FRSX" before _less_ is
+environment variable is not set, it is set to "FRSXK" before _less_ is
 invoked.
 
 The +--interactive+ flag is a bit experimental but in essence it

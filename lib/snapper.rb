@@ -95,6 +95,11 @@ class Snapper
     run_batch_processors
     do_cmd
     @options.output.close
+  rescue Interrupt => e
+    @options.output.close
+    exit(0)
+  rescue Errno::EPIPE => e
+    exit(0)
   end
 
   # Needed to get interactive to work

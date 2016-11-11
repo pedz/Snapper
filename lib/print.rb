@@ -389,7 +389,6 @@ module Print
     # return context so inject can be used
     context
   rescue => e
-    STDERR.puts self.class
     raise e
   end
 

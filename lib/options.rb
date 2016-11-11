@@ -169,7 +169,7 @@ class Options
         # -R or --RAW-CONTROL-CHARS
         # -S or --chop-long-lines
         # -X or --no-init
-        env["LESS"] = "FRSX" unless ENV["LESS"]
+        env["LESS"] = "FRSXK" unless ENV["LESS"]
       end
       @output = IO.popen(env, [ "sh", "-c", @pager ], "w")
       @colorize = !(@colorize == :never)
