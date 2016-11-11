@@ -1,3 +1,10 @@
+11/11/2016 Version 0.9.49
+
+        Changed from using find to using Dir[] so that symbolic links
+        are followed.  Also added logic to ignore snaps that do not at
+        least have CuDv entries and exit gracefully rather than wit an
+        error stack.
+
 11/01/2016 Version 0.9.48
 
         Ignore error lines in entstat_fiber.rb and also empty date

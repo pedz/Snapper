@@ -45,6 +45,12 @@ class Snap
     @print_list = (options[:print_list] || PrintList.new)
   end
 
+  # @return [Boolean] True when no CuDv entries are found.  The snap
+  # is considered empty in this case.
+  def empty?
+    @db['CuDv'].nil?
+  end
+
   # @return [DateTime] Forwards to {Db#date_time}
   def date_time
     @db.date_time

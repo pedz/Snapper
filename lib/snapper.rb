@@ -226,13 +226,17 @@ class Snapper
         exit 1
       end
 
-      snap_processors.each do |klass|
-        logger.debug { "calling snap_processor for #{klass}"}
-        klass.process_snap(snap, @options)
+      if snap.empty?
+        $stderr.puts("Snap at #{snap.dir} appears empty.  Skipping...")
+      else
+        snap_processors.each do |klass|
+          logger.debug { "calling snap_processor for #{klass}"}
+          klass.process_snap(snap, @options)
+        end
       end
       snap
-    end
-
+    end.reject { |snap| snap.nil? || snap.empty? }
+    exit(0) if snap_list.empty?
     @batch = Batch.new(snap_list)
   end
 

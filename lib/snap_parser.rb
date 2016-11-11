@@ -32,7 +32,8 @@ class SnapParser
   # parse the files within the directory (@dir) using the patterns and
   # adding the items to the database
   def parse
-    Pathname.new(File.expand_path(@dir)).find do |path|
+    Dir[File.expand_path(@dir) + "/**/*"].each do |string|
+      path = Pathname.new(string)
       if @prune && @prune.match(path.to_s)
         Find.prune
       end

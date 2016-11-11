@@ -42,7 +42,7 @@ class Ethchans < Item
   def self.validate_ethchan(ethchan, snap)
     if ethchan.attrs[:mode] == "8023ad"
       list = ethchan.adapter_names.dup
-      push ethchan.backup_adapter if ethchan['backup_adapter']
+      list.push ethchan.backup_adapter if ethchan['backup_adapter']
       first = list.shift
       return unless first['entstat'] && first.entstat['partner_state']
       gold = first.entstat

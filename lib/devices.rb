@@ -23,6 +23,11 @@ class Devices < Item
   def self.process_snap(snap, options)
     db = snap.db
     cu_dvs = db['CuDv']
+    if cu_dvs.nil?
+      $stderr.puts("No CuDv entries found.") 
+      $stderr.puts("Skipping this snap")
+      return
+    end
 
     # pd_dvs (which may be empty) is a hash[uniquetype]
     if db['PdDv']
@@ -49,12 +54,6 @@ class Devices < Item
       pd_ats = {}
     end
 
-    # pd_dvs = Item.new(@db)
-    # db['PdDv'] && db['PdDv'].each do |pd_dv|
-    #   pd_dv = pd_dv
-    #   pd_dvs[pd_dv['uniquetype']] = pd_dv
-    # end
-
     # Result is hash[name][attribute]
     if db['CuAt']
       cu_ats = Hash[ db['CuAt'].group_by(&:name).map do |key, array|
@@ -64,26 +63,6 @@ class Devices < Item
     else
       cu_ats = {}
     end
-
-    # # pd_ats (which may be empty) is a hash by uniquetype of hashes by attribute name
-    # pd_ats = Item.new(@db)
-    # db['PdAt'] && db['PdAt'].each do |pd_at|
-    #   pd_at = pd_at
-    #   uniquetype = pd_at['uniquetype']
-    #   attribute = pd_at['attribute']
-    #   pd_ats[uniquetype] ||= Item.new(@db)
-    #   pd_ats[uniquetype][attribute] = pd_at
-    # end
-
-    # # cu_ats is hash by device name of hashes by attribute name
-    # cu_ats = Item.new(@db)
-    # db['CuAt'].each do |cu_at|
-    #   cu_at = cu_at
-    #   name = cu_at['name']
-    #   attribute = cu_at['attribute']
-    #   cu_ats[name] ||= Item.new(@db)
-    #   cu_ats[name][attribute] = cu_at
-    # end
 
     errs = Item.new(@db)
     db['Errpt'].each do |err|
