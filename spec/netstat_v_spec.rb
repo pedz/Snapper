@@ -8,9 +8,9 @@ describe NetstatV do
       @db = double("db")
     end
     
-    it "rejects random text" do 
+    it "just returns on random text" do
       text = "Some text"
-      expect{ NetstatV.new(text, @db).parse }.to raise_error(RuntimeError, "No device boundaries found")
+      expect{ NetstatV.new(text, @db).parse }.not_to raise_error
     end
     
     it "rejects text without Device type:" do 

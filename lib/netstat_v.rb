@@ -98,7 +98,10 @@ class NetstatV < Item
   # @raise [RuntimeError] if no device boundary is found.
   def parse
     parts = @text.split(DEVICE_BOUNDARY)
-    fail "No device boundaries found" if parts.length < 3
+    if parts.length < 3
+      return self
+    end
+    # fail "No device boundaries found" if parts.length < 3
     unused_empty = parts.shift  # stuff before first match
     lines = 2
     while parts.length > 2
