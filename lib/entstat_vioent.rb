@@ -84,13 +84,14 @@ class EntstatVioent < Entstat
       # separated with spaces.
       # @raise [RuntimeError] if the indent is off.
       # @raise [RuntimeError] if we around too many fields.
-      PDA::Production.new("^(?<indent>\\s*)(?<field>\\S\\D*)(?<values>(?:\\s+\\d+)+)\\s*$", [:hyperInfo]) do |md, pda|
+      PDA::Production.new("^(?<indent>\\s*)(?<field>[A-Z][A-Za-z ()]*)(?<values>(?:\\s+\\d+)+)\\s*$", [:hyperInfo]) do |md, pda|
         this_indent = md[:indent].length
         field = md[:field].strip
         values = md[:values].split.map(&:to_i)
+        logger.debug { "Hyperinfo indent #{this_indent} field #{field} with values" }
         last_indent, target, sizes = pda.target
         unless (last_indent + 2) == this_indent
-          fail "Line '#{md[0]}' has indent of #{this_indent} instead of #{last_indent + 2}" 
+          fail "Line '#{md[0]}' 2 has indent of #{this_indent} instead of #{last_indent + 2}" 
         end
         if sizes.empty?
           target[field] = values.shift
@@ -105,6 +106,34 @@ class EntstatVioent < Entstat
         end
       end,
       
+      # Sample Match:   |Buffer Mode: Min
+      # States Matched: :hyperInfo
+      # New State:      :no_change
+      # State Pushed:   no
+      # New lines were added that are the traditional "field: value".
+      # This should go into the item that has the same level of indent.
+      # @raise [RuntimeError] if the indent is not correct
+      PDA::Production.new("^(?<indent>\\s+)(?<field>\\S[^:]*): (?<value>.*)$", [:hyperInfo]) do |md, pda|
+        this_indent = md[:indent].length
+        field = md[:field].strip
+        value = md[:value].strip
+        value = value.to_i if /\A[0-9]+\z/.match(value)
+        logger.debug { "Hyperinfo indent #{this_indent} field #{field} colon value #{value.class}" }
+        
+        # if the last indent is further in than this line's indent,
+        # we pop the stack until we get back to the same level
+        while true
+          last_indent, target, sizes = pda.target
+          break if this_indent > last_indent
+          logger.debug { "Popping #{last_indent} level colon" }
+          pda.pop(1)
+        end
+        unless (last_indent + 2) == this_indent
+          fail "Line '#{md[0]}' 1 has indent of #{this_indent} instead of #{last_indent + 2}"
+        end
+        target[field] = value
+      end,
+      
       # Sample Match:   |all other lines
       # States Matched: :hyperInfo
       # New State:      :no_change
@@ -117,16 +146,18 @@ class EntstatVioent < Entstat
       PDA::Production.new("^(?<indent>\\s+)(?<field>.*)$", [:hyperInfo]) do |md, pda|
         this_indent = md[:indent].length
         field = md[:field].strip
+        logger.debug { "Hyperinfo indent #{this_indent} field #{field}" }
         
         # if the last indent is further in than this line's indent,
         # we pop the stack until we get back to the same level
         while true
           last_indent, target, sizes = pda.target
           break if this_indent > last_indent
+          logger.debug { "Popping #{last_indent} level" }
           pda.pop(1)
         end
         unless (last_indent + 2) == this_indent
-          fail "Line '#{md[0]}' has indent of #{this_indent} instead of #{last_indent + 2}" 
+          fail "Line '#{md[0]}' 1 has indent of #{this_indent} instead of #{last_indent + 2}" 
         end
         if sizes.size > 0
           new_target = List.new
