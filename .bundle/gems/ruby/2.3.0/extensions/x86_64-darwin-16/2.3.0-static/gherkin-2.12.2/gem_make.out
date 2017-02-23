@@ -1,0 +1,24 @@
+current directory: /Users/pedzan/Source/Ruby/snapper/.bundle/gems/ruby/2.3.0/gems/gherkin-2.12.2/ext/gherkin_lexer_zh_tw
+/usr/local/prvm/ruby-2.3.1/bin/ruby -r ./siteconf20170223-5740-17tksgj.rb extconf.rb 
+checking for main() in -lc... yes
+creating Makefile
+
+To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+  /Users/pedzan/Source/Ruby/snapper/.bundle/gems/ruby/2.3.0/extensions/x86_64-darwin-16/2.3.0-static/gherkin-2.12.2/mkmf.log
+
+current directory: /Users/pedzan/Source/Ruby/snapper/.bundle/gems/ruby/2.3.0/gems/gherkin-2.12.2/ext/gherkin_lexer_zh_tw
+make "DESTDIR=" clean
+
+current directory: /Users/pedzan/Source/Ruby/snapper/.bundle/gems/ruby/2.3.0/gems/gherkin-2.12.2/ext/gherkin_lexer_zh_tw
+make "DESTDIR="
+compiling gherkin_lexer_zh_tw.c
+ext/gherkin_lexer_zh_tw/gherkin_lexer_zh_tw.c:739:18: warning: unused variable 'lexer_en_main' [-Wunused-const-variable]
+static const int lexer_en_main = 1;
+                 ^
+1 warning generated.
+linking shared-object gherkin_lexer_zh_tw.bundle
+
+current directory: /Users/pedzan/Source/Ruby/snapper/.bundle/gems/ruby/2.3.0/gems/gherkin-2.12.2/ext/gherkin_lexer_zh_tw
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 gherkin_lexer_zh_tw.bundle ./.gem.20170223-5740-l5vddn
