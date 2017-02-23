@@ -113,7 +113,8 @@ class Snap
   # @return [String] Maps the vrmf level of bos.mp64 to a service pack
   #   name.  If something goes wrong, the empty string is returned.
   def service_pack
-    @service_pack ||= (Snap.bos_vrmf_map[@db.lslpp_lc['bos.mp64'].vrmf] || "")
+    @service_pack ||= (Snap.bos_vrmf_map[@db.lslpp_lc['bos.mp64'].vrmf] ||
+                       "bos.mp64: #{@db.lslpp_lc['bos.mp64'].vrmf}")
   rescue
     @service_pack = ""
   end
