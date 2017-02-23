@@ -118,6 +118,7 @@ class NetstatV < Item
         self[device_name] = temp unless self[device_name]
       rescue ParseError => e
         e.add_message("Device name: #{device_name}; relative line within section: #{lines}")
+        puts e.message
         raise e
       end
       lines += rest.lines.count

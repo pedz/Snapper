@@ -1,3 +1,4 @@
+require_relative "netstat_v"
 require_relative "entstat"
 
 # Parsers the output from netstat -d entN where entN is an adapter

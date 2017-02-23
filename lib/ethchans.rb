@@ -49,7 +49,8 @@ class Ethchans < Item
       list.each do |adapter|
         partner = adapter.entstat
         unless gold['Partner System'] == partner['Partner System']
-          snap.add_alert("'Partner System' for #{first.name} and #{adapter.name} do not match")
+          snap.
+            add_alert("'Partner System' for #{first.name} #{gold['Partner System']} and #{adapter.name} #{partner['Partner System']} do not match")
         end
         unless gold['Partner Operational Key'] == partner['Partner Operational Key']
           snap.add_alert("'Partner Operational Key' for #{first.name} and #{adapter.name} do not match")

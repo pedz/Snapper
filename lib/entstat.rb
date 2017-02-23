@@ -28,7 +28,7 @@ class Entstat < Item
       # State Pushed:   none
       # Lines which are always ignored.
       PDA::Production.new("^(Control|Backup|Real|Virtual) Adapter: ent\\d+\\s*$") do |md, pda|
-     end,
+      end,
 
       # Sample Match:   |empty lines and lines with only -'s and ='s
       # States Matched: :all
@@ -88,7 +88,7 @@ class Entstat < Item
       # matter what state we are in, we need to pop the states until
       # we get to the :normal (top level) state.  The match is very
       # strict but might need to be loosened up a bit.
-      PDA::Production.new("^IEEE 802.3ad Port Statistics:$") do |md, pda|
+      PDA::Production.new("^IEEE 802.3ad Port Statistics:$", :all, :normal) do |md, pda|
         pda.pop(1) while (pda.state != :normal) && (pda.state != :consumeAll)
       end,
       
@@ -328,7 +328,14 @@ class Entstat < Item
             raise ParseError.new("Parsing Error in:", history)
           end
         end
-      rescue ParseError => e
+      rescue => e
+        unless e.is_a?(ParseError)
+          backtrace = e.backtrace
+          klass = e.class
+          e = ParseError.new(e.message, history)
+          e.add_message("#{klass} occurred in:")
+          e.set_backtrace(backtrace)
+        end
         # As the exception unwinds the stack, we add in tidbits to the
         # message to help us locate where we were in the parse.
         e.add_message("line offset within device entry: #{lineno}; state: #{pda.state}")
