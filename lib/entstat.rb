@@ -157,8 +157,8 @@ class Entstat < Item
       # States Popped:  0
       # Driver Flags is followed by a sequence of flag names which are
       # put into an array.
-      PDA::Production.new("^(?<field>Driver Flags):\\s+(?<flags>\\S.*)$", [:normal], :driverFlags) do |md, pda|
-        field = md[:field]
+      PDA::Production.new("^(?<field>(KIM )?Driver Flags):\\s+(?<flags>\\S.*)$", [:normal], :driverFlags) do |md, pda|
+        field = "Driver Flags"  # yuk!
         value = md[:flags].split
         pda.target[field] = value
         pda.push(value)
