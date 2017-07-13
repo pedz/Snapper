@@ -1,0 +1,29 @@
+#!/bin/bash
+
+rspec &&
+cucumber &&
+rake clean-docs &&
+rake yard &&
+rm -f test.snap/.ruby.dump.gz &&
+echo 0 &&
+snapper.rb -D -l 0 -o tools/after/foo0 test.snap &&
+echo 1 &&
+snapper.rb -D -l 1 -o tools/after/foo1 test.snap &&
+echo 2 &&
+snapper.rb -D -l 2 -o tools/after/foo2 test.snap &&
+echo 3 &&
+snapper.rb -D -l 3 -o tools/after/foo3 test.snap &&
+echo 4 &&
+snapper.rb -D -l 4 -o tools/after/foo4 test.snap &&
+echo 5 &&
+snapper.rb -D -l 5 -o tools/after/foo5 test.snap &&
+echo 6 &&
+snapper.rb -D -l 6 -o tools/after/foo6 test.snap &&
+diff tools/before/foo0 tools/after/foo0 &&
+diff tools/before/foo1 tools/after/foo1 &&
+diff tools/before/foo2 tools/after/foo2 &&
+diff tools/before/foo3 tools/after/foo3 &&
+diff tools/before/foo4 tools/after/foo4 &&
+diff tools/before/foo5 tools/after/foo5 &&
+diff tools/before/foo6 tools/after/foo6 &&
+echo Success!

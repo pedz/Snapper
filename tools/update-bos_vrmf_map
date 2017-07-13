@@ -1,0 +1,8 @@
+#!/bin/bash
+
+find /gsa/ausgsa/projects/s/service/public_html/releases -name '*.html' -print |
+    egrep '/(53|61|71|72)00-.*[0-9]\.html$' |
+    xargs grep 'bos\.mp64.*[0-9]$' |
+    sed -e 's%.*/%%' -e 's/\..* / /' |
+    awk '{ print $2, $1; }' |
+    sort -o bos_vrmf_map

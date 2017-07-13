@@ -1,0 +1,39 @@
+    2959   10536   82332 lib/javascript/snapper.js
+
+./snapper.rb --html=gm.html --no-one-file /Users/pedzan/Desktop/PMRs/03746,082,000/Nov-04/03746.082.000.VIOS.usmpgviovmihs17.snap
+./snapper.rb --html=bob.html --no-one-file /Users/pedzan/Desktop/PMRs/42955,l6q,000/Dec-08/42955.L6Q.000.node01.snap
+./snapper.rb --html=test.html --no-one-file test.snap
+
+Without snap processors or batch processors -- dumping out db
+-rw-rw-r--  1 pedzan  perry    942030 Jan 19 08:22 bob.html
+-rw-rw-r--  1 pedzan  perry   8132778 Jan 19 08:22 gm.html
+-rw-rw-r--  1 pedzan  perry  11717435 Jan 19 08:22 test.html
+
+With snap processors and batch processors -- dumping out db
+old
+-rw-rw-r--  1 pedzan  perry   3224173 Jan 15 15:46 bob.html
+-rw-rw-r--  1 pedzan  perry  15445046 Jan 16 17:11 gm.html
+-rw-rw-r--  1 pedzan  perry  24016587 Jan 16 09:41 test.html
+new
+-rw-rw-r--  1 pedzan  perry   4035765 Jan 19 21:05 bob.html
+-rw-rw-r--  1 pedzan  perry  19180616 Jan 19 21:05 gm.html
+-rw-rw-r--  1 pedzan  perry  29115388 Jan 19 21:05 test.html
+only devices
+-rw-rw-r--  1 pedzan  perry   5403440 Jan 19 21:09 gm.html
+-rw-rw-r--  1 pedzan  perry   2127866 Jan 19 21:09 bob.html
+-rw-rw-r--  1 pedzan  perry  10839545 Jan 19 21:09 test.html
+
+change to JSON.generate
+-rw-rw-r--  1 pedzan  perry   752606 Jan 19 21:16 bob.html
+-rw-rw-r--  1 pedzan  perry  1857561 Jan 19 21:16 gm.html
+-rw-rw-r--  1 pedzan  perry  4902910 Jan 19 21:16 test.html
+
+Change to just ethernet adapters and interfaces
+-rw-rw-r--  1 pedzan  perry   231584 Jan 21 16:40 bob.html
+-rw-rw-r--  1 pedzan  perry  1114398 Jan 21 16:40 gm.html
+-rw-rw-r--  1 pedzan  perry  1235541 Jan 21 16:40 test.html
+
+Same with pretty_generate
+-rw-rw-r--  1 pedzan  perry   575078 Jan 21 16:42 bob.html
+-rw-rw-r--  1 pedzan  perry  3147899 Jan 21 16:42 gm.html
+-rw-rw-r--  1 pedzan  perry  3571373 Jan 21 16:43 test.html

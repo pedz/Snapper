@@ -1,0 +1,74 @@
+#!/bin/bash
+
+function deploy_to
+{
+    typeset host="$1"
+    typeset path="$2"
+    debug="true"
+    debug="set -x"
+    echo "Creating new-snapper on ${host}"
+    sed \
+	-e "1s%.*%#!$path%" \
+	-e "s/%%% VERSION %%%/${version}/" \
+	-e "s/%%% RELEASE %%%/${release}/" \
+	snapper.rb > /tmp/snapper.rb
+    chmod +x /tmp/snapper.rb
+
+    tar cf - News bos_vrmf_map lib -C /tmp snapper.rb | gzip -9 | \
+	ssh ${host} "$debug && \
+                     rm -rf new-snapper && \
+                     mkdir new-snapper && \
+                     cd new-snapper && \
+                     gunzip | tar xf -"
+    echo "Fixing permissions"
+    ssh ${host} "$debug && chmod -R go=u,o-w new-snapper"
+    echo "Moving new snapper into place on ${host}"
+    ssh ${host} "$debug && rm -rf old-snapper && mv snapper old-snapper && mv new-snapper snapper"
+    echo "Moving or creating log file into place on ${host}"
+    ssh ${host} "$debug && touch old-snapper/log && chmod 666 old-snapper/log && mv old-snapper/log snapper/log"
+}
+
+describe="$( git describe )"
+# describe="0.9.0-2-ge7977d9"
+# describe="0.9.0"
+
+# If there are no '-', we are at a "gold" release ;-)
+if [[ $describe == *-* ]] ; then
+    tag="${describe%%-*}"
+    other="${describe#*-}"
+    minor="${other%%-*}"
+    hash="${other#*-}"
+    # echo "$tag"
+    # echo "$other"
+    # echo "$minor"
+    # echo "$hash"
+    version="${tag%.*}.${minor}"
+    release="${hash}"
+else
+    version="${describe}"
+    release="gold"
+fi
+
+echo "Deploying ${version} (${release})"
+
+rake clean-docs; rake all-docs
+
+deploy_to spitfire /gsa/ausgsa/projects/r/ruby/prvm/ruby-2.2.3/bin/ruby
+deploy_to ecurep /users/p/e/pedzan/local/bin/ruby
+
+echo "Creating new docs on spitfire"
+tar cf - doc | gzip -9 | \
+    ssh spitfire \
+	"set -x && \
+         rm -rf public_html/new-snapper && \
+         mkdir -p public_html/new-snapper && \
+         cd public_html/new-snapper && \
+         gunzip | tar xf -"
+echo "Fixing permissions"
+ssh spitfire "set -x && \
+              chmod -R go=u,o-w public_html/new-snapper"
+echo "Moving new docs into place"
+ssh spitfire "set -x && \
+              rm -rf public_html/old-snapper && \
+              mv public_html/snapper public_html/old-snapper &&
+              mv public_html/new-snapper public_html/snapper"
