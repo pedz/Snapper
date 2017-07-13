@@ -31,6 +31,7 @@ GEM
     minitest (5.8.3)
     multi_json (1.8.2)
     multi_test (0.0.2)
+    net-ssh (4.1.0)
     parsejs (0.0.1)
       kpeg
       yard
@@ -66,6 +67,7 @@ DEPENDENCIES
   cucumber
   factory_girl
   jasmine
+  net-ssh
   parsejs
   rdoc
   rspec
@@ -74,4 +76,4 @@ DEPENDENCIES
   yard-rspec
 
 BUNDLED WITH
-   1.10.6
+   1.14.3
