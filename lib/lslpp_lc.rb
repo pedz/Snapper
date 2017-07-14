@@ -23,6 +23,15 @@ class LslppLc < Hash
     @text
   end
 
+  # An enumerator that produces a flat set of values.
+  # @param nesting [Array<String>] The starting nesting to use.
+  # @return [Array<Array(String, Object)>] An array of two element
+  #   items: the first element is the flattened key.  The second
+  #   element is value.
+  def flat_keys(nesting = [])
+    flatten_keys(self, nesting)
+  end
+
   def parse
     field_names = []
     @text.each_line do |line|
@@ -44,5 +53,37 @@ class LslppLc < Hash
       end
     end
     self
+  end
+
+  private
+
+  # The magic behind flat_keys: a lazy recursive enumerator.
+  # @param thing [Item, Array, Hash, other] The entity to return the
+  #   flat keys for.
+  # @param nesting [Array<String>] The list of keys needed to get to
+  #   +thing+.
+  # @return (see #flat_keys)
+  def flatten_keys(thing, nesting = [])
+    Enumerator.new do |yielder|
+      if thing.is_a?(Array)
+        thing.each_with_index do |value, index|
+          flatten_keys(value, nesting.dup.push(index)).each { |h| yielder << h }
+        end
+      elsif thing.is_a?(Hash)
+        thing.each_pair do |key, value|
+          flatten_keys(value, nesting.dup.push(key)).each { |h| yielder << h }
+        end
+      elsif thing.is_a?(Item)
+        if thing.keys.empty?
+          yielder << [ nesting.join(','), "<not parsed>"]
+        else
+          thing.each_pair do |key, value|
+            flatten_keys(value, nesting.dup.push(thing.orig_key[key])).each { |h| yielder << h }
+          end
+        end
+      else
+        yielder << [ nesting.join(','), thing ]
+      end
+    end.lazy
   end
 end

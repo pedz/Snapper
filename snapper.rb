@@ -5,6 +5,7 @@ require 'date'
 
 # Load Snapper class and then call it
 require_relative 'lib/snapper'
+require_relative 'issues'
 
 # "Quick Bug" -- used for quick printf style debugging.  The output
 # file can be changed via the -q command.  The default is $stderr

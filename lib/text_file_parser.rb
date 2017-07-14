@@ -12,5 +12,6 @@ class TextFileParser < FileParser
 end
 
 Snapper.add_file_parsing_patterns(
-  %r{/svCollect/VIOS.level} => TextFileParser
+  %r{/svCollect/VIOS.level} => TextFileParser,
+  %r{/general/emgr.snap} => TextFileParser
 )

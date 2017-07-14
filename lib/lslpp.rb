@@ -82,7 +82,11 @@ class Lslpp
     @time        = options["time"]        || "Unknown"
     @type        = options["type"]        || "Unknown"
 
-    @ver, @rel, @mod, @fix = @level.split('.')
+    v, r, m, f = @level.split('.')
+    @ver = v.to_i
+    @rel = r.to_i
+    @mod = m.to_i
+    @fix = f.to_i
     unless @time == "Unknown" || @date == "Unknown"
       @time = @time.gsub(';', ':')
       m, d, y = @date.split('/').map(&:to_i)
@@ -96,7 +100,7 @@ class Lslpp
   end
 
   # @return [String] An eaiser form of the vrmf (or level) printed in
-  #   a consistent, comparable format.
+  #   a consistent, comparable format of 00.00.0000.0000
   def vrmf
     "%02d.%02d.%04d.%04d" % [ @ver, @rel, @mod, @fix ]
   end

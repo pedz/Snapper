@@ -33,7 +33,9 @@ new_code.puts
 new_code.puts "# Hash that maps a defect to a list of APARs"
 new_code.puts "$defect2apars = {"
 previous_line = nil
+puts "about to log into condor"
 Net::SSH.start('condor.austin.ibm.com', 'condor') do |ssh|
+  puts "Logged into condor and doing #{$defects.length} queries"
   $defects.each do |defect|
     output = ssh.exec!("#{PSQL} -c \"copy ( select distinct apar from ptfapardefs where defect = '#{defect}' order by apar ) to stdout;\" condor3_production")
     raise Exception.new("psql failed") unless output.exitstatus == 0
