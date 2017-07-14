@@ -28,3 +28,6 @@ class NoA < Item
     self
   end
 end
+
+# Newer snaps use "no -Fa"
+NoFa = NoA
