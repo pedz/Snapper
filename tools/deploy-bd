@@ -16,7 +16,7 @@ function deploy_to
     	snapper.rb > /tmp/snapper.rb
     chmod +x /tmp/snapper.rb
 
-    tar cf - News bos_vrmf_map lib -C /tmp snapper.rb | gzip -9 | \
+    tar cf - News bos_vrmf_map lib issues.rb -C /tmp snapper.rb | gzip -9 | \
     	ssh ${host} "$debug && \
                      cd $cd && \
                      rm -rf new-snapper && \

@@ -1,3 +1,11 @@
+07/14/2017 Version 0.9.67
+
+	Added looking for pervasive issues via instfix.i in the snap.
+	If the snap has the APAR that introduced the pervasive issue
+	and does not have the APAR that resolves it, an alert is
+	issued.  If an interim fix is found that addresses the issue,
+	"ifix installed" is appened to the alert.
+
 06/08/2017 Version 0.9.60
 
 	Some versions of AIX have "KIM Driver Flags".  Changed
