@@ -1,3 +1,10 @@
+07/20/2017 Version 0.9.68
+
+	Added a proc to each of the issues so specific tests can be
+	made to see if the issue is relavent to the particular
+	system.  e.g. a fix for a VEA will show up only at least one
+	VEA is configured on the system.
+
 07/14/2017 Version 0.9.67
 
 	Added looking for pervasive issues via instfix.i in the snap.

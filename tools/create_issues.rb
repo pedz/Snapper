@@ -12,26 +12,31 @@ issues_rb = base + "issues.rb"
 issues_txt = base + "tools/issues.txt"
 
 new_code = issues_rb.open("w", 0644)
-new_code.puts "# This file is automatically produced by #{__FILE__}"
-new_code.puts "# array of issues.  each issue is an array:"
-new_code.puts "# [ injecting defect, resolving defect, text ]"
-new_code.puts "$issues = ["
+new_code.puts <<HEADER
+# This file is automatically produced by #{__FILE__}
+# array of issues.  each issue is an array:
+# [ injecting defect, resolving defect, text ]
+class BrokenFilesets
+
+@issues = [
+HEADER
 previous_line = nil
 issues_txt.open do |file|
   file.each_line do |line|
     next if /^#/.match(line)
-    fields = line.split('|')
+    fields = line.chomp.split('|')
     $defects.add(fields[0].strip)
     $defects.add(fields[1].strip)
     new_code.puts "#{previous_line}," unless previous_line.nil?
-    previous_line = "  [ #{fields[0].strip.inspect}, #{fields[1].strip.inspect}, #{fields[2].strip.inspect} ]"
+    proc = fields[3 .. -1].join('|')
+    previous_line = "  [ #{fields[0].strip.inspect}, #{fields[1].strip.inspect}, #{fields[2].strip.inspect}, Proc.new #{proc} ]"
   end
 end
 new_code.puts previous_line unless previous_line.nil?
 new_code.puts "]"
 new_code.puts
 new_code.puts "# Hash that maps a defect to a list of APARs"
-new_code.puts "$defect2apars = {"
+new_code.puts "@defect2apars = {"
 previous_line = nil
 puts "about to log into condor"
 Net::SSH.start('condor.austin.ibm.com', 'condor') do |ssh|
@@ -46,5 +51,9 @@ Net::SSH.start('condor.austin.ibm.com', 'condor') do |ssh|
   end
 end
 new_code.puts previous_line unless previous_line.nil?
-new_code.puts "}"
+new_code.puts <<TRAILER
+}
+
+end
+TRAILER
 new_code.close
