@@ -306,10 +306,6 @@ end
 # The Sea filter for all levels print out the Device entry for itself
 # as well as the Device entries for the real adapter, the list of
 # virtual adapters, and the control channel.
-# FIXME: the ability for the caller to add a suffix to the first line
-# of output needs to be added so the control channel can be easily
-# identified from the virtual adapters used to bridge packets.
-# Likewise, the backup adapter for ethchan also needs to be marked.
 Print.add_filter("Sea", { level: 0 .. 11 }) do |context, item|
   sea_ent = item[:super]
   modifier = "ha_mode:#{sea_ent.attrs[:ha_mode]}"
@@ -317,7 +313,7 @@ Print.add_filter("Sea", { level: 0 .. 11 }) do |context, item|
       (entstat = item.super.entstat))
     bridge_mode = entstat['Bridge Mode']
     state = entstat['State']
-    modifier += " State:#{state} Bridge Mode:#{bridge_mode}"
+    modifier += " State:#{state} Bridge Mode:#{bridge_mode} Id:#{item[:vswitch_pvid]}"
   end
   sea_ent.print(context.modifier(modifier))
   item[:real_adapter].print(context.nest)

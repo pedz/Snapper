@@ -801,6 +801,7 @@ class Seas < Item
       end
       vea_config_list.sort!
       id = "%#{vswitch}-#{pvid}"
+      sea[:vswitch_pvid] = "#{vswitch}:#{pvid}"
       t = (@pvid_vswitch_hash[id] ||= {})
       t = (t[snap.hostname] ||= [])
       t.push({ snap: snap, sea: sea, vswitch: vswitch, pvid: pvid,

@@ -8,13 +8,16 @@ require_relative 'logging'
 # [super]         The original Device.
 #
 # [real_adapter]  The {Device} entry for the adapter specified in the
-#                 +real_adapter+ attributes.
+#                 +real_adapter+ attribute.
 #
 # [virt_adapters] The {Device} entries for the adapters specified in
-#                 the +virt_adapters+ attributes.
+#                 the +virt_adapters+ attribute.
 #
 # [ctl_chan]      The {Device} entry for the adapter specified in the
-#                 +ctl_chan+ attributes.
+#                 +ctl_chan+ attribute.
+#
+# [pvid_adapter]  The {Device} entry for the adapter (VEA) specified
+#                 in the +pvid_adapter+ attribute.
 #
 class Sea < Device
   include Logging

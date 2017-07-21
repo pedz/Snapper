@@ -1,3 +1,8 @@
+07/21/2017 Version 0.9.69
+
+	Added Id: to the seadd line to give the id used to match up
+	its mate.
+
 07/20/2017 Version 0.9.68
 
 	Added a proc to each of the issues so specific tests can be
