@@ -786,11 +786,13 @@ class Seas < Item
     # @param (see review_sea)
     def register_sea_vswitch_pvid(snap, sea)
       ha_mode = sea.attrs[:ha_mode]
-      return if ha_mode == "disabled" || ha_mode == "standby"
+
       control_adapter = sea[:ctl_chan] || sea[:pvid_adapter]
       return unless (entstat = control_adapter['entstat'])
-      @hosts_with_seas.add(snap.hostname)
       vswitch, pvid, allowed = vlan_triple(entstat)
+      sea[:vswitch_pvid] = "#{vswitch}:#{pvid}"
+
+      @hosts_with_seas.add(snap.hostname)
       vea_config_list = []
       sea[:virt_adapters].each do |vea|
         next unless (e = vea['entstat'])
@@ -801,7 +803,6 @@ class Seas < Item
       end
       vea_config_list.sort!
       id = "%#{vswitch}-#{pvid}"
-      sea[:vswitch_pvid] = "#{vswitch}:#{pvid}"
       t = (@pvid_vswitch_hash[id] ||= {})
       t = (t[snap.hostname] ||= [])
       t.push({ snap: snap, sea: sea, vswitch: vswitch, pvid: pvid,
