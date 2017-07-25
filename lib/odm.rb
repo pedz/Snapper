@@ -96,3 +96,4 @@ class Odm < FileParser
 end
 
 Snapper.add_file_parsing_patterns(%r{/general/([^.]*\.)(?!vc\.)add\z} => Odm)
+Snapper.add_file_parsing_patterns(%r{/objrepos/([^.]*\.)(?!vc\.)add\z} => Odm)

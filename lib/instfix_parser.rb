@@ -2,6 +2,8 @@ require_relative 'logging'
 require_relative 'file_parser'
 require_relative 'item'
 
+# This parses the instfix.i file in a snap.  perfpmr creates
+# instfix.out which is parsed by InstfixOutParser
 class InstfixParser < FileParser
   # All filesets for IZ04606 were found.
   LINE_REGEXP = /All filesets for (?<apar>\S+) were found/

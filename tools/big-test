@@ -5,25 +5,40 @@ cucumber &&
 rake clean-docs &&
 rake yard &&
 rm -f test.snap/.ruby.dump.gz &&
+rm -f test.perf/.ruby.dump.gz &&
 echo 0 &&
-snapper.rb -D -l 0 -o tools/after/foo0 test.snap &&
+snapper.rb -D -l 0 -o tools/after/snap0 test.snap &&
+snapper.rb -D -l 0 -o tools/after/perf0 test.perf &&
 echo 1 &&
-snapper.rb -D -l 1 -o tools/after/foo1 test.snap &&
+snapper.rb -D -l 1 -o tools/after/snap1 test.snap &&
+snapper.rb -D -l 1 -o tools/after/perf1 test.perf &&
 echo 2 &&
-snapper.rb -D -l 2 -o tools/after/foo2 test.snap &&
+snapper.rb -D -l 2 -o tools/after/snap2 test.snap &&
+snapper.rb -D -l 2 -o tools/after/perf2 test.perf &&
 echo 3 &&
-snapper.rb -D -l 3 -o tools/after/foo3 test.snap &&
+snapper.rb -D -l 3 -o tools/after/snap3 test.snap &&
+snapper.rb -D -l 3 -o tools/after/perf3 test.perf &&
 echo 4 &&
-snapper.rb -D -l 4 -o tools/after/foo4 test.snap &&
+snapper.rb -D -l 4 -o tools/after/snap4 test.snap &&
+snapper.rb -D -l 4 -o tools/after/perf4 test.perf &&
 echo 5 &&
-snapper.rb -D -l 5 -o tools/after/foo5 test.snap &&
+snapper.rb -D -l 5 -o tools/after/snap5 test.snap &&
+snapper.rb -D -l 5 -o tools/after/perf5 test.perf &&
 echo 6 &&
-snapper.rb -D -l 6 -o tools/after/foo6 test.snap &&
-diff tools/before/foo0 tools/after/foo0 &&
-diff tools/before/foo1 tools/after/foo1 &&
-diff tools/before/foo2 tools/after/foo2 &&
-diff tools/before/foo3 tools/after/foo3 &&
-diff tools/before/foo4 tools/after/foo4 &&
-diff tools/before/foo5 tools/after/foo5 &&
-diff tools/before/foo6 tools/after/foo6 &&
+snapper.rb -D -l 6 -o tools/after/snap6 test.snap &&
+snapper.rb -D -l 6 -o tools/after/perf6 test.perf &&
+diff tools/before/snap0 tools/after/snap0 &&
+diff tools/before/perf0 tools/after/perf0 &&
+diff tools/before/snap1 tools/after/snap1 &&
+diff tools/before/perf1 tools/after/perf1 &&
+diff tools/before/snap2 tools/after/snap2 &&
+diff tools/before/perf2 tools/after/perf2 &&
+diff tools/before/snap3 tools/after/snap3 &&
+diff tools/before/perf3 tools/after/perf3 &&
+diff tools/before/snap4 tools/after/snap4 &&
+diff tools/before/perf4 tools/after/perf4 &&
+diff tools/before/snap5 tools/after/snap5 &&
+diff tools/before/perf5 tools/after/perf5 &&
+diff tools/before/snap6 tools/after/snap6 &&
+diff tools/before/perf6 tools/after/perf6 &&
 echo Success!

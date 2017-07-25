@@ -1,3 +1,12 @@
+07/25/2017 Version 0.9.72
+
+	Created parsers and made adjustments so that data from perfpmr
+	can be understood.  Currently the ODM files must be send
+	through odmget and XxXx.add files created.  This is due to
+	Snapper being tested on a laptop that doesn't run AIX.  In
+	theory Snapper could call odmget itself.  Add that as a ToDo
+	perhaps.
+
 07/21/2017 Version 0.9.69
 
 	Added Id: to the seadd line to give the id used to match up

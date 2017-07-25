@@ -12,14 +12,17 @@ class BrokenFilesets
   # @param snap [Snap] the snap to process
   # @param options [Options] The options specified on the command line
   def self.process_snap(snap, options)
-    return unless instfix_i = snap.db.instfix_i
-    emgr_snap = snap.db.emgr_snap.to_text
-    raise "didn't find instfix_i" if instfix_i.nil?
-    raise "didn't find emgr_snap" if emgr_snap.nil?
+    @instfix_i = snap.db['instfix_i']
+    @instfix_out = snap.db['instfix.out']
+    emgr_snap = snap.db['emgr_snap']
+    emgr_snap = emgr_snap.to_text if emgr_snap
+    emgr_snap ||= ""
+    return if @instfix_i.nil? && @instfix_out.nil?
+
     @issues.each do |issue|
       inject, relief, text, proc = issue
-      next unless @defect2apars[inject].any? { |apar| instfix_i[apar] == 1 }
-      next if @defect2apars[relief].any? { |apar| instfix_i[apar] == 1 }
+      next unless @defect2apars[inject].any? { |apar| has_fix(apar) }
+      next if @defect2apars[relief].any? { |apar| has_fix(apar) }
       next unless proc.call(snap)
       ifixed = @defect2apars[relief].any? { |apar| Regexp.new(apar).match(emgr_snap) }
       snap.add_alert("#{text} - #{@defect2apars[relief].first}#{ifixed ? " - ifix applied" : ""}")
@@ -27,6 +30,17 @@ class BrokenFilesets
   end
 
   private
+
+  DOWN_LEVEL = "-"
+  CORRECT_LEVEL = "="
+  SUPERSEDED = "+"
+  NOT_INSTALLED = "!"
+
+  def self.has_fix(apar)
+    return @instfix_i[apar] == 1 unless @instfix_i.nil?
+    return false unless fix = @instfix_out[apar]
+    return fix[:status] == CORRECT_LEVEL || fix[:status] == SUPERSEDED
+  end
 
   def self.dev_with(snap, driver)
     snap.db.devices.any? { |name, device| device.cu_dv.ddins == driver }

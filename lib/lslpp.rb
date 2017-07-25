@@ -95,7 +95,7 @@ class Lslpp
       else
         y += 1900
       end
-      @date_time = DateTime.parse("#{m}/#{d}/#{y} #{@time}")
+      @date_time = DateTime.strptime("#{m}/#{d}/#{y} #{@time}", "%m/%d/%Y %H:%M:%S")
     end
   end
 
