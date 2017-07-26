@@ -25,6 +25,7 @@ def exclude_list
   lib/stylesheets
   temp
   test\.snap
+  test\.perf
 }.join('|')
 end
 
