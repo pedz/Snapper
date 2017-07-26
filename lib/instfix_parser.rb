@@ -11,7 +11,7 @@ class InstfixParser < FileParser
   def parse
     name = @io.path.sub(/\A.*\//, '')
     text = @io.read
-    item = @db.create_item(name, text)
+    item = @db.create_item(name)
     text.each_line do |line|
       if (md = LINE_REGEXP.match(line))
         field = md[:apar]

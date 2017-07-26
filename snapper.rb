@@ -41,7 +41,7 @@ def log_user
   exit(0)
 rescue SystemExit => e
   foo(args: args, status: e.status)
-  exit!(e.success?)
+  exit!(e.success?) unless defined? Profiler__
 rescue => e
   $stderr.puts "Oh dear... A #{e.class} occurred"
   $stderr.puts "Message: #{e.message}"

@@ -27,10 +27,13 @@ HERE
         expect { @odm.parse }.not_to raise_error
       end
       
-      it "saves all the raw lines" do
-        @odm.parse
-        expect(@db[:my_class].to_text).to eq(@text)
-      end
+      # Originally we saved the raw text lines and we can go back and
+      # do that but it consumed space and time and was never used.
+      #
+      # it "saves all the raw lines" do
+      #   @odm.parse
+      #   expect(@db[:my_class].to_text).to eq(@text)
+      # end
       
       it "adds the new object to the db" do
         @odm.parse

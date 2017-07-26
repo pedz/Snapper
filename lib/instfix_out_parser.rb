@@ -7,12 +7,11 @@ require_relative 'instfix'
 class InstfixOutParser < FileParser
   def parse
     name = @io.path.sub(/\A.*\//, '')
-    text = @io.read
-    item = @db.create_item(name, text)
-    text.each_line do |line|
+    item = @db.create_item(name)
+    @io.each_line do |line|
       line.chomp!
       fields = line.split(':')
-      instfix = @db.create_item('instfix', line)
+      instfix = @db.create_item('instfix')
       name = fields.shift
       instfix[:fileset] = fields.shift
       instfix[:required] = fields.shift

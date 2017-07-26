@@ -35,7 +35,7 @@ class ErrptOutParser < FileParser
   def parse
     @io.read.split(DashSeparator).each do |entry|
       next if entry.empty?
-      item = @db.create_item("Errpt", entry)
+      item = @db.create_item("Errpt")
       entry.each_line do |line|
         line.chomp!
         if md = Fields.match(line)
@@ -50,8 +50,8 @@ class ErrptOutParser < FileParser
     # forces it to be an array even if it was empty originally) and
     # then pop them off.
     unless @db["Errpt"].is_a? Array
-      @db.create_item("Errpt", "")
-      @db.create_item("Errpt", "")
+      @db.create_item("Errpt")
+      @db.create_item("Errpt")
       @db["Errpt"].pop(2)
     end
     self

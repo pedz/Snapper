@@ -40,8 +40,11 @@ class SnapParser
           if regexp.match(path.to_s)
             path.open("r:ISO-8859-1") do |io|
               begin
-                logger.debug { "parsing #{path} with #{parser.name}" }
+                logger.debug { "Start parsing #{path} with #{parser.name}" }
+                start = Time.now
                 parser.new(io, @db, path).parse
+                stop = Time.now
+                logger.debug { "Done parsing #{path} with #{parser.name} #{"%8.6f" % (stop - start)}" }
               rescue ParseError => e
                 e.add_message("path: #{path}")
                 raise e

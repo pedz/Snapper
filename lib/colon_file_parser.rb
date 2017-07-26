@@ -27,9 +27,8 @@ class ColonFileParser < FileParser
   # @raise [RuntimeError] if a line does not parse.
   def parse
     name = @io.path.sub(/\A.*\//, '')
-    text = @io.read
-    item = @db.create_item(name, text)
-    text.each_line do |line|
+    item = @db.create_item(name)
+    @io.each_line do |line|
       fail "Line did not parse" unless (md = LINE_REGEXP.match(line))
       field = md[:field].strip
       value = md[:value].strip

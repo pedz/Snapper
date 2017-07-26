@@ -18,12 +18,13 @@ class Odm < FileParser
   # CuAt.new(hash) where hash is the attributes found in the ODM
   # stanza.
   def parse
+    logger.debug { "#{self.class} parsing #{@path}" }
     raw_line = ""
     full_line = ""
     item = nil
     @io.each_line do |this_line|
       begin
-        next if this_line.match(/^\s*$/) # empty line
+        next if BLANK.match(this_line) # empty line
         raw_line += this_line
         this_line = fix_literals(this_line)
 
@@ -31,7 +32,7 @@ class Odm < FileParser
         full_line += this_line
 
         # if line ends with a continuation character
-        if this_line.match(/\\$/)
+        if CONTINUATION.match(this_line)
           full_line.chomp!        # kill line terminator
           full_line.chop!         # kill the \
           next
@@ -39,11 +40,10 @@ class Odm < FileParser
 
         # Looks like a new stanza
         if md = full_line.match(/^(\w+):$/)
-          item = @db.create_item(md[1], raw_line)
+          item = @db.create_item(md[1])
 
         # looks like an attribute
         elsif (md = full_line.match(/^\s+(\w+)\s*=\s*((.|\n)*)$/))
-          item << raw_line
           item[md[1]] = convert(md[2])
         else                      # format seems broken
           raise "Bad format"
@@ -61,6 +61,9 @@ class Odm < FileParser
   end
 
   private
+
+  BLANK = /^\s*$/
+  CONTINUATION = /\\$/
 
   # @param line [String] The original line from the file
   # @return [String] replace string literals e.g. "\n" with a newline
@@ -95,5 +98,5 @@ class Odm < FileParser
   end
 end
 
-Snapper.add_file_parsing_patterns(%r{/general/([^.]*\.)(?!vc\.)add\z} => Odm)
-Snapper.add_file_parsing_patterns(%r{/objrepos/([^.]*\.)(?!vc\.)add\z} => Odm)
+Snapper.add_file_parsing_patterns(%r{/general/((Pd|Cu)[^.]*\.)(?!vc\.)add\z} => Odm)
+Snapper.add_file_parsing_patterns(%r{/objrepos/((Pd|Cu)[^.]*\.)(?!vc\.)add\z} => Odm)

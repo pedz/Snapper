@@ -27,6 +27,9 @@ snapper.rb -D -l 5 -o tools/after/perf5 test.perf &&
 echo 6 &&
 snapper.rb -D -l 6 -o tools/after/snap6 test.snap &&
 snapper.rb -D -l 6 -o tools/after/perf6 test.perf &&
+ls -lh */.ruby.dump.gz &&
+rm -f test.snap/.ruby.dump.gz &&
+rm -f test.perf/.ruby.dump.gz &&
 diff tools/before/snap0 tools/after/snap0 &&
 diff tools/before/perf0 tools/after/perf0 &&
 diff tools/before/snap1 tools/after/snap1 &&
