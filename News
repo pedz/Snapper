@@ -1,3 +1,12 @@
+07/26/2017 Version 0.9.76
+
+	If an error line such as DMA Overruns has the word transmit or receive
+	in the description, then a percentage of the number relative to the
+	number of transmitted or received packets is appened to the line.
+	e.g.
+
+	Receive Statistics,DMA Overrun:685617 0.22%
+
 07/25/2017 Version 0.9.72
 
 	Created parsers and made adjustments so that data from perfpmr

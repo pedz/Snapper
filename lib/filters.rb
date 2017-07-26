@@ -47,10 +47,20 @@ end
 # is good.
 Print.add_filter("Entstat", { level: 3 .. 7 }) do |context, item|
   item.flat_keys.each do |k, v|
+    treg = /transmit/i
+    rreg = /receive/i
+    tx = item.transmit_statistics['Packets']
+    rx = item.receive_statistics['Packets']
     if /error|overrun|underrun|dropped|drops/i.match(k) && v != 0
       # This is more noise than useful
       unless k == "Real Side Statistics,Packets dropped"
-        context.output("#{k}:#{v}")
+        if (t = treg.match(k)) || (r = rreg.match(k))
+          per = (100.0 * v / (t ? tx : rx))
+          extra = "%5.2f%%" % per
+        else
+          extra = ""
+        end
+        context.output("#{k}:#{v}#{extra}")
       end
     end
   end
@@ -92,10 +102,16 @@ Print.add_filter("EntstatVioent", { level: 3 .. 7 })  do |context, item|
   end
   text = [ text ]
   unless item["Hypervisor Send Failures"] == 0
-    text.push("Hypervisor Send Failures: #{item["Hypervisor Send Failures"]}")
+    tx = item.transmit_statistics['Packets']
+    err = item["Hypervisor Send Failures"]
+    per = "%5.2f" % (100.0 * err / tx)
+    text.push("Hypervisor Send Failures: #{tx} #{per}%")
   end
   unless item["Hypervisor Receive Failures"] == 0
-    text.push("Hypervisor Receive Failures: #{item["Hypervisor Receive Failures"]}")
+    rx = item.receive_statistics['Packets']
+    err = item["Hypervisor Receive Failures"]
+    per = "%5.2f" % (100.0 * err / rx)
+    text.push("Hypervisor Receive Failures: #{rx} #{per}%")
   end
   context.output(text)
 end
