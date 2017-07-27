@@ -154,12 +154,10 @@ class Snapper
         @args << tmp_args.shift
         retry
       else
-        puts "abort 1"
         @options.abort(e.message)
       end
 
     rescue => e
-      puts "abort 2"
       @options.abort(e.message)
     end
     @options.add_officious
@@ -180,7 +178,6 @@ class Snapper
       @options.parse!(@args)
       raise OptionParser::MissingArgument.new("<path to snap1>") if @options.dir_list.empty?
     rescue => e
-      puts "abort 3"
       @options.abort(e.message)
     end
   end
@@ -232,7 +229,15 @@ class Snapper
       end
 
       if snap.empty?
-        $stderr.puts("Snap at #{snap.dir} appears empty.  Skipping...")
+        $stderr.puts <<~EOF
+        Snap at #{snap.dir} appears empty.  Skipping...
+        If this is a perfpmr, then cd into objrepos and execute:
+
+        for odm in $( ls Cu* Pd* | egrep -v '\\.(vc|add)|lock' ); do
+            ODMDIR=`pwd` odmget $odm > $odm.add
+        done
+
+        EOF
       else
         snap_processors.each do |klass|
           logger.debug { "calling snap_processor for #{klass}"}

@@ -31,6 +31,8 @@ class NetstatIntParser < FileParser
         text.push(line)
         state = :accum
       when :accum
+        break if /\ADevice ent[0-9]+ has accounting disabled\Z/.match(line)
+        break if /\ADevice ent[0-9]+ has accounting disabled\Z/.match(line)
         break if /\Anetstat/.match(line) # netstat marks the end
         if /\Aentstat -d/.match(line)
           state = :skip1
