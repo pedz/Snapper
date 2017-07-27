@@ -6,3 +6,6 @@ doc/rdoc
 doc/ri
 doc/yard
 /test.snap
+/test.perf
+/tools/before
+/tools/after
