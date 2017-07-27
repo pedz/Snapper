@@ -100,3 +100,18 @@ end
 
 Snapper.add_file_parsing_patterns(%r{/general/((Pd|Cu)[^.]*\.)(?!vc\.)add\z} => Odm)
 Snapper.add_file_parsing_patterns(%r{/objrepos/((Pd|Cu)[^.]*\.)(?!vc\.)add\z} => Odm)
+
+class RawOdm < Odm
+  include Logging
+  # Default log level is INFO
+  LOG_LEVEL = Logger::INFO
+
+  def initialize(io, db, path = nil)
+    super
+    dir=@path.dirname
+    cmd = "cd #{dir}; ODMDIR=#{dir} odmget `ls Cu* Pd* | egrep -v '\.(vc|add)$|lock'`"
+    @io = IO.popen(cmd)
+  end
+end
+
+Snapper.add_file_parsing_patterns(%r{/objrepos/PdDv\z} => RawOdm) if /aix/.match(RUBY_PLATFORM)

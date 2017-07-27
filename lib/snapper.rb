@@ -229,15 +229,15 @@ class Snapper
       end
 
       if snap.empty?
-        $stderr.puts <<~EOF
-        Snap at #{snap.dir} appears empty.  Skipping...
-        If this is a perfpmr, then cd into objrepos and execute:
+        $stderr.puts "Snap at #{snap.dir} appears empty.  Skipping..."
+        $stderr.puts <<"EOF"
+If this is a perfpmr, then cd into objrepos and execute:
 
-        for odm in $( ls Cu* Pd* | egrep -v '\\.(vc|add)|lock' ); do
-            ODMDIR=`pwd` odmget $odm > $odm.add
-        done
+for odm in $( ls Cu* Pd* | egrep -v '\\.(vc|add)|lock' ); do
+    ODMDIR=`pwd` odmget $odm > $odm.add
+done
 
-        EOF
+EOF
       else
         snap_processors.each do |klass|
           logger.debug { "calling snap_processor for #{klass}"}
