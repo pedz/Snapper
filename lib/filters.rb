@@ -104,14 +104,14 @@ Print.add_filter("EntstatVioent", { level: 3 .. 7 })  do |context, item|
   unless item["Hypervisor Send Failures"] == 0
     tx = item.transmit_statistics['Packets']
     err = item["Hypervisor Send Failures"]
-    per = "%5.2f" % (100.0 * err / tx)
-    text.push("Hypervisor Send Failures: #{tx} #{per}%")
+    per = "%5.2f%%" % (100.0 * err / tx)
+    text.push("Hypervisor Send Failures: #{err} #{per}")
   end
   unless item["Hypervisor Receive Failures"] == 0
     rx = item.receive_statistics['Packets']
     err = item["Hypervisor Receive Failures"]
-    per = "%5.2f" % (100.0 * err / rx)
-    text.push("Hypervisor Receive Failures: #{rx} #{per}%")
+    per = "%5.2f%%" % (100.0 * err / rx)
+    text.push("Hypervisor Receive Failures: #{err} #{per}")
   end
   context.output(text)
 end
