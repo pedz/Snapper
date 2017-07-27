@@ -6,6 +6,9 @@ require_relative 'instfix'
 # Parses the instfix.out file produced by perfpmr
 class InstfixOutParser < FileParser
   def parse
+    # HACMP snaps have a file called instfix.out which is not what I'm
+    # looking for
+    return if %r{hacmp/lppinfo/instfix\.out}.match(@io.path)
     name = @io.path.sub(/\A.*\//, '')
     item = @db.create_item(name)
     @io.each_line do |line|
@@ -23,4 +26,4 @@ class InstfixOutParser < FileParser
   end
 end
 
-Snapper.add_file_parsing_patterns(%r{instfix.out} => InstfixOutParser)
+Snapper.add_file_parsing_patterns(%r{instfix\.out} => InstfixOutParser)
