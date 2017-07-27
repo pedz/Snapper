@@ -56,7 +56,7 @@ Print.add_filter("Entstat", { level: 3 .. 7 }) do |context, item|
       unless k == "Real Side Statistics,Packets dropped"
         if (t = treg.match(k)) || (r = rreg.match(k))
           per = (100.0 * v / (t ? tx : rx))
-          extra = "%5.2f%%" % per
+          extra = " %5.2f%%" % per
         else
           extra = ""
         end
@@ -104,8 +104,8 @@ Print.add_filter("EntstatVioent", { level: 3 .. 7 })  do |context, item|
   unless item["Hypervisor Send Failures"] == 0
     tx = item.transmit_statistics['Packets']
     err = item["Hypervisor Send Failures"]
-    per = "%5.2f%%" % (100.0 * err / tx)
-    text.push("Hypervisor Send Failures: #{err} #{per}")
+    per = " %5.2f%%" % (100.0 * err / tx)
+    text.push("Hypervisor Send Failures: #{err}#{per}")
   end
   unless item["Hypervisor Receive Failures"] == 0
     rx = item.receive_statistics['Packets']
