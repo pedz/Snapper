@@ -9,7 +9,9 @@ class BrokenFilesets
   [ "904189", "996041", "Slow transfers when checksum offload does not match", Proc.new { |snap| dev_with(snap, 'seadd') } ],
   [ "904189", "1008972", "Large send packets cause crash or adapter failures", Proc.new { |snap| dev_with(snap, 'vioentdd') } ],
   [ "1002147", "1022163", "lncentdd will drop tagged large send packets", Proc.new { |snap| dev_with(snap, 'pci/lncentdd') } ],
-  [ "1004969", "1026365", "Ether Channel weakness with Collecting", Proc.new { |snap| dev_with(snap, 'ethchandd') } ]
+  [ "1004969", "1026365", "Ether Channel weakness with Collecting", Proc.new { |snap| dev_with(snap, 'ethchandd') } ],
+  [ "true", "1029399", "Small MSS and small packets stall lncentdd", Proc.new { |snap| dev_with(snap, 'pci/lncentdd') } ],
+  [ "true", "1029527", "Small MSS and small packets stall lncentdd", Proc.new { |snap| dev_with(snap, 'pci/lncentdd') } ]
 ]
 
 # Hash that maps a defect to a list of APARs
@@ -22,7 +24,9 @@ class BrokenFilesets
   "1002147" => [ "IV89618", "IV89633", "IV89705", "IV91919", "IV92030", "IV92622", "IV92664" ],
   "1022163" => [ "IV95372", "IV95517", "IV95637" ],
   "1004969" => [ "IV88913", "IV91459", "IV91904", "IV92002", "IV92037", "IV95904" ],
-  "1026365" => [ "IV97135" ]
+  "1026365" => [ "IV95904", "IV97135", "IV97586", "IV97587", "IV97588", "IV97589", "IV97590" ],
+  "1029399" => [ "IV85631", "IV85859", "IV97462", "IV97463", "IV98413" ],
+  "1029527" => [ "IV85859", "IV98413" ]
 }
 
 end

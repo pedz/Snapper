@@ -4,7 +4,15 @@ require 'pathname'
 require 'net/ssh'
 require 'set'
 
-PSQL="/gsa/ausgsa/projects/r/ruby/pgsql/bin/psql"
+if false
+  PSQL="/gsa/ausgsa/projects/r/ruby/pgsql/bin/psql"
+  HOST="condor.austin.ibm.com"
+  DB="condor3_production"
+else
+  PSQL="/usr/local/pgsql/bin/psql"
+  HOST="p51.austin.ibm.com"
+  DB="condor_development"
+end
 $defects = Set.new
 
 base = Pathname(__FILE__).dirname.dirname
@@ -25,7 +33,7 @@ issues_txt.open do |file|
   file.each_line do |line|
     next if /^#/.match(line)
     fields = line.chomp.split('|')
-    $defects.add(fields[0].strip)
+    $defects.add(fields[0].strip) unless fields[0].strip == "true"
     $defects.add(fields[1].strip)
     new_code.puts "#{previous_line}," unless previous_line.nil?
     proc = fields[3 .. -1].join('|')
@@ -38,16 +46,21 @@ new_code.puts
 new_code.puts "# Hash that maps a defect to a list of APARs"
 new_code.puts "@defect2apars = {"
 previous_line = nil
-puts "about to log into condor"
-Net::SSH.start('condor.austin.ibm.com', 'condor') do |ssh|
-  puts "Logged into condor and doing #{$defects.length} queries"
+puts "about to log into #{HOST}"
+Net::SSH.start(HOST, 'condor') do |ssh|
+  puts "Logged into #{HOST} and doing #{$defects.length} queries"
   $defects.each do |defect|
-    output = ssh.exec!("#{PSQL} -c \"copy ( select distinct apar from ptfapardefs where defect = '#{defect}' order by apar ) to stdout;\" condor3_production")
+    # puts "execing: #{PSQL} -c \"copy ( select distinct apar from ptfapardefs where defect = '#{defect}' order by apar ) to stdout;\" #{DB}"
+    output = ssh.exec!("#{PSQL} -c \"copy ( select distinct apar from ptfapardefs where defect = '#{defect}' order by apar ) to stdout;\" #{DB}")
     raise Exception.new("psql failed") unless output.exitstatus == 0
     output = output.split("\n")
     output.delete("NEEDS_APAR")
     new_code.puts "#{previous_line}," unless previous_line.nil?
-    previous_line = "  #{defect.inspect} => [ \"#{output.join('", "')}\" ]"
+    if output.empty?
+      previous_line = "  #{defect.inspect} => [ ]"
+    else
+      previous_line = "  #{defect.inspect} => [ \"#{output.join('", "')}\" ]"
+    end
   end
 end
 new_code.puts previous_line unless previous_line.nil?
