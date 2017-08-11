@@ -2,8 +2,8 @@ require "set"
 require_relative 'logging'
 require_relative 'item'
 require_relative 'snapper'
-# The load order is devices, ethchans, seas, vlans, etherner_adapters,
-# interfaces
+# The load order is devices, ethernets, ethchans, seas, vlans,
+# ethernet_adapters, interfaces
 require_relative 'ethchans'
 
 # A snap processor that runs through the Devices looking Sea devices.

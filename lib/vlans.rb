@@ -1,9 +1,9 @@
 require_relative 'logging'
 require_relative 'item'
 require_relative 'snapper'
-# The load order is devices, ethchans, seas, vlans, etherner_adapters,
+# The load order is devices, ethernet_adapters, ethchans, seas, vlans,
 # interfaces
-require_relative "seas"
+require_relative 'seas'
 
 # A snap processor which finds vlan adapters and converts their type
 # much like Ethchans does.
@@ -18,13 +18,14 @@ class Vlans < Item
   # @param options [Options] The options specified on the command line
   def self.process_snap(snap, options)
     db = snap.db
-    db.devices.each_pair do |key, value|
+    devices = db.devices
+    devices.each_pair do |key, value|
       if value.cu_dv.pd_dv_ln == "adapter/vlan/eth"
         logger.debug { "Converting #{key} into a Vlan"}
         new_value = value.subclass(Vlan)
         new_value[:base_adapter] = db['Devices'][value.attrs[:base_adapter]]
         logger.debug { "base adapter is #{new_value[:base_adapter].class}"}
-        db.devices[key] = new_value
+        devices[key] = new_value
       end
     end
   end

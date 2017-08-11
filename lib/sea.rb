@@ -1,4 +1,4 @@
-require_relative 'device'
+require_relative 'ethernet'
 require_relative 'logging'
 
 # A class for Sea so it can have its own Filter rules.  See Seas for
@@ -19,7 +19,7 @@ require_relative 'logging'
 # [pvid_adapter]  The {Device} entry for the adapter (VEA) specified
 #                 in the +pvid_adapter+ attribute.
 #
-class Sea < Device
+class Sea < Ethernet
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO

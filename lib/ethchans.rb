@@ -1,9 +1,9 @@
 require_relative 'logging'
 require_relative 'item'
 require_relative 'snapper'
-# The load order is devices, ethchans, seas, vlans, etherner_adapters,
-# interfaces
-require_relative 'devices'
+# The load order is devices, ethernets, ethchans, seas, vlans,
+# ethernet_adapters, interfaces
+require_relative 'ethernets'
 
 # A snap processor that finds ether channels and converts their
 # Devices entry into the Ethchan subclass.  Creates and populates the
@@ -21,7 +21,8 @@ class Ethchans < Item
   # @param options [Options] The options specified on the command line
   def self.process_snap(snap, options)
     db = snap.db
-    db.devices.each_pair do |key, value|
+    devices = db.devices
+    devices.each_pair do |key, value|
       if value.cu_dv.pd_dv_ln == "adapter/pseudo/ibm_ech"
         logger.debug { "Converting #{key} into a Ethchan"}
         new_value = value.subclass(Ethchan)
@@ -33,7 +34,7 @@ class Ethchans < Item
                (backup_adapter = value.attrs[:backup_adapter]) == "NONE"
           new_value[:backup_adapter] = db['Devices'][backup_adapter]
         end
-        db.devices[key] = new_value
+        devices[key] = new_value
         validate_ethchan(new_value, snap)
       end
     end
