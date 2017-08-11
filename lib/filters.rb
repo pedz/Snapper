@@ -21,13 +21,13 @@ Print.add_filter("CEC", { level: 0 .. 11 }) do |context, cec|
   context
 end
 
-# Device filter for all levels calls output for the currenct device as
-# well as the error log entries from errpt.out, the entstat -d output
-# from tcpip.snap, and the lsattr output from general.snap
+# Ethernet filter for all levels calls output for the currenct device
+# as well as the error log entries from errpt.out, the entstat -d
+# output from tcpip.snap, and the lsattr output from general.snap
 Print.add_filter("Ethernet", { level: 0 .. 11 }) do |context, item|
   unless item.printed
     if context.level >= 2
-      temp = [ item.cu_dv.name, item.cu_dv.ddins, context.modifier ].join(' ')
+      temp = item.description(context)
       if item.cu_dv.status == 1
         context.output(temp)
       else

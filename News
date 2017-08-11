@@ -1,3 +1,10 @@
+08/11/2017 Version 0.9.84
+
+	Added description to each ethernet adapter such as C4 for
+	checksum offload for IPv4.  I need to figure out how to
+	provide a key but wanted to push it out and let folks play
+	with it and see what they thought.
+
 07/26/2017 Version 0.9.76
 
 	If an error line such as DMA Overruns has the word transmit or receive

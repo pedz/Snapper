@@ -17,7 +17,7 @@ def qb(*args)
   $qb.puts(*args)
 end
 
-def foo(options = {})
+def create_log(options = {})
   text = []
   text.push("--------------------")
   text.push("Date: #{DateTime.now}")
@@ -40,7 +40,8 @@ def log_user
   Snapper.new.run
   exit(0)
 rescue SystemExit => e
-  foo(args: args, status: e.status)
+  create_log(args: args, status: e.status)
+  $qb.close unless $qb == $stderr
   exit!(e.success?) unless defined? Profiler__
 rescue => e
   $stderr.puts "Oh dear... A #{e.class} occurred"
@@ -49,7 +50,8 @@ rescue => e
     $stderr.puts "Backtrace (which you may not understand)\n#{e.backtrace.join("\n")}"
   end
   $stderr.puts "This should be logged and Perry will hopefully eventually see it and try to fix it."
-  foo(args: args, status: 1, message: e.message, backtrace: e.backtrace)
+  create_log(args: args, status: 1, message: e.message, backtrace: e.backtrace)
+  $qb.close unless $qb == $stderr
   exit!(false)
 end
 

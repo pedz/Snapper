@@ -226,6 +226,10 @@ class Item
     temp.to_json(options)
   end
 
+  def keys
+    @hash.keys
+  end
+
   private
 
   # The magic behind flat_keys: a lazy recursive enumerator.
