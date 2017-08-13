@@ -338,6 +338,31 @@ class Options
               "Drops the user into an irb session") do |interactive|
         @interactive = interactive
       end
+
+      opts.on("--legend",
+              "Prints the meaning of the various ethernet attributes") do |not_used|
+        self.puts <<'EOF'
+
+        Key   - Meaning
+        ----- - -------
+        nnnG  - Port speed in Gbps e.g. 10G
+        nnnM  - Port speed in Mbps e.g. 100M
+        AA    - Alternate MAC address
+        C4    - Checksum offload for TCP carried by IPv4
+        DEAD  - Adapter marked as DEAD
+        C6    - Checksum offload for TCP carried by IPv6
+        L6    - Large send (TSO) for TCP carried by IPv6
+        LR    - Large receive
+        L4    - Large send (TSO) for TCP carried by IPv4
+        LIMBO - Limbo state is usually due to link down
+        PM    - Promiscuous mode
+        VF    - Virtual Port which I believe is a SEA, VEA,
+                or an ether channel made up of virtual ports
+
+EOF
+        output.close
+        exit(0)
+      end
     end
   end
 end
