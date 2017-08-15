@@ -1,9 +1,9 @@
 
 = Snapper
 
-Snapper is a tool to quickly go through a set of snaps.  It currently
-can not work with perfpmr output but that is planned if there is
-enough interest.
+Snapper is a tool to quickly go through a set of snaps.  It can also
+work with perfpmr data although it may be a bit more fragile and less
+tested than with data from snaps.
 
 Snapper has two main objectives.  The first is to provide an overview
 of the structure of how the LPARs are set up.  Currently this is
@@ -73,6 +73,7 @@ power of snapper is leveraged.
           --pager=PAGER                Pipes output to PAGER
           --no-pager                   Do not invoke the pager
           --interactive                Drops the user into an irb session
+          --legend                     Prints the meaning of the various ethernet attributes
           --flat-keys                  Print the flat_keys and value of the entire
                                        database from the first snap.
       -h, -?, --help                   This message
@@ -249,39 +250,39 @@ The purpose of level 2 is to give a very quick overview of the set up.
 The output from the sample snap is this:
 
    1 CEC model:9117-MMC CPU:POWER7 firmware:AM740_100 Id:0X8000007F46B00000
-   2   Host: aph001
-   3     Snap taken 2013-07-17T08:17:34+02:00
+   2   Host:aph001 Virtual CPUs:3 Dedicated SMT:4 Entitlement:3.0
+   3     Snap dir:test.snap time:07/17/13 08:17:34 level:6100-08-02 VIOS:2.2.2.2
    4       en9 10.201.10.31 mtu:1500 mac:0.0.c9.d9.e8.bf ipkts:0 opkts:14
-   5         ent9 pci/elxentdd
+   5         ent9 pci/elxentdd 10G AA C4 L4 
    6       en22 10.201.55.100 mtu:1500 mac:e4.1f.13.fd.29.75 ipkts:190896 opkts:210601
-   7         ent22 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
-   8           ent2 pci/goentdd
-   9           ent15 vioentdd
-  10           ent10 vioentdd ctrl channel
+   7         ent22 seadd C4 L4 ha_mode:auto State:PRIMARY Bridge Mode:All Id:ETHERNET0:1300
+   8           ent2 pci/goentdd 1G PM C4 L4 
+   9           ent15 vioentdd 10G PM C4 
+  10           ent10 vioentdd 10G C4 ctrl channel
   11       lo0 127.0.0.1  mtu:16896 mac: ipkts:5735 opkts:5735
-  12       ent23 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
-  13         ent20 ethchandd
-  14           ent0 pci/elxentdd
-  15           ent8 pci/elxentdd
-  16         ent16 vioentdd
-  17         ent11 vioentdd ctrl channel
-  18       ent24 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
-  19         ent21 ethchandd
-  20           ent6 pci/elxentdd
-  21           ent7 pci/elxentdd
-  22         ent17 vioentdd
-  23         ent12 vioentdd ctrl channel
-  24       ent25 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
-  25         ent3 pci/goentdd
-  26         ent18 vioentdd
-  27         ent13 vioentdd ctrl channel
-  28       ent26 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
-  29         ent4 pci/goentdd
-  30         ent19 vioentdd
-  31         ent14 vioentdd ctrl channel
+  12       ent23 seadd C4 L4 ha_mode:auto State:PRIMARY Bridge Mode:All Id:ETHERNET0:1310
+  13         ent20 ethchandd 10G PM C4 L4 mode:standard
+  14           ent0 pci/elxentdd 10G PM C4 L4 
+  15           ent8 pci/elxentdd 10G PM C4 L4 
+  16         ent16 vioentdd 10G PM C4 
+  17         ent11 vioentdd 10G C4 ctrl channel
+  18       ent24 seadd C4 L4 ha_mode:auto State:PRIMARY Bridge Mode:All Id:ETHERNET0:1320
+  19         ent21 ethchandd 10G PM C4 L4 mode:standard
+  20           ent6 pci/elxentdd 10G PM C4 L4 
+  21           ent7 pci/elxentdd 10G PM C4 L4 
+  22         ent17 vioentdd 10G PM C4 
+  23         ent12 vioentdd 10G C4 ctrl channel
+  24       ent25 seadd C4 L4 ha_mode:auto State:PRIMARY Bridge Mode:All Id:ETHERNET0:1340
+  25         ent3 pci/goentdd 1G PM C4 L4 
+  26         ent18 vioentdd 10G PM C4 
+  27         ent13 vioentdd 10G C4 ctrl channel
+  28       ent26 seadd C4 L4 ha_mode:auto State:PRIMARY Bridge Mode:All Id:ETHERNET0:1350
+  29         ent4 pci/goentdd 1G PM C4 L4 
+  30         ent19 vioentdd 10G PM C4 
+  31         ent14 vioentdd 10G C4 ctrl channel
   32       Unused Adapters
-  33         ent1 pci/elxentdd
-  34         ent5 pci/goentdd
+  33         ent1 pci/elxentdd 10G LIMBO C4 L4 
+  34         ent5 pci/goentdd 1G LIMBO C4 L4 
 
 Line 1 is for the CEC and includes the mode, CPU type, firmware level,
 and a little known attribute called +id_to_system+ that is found in
@@ -336,77 +337,79 @@ The default output of snapper allowing the level to default to 3 is
 shown below:
 
    1 CEC model:9117-MMC CPU:POWER7 firmware:AM740_100 Id:0X8000007F46B00000
-   2   Host: aph001
-   3     Snap taken 2013-07-17T08:17:34+02:00
+   2   Host:aph001 Virtual CPUs:3 Dedicated SMT:4 Entitlement:3.0
+   3     Snap dir:test.snap time:07/17/13 08:17:34 level:6100-08-02 VIOS:2.2.2.2
    4       en9 10.201.10.31 mtu:1500 mac:0.0.c9.d9.e8.bf ipkts:0 opkts:14
-   5         ent9 pci/elxentdd
-   6           Receive Statistics,Receive Errors:685617
-   7           Receive Statistics,DMA Overrun:685617
+   5         ent9 pci/elxentdd 10G AA C4 L4 
+   6           Receive Statistics,Receive Errors:685617   Inf%
+   7           Receive Statistics,DMA Overrun:685617   Inf%
    8
    9       en22 10.201.55.100 mtu:1500 mac:e4.1f.13.fd.29.75 ipkts:190896 opkts:210601
-  10         ent22 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
+  10         ent22 seadd C4 L4 ha_mode:auto State:PRIMARY Bridge Mode:All Id:ETHERNET0:1300
   11           16 error log entries
-  12           ent2 pci/goentdd
-  13           ent15 vioentdd
+  12           ent2 pci/goentdd 1G PM C4 L4 
+  13           ent15 vioentdd 10G PM C4 
   14             Port VLAN ID: 300 on ETHERNET0 Active:True Pri:1
-  15             Hypervisor Send Failures: 4927
-  16           ent10 vioentdd ctrl channel
+  15             Hypervisor Send Failures: 4927  4.16%
+  16           ent10 vioentdd 10G C4 ctrl channel
   17             Port VLAN ID: 1300 on ETHERNET0
   18
   19       lo0 127.0.0.1  mtu:16896 mac: ipkts:5735 opkts:5735
   20
-  21       ent23 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
+  21       ent23 seadd C4 L4 ha_mode:auto State:PRIMARY Bridge Mode:All Id:ETHERNET0:1310
   22         19 error log entries
-  23         Receive Statistics,Receive Errors:842400
-  24         Receive Statistics,DMA Overrun:842400
-  25         Other Statistics,ICMP error packets sent:931
-  26         ent20 ethchandd
-  27           Receive Statistics,Receive Errors:842400
-  28           Receive Statistics,DMA Overrun:842400
-  29           ent0 pci/elxentdd
-  30             Receive Statistics,Receive Errors:156783
-  31             Receive Statistics,DMA Overrun:156783
-  32           ent8 pci/elxentdd
-  33             Receive Statistics,Receive Errors:685617
-  34             Receive Statistics,DMA Overrun:685617
-  35         ent16 vioentdd
-  36           Port VLAN ID: 4094 VLAN Tag IDs [104, 105, 106, 201, 202, 203, 205, 209, 210, 248, 250, 267, 288, 801, 802] on ETHERNET0 Active:True Pri:1
-  37           Hypervisor Send Failures: 21562715
-  38         ent11 vioentdd ctrl channel
-  39           Port VLAN ID: 1310 on ETHERNET0
-  40
-  41       ent24 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
-  42         14 error log entries
-  43         ent21 ethchandd
-  44           ent6 pci/elxentdd
-  45           ent7 pci/elxentdd
-  46         ent17 vioentdd
-  47           Port VLAN ID: 320 on ETHERNET0 Active:True Pri:1
-  48           Hypervisor Send Failures: 141
-  49         ent12 vioentdd ctrl channel
-  50           Port VLAN ID: 1320 on ETHERNET0
-  51
-  52       ent25 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
-  53         12 error log entries
-  54         ent3 pci/goentdd
-  55         ent18 vioentdd
-  56           Port VLAN ID: 4093 VLAN Tag IDs [270, 275] on ETHERNET0 Active:True Pri:1
-  57           Hypervisor Send Failures: 1250
-  58         ent13 vioentdd ctrl channel
-  59           Port VLAN ID: 1340 on ETHERNET0
-  60
-  61       ent26 seadd ha_mode:auto State:PRIMARY Bridge Mode:All
-  62         16 error log entries
-  63         ent4 pci/goentdd
-  64         ent19 vioentdd
-  65           Port VLAN ID: 4092 VLAN Tag IDs [271, 272, 1288] on ETHERNET0 Active:True Pri:1
-  66           Hypervisor Send Failures: 6942
-  67         ent14 vioentdd ctrl channel
-  68           Port VLAN ID: 1350 on ETHERNET0
-  69
-  70       Unused Adapters
-  71         ent1 pci/elxentdd
-  72         ent5 pci/goentdd
+  23         Transmit Statistics,Packets Dropped:59  0.00%
+  24         Receive Statistics,Receive Errors:842400  0.06%
+  25         Receive Statistics,DMA Overrun:842400  0.06%
+  26         Other Statistics,ICMP error packets sent:931
+  27         ent20 ethchandd 10G PM C4 L4 mode:standard
+  28           Receive Statistics,Receive Errors:842400  0.11%
+  29           Receive Statistics,DMA Overrun:842400  0.11%
+  30           ent0 pci/elxentdd 10G PM C4 L4 
+  31             Receive Statistics,Receive Errors:156783  0.03%
+  32             Receive Statistics,DMA Overrun:156783  0.03%
+  33           ent8 pci/elxentdd 10G PM C4 L4 
+  34             Receive Statistics,Receive Errors:685617  0.22%
+  35             Receive Statistics,DMA Overrun:685617  0.22%
+  36         ent16 vioentdd 10G PM C4 
+  37           Port VLAN ID: 4094 VLAN Tag IDs [104, 105, 106, 201, 202, 203, 205, 209, 210, 248, 250, 267, 288, 801, 802] on ETHERNET0 Active:True Pri:1
+  38           Hypervisor Send Failures: 21562715  4.11%
+  39         ent11 vioentdd 10G C4 ctrl channel
+  40           Port VLAN ID: 1310 on ETHERNET0
+  41
+  42       ent24 seadd C4 L4 ha_mode:auto State:PRIMARY Bridge Mode:All Id:ETHERNET0:1320
+  43         14 error log entries
+  44         ent21 ethchandd 10G PM C4 L4 mode:standard
+  45           ent6 pci/elxentdd 10G PM C4 L4 
+  46           ent7 pci/elxentdd 10G PM C4 L4 
+  47         ent17 vioentdd 10G PM C4 
+  48           Port VLAN ID: 320 on ETHERNET0 Active:True Pri:1
+  49           Hypervisor Send Failures: 141 37.90%
+  50         ent12 vioentdd 10G C4 ctrl channel
+  51           Port VLAN ID: 1320 on ETHERNET0
+  52
+  53       ent25 seadd C4 L4 ha_mode:auto State:PRIMARY Bridge Mode:All Id:ETHERNET0:1340
+  54         12 error log entries
+  55         ent3 pci/goentdd 1G PM C4 L4 
+  56         ent18 vioentdd 10G PM C4 
+  57           Port VLAN ID: 4093 VLAN Tag IDs [270, 275] on ETHERNET0 Active:True Pri:1
+  58           Hypervisor Send Failures: 1250  0.39%
+  59         ent13 vioentdd 10G C4 ctrl channel
+  60           Port VLAN ID: 1340 on ETHERNET0
+  61
+  62       ent26 seadd C4 L4 ha_mode:auto State:PRIMARY Bridge Mode:All Id:ETHERNET0:1350
+  63         16 error log entries
+  64         ent4 pci/goentdd 1G PM C4 L4 
+  65         ent19 vioentdd 10G PM C4 
+  66           Port VLAN ID: 4092 VLAN Tag IDs [271, 272, 1288] on ETHERNET0 Active:True Pri:1
+  67           Hypervisor Send Failures: 6942 12.02%
+  68         ent14 vioentdd 10G C4 ctrl channel
+  69           Port VLAN ID: 1350 on ETHERNET0
+  70
+  71       Unused Adapters
+  72         ent1 pci/elxentdd 10G LIMBO C4 L4 
+  73         ent5 pci/goentdd 1G LIMBO C4 L4 
+
 
 The flow is the same.  The CEC, host, interfaces, SEAs, and finally
 the unused adapters.
@@ -422,12 +425,12 @@ Line 11 shows a sample of level 3 output for error log entries.  A
 count of the error log entries is done to clue the user into the fact
 that this device is having errors in the error log.
 
-Line 36 shows a sample of the VLAN tag information for the VEAs.  It
+Line 37 shows a sample of the VLAN tag information for the VEAs.  It
 also includes which virtual switch the VEA is connected to and if the
 adapter has Trunk set to true, then the Active status is given so it
 should be easy to follow packets in a sharing VIOS setup.
 
-Line 37 is our trusty Hypervisor errors we all love.
+Line 38 is our trusty Hypervisor errors we all love.
 
 Here is the objectives of the various levels:
 
