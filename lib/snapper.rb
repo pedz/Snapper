@@ -211,9 +211,7 @@ class Snapper
       path = Pathname(path)
       snap = nil
       if path.directory?
-        if dump_path(path).file?
-          snap = restore(dump_path(path))
-        else
+        unless dump_path(path).file? && (snap = restore(dump_path(path)))
           db = Db.new
           SnapParser.new(path, nil, db, file_parsers).parse
           snap = Snap.new({ dir: path, db: db })
@@ -221,10 +219,10 @@ class Snapper
             dump(path, snap)
           end
         end
-      elsif path.file?
-        snap = restore(path)
+      elsif path.file? && (snap = restore(path))
+        true
       else
-        $stderr.puts "snapper.rb: #{path} is not a directory nor a snapper dump"
+        $stderr.puts "snapper.rb: #{path} is not a directory nor a compatible snapper dump"
         exit 1
       end
 
@@ -295,7 +293,7 @@ EOF
   # is the list from Item.children.  The second item is snap
   def dump(path, snap)
     Zlib::GzipWriter.open(dump_path(path), 9) do |gz|
-      Marshal.dump([ Item.children, snap ], gz)
+      Marshal.dump([ $snapper_version, $snapper_release, Item.children, snap ], gz)
     end
   end
 
@@ -321,7 +319,8 @@ EOF
         end
         obj
       }
-      class_array, result = Marshal.restore(gz, p)
+      version, release, class_array, result = Marshal.restore(gz, p)
+      result = nil unless version == $snapper_version && release == $snapper_release
       result
     end
   rescue => e
