@@ -34,7 +34,7 @@ class Ethernet < Device
       attrs += entstat.driver_flags.map { |flag| TEXT_MAP[flag] }
       attrs.delete(nil)
     end
-    attrs.push("MAC:#{entstat.hardware_address}") if entstat['hardware_address']
+    attrs.push("MAC:#{entstat.hardware_address}") if context.level > 3 && entstat['hardware_address']
     attrs.push(context.modifier)
     return attrs.join(' ')
   end
