@@ -87,6 +87,10 @@ class Item
     @printing = false
   end
 
+  def db
+    @db
+  end
+
   # @return [Boolean] true if entity has been printed
   def printed
     @printed

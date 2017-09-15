@@ -7,7 +7,7 @@ class Ethernet < Device
   LOG_LEVEL = Logger::INFO
 
   def description(context)
-    attrs = [ cu_dv.name, cu_dv.ddins ]
+    description_keys = [ cu_dv.name, cu_dv.ddins ]
     if entstat = self.entstat
       # There are various place where the bit rate of the link is
       # hidden.  Most common is Adapter Data Rate but it is twice the
@@ -28,15 +28,30 @@ class Ethernet < Device
         speed = md[:speed].to_i * 1000
       end
 
-      attrs.push((speed >= 1000) ? "#{speed / 1000}G" : "#{speed}M") if speed > 0
+      description_keys.push((speed >= 1000) ? "#{speed / 1000}G" : "#{speed}M") if speed > 0
 
       # We get driver flags and convert them to attributes
-      attrs += entstat.driver_flags.map { |flag| TEXT_MAP[flag] }
-      attrs.delete(nil)
+      description_keys += entstat.driver_flags.map { |flag| TEXT_MAP[flag] }
+      description_keys.delete(nil)
     end
-    attrs.push("MAC:#{entstat.hardware_address}") if context.level > 3 && entstat['hardware_address']
-    attrs.push(context.modifier)
-    return attrs.join(' ')
+    # Ugly... virtual adapters are marked with VIOENT in the flags.
+    # We convert that to VX in the description keys because it can be
+    # set for various entities.  If it is set, we go up and find the
+    # interface, find the attributes, find the mtu_bypass attribute,
+    # and if it is "on", then we add L4 and L6 if they are not already
+    # present.
+    if description_keys.delete("VX") &&
+       (db = self.db) &&
+       (devices = db.devices) &&
+       (en = devices[cu_dv.name.sub('ent', 'en')]) &&
+       (attrs = en.attrs) &&
+       attrs['mtu_bypass'] == "on"
+      description_keys.push("L4") unless description_keys.include?("L4")
+      description_keys.push("L6") unless description_keys.include?("L6")
+    end
+    description_keys.push("MAC:#{entstat.hardware_address}") if context.level > 3 && entstat['hardware_address']
+    description_keys.push(context.modifier)
+    return description_keys.join(' ')
   end
 
   private
@@ -63,7 +78,7 @@ class Ethernet < Device
     # "Running" =>          "",
     # "Simplex" =>          "",
     # "Up" =>               "",
-    # "VIOENT" =>           "",
+    "VIOENT" =>           "VX",
     "VIRTUAL_PORT" =>     "VF"
   }
 end
