@@ -4,7 +4,7 @@ require 'pathname'
 require 'net/ssh'
 require 'set'
 
-if false
+if true
   PSQL="/gsa/ausgsa/projects/r/ruby/pgsql/bin/psql"
   HOST="condor.austin.ibm.com"
   DB="condor3_production"
