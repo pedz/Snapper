@@ -53,22 +53,22 @@ echo "Deploying ${version} (${release})"
 
 rake clean-docs; rake all-docs
 
-deploy_to spitfire /gsa/ausgsa/projects/r/ruby/prvm/ruby-2.2.3/bin/ruby
+deploy_to truth /gsa/ausgsa/projects/r/ruby/prvm/ruby-2.2.3/bin/ruby
 deploy_to ecurep /users/p/e/pedzan/local/bin/ruby
 
-echo "Creating new docs on spitfire"
+echo "Creating new docs on truth"
 tar cf - doc | gzip -9 | \
-    ssh spitfire \
+    ssh truth \
 	"set -x && \
          rm -rf public_html/new-snapper && \
          mkdir -p public_html/new-snapper && \
          cd public_html/new-snapper && \
          gunzip | tar xf -"
 echo "Fixing permissions"
-ssh spitfire "set -x && \
+ssh truth "set -x && \
               chmod -R go=u,o-w public_html/new-snapper"
 echo "Moving new docs into place"
-ssh spitfire "set -x && \
+ssh truth "set -x && \
               rm -rf public_html/old-snapper && \
               mv public_html/snapper public_html/old-snapper &&
               mv public_html/new-snapper public_html/snapper"
