@@ -1,6 +1,8 @@
 # Injected | Fixed   |Text
       true |  983358 |musentdd receive path hangs on certain size pkt|{ |snap| dev_with(snap, 'pci/musentdd') }
+      true | 1025469 |Small MSS and small packets stall lncentdd|{ |snap| dev_with(snap, 'pci/lncentdd') }
       true | 1029399 |Small MSS and small packets stall lncentdd|{ |snap| dev_with(snap, 'pci/lncentdd') }
+      true | 1029409 |Small MSS and small packets stall lncentdd|{ |snap| dev_with(snap, 'pci/lnc2entdd') }
       true | 1029527 |Small MSS and small packets stall lncentdd|{ |snap| dev_with(snap, 'pci/lncentdd') }
     904189 |  988438 |SYN packets get lost|{ |snap| dev_with(snap, 'seadd') }
     904189 |  988986 |Reset packets cause crash or adapter failures|{ |snap| dev_with(snap, 'seadd') }
