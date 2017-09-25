@@ -537,6 +537,12 @@ class Seas < Item
         when 1                  # unmatched
           host, array = host_hash.first
           array.each do |hash|
+            if (sea = hash[:sea]) &&
+               (attrs = sea[:attrs]) &&
+               (ha_mode = attrs[:ha_mode]) &&
+               ha_mode == "disabled"
+              next
+            end
             t = Alerts.unmatched_sea(hash[:sea].name)
             hash[:snap].add_alert(t)
           end
