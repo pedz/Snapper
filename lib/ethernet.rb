@@ -49,7 +49,7 @@ class Ethernet < Device
       description_keys.push("L4") unless description_keys.include?("L4")
       description_keys.push("L6") unless description_keys.include?("L6")
     end
-    description_keys.push("MAC:#{entstat.hardware_address}") if context.level > 3 && entstat['hardware_address']
+    description_keys.push("MAC:#{entstat.hardware_address}") if entstat && context.level > 3 && entstat['hardware_address']
     description_keys.push(context.modifier)
     return description_keys.join(' ')
   end
