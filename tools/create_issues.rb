@@ -5,6 +5,10 @@ require 'net/ssh'
 require 'set'
 
 if true
+  PSQL="/usr/bin/psql"
+  HOST="condor3.austin.ibm.com"
+  DB="condor3_production"
+elsif false
   PSQL="/gsa/ausgsa/projects/r/ruby/pgsql/bin/psql"
   HOST="condor.austin.ibm.com"
   DB="condor3_production"
