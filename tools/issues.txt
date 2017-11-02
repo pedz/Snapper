@@ -4,7 +4,7 @@
       true | 1025469 |Small MSS and small packets stall lncentdd|{ |snap| dev_with(snap, 'pci/lncentdd') }
       true | 1026092 |kxentdd with IBM i on P8 fails|{ |snap| dev_with(snap, 'pci/kxentdd') }
       true | 1029399 |Small MSS and small packets stall lncentdd|{ |snap| dev_with(snap, 'pci/lncentdd') }
-      true | 1029409 |Small MSS and small packets stall lncentdd|{ |snap| dev_with(snap, 'pci/lnc2entdd') }
+      true | 1029409 |Small MSS and small packets stall lnc2entdd|{ |snap| dev_with(snap, 'pci/lnc2entdd') }
       true | 1029527 |Small MSS and small packets stall lncentdd|{ |snap| dev_with(snap, 'pci/lncentdd') }
     904189 |  988438 |SYN packets get lost|{ |snap| dev_with(snap, 'seadd') }
     904189 |  988986 |Reset packets cause crash or adapter failures|{ |snap| dev_with(snap, 'seadd') }
