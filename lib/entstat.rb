@@ -30,6 +30,14 @@ class Entstat < Item
       PDA::Production.new("^(Control|Backup|Real|Virtual) Adapter: ent\\d+\\s*$") do |md, pda|
       end,
 
+      # Sample Match:   |                     PRIMARY ADAPTERS
+      # States Matched: :all
+      # New State:      :no_change
+      # State Pushed:   none
+      # Lines which are always ignored.
+      PDA::Production.new("^\\s*PRIMARY ADAPTERS\\s*$") do |md, pda|
+      end,
+
       # Sample Match:   |empty lines and lines with only -'s and ='s
       # States Matched: :all
       # New State:      :no_change
