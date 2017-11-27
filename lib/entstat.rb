@@ -35,7 +35,7 @@ class Entstat < Item
       # New State:      :no_change
       # State Pushed:   none
       # Lines which are always ignored.
-      PDA::Production.new("^\\s*PRIMARY ADAPTERS\\s*$") do |md, pda|
+      PDA::Production.new("^\\s*(PRIMARY|BACKUP) ADAPTERS\\s*$") do |md, pda|
       end,
 
       # Sample Match:   |empty lines and lines with only -'s and ='s
