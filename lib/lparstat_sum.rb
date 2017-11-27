@@ -2,6 +2,7 @@ require 'date'
 require 'time'
 require_relative 'logging'
 require_relative 'file_parser'
+require_relative 'colon_file_parser'
 require_relative 'item'
 require_relative 'snapper'
 
