@@ -72,6 +72,7 @@ class Devices < Item
 
     netstat_in = (db['Netstat -in'] ||= {})
     netstat_v = (db['Netstat -v'] ||= {})
+    ifconfig_a = (db['Ifconfig -a'] ||= {})
     if netstat_v.is_a? Array
       fail "\nFound multiple tcpip.snap files within specified directory.\nPlease clean up testcase first"
     end
@@ -107,6 +108,7 @@ class Devices < Item
       device['errpt'] = errs[name]
       device['entstat'] = netstat_v[name]
       device['netstat_in'] = netstat_in[name]
+      device['ifconfig_a'] = ifconfig_a[name]
     end
     %w{ ipsec_v4 ipsec_v6 }.each do |dev|
       snap.add_alert("#{dev} is configured") if devices[dev]

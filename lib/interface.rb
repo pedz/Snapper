@@ -20,16 +20,30 @@ require_relative "item"
 #
 # [:coll]  The number of collisions (obsolete)
 #
-# [:inet]  A list of addresses with two fields in each address:
+# [:addrs] A list of addresses
 #
-#          [:address] The IPv4 address
+#          [:family] Currently either :ipv4 or :ipv6
+#
+#          [:address] The address
 #
 #          [:network] The address of the network (after the netmask
 #                     has been applied).
 #
-# [:inet6] A similar list as :inet exept containts IPv6 addresses.
 class Interface < Item
   include Logging
   # Default log level is INFO
   LOG_LEVEL = Logger::INFO
+
+  def initialize(*args)
+    super
+    self[:addrs] = List.new
+  end
+
+  def pretty_addr(index)
+    return "" if index >= self[:addrs].length
+    addr = self[:addrs][index]
+    s = addr[:address]
+    s += "/#{addr[:netmask_length]}" if addr.has_key?(:netmask_length)
+    return s
+  end
 end

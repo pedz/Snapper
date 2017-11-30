@@ -1,3 +1,10 @@
+11/30/2017 Version 0.9.106
+
+        Added parsing of ifconfig -a if it exists.  And added printing
+	out the aliases of the interfaces.  There is also a sanity
+	check to verify that the netstat -in matches up with the
+	ifconfig -a output.
+
 08/11/2017 Version 0.9.84
 
 	Added description to each ethernet adapter such as C4 for

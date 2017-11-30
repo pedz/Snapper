@@ -237,8 +237,15 @@ Print.add_filter("Interface", { level: 0 .. 11 }) do |context, item|
   unless item.printed
     if context.level >= 2
       text = item[:name]
-      text += " #{item[:inet][0][:address]}" if item[:inet]
-      text += " #{item[:inet6][0][:address]}" if item[:inet6]
+      indent = text.length + 1
+      if ifconfig = item[:ifconfig]
+        temp = ifconfig
+      else
+        temp = item
+      end
+      text += " #{temp.pretty_addr(0)}"
+      # text += " #{item[:inet][0][:address]}" if item[:inet]
+      # text += " #{item[:inet6][0][:address]}" if item[:inet6]
       text += " mtu:%s mac:%s ipkts:%s opkts:%s" %
               [ item[:mtu],
                 item[:mac],
@@ -255,6 +262,10 @@ Print.add_filter("Interface", { level: 0 .. 11 }) do |context, item|
         end
         context.output(text, [ :red ])
       else
+        context.output(text)
+      end
+      ( 1 .. (temp[:addrs].length - 1)).each do |index|
+        text = "#{"%*s" % [ indent, ' ' ]}#{temp.pretty_addr(index)}"
         context.output(text)
       end
     end

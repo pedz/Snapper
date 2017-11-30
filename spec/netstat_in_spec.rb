@@ -51,17 +51,16 @@ EOF
       expect(@result['en22'][:coll]).to eq(0)
     end
     
-    it "should have a list of IPv4 configured addresses" do
-      expect(@result['lo0'][:inet].length).to eq(1)
-    end
-    
-    it "should have a list of IPv6 configured addresses" do
-      expect(@result['lo0'][:inet6].length).to eq(1)
+    it "should have a list of two configured addresses" do
+      expect(@result['lo0'][:addrs].length).to eq(2)
+      expect(@result['lo0'][:addrs][0][:family]).to eq(:ipv4)
+      expect(@result['lo0'][:addrs][1][:family]).to eq(:ipv6)
     end
     
     it "should have a network and an address for each configured address" do
-      expect(@result['en22'][:inet][0][:network]).to eq('10.201.52')
-      expect(@result['en22'][:inet][0][:address]).to eq('10.201.55.100')
+      expect(@result['en22'][:addrs][0][:family]).to eq(:ipv4)
+      expect(@result['en22'][:addrs][0][:network]).to eq('10.201.52')
+      expect(@result['en22'][:addrs][0][:address]).to eq('10.201.55.100')
     end
   end
 end
