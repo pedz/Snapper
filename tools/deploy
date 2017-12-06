@@ -20,6 +20,12 @@ function deploy_to
                      mkdir new-snapper && \
                      cd new-snapper && \
                      gunzip | tar xf -"
+    if [[ $? -ne 0 ]] ; then
+      echo FAILURE
+      echo FAILURE
+      echo FAILURE
+      exit 1
+    fi
     echo "Fixing permissions"
     ssh ${host} "$debug && chmod -R go=u,o-w new-snapper"
     echo "Moving new snapper into place on ${host}"
