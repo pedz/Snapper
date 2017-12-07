@@ -4,6 +4,7 @@
 class BrokenFilesets
 
 @issues = [
+  [ "true", "981653", "shientdd has TX_ERR", Proc.new { |snap| dev_with(snap, 'pci/shientdd') } ],
   [ "true", "983358", "musentdd receive path hangs on certain size pkt", Proc.new { |snap| dev_with(snap, 'pci/musentdd') } ],
   [ "true", "1014823", "musentdd with IBM i on P8", Proc.new { |snap| dev_with(snap, 'pci/musentdd') } ],
   [ "true", "1025469", "Small MSS and small packets stall lncentdd", Proc.new { |snap| dev_with(snap, 'pci/lncentdd') } ],
@@ -23,13 +24,14 @@ class BrokenFilesets
 
 # Hash that maps a defect to a list of APARs
 @defect2apars = {
+  "981653" => [ "IV83072", "IV83077", "IV83083", "IV83197", "IV93694" ],
   "983358" => [ "IV80569", "IV80890", "IV81357", "IV81428", "IV81459", "IV82421", "IV84184" ],
   "1014823" => [ "IV92497", "IV93655", "IV93658", "IV94015", "IV94017", "IV94039", "IV94041" ],
   "1025469" => [ "IV96881", "IV96913", "IV97011", "IV99726" ],
-  "1026092" => [ "IV97020", "IV97994", "IV98004", "IV98074" ],
+  "1026092" => [ "IJ01411", "IV97020", "IV97994", "IV98004", "IV98074" ],
   "1029399" => [ "IV85631", "IV85859", "IV97462", "IV97463", "IV98413", "IV99160" ],
   "1029409" => [ "IV85631", "IV85859", "IV86172", "IV97462", "IV97463" ],
-  "1029527" => [ "IV85859", "IV98413", "IV99160", "IV99493" ],
+  "1029527" => [ "IV85859", "IV89961", "IV98413", "IV99160", "IV99493" ],
   "904189" => [ "IV55546", "IV55679" ],
   "988438" => [ "IV82596", "IV84986", "IV85056", "IV88145", "IV88578" ],
   "988986" => [ "IV82694", "IV86856", "IV86941", "IV86960", "IV87017", "IV87162", "IV87165" ],
