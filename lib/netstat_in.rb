@@ -31,6 +31,12 @@ class NetstatIn < Item
       else
         fields = line.split
         name = fields.shift
+        if /\*/.match(name)
+          name = name[0 ... -1]
+          down = true
+        else
+          down = false
+        end
         record = (self[name] ||= Interface.new("", { name: name }, @db))
         if fields.length == 8
           mtu, network, address, ipkts, ierrs, opkts, oerrs, coll = fields
@@ -39,6 +45,7 @@ class NetstatIn < Item
           address = ""
         end
         if LINK_REGEXP.match(network)
+          record[:down] = down
           record[:mtu] = mtu.to_i
           record[:mac] = address
           record[:ipkts] = ipkts.to_i

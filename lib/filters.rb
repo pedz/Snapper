@@ -237,6 +237,7 @@ Print.add_filter("Interface", { level: 0 .. 11 }) do |context, item|
   unless item.printed
     if context.level >= 2
       text = item[:name]
+      text += "*" if item[:down]
       indent = text.length + 1
       if ifconfig = item[:ifconfig]
         temp = ifconfig
