@@ -423,6 +423,8 @@ class Seas < Item
       attrs.virt_adapters.value.split(',').each do |adapter_name|
         if (dev = devices[adapter_name])
           sea[:virt_adapters].push(dev)
+        else
+          snap.add_alert("SEA #{sea.name} specifies non-existant VEA #{adapter_name}")
         end
       end
       if attrs.has_key?(:ctl_chan)
