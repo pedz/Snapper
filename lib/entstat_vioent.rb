@@ -10,6 +10,14 @@ class EntstatVioent < Entstat
 
   VIOENT_PRODUCTIONS =
     [
+      # Sample Match:   |                     PRIMARY ADAPTERS
+      # States Matched: :all
+      # New State:      :no_change
+      # State Pushed:   none
+      # Lines which are always ignored.
+      PDA::Production.new("^\\s*(PRIMARY|BACKUP) ADAPTERS\\s*$", [:hyperInfo]) do |md, pda|
+      end,
+
       # Sample Match:   |empty line
       # States Matched: :hyperInfo
       # New State:      :no_change
