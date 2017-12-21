@@ -421,7 +421,9 @@ class Seas < Item
       sea[:real_adapter] = devices[attrs.real_adapter.value]
       sea[:virt_adapters] = List.new
       attrs.virt_adapters.value.split(',').each do |adapter_name|
-        sea[:virt_adapters].push(devices[adapter_name])
+        if (dev = devices[adapter_name])
+          sea[:virt_adapters].push(dev)
+        end
       end
       if attrs.has_key?(:ctl_chan)
         sea[:ctl_chan] = devices[attrs.ctl_chan.value]
