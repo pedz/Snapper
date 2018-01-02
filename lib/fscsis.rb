@@ -25,13 +25,13 @@ class Fscsis < Item
       fscsi = device.subclass(Fscsi)
       next unless (lsattr = fscsi.lsattr)
 
-      unless (val = lsattr.value('fc_err_recov')) == "fast_fail"
-        snap.add_alert("#{logical_name} has fc_err_recov set to #{val}")
-      end
+      # unless (val = lsattr.value('fc_err_recov')) == "fast_fail"
+      #   snap.add_alert("#{logical_name} has fc_err_recov set to #{val}")
+      # end
 
-      unless (val = lsattr.value('dyntrk')) == "yes"
-        snap.add_alert("#{logical_name} has dyntrk set to #{val}")
-      end
+      # unless (val = lsattr.value('dyntrk')) == "yes"
+      #   snap.add_alert("#{logical_name} has dyntrk set to #{val}")
+      # end
 
       devices[logical_name] = fscsi
       fscsis[logical_name] = fscsi
