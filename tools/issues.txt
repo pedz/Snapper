@@ -1,6 +1,7 @@
 # Injected | Fixed   |Text
       true |  981653 |shientdd has TX_ERR |{ |snap| dev_with(snap, 'pci/shientdd') }
       true |  983358 |musentdd receive path hangs on certain size pkt|{ |snap| dev_with(snap, 'pci/musentdd') }
+      true |  995427 |mlxentdd queue can hang|{ |snap| dev_with(snap, 'pci/mlxentdd') }
       true | 1014823 |musentdd with IBM i on P8|{ |snap| dev_with(snap, 'pci/musentdd') }
       true | 1025469 |Small MSS and small packets stall lncentdd|{ |snap| dev_with(snap, 'pci/lncentdd') }
       true | 1026092 |kxentdd with IBM i on P8 fails|{ |snap| dev_with(snap, 'pci/kxentdd') }

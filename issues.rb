@@ -6,6 +6,7 @@ class BrokenFilesets
 @issues = [
   [ "true", "981653", "shientdd has TX_ERR", Proc.new { |snap| dev_with(snap, 'pci/shientdd') } ],
   [ "true", "983358", "musentdd receive path hangs on certain size pkt", Proc.new { |snap| dev_with(snap, 'pci/musentdd') } ],
+  [ "true", "995427", "mlxentdd queue can hang", Proc.new { |snap| dev_with(snap, 'pci/mlxentdd') } ],
   [ "true", "1014823", "musentdd with IBM i on P8", Proc.new { |snap| dev_with(snap, 'pci/musentdd') } ],
   [ "true", "1025469", "Small MSS and small packets stall lncentdd", Proc.new { |snap| dev_with(snap, 'pci/lncentdd') } ],
   [ "true", "1026092", "kxentdd with IBM i on P8 fails", Proc.new { |snap| dev_with(snap, 'pci/kxentdd') } ],
@@ -26,6 +27,7 @@ class BrokenFilesets
 @defect2apars = {
   "981653" => [ "IV83072", "IV83077", "IV83083", "IV83197", "IV93694" ],
   "983358" => [ "IV80569", "IV80890", "IV81357", "IV81428", "IV81459", "IV82421", "IV84184" ],
+  "995427" => [ "IV85259", "IV85321", "IV85335", "IV88113" ],
   "1014823" => [ "IV92497", "IV93655", "IV93658", "IV94015", "IV94017", "IV94039", "IV94041" ],
   "1025469" => [ "IV96881", "IV96913", "IV97011", "IV99726" ],
   "1026092" => [ "IJ01411", "IV97020", "IV97994", "IV98004", "IV98074" ],
