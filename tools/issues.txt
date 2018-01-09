@@ -11,7 +11,7 @@
     904189 |  988438 |SYN packets get lost|{ |snap| dev_with(snap, 'seadd') }
     904189 |  988986 |Reset packets cause crash or adapter failures|{ |snap| dev_with(snap, 'seadd') }
     904189 |  996041 |Slow transfers when checksum offload does not match|{ |snap| dev_with(snap, 'seadd') }
-    904189 | 1008972 |Large send packets cause crash or adapter failures|{ |snap| dev_with(snap, 'vioentdd') }
+    904189 | 1008972 |Large send packets from vioent cause crashes or adapter failures|{ |snap| dev_with(snap, 'vioentdd') }
     987595 | 1021773 |VLAN padding issue|{ |snap| dev_with(snap, 'vlandd') }
     993580 | 1029041 |Health Check issues|{ |snap| dev_with(snap, 'seadd') }
    1002147 | 1022163 |lncentdd will drop tagged large send packets|{ |snap| dev_with(snap, 'pci/lncentdd') }
