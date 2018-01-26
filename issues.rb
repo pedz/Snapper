@@ -16,11 +16,12 @@ class BrokenFilesets
   [ "904189", "988438", "SYN packets get lost", Proc.new { |snap| dev_with(snap, 'seadd') } ],
   [ "904189", "988986", "Reset packets cause crash or adapter failures", Proc.new { |snap| dev_with(snap, 'seadd') } ],
   [ "904189", "996041", "Slow transfers when checksum offload does not match", Proc.new { |snap| dev_with(snap, 'seadd') } ],
-  [ "904189", "1008972", "Large send packets cause crash or adapter failures", Proc.new { |snap| dev_with(snap, 'vioentdd') } ],
+  [ "904189", "1008972", "Large send packets from vioent cause crashes or adapter failures", Proc.new { |snap| dev_with(snap, 'vioentdd') } ],
   [ "987595", "1021773", "VLAN padding issue", Proc.new { |snap| dev_with(snap, 'vlandd') } ],
   [ "993580", "1029041", "Health Check issues", Proc.new { |snap| dev_with(snap, 'seadd') } ],
   [ "1002147", "1022163", "lncentdd will drop tagged large send packets", Proc.new { |snap| dev_with(snap, 'pci/lncentdd') } ],
-  [ "1004969", "1026365", "Ether Channel weakness with Collecting", Proc.new { |snap| dev_with(snap, 'ethchandd') } ]
+  [ "1004969", "1026365", "Ether Channel weakness with Collecting", Proc.new { |snap| dev_with(snap, 'ethchandd') } ],
+  [ "1029399", "true", "Small checksum offload packets sent via sea have invalid tcp sum", Proc.new { |snap| sea_with_entcore(snap) } ]
 ]
 
 # Hash that maps a defect to a list of APARs
@@ -46,7 +47,8 @@ class BrokenFilesets
   "1002147" => [ "IV89618", "IV89633", "IV89705", "IV91919", "IV92030", "IV92622", "IV92664" ],
   "1022163" => [ "IV95372", "IV95517", "IV95637" ],
   "1004969" => [ "IV88913", "IV91459", "IV91904", "IV92002", "IV92037", "IV95904" ],
-  "1026365" => [ "IV95904", "IV97135", "IV97586", "IV97587", "IV97588", "IV97589", "IV97590" ]
+  "1026365" => [ "IV95904", "IV97135", "IV97586", "IV97587", "IV97588", "IV97589", "IV97590" ],
+  "true" => [ ]
 }
 
 end

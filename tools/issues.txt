@@ -16,3 +16,4 @@
     993580 | 1029041 |Health Check issues|{ |snap| dev_with(snap, 'seadd') }
    1002147 | 1022163 |lncentdd will drop tagged large send packets|{ |snap| dev_with(snap, 'pci/lncentdd') }
    1004969 | 1026365 |Ether Channel weakness with Collecting|{ |snap| dev_with(snap, 'ethchandd') }
+   1029399 |    true |Small checksum offload packets sent via sea have invalid tcp sum|{ |snap| sea_with_entcore(snap) }

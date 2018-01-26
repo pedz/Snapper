@@ -46,5 +46,17 @@ class BrokenFilesets
     snap.db.devices.any? { |name, device| device.cu_dv.ddins == driver }
   end
   
+  ENTCORE_DRIVERS = [
+    'pci/lnc2entdd',
+    'pci/mlxentdd',
+    'pci/mlxcentdd',
+    'pci/shientdd'
+  ]
+                      
+  def self.sea_with_entcore(snap)
+    dev_with(snap, 'seadd') &&
+      ENTCORE_DRIVERS.any? { |dvr| dev_with(snap, dvr) }
+  end
+
   Snapper.add_snap_processor(self)
 end
