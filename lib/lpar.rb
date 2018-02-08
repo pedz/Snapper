@@ -54,7 +54,7 @@ class LPAR
       if sys0 = devices['sys0']
         @id_to_partition = sys0.attrs[:id_to_partition]
       end
-      if inet0 = devices['inet0']
+      if (inet0 = devices['inet0']) && inet0.attrs[:hostname]
         @hostname = inet0.attrs[:hostname]
       end
       proc0 = devices['proc0']
