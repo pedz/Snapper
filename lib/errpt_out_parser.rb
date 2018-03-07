@@ -29,13 +29,15 @@ class ErrptOutParser < FileParser
   # entries.
   DashSeparator = Regexp.new(/^-+\n/)
 
+  DB_NAME = "Errpt"
+
   # Parses the errpt.out file using DashSeparator to break the entries
   # apart and then Fields to identify known fields within the error
   # log entry and put them in to their own entry.
   def parse
     @io.read.split(DashSeparator).each do |entry|
       next if entry.empty?
-      item = @db.create_item("Errpt")
+      item = @db.create_item(DB_NAME)
       entry.each_line do |line|
         line.chomp!
         if md = Fields.match(line)
@@ -49,10 +51,10 @@ class ErrptOutParser < FileParser
     # We always want errpt to be an array so we add two items (which
     # forces it to be an array even if it was empty originally) and
     # then pop them off.
-    unless @db["Errpt"].is_a? Array
-      @db.create_item("Errpt")
-      @db.create_item("Errpt")
-      @db["Errpt"].pop(2)
+    unless @db[DB_NAME].is_a? Array
+      @db.create_item(DB_NAME)
+      @db.create_item(DB_NAME)
+      @db[DB_NAME].pop(2)
     end
     self
   end
