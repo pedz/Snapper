@@ -337,13 +337,7 @@ class Entstat < Item
           end
         end
       rescue => e
-        unless e.is_a?(ParseError)
-          backtrace = e.backtrace
-          klass = e.class
-          e = ParseError.new(e.message, history)
-          e.add_message("#{klass} occurred in:")
-          e.set_backtrace(backtrace)
-        end
+        e = ParseError.from_exception(e, history)
         # As the exception unwinds the stack, we add in tidbits to the
         # message to help us locate where we were in the parse.
         e.add_message("line offset within device entry: #{lineno}; state: #{pda.state}")

@@ -11,7 +11,7 @@ class InstfixOutParser < FileParser
     return if %r{hacmp/lppinfo/instfix\.out}.match(@io.path)
     name = @io.path.sub(/\A.*\//, '')
     item = @db.create_item(name)
-    @io.each_line do |line|
+    each_line do |line|
       line.chomp!
       fields = line.split(':')
       instfix = @db.create_item('instfix')

@@ -19,11 +19,35 @@ class FileParser
   # @param path [Pathname, nil] Not set during testing.
   def initialize(io, db, path = nil)
     @io, @db, @path = io, db, path
+    @history = []
+    @lines = @io.each_line
+    @lineno = 0
   end
 
   ##
   # Abstract parse method
   def parse
     fatal "Please override this method"
+  end
+
+  def next_line
+    @line = @lines.next
+    @line.chomp!
+    @history.push(@line)
+    @history.shift until @history.length < 5
+    @lineno += 1
+    @line
+  end
+
+  def each_line
+    loop do
+      next_line
+      yield @line
+    end
+  rescue StopIteration
+  rescue => e
+    e = ParseError.from_exception(e, @history)
+    e.add_message("at line #{@lineno}")
+    raise e
   end
 end

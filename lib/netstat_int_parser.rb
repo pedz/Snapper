@@ -15,7 +15,7 @@ class NetstatIntParser < FileParser
   def parse
     text = []
     state = :before
-    @io.each_line do |line|
+    each_line do |line|
       line.chomp!
       case state
       when :before              # looking for the entstat -d ..."

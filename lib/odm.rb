@@ -22,7 +22,7 @@ class Odm < FileParser
     raw_line = ""
     full_line = ""
     item = nil
-    @io.each_line do |this_line|
+    each_line do |this_line|
       begin
         next if BLANK.match(this_line) # empty line
         raw_line += this_line
