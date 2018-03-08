@@ -21,8 +21,8 @@ class BrokenFilesets
 
     @issues.each do |issue|
       inject, relief, text, proc = issue
-      next unless inject == "true" || @defect2apars[inject].any? { |apar| has_fix(apar) }
-      next if @defect2apars[relief].any? { |apar| has_fix(apar) }
+      next unless inject == "true" || @defect2apars[inject].any? { |apar| has_fix(apar, 0) }
+      next if @defect2apars[relief].any? { |apar| has_fix(apar, 1) }
       next unless proc.call(snap)
       ifixed = @defect2apars[relief].any? { |apar| Regexp.new(apar).match(emgr_snap) }
       snap.add_alert("#{text} - #{relief} (#{@defect2apars[relief].first})#{ifixed ? " - ifix applied" : ""}")
@@ -36,8 +36,8 @@ class BrokenFilesets
   SUPERSEDED = "+"
   NOT_INSTALLED = "!"
 
-  def self.has_fix(apar)
-    return @instfix_i[apar] == 1 unless @instfix_i.nil?
+  def self.has_fix(apar, value)
+    return @instfix_i[apar] == value unless @instfix_i.nil?
     return false unless fix = @instfix_out[apar]
     return fix[:status] == CORRECT_LEVEL || fix[:status] == SUPERSEDED
   end

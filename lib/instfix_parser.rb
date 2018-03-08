@@ -8,6 +8,9 @@ class InstfixParser < FileParser
   # All filesets for IZ04606 were found.
   LINE_REGEXP = /All filesets for (?<apar>\S+) were found/
 
+  # Not all filesets for IV98413 were found.
+  NOT_ALL_REGEXP = /Not all filesets for (?<apar>\S+) were found/
+
   def parse
     name = @io.path.sub(/\A.*\//, '')
     item = @db.create_item(name)
@@ -15,6 +18,11 @@ class InstfixParser < FileParser
       if (md = LINE_REGEXP.match(line))
         field = md[:apar]
         value = 1
+        item[field] = value
+      end
+      if (md = NOT_ALL_REGEXP.match(line))
+        field = md[:apar]
+        value = 0
         item[field] = value
       end
     end
