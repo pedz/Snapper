@@ -37,7 +37,7 @@ class BrokenFilesets
   NOT_INSTALLED = "!"
 
   def self.has_fix(apar, value)
-    return @instfix_i[apar] == value unless @instfix_i.nil?
+    return @instfix_i[apar] && @instfix_i[apar] >= value unless @instfix_i.nil?
     return false unless fix = @instfix_out[apar]
     return fix[:status] == CORRECT_LEVEL || fix[:status] == SUPERSEDED
   end
