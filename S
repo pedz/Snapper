@@ -1,5 +1,0 @@
-#!/bin/bash
-
-./snapper.rb \
-    --output=S.out \
-    /Volumes/pixie-data/PMRs/45967,668,668/2017-12-10/45874.668.668.SVAXXv15P.snap-DUP0001
