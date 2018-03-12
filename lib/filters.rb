@@ -45,23 +45,31 @@ end
 # error, overrun, or underrun if the values are not zero.  It also
 # checks the LACP Actor and Partner State to make sure that the state
 # is good.
+IGNORE_ITEMS = /Side Statistics,Packets dropped/
+TRANSMIT_REGEXP = /transmit/i
+RECEIVE_REGEXP = /receive/i
+SEA_QUEUE_REGEXP = /Queue full dropped packets/
+
 Print.add_filter("Entstat", { level: 3 .. 7 }) do |context, item|
   item.flat_keys.each do |k, v|
-    treg = /transmit/i
-    rreg = /receive/i
     tx = item.transmit_statistics['Packets']
     rx = item.receive_statistics['Packets']
     if /error|overrun|underrun|dropped|drops/i.match(k) && v != 0
       # This is more noise than useful
-      unless k == "Real Side Statistics,Packets dropped"
-        if (t = treg.match(k)) || (r = rreg.match(k))
-          per = (100.0 * v / (t ? tx : rx))
-          extra = " %5.2f%%" % per
-        else
-          extra = ""
-        end
-        context.output("#{k}:#{v}#{extra}")
+      next if IGNORE_ITEMS.match(k)
+      extra = ""
+      if (t = TRANSMIT_REGEXP.match(k)) || (r = RECEIVE_REGEXP.match(k))
+        per = (100.0 * v / (t ? tx : rx))
+        extra = " %5.2f%%" % per
       end
+      if SEA_QUEUE_REGEXP.match(k)
+        items = item.find_path(k)
+        queue = items[-2]
+        packets = queue['Queue packets count']
+        per = (100.0 * v / packets )
+        extra = " %5.2f%%" % per
+      end
+      context.output("#{k}:#{v}#{extra}")
     end
   end
   # Report bad LACP

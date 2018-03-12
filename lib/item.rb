@@ -219,6 +219,24 @@ class Item
     flatten_keys(self, nesting)
   end
 
+  # Given an item and the flat key string, returns an array of
+  # entities that each key specifies.  This may be imprecise if any of
+  # the keys have a comma in them but we'll see how this goes.
+  # @param flat_keys [String] The flattened key for this item.
+  # @return [Array<Object>] An array of objects that the flat key
+  #   string traverses.
+  def find_path(flat_keys)
+    temp = self
+    flat_keys.split(',').map do |key|
+      case temp
+      when Array
+        temp = temp[key.to_i]
+      else
+        temp = temp[key]
+      end
+    end
+  end
+
   # @param options [Hash] The usual options passed to +to_json+.
   # @return [String] The JSON representation of the target.  The
   #   internal hash, the text, and the original keys are marshaled
