@@ -41,6 +41,20 @@ Print.add_filter("Ethernet", { level: 0 .. 11 }) do |context, item|
   end
 end
 
+# VnicServer filter for all levels calls output for the current device
+# and we will add to it as we go...
+Print.add_filter("VnicServer", { level: 0 .. 11 }) do |context, item|
+  unless item.printed           # not sure this can happen
+    context.output("#{item.name} #{item.eth_dev_loc}")
+    nest = context.nest
+    if lsvirt = item[:lsvirt]
+      nest.modifier(" => #{lsvirt[:clntname]}:#{lsvirt["Client device name"]} @ #{lsvirt["Client device physloc"]}")
+    end
+    item.eth_dev.print(nest) if item.eth_dev
+    context.output("")
+  end
+end
+
 # The level 3 through 7 Entstat filter prints out lines that contain
 # error, overrun, or underrun if the values are not zero.  It also
 # checks the LACP Actor and Partner State to make sure that the state
@@ -233,6 +247,10 @@ Print.add_filter("EthernetAdapters", { level: 0 .. 11 }) do |context, item|
   if context.level >= 3
     context.output()
   end
+end
+
+Print.add_filter("VnicServers", { level: 0 .. 11 }) do |context, item|
+  item.to_a.map { |a| a[1] }.sort.print(context.dup)
 end
 
 # For all levels the Interface prints out a concise one line

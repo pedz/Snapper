@@ -1,8 +1,8 @@
 require_relative 'logging'
 require_relative 'item'
 require_relative 'snapper'
-# The load order is devices, ethernet_adapters, ethchans, seas, vlans,
-# interfaces
+# The load order is devices, lsattr, ethernets, ethchans, seas, vlans,
+# vnic_servers, ethernet_adapters, interfaces
 require_relative 'seas'
 
 # A snap processor which finds vlan adapters and converts their type

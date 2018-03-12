@@ -1,9 +1,9 @@
 require_relative 'logging'
 require_relative 'item'
 require_relative 'snapper'
-# The load order is devices, ethernets, ethchans, seas, vlans,
-# ethernet_adapters, interfaces
-require_relative 'vlans'
+# The load order is devices, lsattr, ethernets, ethchans, seas, vlans,
+# vnic_servers, ethernet_adapters, interfaces
+require_relative 'vnic_servers'
 
 # Finds all the ethernet adapters.  This is done by looking at the
 # name of the device and selecting those that match ent[0-9]+

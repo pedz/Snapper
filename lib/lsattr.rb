@@ -1,3 +1,5 @@
+# The load order is devices, lsattr, ethernets, ethchans, seas, vlans,
+# vnic_servers, ethernet_adapters, interfaces
 require_relative 'devices'
 require_relative 'snapper'
 
