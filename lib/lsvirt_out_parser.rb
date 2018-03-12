@@ -48,9 +48,13 @@ class LsvirtOutParser < FileParser
         raise "Dashes expected" unless DASH_REGEXP.match(next_line)
         record[:svea], record[:vir_physloc] = next_line.split
         raise "Blanks expected" unless BLNK_REGEXP.match(next_line)
-        until BLNK_REGEXP.match(next_line)
-          md = /\A(?<field>.*\S)\s +(?<value>\S+)\Z/.match(@line)
+        if (md = /\A(?<field>SEA)\s+(?<value>.*)\Z/.match(next_line))
           record[md[:field]] = md[:value]
+        end
+        until BLNK_REGEXP.match(next_line)
+          if md = /\A(?<field>.*\S)\s +(?<value>\S+)\Z/.match(@line)
+            record[md[:field]] = md[:value]
+          end
         end
         mid_record = false
         
