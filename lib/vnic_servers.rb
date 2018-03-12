@@ -19,11 +19,20 @@ class VnicServers < Item
     db = snap.db
     devices = db.devices
     adapters = db.create_item("VnicServers")
+    vnics = {}
+    if lsvirt = db['lsvirt.out']
+      lsvirt.each do |record|
+        if name = record[:vnic]
+          vnics[name] = record
+        end
+      end
+    end
     devices.each_pair do |logical_name, device|
       if VNIC_SERVER_NAME_REGEXP.match(logical_name)
         lsattr = device.lsattr
         new_item = device.subclass(VnicServer)
         devices[logical_name] = adapters[logical_name] = new_item
+        new_item[:lsvirt] = vnics[logical_name.to_s]
         if lsattr
           new_item[:eth_dev_loc] = lsattr.value(:eth_dev_loc) || "Unknown"
           name = new_item[:eth_dev_name] = lsattr.value(:eth_dev_name) || "Unknown"

@@ -46,7 +46,12 @@ end
 Print.add_filter("VnicServer", { level: 0 .. 11 }) do |context, item|
   unless item.printed           # not sure this can happen
     context.output("#{item.name} #{item.eth_dev_loc}")
-    item.eth_dev.print(context.nest) if item.eth_dev
+    nest = context.nest
+    if lsvirt = item[:lsvirt]
+      nest.modifier(" => #{lsvirt[:clntname]}:#{lsvirt["Client device name"]} @ #{lsvirt["Client device physloc"]}")
+    end
+    item.eth_dev.print(nest) if item.eth_dev
+    context.output("")
   end
 end
 

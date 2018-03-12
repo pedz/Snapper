@@ -15,11 +15,14 @@ class LsvirtOutParser < FileParser
   DASH_REGEXP = /\A[- ]+\Z/
   BLNK_REGEXP = /\A *\Z/
 
-  DB_NAME = "LsvirtOut"
-
   def parse
     @history = []
     @lines = @io.each_line
+    if @io.respond_to?(:basename)
+      name = @io.basename.to_s
+    else
+      name = "LsvirtOut"
+    end
     mid_record = false
     history = []
     loop do
@@ -28,7 +31,7 @@ class LsvirtOutParser < FileParser
         next
 
       when SVSA_REGEXP
-        record = @db.create_item(DB_NAME)
+        record = @db.create_item(name)
         mid_record = true
         raise "Dashes expected" unless DASH_REGEXP.match(next_line)
         record[:svsa], record[:vir_physloc], record[:client_id] = next_line.split
@@ -40,7 +43,7 @@ class LsvirtOutParser < FileParser
         mid_record = false
 
       when SVEA_REGEXP
-        record = @db.create_item(DB_NAME)
+        record = @db.create_item(name)
         mid_record = true
         raise "Dashes expected" unless DASH_REGEXP.match(next_line)
         record[:svea], record[:vir_physloc] = next_line.split
@@ -52,7 +55,7 @@ class LsvirtOutParser < FileParser
         mid_record = false
         
       when VNIC_REGEXP
-        record = @db.create_item(DB_NAME)
+        record = @db.create_item(name)
         mid_record = true
         raise "Dashes expected" unless DASH_REGEXP.match(next_line)
         record[:vnic], record[:vir_physloc], record[:clntid], record[:clntname], record[:clntos]  = next_line.split
@@ -76,10 +79,10 @@ class LsvirtOutParser < FileParser
     if mid_record
       raise ParseError.new("EOF hit with unfinsihed record", @history)
     end
-    unless @db[DB_NAME].is_a? Array
-      @db.create_item(DB_NAME)
-      @db.create_item(DB_NAME)
-      @db[DB_NAME].pop(2)
+    unless @db[name].is_a? Array
+      @db.create_item(name)
+      @db.create_item(name)
+      @db[name].pop(2)
     end
     self
   end
@@ -94,3 +97,5 @@ class LsvirtOutParser < FileParser
     @line
   end
 end
+
+Snapper.add_file_parsing_patterns(%r{/lsvirt/lsvirt.out} => LsvirtOutParser)
