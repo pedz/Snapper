@@ -37,8 +37,9 @@ class LsvirtOutParser < FileParser
         record[:svsa], record[:vir_physloc], record[:client_id] = next_line.split
         raise "Blanks expected" unless BLNK_REGEXP.match(next_line)
         until BLNK_REGEXP.match(next_line)
-          md = /\A(?<field>.*\S)\s +(?<value>\S+)\Z/.match(@line)
-          record[md[:field]] = md[:value]
+          if md = /\A(?<field>.*\S)\s +(?<value>\S+)\Z/.match(@line)
+            record[md[:field]] = md[:value]
+          end
         end
         mid_record = false
 
@@ -65,8 +66,9 @@ class LsvirtOutParser < FileParser
         record[:vnic], record[:vir_physloc], record[:clntid], record[:clntname], record[:clntos]  = next_line.split
         raise "Blanks expected" unless BLNK_REGEXP.match(next_line)
         until BLNK_REGEXP.match(next_line)
-          md = /\A(?<field>[^:]+):(?<value>[^:]+)\Z/.match(@line)
-          record[md[:field]] = md[:value]
+          if md = /\A(?<field>[^:]+):(?<value>[^:]+)\Z/.match(@line)
+            record[md[:field]] = md[:value]
+          end
         end
         mid_record = false
         
