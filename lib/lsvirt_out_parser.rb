@@ -31,15 +31,25 @@ class LsvirtOutParser < FileParser
         next
 
       when SVSA_REGEXP
-        record = @db.create_item(name)
         mid_record = true
         raise "Dashes expected" unless DASH_REGEXP.match(next_line)
-        record[:svsa], record[:vir_physloc], record[:client_id] = next_line.split
+        svsa, vir_physloc, client_id = next_line.split
         raise "Blanks expected" unless BLNK_REGEXP.match(next_line)
-        until BLNK_REGEXP.match(next_line)
-          if md = /\A(?<field>.*\S)\s +(?<value>\S+)\Z/.match(@line)
-            record[md[:field]] = md[:value]
+        loop do
+          record = @db.create_item(name)
+          record[:svsa] = svsa
+          record[:vir_physloc] = vir_physloc
+          record[:client_id] = client_id
+          until BLNK_REGEXP.match(next_line)
+            if md = /\A(?<field>.*\S)\s +(?<value>\S+)\Z/.match(@line)
+              record[md[:field]] = md[:value]
+            end
           end
+          peek_line
+          break if SVSA_REGEXP.match(@line)
+          break if SVEA_REGEXP.match(@line)
+          break if VNIC_REGEXP.match(@line)
+          break if NAME_REGEXP.match(@line)
         end
         mid_record = false
 
@@ -95,11 +105,21 @@ class LsvirtOutParser < FileParser
 
   private
 
+  def peek_line
+    next_line
+    @peek = true
+    @line
+  end
+
   def next_line
-    @line = @lines.next
-    @line.chomp!
-    @history.push(@line)
-    @history.shift until @history.length < 5
+    if @peek == true
+      @peek = false
+    else
+      @line = @lines.next
+      @line.chomp!
+      @history.push(@line)
+      @history.shift until @history.length < 5
+    end
     @line
   end
 end

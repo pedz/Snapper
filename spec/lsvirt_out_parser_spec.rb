@@ -1,6 +1,6 @@
 require "spec_helper"
-require "lsvirt_out_parser"
 require "db"
+require "lsvirt_out_parser"
 
 describe LsvirtOutParser do
   describe "#parse" do
@@ -845,6 +845,652 @@ HERE
 
     it "parses vnicserver entries correctly" do
       expect(@db["LsvirtOut"].map { |a| a[:vnic] }).to include("vnicserver0")
+    end
+  end
+
+  describe "#parse2" do
+    before(:context) do
+      @db = Db.new
+      @text = <<'HERE'
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost0          U9117.MMD.1045EE7-V2-C31                     0x0000000e
+
+VTD                   dwaf_app1
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk5
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-L1000000000000
+Mirrored              false
+
+VTD                   dwaf_app2
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk6
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-L2000000000000
+Mirrored              false
+
+VTD                   dwaf_intf
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk7
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-L3000000000000
+Mirrored              false
+
+VTD                   dwaf_rtvg
+Status                Available
+LUN                   0x8100000000000000
+Backing device        hdisk2
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-L0
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost4          U9117.MMD.1045EE7-V2-C18                     0x00000015
+
+VTD                   apmdw48_appvg_1
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk13
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166B7571-LA000000000000
+Mirrored              false
+
+VTD                   apmdw48_appvg_2
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk26
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L17000000000000
+Mirrored              false
+
+VTD                   apmdw48_oclvg
+Status                Available
+LUN                   0x8500000000000000
+Backing device        hdisk28
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L19000000000000
+Mirrored              false
+
+VTD                   apmdw48_swsvg
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk27
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L18000000000000
+Mirrored              false
+
+VTD                   pmdw48_rootvg71
+Status                Available
+LUN                   0x8600000000000000
+Backing device        hdisk72
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-LA000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost5          U9117.MMD.1045EE7-V2-C19                     0x00000016
+
+VTD                   apmdw50_appvg_1
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk30
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L1B000000000000
+Mirrored              false
+
+VTD                   apmdw50_appvg_2
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk31
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L1C000000000000
+Mirrored              false
+
+VTD                   apmdw50_oclvg
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk32
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L1D000000000000
+Mirrored              false
+
+VTD                   pmdw50_rootvg71
+Status                Available
+LUN                   0x8500000000000000
+Backing device        hdisk73
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-LB000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost6          U9117.MMD.1045EE7-V2-C15                     0x00000012
+
+VTD                   apmdw52_appvg_1
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk15
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-LC000000000000
+Mirrored              false
+
+VTD                   apmdw52_appvg_2
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk16
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-LD000000000000
+Mirrored              false
+
+VTD                   apmdw52_oclvg
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk17
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-LE000000000000
+Mirrored              false
+
+VTD                   pmdw52_rootvg71
+Status                Available
+LUN                   0x8500000000000000
+Backing device        hdisk74
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-LC000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost7          U9117.MMD.1045EE7-V2-C16                     0x00000013
+
+VTD                   apmdw53_appvg_1
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk19
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L10000000000000
+Mirrored              false
+
+VTD                   apmdw53_appvg_2
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk20
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L11000000000000
+Mirrored              false
+
+VTD                   apmdw53_oclvg
+Status                Available
+LUN                   0x8500000000000000
+Backing device        hdisk33
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L1E000000000000
+Mirrored              false
+
+VTD                   apmdw53_sftpvg
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk21
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L12000000000000
+Mirrored              false
+
+VTD                   pmdw53_rootvg71
+Status                Available
+LUN                   0x8600000000000000
+Backing device        hdisk75
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-LD000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost8          U9117.MMD.1045EE7-V2-C17                     0x00000014
+
+VTD                   apmdw54_appvg_1
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk23
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L14000000000000
+Mirrored              false
+
+VTD                   apmdw54_appvg_2
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk24
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L15000000000000
+Mirrored              false
+
+VTD                   apmdw54_oclvg
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk25
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L16000000000000
+Mirrored              false
+
+VTD                   pmdw54_rootvg71
+Status                Available
+LUN                   0x8500000000000000
+Backing device        hdisk76
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-LE000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost9          U9117.MMD.1045EE7-V2-C20                     0x0000001d
+
+VTD                   dw63_rtvg2
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk8
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-L4000000000000
+Mirrored              false
+
+VTD                   mdw63_dtvg_d01
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk45
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L2A000000000000
+Mirrored              false
+
+VTD                   mdw63_dtvg_d03
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk47
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L2C000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost10         U9117.MMD.1045EE7-V2-C21                     0x0000001e
+
+VTD                   dw64_rtvg2
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk9
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-L5000000000000
+Mirrored              false
+
+VTD                   mdw64_dtvg_d01
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk48
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L2D000000000000
+Mirrored              false
+
+VTD                   mdw64_dtvg_d02
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk49
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L2E000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost11         U9117.MMD.1045EE7-V2-C22                     0x0000001f
+
+VTD                   dw66_rtvg2
+Status                Available
+LUN                   0x8500000000000000
+Backing device        hdisk10
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-L6000000000000
+Mirrored              false
+
+VTD                   mdw66_dtvg_d01
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk50
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L2F000000000000
+Mirrored              false
+
+VTD                   mdw66_dtvg_d02
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk51
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L30000000000000
+Mirrored              false
+
+VTD                   mdw66_dtvg_d03
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk52
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L31000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost12         U9117.MMD.1045EE7-V2-C23                     0x00000020
+
+VTD                   dw68_rtvg2
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk11
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-L7000000000000
+Mirrored              false
+
+VTD                   mdw68_dtvg_d01
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk40
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L25000000000000
+Mirrored              false
+
+VTD                   mdw68_dtvg_d02
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk41
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L26000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost13         U9117.MMD.1045EE7-V2-C24                     0x00000021
+
+VTD                   dw71_rtvg2
+Status                Available
+LUN                   0x8500000000000000
+Backing device        hdisk46
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-L8000000000000
+Mirrored              false
+
+VTD                   mdw71_dtvg_d01
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk42
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L27000000000000
+Mirrored              false
+
+VTD                   mdw71_dtvg_d02
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk43
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L28000000000000
+Mirrored              false
+
+VTD                   mdw71_dtvg_d03
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk44
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L29000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost14         U9117.MMD.1045EE7-V2-C25                     0x00000022
+
+VTD                   dw74_rtvg2
+Status                Available
+LUN                   0x8600000000000000
+Backing device        hdisk71
+Physloc               U2C4E.001.DBJ2560-P2-C5-T1-W50060E80166C4977-L9000000000000
+Mirrored              false
+
+VTD                   mdw74_dtvg_d01
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk53
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L32000000000000
+Mirrored              false
+
+VTD                   mdw74_dtvg_d02
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk54
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L33000000000000
+Mirrored              false
+
+VTD                   mdw74_dtvg_d03
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk3
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L44000000000000
+Mirrored              false
+
+VTD                   mdw74_dtvg_d04
+Status                Available
+LUN                   0x8500000000000000
+Backing device        hdisk4
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L45000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost15         U9117.MMD.1045EE7-V2-C26                     0x00000023
+
+VTD                   dw83_app1vg
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk66
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L3F000000000000
+Mirrored              false
+
+VTD                   dw83_orahmvg
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk67
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L40000000000000
+Mirrored              false
+
+VTD                   dw83_rtvg
+Status                Available
+LUN                   0x8100000000000000
+Backing device        hdisk57
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L36000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost16         U9117.MMD.1045EE7-V2-C27                     0x00000024
+
+VTD                   dw85_app1vg
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk68
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L41000000000000
+Mirrored              false
+
+VTD                   dw85_orahmvg
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk70
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L43000000000000
+Mirrored              false
+
+VTD                   dw85_rtvg
+Status                Available
+LUN                   0x8100000000000000
+Backing device        hdisk58
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L37000000000000
+Mirrored              false
+
+VTD                   dw85_sibintvg
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk69
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L42000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost17         U9117.MMD.1045EE7-V2-C28                     0x00000025
+
+VTD                   dw87_app1vg
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk59
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L38000000000000
+Mirrored              false
+
+VTD                   dw87_ochinvg
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk60
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L39000000000000
+Mirrored              false
+
+VTD                   dw87_orahmvg
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk61
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L3A000000000000
+Mirrored              false
+
+VTD                   dw87_rtvg
+Status                Available
+LUN                   0x8100000000000000
+Backing device        hdisk55
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L34000000000000
+Mirrored              false
+
+SVSA            Physloc                                      Client Partition ID
+--------------- -------------------------------------------- ------------------
+vhost18         U9117.MMD.1045EE7-V2-C29                     0x00000026
+
+VTD                   dw88_app1vg
+Status                Available
+LUN                   0x8200000000000000
+Backing device        hdisk62
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L3B000000000000
+Mirrored              false
+
+VTD                   dw88_app2vg
+Status                Available
+LUN                   0x8300000000000000
+Backing device        hdisk63
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L3C000000000000
+Mirrored              false
+
+VTD                   dw88_orahmvg
+Status                Available
+LUN                   0x8500000000000000
+Backing device        hdisk65
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L3E000000000000
+Mirrored              false
+
+VTD                   dw88_rtvg
+Status                Available
+LUN                   0x8100000000000000
+Backing device        hdisk56
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L35000000000000
+Mirrored              false
+
+VTD                   dw88_sftpinvg
+Status                Available
+LUN                   0x8400000000000000
+Backing device        hdisk64
+Physloc               U2C4E.001.DBJ2757-P2-C5-T1-W50060E80166B7561-L3D000000000000
+Mirrored              false
+
+SVEA   Physloc
+------ --------------------------------------------
+ent2   U9117.MMD.1045EE7-V2-C2-T1
+
+SEA                   ent6
+Backing device        ent0
+Status                Available
+Physloc               U2C4E.001.DBJ2757-P2-C1-T1
+
+SVEA   Physloc
+------ --------------------------------------------
+ent3   U9117.MMD.1045EE7-V2-C3-T1
+
+SEA                   ent6
+Backing device        ent0
+Status                Available
+Physloc               U2C4E.001.DBJ2757-P2-C1-T1
+
+SVEA   Physloc
+------ --------------------------------------------
+ent4   U9117.MMD.1045EE7-V2-C4-T1
+
+SEA                 NO SHARED ETHERNET ADAPTER FOUND
+
+SVEA   Physloc
+------ --------------------------------------------
+ent5   U9117.MMD.1045EE7-V2-C5-T1
+
+SEA                 NO SHARED ETHERNET ADAPTER FOUND
+
+name             status      description
+ent2             Available   Virtual I/O Ethernet Adapter (l-lan)
+ent3             Available   Virtual I/O Ethernet Adapter (l-lan)
+ent4             Available   Virtual I/O Ethernet Adapter (l-lan)
+ent5             Available   Virtual I/O Ethernet Adapter (l-lan)
+vasi0            Available   Virtual Asynchronous Services Interface (VASI)
+vbsd0            Available   Virtual Block Storage Device (VBSD)
+vhost0           Available   Virtual SCSI Server Adapter
+vhost4           Available   Virtual SCSI Server Adapter
+vhost5           Available   Virtual SCSI Server Adapter
+vhost6           Available   Virtual SCSI Server Adapter
+vhost7           Available   Virtual SCSI Server Adapter
+vhost8           Available   Virtual SCSI Server Adapter
+vhost9           Available   Virtual SCSI Server Adapter
+vhost10          Available   Virtual SCSI Server Adapter
+vhost11          Available   Virtual SCSI Server Adapter
+vhost12          Available   Virtual SCSI Server Adapter
+vhost13          Available   Virtual SCSI Server Adapter
+vhost14          Available   Virtual SCSI Server Adapter
+vhost15          Available   Virtual SCSI Server Adapter
+vhost16          Available   Virtual SCSI Server Adapter
+vhost17          Available   Virtual SCSI Server Adapter
+vhost18          Available   Virtual SCSI Server Adapter
+vsa0             Available   LPAR Virtual Serial Adapter
+apmdw48_appvg_1  Available   Virtual Target Device - Disk
+apmdw48_appvg_2  Available   Virtual Target Device - Disk
+apmdw48_oclvg    Available   Virtual Target Device - Disk
+apmdw48_swsvg    Available   Virtual Target Device - Disk
+apmdw50_appvg_1  Available   Virtual Target Device - Disk
+apmdw50_appvg_2  Available   Virtual Target Device - Disk
+apmdw50_oclvg    Available   Virtual Target Device - Disk
+apmdw52_appvg_1  Available   Virtual Target Device - Disk
+apmdw52_appvg_2  Available   Virtual Target Device - Disk
+apmdw52_oclvg    Available   Virtual Target Device - Disk
+apmdw53_appvg_1  Available   Virtual Target Device - Disk
+apmdw53_appvg_2  Available   Virtual Target Device - Disk
+apmdw53_oclvg    Available   Virtual Target Device - Disk
+apmdw53_sftpvg   Available   Virtual Target Device - Disk
+apmdw54_appvg_1  Available   Virtual Target Device - Disk
+apmdw54_appvg_2  Available   Virtual Target Device - Disk
+apmdw54_oclvg    Available   Virtual Target Device - Disk
+dw63_rtvg2       Available   Virtual Target Device - Disk
+dw64_rtvg2       Available   Virtual Target Device - Disk
+dw66_rtvg2       Available   Virtual Target Device - Disk
+dw68_rtvg2       Available   Virtual Target Device - Disk
+dw71_rtvg2       Available   Virtual Target Device - Disk
+dw74_rtvg2       Available   Virtual Target Device - Disk
+dw83_app1vg      Available   Virtual Target Device - Disk
+dw83_orahmvg     Available   Virtual Target Device - Disk
+dw83_rtvg        Available   Virtual Target Device - Disk
+dw85_app1vg      Available   Virtual Target Device - Disk
+dw85_orahmvg     Available   Virtual Target Device - Disk
+dw85_rtvg        Available   Virtual Target Device - Disk
+dw85_sibintvg    Available   Virtual Target Device - Disk
+dw87_app1vg      Available   Virtual Target Device - Disk
+dw87_ochinvg     Available   Virtual Target Device - Disk
+dw87_orahmvg     Available   Virtual Target Device - Disk
+dw87_rtvg        Available   Virtual Target Device - Disk
+dw88_app1vg      Available   Virtual Target Device - Disk
+dw88_app2vg      Available   Virtual Target Device - Disk
+dw88_orahmvg     Available   Virtual Target Device - Disk
+dw88_rtvg        Available   Virtual Target Device - Disk
+dw88_sftpinvg    Available   Virtual Target Device - Disk
+dwaf_app1        Available   Virtual Target Device - Disk
+dwaf_app2        Available   Virtual Target Device - Disk
+dwaf_intf        Available   Virtual Target Device - Disk
+dwaf_rtvg        Available   Virtual Target Device - Disk
+mdw63_dtvg_d01   Available   Virtual Target Device - Disk
+mdw63_dtvg_d03   Available   Virtual Target Device - Disk
+mdw64_dtvg_d01   Available   Virtual Target Device - Disk
+mdw64_dtvg_d02   Available   Virtual Target Device - Disk
+mdw66_dtvg_d01   Available   Virtual Target Device - Disk
+mdw66_dtvg_d02   Available   Virtual Target Device - Disk
+mdw66_dtvg_d03   Available   Virtual Target Device - Disk
+mdw68_dtvg_d01   Available   Virtual Target Device - Disk
+mdw68_dtvg_d02   Available   Virtual Target Device - Disk
+mdw71_dtvg_d01   Available   Virtual Target Device - Disk
+mdw71_dtvg_d02   Available   Virtual Target Device - Disk
+mdw71_dtvg_d03   Available   Virtual Target Device - Disk
+mdw74_dtvg_d01   Available   Virtual Target Device - Disk
+mdw74_dtvg_d02   Available   Virtual Target Device - Disk
+mdw74_dtvg_d03   Available   Virtual Target Device - Disk
+mdw74_dtvg_d04   Available   Virtual Target Device - Disk
+pmdw48_rootvg71  Available   Virtual Target Device - Disk
+pmdw50_rootvg71  Available   Virtual Target Device - Disk
+pmdw52_rootvg71  Available   Virtual Target Device - Disk
+pmdw53_rootvg71  Available   Virtual Target Device - Disk
+pmdw54_rootvg71  Available   Virtual Target Device - Disk
+ent6             Available   Shared Ethernet Adapter
+pkcs11           Available   ACF/PKCS#11 Device
+HERE
+      LsvirtOutParser.new(StringIO.new(@text), @db).parse
+    end
+
+    it "creates an LsvirtOut item" do
+      a = @db["LsvirtOut"]
+      expect(a.length).to eq(68)
     end
   end
 end
