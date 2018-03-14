@@ -1,3 +1,8 @@
+03/14/2018 Version 0.9.134
+
+        Added parsing of lsvirt.out so that on a VIOS it can map
+	vnicservers information.  This has taken a few attempts.
+	
 11/30/2017 Version 0.9.106
 
         Added parsing of ifconfig -a if it exists.  And added printing
