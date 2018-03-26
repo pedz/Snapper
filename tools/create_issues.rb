@@ -4,19 +4,9 @@ require 'pathname'
 require 'net/ssh'
 require 'set'
 
-if true
-  PSQL="/usr/bin/psql"
-  HOST="condor3.austin.ibm.com"
-  DB="condor3_production"
-elsif false
-  PSQL="/gsa/ausgsa/projects/r/ruby/pgsql/bin/psql"
-  HOST="condor.austin.ibm.com"
-  DB="condor3_production"
-else
-  PSQL="/usr/local/pgsql/bin/psql"
-  HOST="p51.austin.ibm.com"
-  DB="condor_development"
-end
+HOST="truth.aus.stglabs.ibm.com"
+USER="pedzan"
+
 $defects = Set.new
 
 base = Pathname(__FILE__).dirname.dirname
@@ -51,14 +41,15 @@ new_code.puts "# Hash that maps a defect to a list of APARs"
 new_code.puts "@defect2apars = {"
 previous_line = nil
 puts "about to log into #{HOST}"
-Net::SSH.start(HOST, 'condor') do |ssh|
-  puts "Logged into #{HOST} and doing #{$defects.length} queries"
+$defects = $defects.sort { |a, b| a.to_i <=> b.to_i }.uniq
+Net::SSH.start(HOST, USER) do |ssh|
+  puts "Logged into #{USER}@#{HOST} and doing #{$defects.length} queries"
   $defects.each do |defect|
-    # puts "execing: #{PSQL} -c \"copy ( select distinct apar from ptfapardefs where defect = '#{defect}' order by apar ) to stdout;\" #{DB}"
-    output = ssh.exec!("#{PSQL} -c \"copy ( select distinct apar from ptfapardefs where defect = '#{defect}' order by apar ) to stdout;\" #{DB}")
-    raise Exception.new("psql failed") unless output.exitstatus == 0
-    output = output.split("\n")
+    puts defect
+    output = ssh.exec!("/usr/local/bin/def2apar #{defect}").split("\n")
+    output = output.map { |s| s.sub(/\A\S+\s+(\S+)\Z/, "\\1") }.sort.uniq
     output.delete("NEEDS_APAR")
+    output.delete("NO_APAR")
     new_code.puts "#{previous_line}," unless previous_line.nil?
     if output.empty?
       previous_line = "  #{defect.inspect} => [ ]"
