@@ -27,9 +27,27 @@ class BrokenFilesets
       ifixed = @defect2apars[relief].any? { |apar| Regexp.new(apar).match(emgr_snap) }
       snap.add_alert("#{text} - #{relief} (#{@defect2apars[relief].first})#{ifixed ? " - ifix applied" : ""}")
     end
+
+    other_stuff(snap, options)
   end
 
   private
+
+  # I have not split this off to another class...
+  def self.other_stuff(snap, options)
+    if lslpp_lc = snap.db['lslpp -lc']
+      [ "ds_agent.rte" ].each do |fs|
+        snap.add_alert("#{fs} is installed") if lslpp_lc[fs]
+      end
+    end
+    if inittab = snap.db['inittab']
+      inittab.each do |inittab|
+        [ "ds_filter", "ds_agent" ].each do |name|
+          snap.add_alert("#{name} is in inittab") if inittab[:name] == name
+        end
+      end
+    end
+  end
 
   DOWN_LEVEL = "-"
   CORRECT_LEVEL = "="
