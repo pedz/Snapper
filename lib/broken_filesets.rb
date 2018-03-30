@@ -35,18 +35,26 @@ class BrokenFilesets
 
   # I have not split this off to another class...
   def self.other_stuff(snap, options)
+    hits = 0
     if lslpp_lc = snap.db['lslpp -lc']
       [ "ds_agent.rte" ].each do |fs|
-        snap.add_alert("#{fs} is installed") if lslpp_lc[fs]
+        if lslpp_lc[fs]
+          snap.add_alert("#{fs} is installed") if options.level > 3
+          hits += 1
+        end
       end
     end
     if inittab = snap.db['inittab']
       inittab.each do |inittab|
         [ "ds_filter", "ds_agent" ].each do |name|
-          snap.add_alert("#{name} is in inittab") if inittab[:name] == name
+          if inittab[:name] == name
+            snap.add_alert("#{name} is in inittab") if options.level > 3
+            hits += 1
+          end
         end
       end
     end
+    snap.add_alert("Trend Micro is installed") if hits > 0 && options.level <= 3
   end
 
   DOWN_LEVEL = "-"
