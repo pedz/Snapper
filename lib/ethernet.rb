@@ -31,8 +31,10 @@ class Ethernet < Device
       description_keys.push((speed >= 1000) ? "#{speed / 1000}G" : "#{speed}M") if speed > 0
 
       # We get driver flags and convert them to attributes
-      description_keys += entstat.driver_flags.map { |flag| TEXT_MAP[flag] }
-      description_keys.delete(nil)
+      if entstat.driver_flags.is_a?(Array)
+        description_keys += entstat.driver_flags.map { |flag| TEXT_MAP[flag] }
+        description_keys.delete(nil)
+      end
     end
     # Ugly... virtual adapters are marked with VIOENT in the flags.
     # We convert that to VX in the description keys because it can be

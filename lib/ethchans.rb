@@ -48,7 +48,7 @@ class Ethchans < Item
       return unless first['entstat'] && first.entstat['partner_state']
       gold = first.entstat
       list.each do |adapter|
-        partner = adapter.entstat
+        next unless partner = adapter.entstat
         unless gold['Partner System'] == partner['Partner System']
           snap.
             add_alert("'Partner System' for #{first.name} #{gold['Partner System']} and #{adapter.name} #{partner['Partner System']} do not match")
