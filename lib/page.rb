@@ -41,6 +41,7 @@ EOF
   </body>
 </html>
 EOF
+    @outfile.flush
   end
 
   private
