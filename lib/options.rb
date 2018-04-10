@@ -157,7 +157,7 @@ class Options
 
   # Determines proper setting for colorize and output.
   def setup_pager
-    if @paginate && @output.isatty
+    if @paginate && @output.isatty && @html.nil?
       env = {}
       @pager = ENV["SNAPPER_PAGER"] if @pager.nil?
       @pager = ENV["PAGER"] if @pager.nil?

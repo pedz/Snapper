@@ -41,7 +41,6 @@ EOF
   </body>
 </html>
 EOF
-    @outfile.flush
   end
 
   private
@@ -66,9 +65,9 @@ EOF
   # lib/javascript.
   def include_javascript
     @outfile.puts <<'EOF'
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> 
 EOF
     Pathname.new(JavascriptDir).find do |path|
       next unless path.file?

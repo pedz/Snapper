@@ -94,9 +94,11 @@ class Snapper
     create_batch
     run_batch_processors
     do_cmd
-    @options.output.close
+    @options.output.close if @options.output
+    @options.html.close if @options.html
   rescue Interrupt => e
-    @options.output.close
+    @options.output.close if @options.output
+    @options.html.close if @options.html
     exit(0)
   rescue Errno::EPIPE => e
     exit(0)
