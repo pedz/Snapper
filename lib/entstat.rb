@@ -356,4 +356,47 @@ class Entstat < Item
   def productions
     fail "Please override this method"
   end
+
+  def display(context)
+    self.flat_keys.each do |k, v|
+      tx = self.transmit_statistics['Packets']
+      rx = self.receive_statistics['Packets']
+      if /error|overrun|underrun|dropped|drops/i.match(k) && v != 0
+        # This is more noise than useful
+        next if IGNORE_ITEMS.match(k)
+        extra = ""
+        per = nil
+        if (t = TRANSMIT_REGEXP.match(k)) || (r = RECEIVE_REGEXP.match(k))
+          per = (100.0 * v / (t ? tx : rx))
+          extra = " %5.2f%%" % per
+        end
+        if SEA_QUEUE_REGEXP.match(k)
+          items = self.find_path(k)
+          queue = items[-2]
+          packets = queue['Queue packets count']
+          per = (100.0 * v / packets )
+          extra = " %5.2f%%" % per
+        end
+        thres = (context.level > 3) ? 0.0 : 0.1
+        if per.nil? || per > thres
+          context.output("#{k}:#{v}#{extra}")
+        end
+      end
+    end
+    # Report bad LACP
+    [ 'Actor State', 'Partner State' ].each do |key|
+      if h = self[key]
+        bad_values = []
+        [ ['Aggregation', 'Aggregatable'],
+          ['Synchronization', 'IN_SYNC'],
+          ['Collecting', 'Enabled'],
+          ['Distributing', 'Enabled'],
+          ['Defaulted', 'False'],
+          ['Expired', 'False'] ].each do |k, v|
+          bad_values.push("#{k}=#{h[k]}") if h[k] != v
+        end
+        context.output("Bad LACP on #{key}:#{bad_values.join(',')}") unless bad_values.empty?
+      end
+    end
+  end
 end

@@ -65,42 +65,7 @@ RECEIVE_REGEXP = /receive/i
 SEA_QUEUE_REGEXP = /Queue full dropped packets/
 
 Print.add_filter("Entstat", { level: 3 .. 7 }) do |context, item|
-  item.flat_keys.each do |k, v|
-    tx = item.transmit_statistics['Packets']
-    rx = item.receive_statistics['Packets']
-    if /error|overrun|underrun|dropped|drops/i.match(k) && v != 0
-      # This is more noise than useful
-      next if IGNORE_ITEMS.match(k)
-      extra = ""
-      if (t = TRANSMIT_REGEXP.match(k)) || (r = RECEIVE_REGEXP.match(k))
-        per = (100.0 * v / (t ? tx : rx))
-        extra = " %5.2f%%" % per
-      end
-      if SEA_QUEUE_REGEXP.match(k)
-        items = item.find_path(k)
-        queue = items[-2]
-        packets = queue['Queue packets count']
-        per = (100.0 * v / packets )
-        extra = " %5.2f%%" % per
-      end
-      context.output("#{k}:#{v}#{extra}")
-    end
-  end
-  # Report bad LACP
-  [ 'Actor State', 'Partner State' ].each do |key|
-    if h = item[key]
-      bad_values = []
-      [ ['Aggregation', 'Aggregatable'],
-        ['Synchronization', 'IN_SYNC'],
-        ['Collecting', 'Enabled'],
-        ['Distributing', 'Enabled'],
-        ['Defaulted', 'False'],
-        ['Expired', 'False'] ].each do |k, v|
-        bad_values.push("#{k}=#{h[k]}") if h[k] != v
-      end
-      context.output("Bad LACP on #{key}:#{bad_values.join(',')}") unless bad_values.empty?
-    end
-  end
+  item.display(context)
 end
 
 # The level 8 through 10 filter for Entstat simply dumps the text to
@@ -126,14 +91,22 @@ Print.add_filter("EntstatVioent", { level: 3 .. 7 })  do |context, item|
   unless item["Hypervisor Send Failures"] == 0
     tx = item.transmit_statistics['Packets']
     err = item["Hypervisor Send Failures"]
-    per = " %5.2f%%" % (100.0 * err / tx)
-    text.push("Hypervisor Send Failures: #{err}#{per}")
+    percent = 100.0 * err / tx
+    percent_text = " %5.2f%%" % percent
+    thres = context.level > 3 ? 0.0 : 0.1
+    if percent > thres
+      text.push("Hypervisor Send Failures: #{err}#{percent_text}")
+    end
   end
   unless item["Hypervisor Receive Failures"] == 0
     rx = item.receive_statistics['Packets']
     err = item["Hypervisor Receive Failures"]
-    per = "%5.2f%%" % (100.0 * err / rx)
-    text.push("Hypervisor Receive Failures: #{err} #{per}")
+    percent = 100.0 * err / rx
+    percent_text = " %5.2f%%" % percent
+    thres = context.level > 3 ? 0.0 : 0.1
+    if percent > thres
+      text.push("Hypervisor Receive Failures: #{err} #{percent_text}")
+    end
   end
   context.output(text)
 end
