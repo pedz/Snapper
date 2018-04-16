@@ -111,6 +111,7 @@ class RawOdm < Odm
     dir=@path.dirname
     cmd = "cd #{dir}; ODMDIR=#{dir} odmget `ls Cu* Pd* | egrep -v '\.(vc|add)$|lock'`"
     @io = IO.popen(cmd)
+    @lines = @io.each_line
   end
 end
 
