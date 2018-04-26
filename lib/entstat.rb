@@ -407,7 +407,7 @@ class Entstat < Item
                 per = (100.0 * value / (t ? tx : rx))
                 extra = " %5.2f%%" % per
               end
-              thres = (context.level > 3) ? 0.0 : 0.1
+              thres = (context.level > 3) ? 0.0 : 0.01
               if per.nil? || per > thres
                 context.output("#{field}: #{value}#{extra}")
               end
