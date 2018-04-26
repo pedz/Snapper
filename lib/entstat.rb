@@ -357,11 +357,22 @@ class Entstat < Item
     fail "Please override this method"
   end
 
+
+  # The level 3 through 7 Entstat filter prints out lines that contain
+  # error, overrun, or underrun if the values are not zero.  It also
+  # checks the LACP Actor and Partner State to make sure that the
+  # state is good.
+  IGNORE_ITEMS = /Side Statistics,Packets dropped|Address Match Errors/
+  FLAG_REGEXP = /no buffers|error|overrun|underrun|dropped|drops/i
+  TRANSMIT_REGEXP = /transmit/i
+  RECEIVE_REGEXP = /receive/i
+  SEA_QUEUE_REGEXP = /Queue full dropped packets/
+
   def display(context)
     self.flat_keys.each do |k, v|
       tx = self.transmit_statistics['Packets']
       rx = self.receive_statistics['Packets']
-      if /error|overrun|underrun|dropped|drops/i.match(k) && v != 0
+      if FLAG_REGEXP.match(k) && v != 0
         # This is more noise than useful
         next if IGNORE_ITEMS.match(k)
         extra = ""
@@ -380,6 +391,28 @@ class Entstat < Item
         thres = (context.level > 3) ? 0.0 : 0.1
         if per.nil? || per > thres
           context.output("#{k}:#{v}#{extra}")
+        end
+      end
+      # These are lines that are not matched so they are not as well parsed.
+      if v.is_a?(String)
+        if FLAG_REGEXP.match(v)
+          if md = /\A\s*(?<field>\S[^:]+):\s*(?<value>[0-9]+)/.match(v)
+            field = md[:field]
+            next if IGNORE_ITEMS.match(field)
+            value = md[:value].to_i
+            if value != 0
+              extra = ""
+              per = nil
+              if (t = TRANSMIT_REGEXP.match(k)) || (r = RECEIVE_REGEXP.match(k))
+                per = (100.0 * v / (t ? tx : rx))
+                extra = " %5.2f%%" % per
+              end
+              thres = (context.level > 3) ? 0.0 : 0.1
+              if per.nil? || per > thres
+                context.output("#{field}: #{value}#{extra}")
+              end
+            end
+          end
         end
       end
     end

@@ -55,15 +55,6 @@ Print.add_filter("VnicServer", { level: 0 .. 11 }) do |context, item|
   end
 end
 
-# The level 3 through 7 Entstat filter prints out lines that contain
-# error, overrun, or underrun if the values are not zero.  It also
-# checks the LACP Actor and Partner State to make sure that the state
-# is good.
-IGNORE_ITEMS = /Side Statistics,Packets dropped/
-TRANSMIT_REGEXP = /transmit/i
-RECEIVE_REGEXP = /receive/i
-SEA_QUEUE_REGEXP = /Queue full dropped packets/
-
 Print.add_filter("Entstat", { level: 3 .. 7 }) do |context, item|
   item.display(context)
 end
