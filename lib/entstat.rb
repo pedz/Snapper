@@ -403,8 +403,8 @@ class Entstat < Item
             if value != 0
               extra = ""
               per = nil
-              if (t = TRANSMIT_REGEXP.match(k)) || (r = RECEIVE_REGEXP.match(k))
-                per = (100.0 * v / (t ? tx : rx))
+              if (t = TRANSMIT_REGEXP.match(field)) || (r = RECEIVE_REGEXP.match(field))
+                per = (100.0 * value / (t ? tx : rx))
                 extra = " %5.2f%%" % per
               end
               thres = (context.level > 3) ? 0.0 : 0.1
